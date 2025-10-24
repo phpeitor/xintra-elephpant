@@ -47,7 +47,8 @@ class Cliente {
                 id,
                 CONCAT(nombres,' ',apellidos) AS nombre_completo,
                 documento,
-                contacto,
+                email,
+                telefono,
                 sexo,
                 fecha_creacion
             FROM bd_black.cliente

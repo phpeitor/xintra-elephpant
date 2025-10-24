@@ -26,17 +26,25 @@
             { title: "Id", field: "id", sorter: "number", width: 90 },
             { title: "Nombre Completo", field: "nombre_completo", headerFilter: "input", widthGrow: 2, minWidth: 100 },
             { title: "Documento", field: "documento", headerFilter: "input"},
-            { title: "Contacto", field: "contacto"},
+            { title: "Contacto", field: "email", sorter: "string"},
             {
                 title: "Sexo",
                 field: "sexo",
                 formatter: (cell) => {
-                    const v = String(cell.getValue()).trim();
-                    const src = (v === "1") ? "assets/images/faces/10.jpg"
-                                            : "assets/images/faces/2.jpg";
-                    return `<img src="${src}" alt="sexo ${v}" style="height:32px;width:32px;border-radius:9999px;object-fit:cover;" />`;
+                    const v = String(cell.getValue() ?? "").trim();
+                    const isMasculino = v === "1";
+                    const src = isMasculino ? "assets/images/faces/10.jpg" : "assets/images/faces/2.jpg";
+                    const badgeClass = isMasculino ? "badge bg-primary" : "badge bg-primarytint1color";
+                    const label = isMasculino ? "Masculino" : "Femenino";
+
+                    return `
+                    <div style="display:flex;align-items:center;gap:.5rem;">
+                        <img src="${src}" alt="${label}" style="height:32px;width:32px;border-radius:9999px;object-fit:cover;" />
+                        <span class="${badgeClass}">${label}</span>
+                    </div>
+                    `;
                 },
-                accessorDownload: (value) => value,
+                accessorDownload: (value) => (String(value) === "1" ? "Masculino" : "Femenino"),
             },
             { title: "Fec. Registro", field: "fecha_creacion", sorter: "datetime",
             sorterParams:{format:"YYYY-MM-DD HH:mm:ss"} },
