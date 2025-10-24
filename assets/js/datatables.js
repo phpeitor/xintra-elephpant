@@ -11,7 +11,6 @@
         }
     });
 
-
     //define data
     var tabledata = [
         { id: 1, name: "Tiger Jackson", position: "System Designer", office: "Sed at", age: 41, salary: "$520,800" },
