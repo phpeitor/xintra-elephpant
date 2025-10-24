@@ -41,32 +41,6 @@
         { id: 25, name: "peter Parker", position: "Piolet", office: "Web Spal", age: 24, salary: "$900,000" },
     ];
 
-    
-    //add row to bottom of table on button click
-    document.getElementById("reactivity-add").addEventListener("click", function () {
-        table1.addRow({ name: "Added a New Row", position: "New", Office: "New" });
-    });
-
-    //remove bottom row from table on button click
-    document.getElementById("reactivity-delete").addEventListener("click", function () {
-        if(document.getElementById("reactivity-table").children[1].children[0].children[0]){
-            if(document.getElementById("reactivity-table").children[1].children[0].children[0].childNodes.length > 0){
-               tabledata.pop();
-            }
-        }
-    });
-
-    //Clear table on "Empty the table" button click
-    document.getElementById("clear").addEventListener("click", function () {
-        table1.clearData();
-    });
-
-    //Reset table contents on "Reset the table" button click
-    document.getElementById("reset").addEventListener("click", function () {
-        table1.addRow({ name: "Added a New Row", position: "New", Office: "New" });
-        table1.setData(tabledata);
-    });
-
 
     //Download Data from Tabulator
     //Build Tabulator
