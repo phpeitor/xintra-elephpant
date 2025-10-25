@@ -120,49 +120,56 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector('form.ti-custom-validation');
-      if (!form) {
-        console.error("❌ No encontré <form.ti-custom-validation>");
-        return;
-      }
-
-      // Si tienes attachToForm (tu validador), mantenlo
-      document.querySelectorAll("form.ti-custom-validation").forEach(attachToForm);
+     
+    const form = document.querySelector("form.ti-custom-validation, form.ti-custom-validation-user");
+    if (!form) return;
+    attachToForm(form);
 
       form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+          e.preventDefault();
 
-      // Opción A: tu validador (recomendada si ya lo tienes)
-      const okCustom = typeof validateForm === "function" ? validateForm(form) : true;
-      if (!okCustom) {
-        form.reportValidity?.(); // opcional
-        return; // NO hacer fetch
-      }
+          const okCustom = typeof validateForm === "function" ? validateForm(form) : true;
+          if (!okCustom) {
+            form.reportValidity?.(); 
+            return; 
+          }
 
-      // Opción B (extra): validación nativa por si no tienes la A
-      if (!form.checkValidity()) {
-        form.reportValidity(); // muestra tooltips nativos
-        return; // NO hacer fetch
-      }
+          if (!form.checkValidity()) {
+            form.reportValidity(); 
+            return; 
+          }
 
-      // Si llegaste aquí, puedes enviar:
-      try {
-        const formData = new FormData(form);
-        const res = await fetch('php/add_cliente.php', { method: 'POST', body: formData });
-        const ct = res.headers.get('content-type') || '';
-        const json = ct.includes('application/json') ? await res.json() : { ok:false, message: await res.text() };
+          let actionUrl = "";
+        let redirectUrl = "";
 
-        if (json.ok) {
-          //alert('Cliente guardado con éxito, ID: ' + json.id);
-          form.reset();
-          window.location.href = "clientes.html"
-        } else {
-          alert('Error: ' + (json.message || 'No se pudo guardar.'));
+        if (form.classList.contains("ti-custom-validation")) {
+          actionUrl = "php/add_cliente.php";
+          redirectUrl = "clientes.html";
+        } else if (form.classList.contains("ti-custom-validation-user")) {
+          actionUrl = "php/add_usuario.php";
+          redirectUrl = "usuarios.html";
         }
-      } catch (err) {
-        console.error(err);
-        alert('Fallo de red o excepción en JS. Revisa la consola.');
-      }
+
+        try {
+          const formData = new FormData(form);
+          const res = await fetch(actionUrl, { method: "POST", body: formData });
+          const ct = res.headers.get("content-type") || "";
+          const json = ct.includes("application/json")
+            ? await res.json()
+            : { ok: false, message: await res.text() };
+
+          if (json.ok) {
+            form.reset();
+            window.location.href = redirectUrl;
+          } else {
+            alert("Error: " + (json.message || "No se pudo guardar."));
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Fallo de red o excepción en JS. Revisa la consola.");
+        }
+
+      
     });
   });
 })();
