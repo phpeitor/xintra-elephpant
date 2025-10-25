@@ -119,27 +119,68 @@
     });
   }
 
+  async function cargarUsuario(hash) {
+    try {
+      const res = await fetch(`php/get_usuario.php?hash=${hash}`);
+      const json = await res.json();
+
+      if (!json.ok) {
+        alert(json.message || "Usuario no encontrado");
+        return;
+      }
+
+      const u = json.data;
+      document.querySelector('#firstName').value = u.NOMBRES || '';
+      document.querySelector('#lastName').value = u.APELLIDOS || '';
+      document.querySelector('#documento').value = u.DOC || '';
+      document.querySelector('#email').value = u.EMAIL || '';
+      document.querySelector('#phone').value = u.TLF || '';
+
+      document.querySelectorAll('input[name="sexo"]').forEach(r => {
+        r.checked = parseInt(r.value) === parseInt(u.SEXO);
+      });
+
+    } catch (err) {
+      console.error("❌ Error al cargar usuario:", err);
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
-     
-    const form = document.querySelector("form.ti-custom-validation, form.ti-custom-validation-user");
-    if (!form) return;
-    attachToForm(form);
+      const form = document.querySelector("form.ti-custom-validation, form.ti-custom-validation-user");
+      if (!form) return;
+      attachToForm(form);
+
+      const params = new URLSearchParams(window.location.search);
+      const hash = params.get("hash");
+
+      console.log(params);
+      console.log(hash);
+
+      if (hash && form.classList.contains("ti-custom-validation-user")) {
+        cargarUsuario(hash);
+        const hidden = document.createElement("input");
+        hidden.type = "hidden";
+        hidden.name = "hash";
+        hidden.value = hash;
+        form.appendChild(hidden);
+        form.dataset.mode = "update";
+      }
 
       form.addEventListener('submit', async (e) => {
-          e.preventDefault();
+        e.preventDefault();
 
-          const okCustom = typeof validateForm === "function" ? validateForm(form) : true;
-          if (!okCustom) {
-            form.reportValidity?.(); 
-            return; 
-          }
+        const okCustom = typeof validateForm === "function" ? validateForm(form) : true;
+        if (!okCustom) {
+          form.reportValidity?.(); 
+          return; 
+        }
 
-          if (!form.checkValidity()) {
-            form.reportValidity(); 
-            return; 
-          }
+        if (!form.checkValidity()) {
+          form.reportValidity(); 
+          return; 
+        }
 
-          let actionUrl = "";
+        let actionUrl = "";
         let redirectUrl = "";
 
         if (form.classList.contains("ti-custom-validation")) {
@@ -168,8 +209,6 @@
           console.error(err);
           alert("Fallo de red o excepción en JS. Revisa la consola.");
         }
-
-      
     });
   });
 })();

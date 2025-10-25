@@ -85,9 +85,11 @@
                 width: 160,
                 formatter: (cell) => {
                     const id = cell.getRow().getData().IDPERSONAL;
+                    const row = cell.getRow().getData();
+                    const idHash = md5(row.IDPERSONAL.toString()); 
                     return `
                     <div style="display:flex;gap:.5rem;justify-content:center;">
-                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave  waves-effect waves-light" data-id="${id}">
+                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave  waves-effect waves-light" data-id="${idHash}">
                             <i class="ri-edit-2-line"></i>
                         </button>
                         <button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave  me-5 waves-effect waves-light" data-id="${id}">
@@ -99,7 +101,8 @@
                     const id = cell.getRow().getData().IDPERSONAL;
                     if (e.target.closest(".btn-edit")) {
                         console.log("Actualizar ID:", id);
-                        window.location.href = "upd_usuario.html?id=" + id;
+                        const idHash = e.target.closest(".btn-edit").dataset.id;
+                        window.location.href = "upd_usuario.html?hash=" + idHash;
                     } else if (e.target.closest(".btn-delete")) {
 
                         if (confirm("¿Seguro que deseas eliminar el registro " + id + "?")) {

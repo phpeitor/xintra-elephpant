@@ -61,5 +61,26 @@ class Usuario {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function obtenerPorHash(string $hash): ?array {
+        $sql = "SELECT 
+                    IDPERSONAL,
+                    NOMBRES,
+                    APELLIDOS,
+                    DOC,
+                    EMAIL,
+                    TLF,
+                    SEXO
+                FROM personal
+                WHERE MD5(IDPERSONAL) = :hash
+                LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':hash', $hash);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
 }
 ?>
