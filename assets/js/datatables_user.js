@@ -11,13 +11,6 @@
         }
     });
 
-    function buildContacto(d) {
-        const email = (d.email || "").trim();
-        // fallback: si tu backend usa 'contacto' como teléfono
-        const tel   = (d.telefono || d.contacto || "").trim();
-        return email && tel ? `${email} | ${tel}` : (email || tel || "—");
-    }
-
     var table = new Tabulator("#download-table", {
         layout: "fitColumns",
         pagination: "local",
@@ -29,7 +22,6 @@
         ajaxURL: "php/table_usuario.php",
 
         ajaxResponse: function(url, params, response) {
-            console.log("🔎 respuesta tabla:", response?.[0] ?? response);
             return response;
         },
 
@@ -85,6 +77,54 @@
             },
             { title: "Fec. Registro", field: "fecha_registro", sorter: "datetime",
             sorterParams:{format:"YYYY-MM-DD HH:mm:ss"} },
+            {
+                title: "Opciones",
+                field: "acciones",
+                hozAlign: "center",
+                headerSort: false,
+                width: 160,
+                formatter: (cell) => {
+                    const id = cell.getRow().getData().IDPERSONAL;
+                    return `
+                    <div style="display:flex;gap:.5rem;justify-content:center;">
+                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave  waves-effect waves-light" data-id="${id}">
+                            <i class="ri-edit-2-line"></i>
+                        </button>
+                        <button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave  me-5 waves-effect waves-light" data-id="${id}">
+                            <i class="ri-delete-bin-line"></i>
+                        </button>
+                    </div>`;
+                },
+                cellClick: function (e, cell) {
+                    const id = cell.getRow().getData().IDPERSONAL;
+                    if (e.target.closest(".btn-edit")) {
+                        console.log("Actualizar ID:", id);
+                        window.location.href = "upd_usuario.html?id=" + id;
+                    } else if (e.target.closest(".btn-delete")) {
+
+                        if (confirm("¿Seguro que deseas eliminar el registro " + id + "?")) {
+                            fetch("php/delete_usuario.php", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                body: "id=" + encodeURIComponent(id),
+                            })
+                            .then((res) => res.json())
+                            .then((json) => {
+                                if (json.ok) {
+                                    alert("✅ Registro suspendido correctamente");
+                                    table.replaceData();
+                                } else {
+                                    alert("❌ Error al suspender: " + json.message);
+                                }
+                            })
+                            .catch((err) => {
+                                console.error(err);
+                                alert("❌ Error de red al suspender");
+                            });
+                        }
+                    }
+                },
+            },
         ],
     });
 
