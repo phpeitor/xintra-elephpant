@@ -11,8 +11,13 @@
         }
     });
 
-    //Download Data from Tabulator
-    //Build Tabulator
+    function buildContacto(d) {
+        const email = (d.email || "").trim();
+        // fallback: si tu backend usa 'contacto' como teléfono
+        const tel   = (d.telefono || d.contacto || "").trim();
+        return email && tel ? `${email} | ${tel}` : (email || tel || "—");
+    }
+
     var table = new Tabulator("#download-table", {
         layout: "fitColumns",
         pagination: "local",
@@ -20,32 +25,63 @@
         paginationSizeSelector: [5, 10, 15, 20, 25],
         paginationCounter: "rows",
         movableColumns: true,
-        reactiveData: true, 
+        reactiveData: true,
         ajaxURL: "php/table_cliente.php",
+
+        // OPCIONAL: inspecciona lo que devuelve tu PHP
+        ajaxResponse: function(url, params, response) {
+            console.log("🔎 respuesta tabla:", response?.[0] ?? response);
+            return response;
+        },
+
         columns: [
             { title: "Id", field: "id", sorter: "number", width: 90 },
             { title: "Nombre Completo", field: "nombre_completo", headerFilter: "input", widthGrow: 2, minWidth: 100 },
-            { title: "Documento", field: "documento", headerFilter: "input"},
-            { title: "Contacto", field: "email", sorter: "string"},
-            {
-                title: "Sexo",
-                field: "sexo",
-                formatter: (cell) => {
-                    const v = String(cell.getValue() ?? "").trim();
-                    const isMasculino = v === "1";
-                    const src = isMasculino ? "assets/images/faces/10.jpg" : "assets/images/faces/2.jpg";
-                    const badgeClass = isMasculino ? "badge bg-primary" : "badge bg-primarytint1color";
-                    const label = isMasculino ? "Masculino" : "Femenino";
+            { title: "Documento", field: "documento", headerFilter: "input" },
 
-                    return `
-                    <div style="display:flex;align-items:center;gap:.5rem;">
-                        <img src="${src}" alt="${label}" style="height:32px;width:32px;border-radius:9999px;object-fit:cover;" />
-                        <span class="${badgeClass}">${label}</span>
-                    </div>
-                    `;
-                },
-                accessorDownload: (value) => (String(value) === "1" ? "Masculino" : "Femenino"),
+            // 2) CONTACTO compuesto sin depender de un 'field' real
+            {
+            title: "Contacto",
+            field: "email",                 // usa un field existente cualquiera; el valor mostrado lo calcula el formatter
+            headerFilter: "input",
+            headerFilterFunc: (needle, _val, rowData) =>
+                buildContacto(rowData).toLowerCase().includes(String(needle || "").toLowerCase()),
+            sorter: (a, b, aRow, bRow) =>
+                buildContacto(aRow.getData()).localeCompare(buildContacto(bRow.getData())),
+            formatter: (cell) => {
+                const txt = buildContacto(cell.getRow().getData());
+                return `<span class="truncate block max-w-[260px]">${txt}</span>`;
             },
+            accessorDownload: (_value, data) => buildContacto(data).replace("—", ""),
+            },
+
+            // SEXO: sin imagen cuando es 0 ("Otro")
+            {
+            title: "Sexo",
+            field: "sexo",
+            formatter: (cell) => {
+                const v = String(cell.getValue() ?? "").trim();
+                if (v === "1") {
+                return `
+                    <div style="display:flex;align-items:center;gap:.5rem;">
+                    <img src="assets/images/faces/10.jpg" alt="Masculino"
+                        style="height:32px;width:32px;border-radius:9999px;object-fit:cover;" />
+                    <span class="badge bg-primary">Masculino</span>
+                    </div>`;
+                }
+                if (v === "2") {
+                return `
+                    <div style="display:flex;align-items:center;gap:.5rem;">
+                    <img src="assets/images/faces/2.jpg" alt="Femenino"
+                        style="height:32px;width:32px;border-radius:9999px;object-fit:cover;" />
+                    <span class="badge bg-primarytint1color">Femenino</span>
+                    </div>`;
+                }
+                return `<span class="badge bg-outline-dark dark:!text-defaulttextcolor/70">Otro</span>`;
+            },
+            accessorDownload: (value) => (String(value) === "1" ? "Masculino" : String(value) === "2" ? "Femenino" : "Otro"),
+            },
+
             { title: "Fec. Registro", field: "fecha_creacion", sorter: "datetime",
             sorterParams:{format:"YYYY-MM-DD HH:mm:ss"} },
         ],

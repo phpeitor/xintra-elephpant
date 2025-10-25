@@ -1,175 +1,168 @@
 (function () {
-    "use strict";
-  
-    //To choose date
-    flatpickr(".flatpickr-input", {});
-  
-    //Custom Validation
-    const buttonSubmit = document.getElementsByClassName("ti-custom-validate-btn");
-    const form = document.querySelector(".ti-custom-validation");
-  
-    /*input values*/
-    const firstNameInput        = document.querySelector('.firstName ');
-    const lastNameInput         = document.querySelector('.lastName');
-    const phoneInput            = document.querySelector('.phonenumber');
-    const emailInput            = document.querySelector('.email-address');
-    const documentoInput        = document.querySelector('.documento');
-    const checkboxInput         = document.querySelector('.validationCheckbox');
-  
-  /*error values*/
-    const firstNameError        = document.getElementsByClassName("firstNameError ")[0];
-    const lastNameError         = document.getElementsByClassName("lastNameError")[0];
-    const phoneError            = document.getElementsByClassName("phoneError")[0];
-    const emailError            = document.getElementsByClassName("emailError")[0];
-    const documentoError        = document.getElementsByClassName("documentoError")[0];
-    const checkboxError         = document.getElementsByClassName("checkboxError")[0];
-  
-    //define and declare and empty errors object
-    let error = {};
+  "use strict";
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      checkEmpty();
+  const ruleDefs = {
+    required: (el) => {
+      if (el.type === "checkbox") return el.checked || "Este campo es obligatorio.";
+      if (el.type === "radio") {
+        const group = el.name;
+        const anyChecked = !!el.form.querySelector(`input[type="radio"][name="${group}"]:checked`);
+        return anyChecked || "Selecciona una opción.";
+      }
+      return (el.value || "").trim() ? true : "Este campo es obligatorio.";
+    },
+    email:   (el) => /\S+@\S+\.\S+/.test((el.value || "").trim()) || "Correo inválido.",
+    numeric: (el) => /^-?\d+$/.test((el.value || "").trim()) || "Solo números.",
+    min:     (n)  => (el) => ((el.value || "").trim().length >= +n) || `Mínimo ${n} caracteres.`,
+    max:     (n)  => (el) => ((el.value || "").trim().length <= +n) || `Máximo ${n} caracteres.`,
+    length:  (n)  => (el) => ((el.value || "").trim().length === +n) || `Debe tener ${n} caracteres.`,
+ 
+  };
+
+  function findErrorEl(el) {
+    const key = el.type === "radio" ? el.name : (el.id || el.name);
+    if (!key) return null;
+    return el.form.querySelector(`[data-error-for="${CSS.escape(key)}"]`);
+  }
+
+  function setError(el, message) {
+    const errorEl = findErrorEl(el);
+    el.setAttribute("aria-invalid", "true");
+    el.classList.add("ring-1", "ring-red-500", "focus:ring-red-500");
+    if (errorEl) {
+      errorEl.textContent = message || "";
+      errorEl.classList.toggle("hidden", !message);
+    }
+    // Para usar también el Constraint Validation API si prefieres reportValidity():
+    el.setCustomValidity(message || "");
+  }
+
+  function clearError(el) {
+    const errorEl = findErrorEl(el);
+    el.removeAttribute("aria-invalid");
+    el.classList.remove("ring-1", "ring-red-500", "focus:ring-red-500");
+    if (errorEl) {
+      errorEl.textContent = "";
+      errorEl.classList.add("hidden");
+    }
+    el.setCustomValidity("");
+  }
+
+  // ====== Ejecutor de reglas por campo ======
+  function validateElement(el) {
+    const raw = (el.getAttribute("data-rules") || "").trim();
+    if (!raw) { clearError(el); return true; }
+
+    const parts = raw.split("|").map(s => s.trim()).filter(Boolean);
+
+    for (const part of parts) {
+      const [name, arg] = part.split(":");
+      const def = ruleDefs[name];
+      if (!def) continue;
+
+      const fn = typeof def === "function" && arg === undefined ? def : def(arg);
+
+      const res = fn(el);
+      const ok = res === true;
+      if (!ok) {
+        const msg = typeof res === "string" ? res : "Valor inválido.";
+        setError(el, msg);
+        return false;
+      }
+    }
+
+    clearError(el);
+    return true;
+  }
+
+  function validateForm(form) {
+    const controls = Array.from(form.querySelectorAll("[data-rules]"));
+    let ok = true;
+    for (const el of controls) {
+      if (el.type === "radio") {
+        const firstInGroup = form.querySelector(`input[type="radio"][name="${el.name}"]`);
+        if (el !== firstInGroup) continue;
+      }
+      ok = validateElement(el) && ok;
+    }
+    return ok;
+  }
+
+  function attachToForm(form) {
+    form.addEventListener("submit", (e) => {
+      const ok = validateForm(form);
+      if (!ok) {
+        e.preventDefault();
+        const firstInvalid = form.querySelector("[aria-invalid='true']");
+        firstInvalid?.scrollIntoView({ behavior: "smooth", block: "center" });
+        form.reportValidity?.();
+      }
     });
-  
-    // validate empty fields and set error object
-    function checkEmpty() {
-      //loop and remove all key and value fields in the errors object
-      for (let key in error) {
-        delete error[key];
-      }
 
-      firstNameError.style.display = "none";
-      lastNameError.style.display = "none";
-      emailError.style.display = "none";
-      phoneError.style.display="none";
-      documentoError.style.display="none";
-      checkboxError.style.display="none";
-  
-      //remove all the error class "border-red-500 classes"
-      firstNameInput?.classList.remove("!border-red");
-      lastNameInput?.classList.remove("!border-red");
-      phoneInput?.classList.remove("!border-red");
-      emailInput?.classList.remove("!border-red");
-      documentoInput?.classList.remove("!border-red");
-      checkboxInput?.classList.remove("!border-red");
-      
-  
-      const firstNameValue        = firstNameInput.value.trim();
-      const lastNameValue         = lastNameInput.value.trim();;
-      const phoneValue            = phoneInput.value.trim();
-      const emailValue            = emailInput.value.trim();
-      const documentoValue        = documentoInput.value.trim();
-      const checkboxValue         = checkboxInput.value.trim();
-  
-      if (firstNameValue === "") {
-        error.firstName = "First Name is required";
-      }
-      if (lastNameValue === "") {
-        error.lastName = "Last Name is required";
-      }
-      
-      if (phoneValue === "") {
-        error.phone = "Phone Number is required";
-      }
-      if (emailValue === "") {
-        error.email = "Email is required";
-      }
-      if (documentoValue === "") {
-        error.documento = "Documento is required";
-      }
-      if (checkboxValue === "") {
-        error.checkbox = "You must agree before submitting";
-      }
-  
-      //validate the inputs firstName and lastName
-      if (firstNameValue !== "") {
-        if (!firstNameValue.match(/^[a-zA-Z0-9]+$/)) {
-          error.firstName = "First Name must be letters only";
-        }
-      }
-      if (lastNameValue !== "") {
-        if (!lastNameValue.match(/^[a-zA-Z0-9]+$/)) {
-          error.lastName = "Last Name must be letters only";
-        }
-      }
-      if (phoneValue !== "") {
-        if (!phoneValue.match(/^[0-9]+$/)) {
-          error.phone = "phone number must be numbers only";
-        }
-      }
-      if (emailValue !== "") {
-        //validating an email
-        if (!emailValue.match(/^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z0-9]+$/)) {
-          error.email = "Email must be a valid email";
-        }
-      }
-      if (documentoValue !== "") {
-        if (!documentoValue.match(/^[0-9]+$/)) {
-          error.documento = "Documento must be numbers only";
-        }
-      }
-      
-      //if we have error add the error to the error message
-      if (Object.keys(error).length > 0) {
-        displayError();
+    form.addEventListener("input", (e) => {
+      const el = e.target;
+      if (!(el instanceof HTMLElement)) return;
+      if (!el.matches("[data-rules]")) return;
+
+      if (el.type === "radio") {
+        const firstInGroup = form.querySelector(`input[type="radio"][name="${el.name}"]`);
+        validateElement(firstInGroup);
       } else {
-        //submit the form with a delay of 2 seconds
-        //change the button innerText to submitting and add no-cursor class and disabled attribute to it
-        buttonSubmit.value = "Submitting...";
-        buttonSubmit.setAttribute("disabled", "disabled");
-  
-        //set a delay of 2 seconds since we dont have an api endpoint to send the data to just mimic the process
-        new Promise(function (resolve, reject) {
-          setTimeout(function () {
-            resolve(submitForm());
-          }, 2000);
-        });
+        validateElement(el);
       }
-    }
-  
-    //display errors respectivey to the span html classes
-    function displayError() {
-        //set all errors to their respectivey and also changing hidden 
-      // error containers to be a block.
-      if(error.firstName) {
-        firstNameInput.classList.add("!border-red");
-        firstNameError.style.display = "block";
-        firstNameError.innerHTML = error.firstName;
-      }
-      if (error.lastName) {
-        lastNameInput.classList.add("!border-red");
-        lastNameError.style.display = "block";
-        lastNameError.innerHTML = error.lastName;
-      }
-      if (error.email) {
-        //loop over the classes and add other classes
-        emailInput.classList.add("!border-red");
-        emailError.style.display = "block";
-        emailError.innerHTML = error.email;
-      }
-      if (error.phone) {
-        //loop over the classes and add other classes
-        phoneInput.classList.add("!border-red");
-        phoneError.style.display = "block";
-        phoneError.innerHTML = error.phone;
-      }
-      if (error.documento) {
-        //loop over the classes and add other classes
-        documentoInput.classList.add("!border-red");
-        documentoError.style.display = "block";
-        documentoError.innerHTML = error.documento;
-      }
-    }
-  
-    //submitting the form
-    function submitForm() {
+    });
 
-      buttonSubmit.value = "Login Now";
-      buttonSubmit.removeAttribute("disabled");
-  
-      //reset the form and clear all fields
-      form.reset();
-    }
-  
-  })();
+    form.addEventListener("change", (e) => {
+      const el = e.target;
+      if (!(el instanceof HTMLElement)) return;
+      if (el.matches("[data-rules]")) validateElement(el);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+      const form = document.querySelector('form.ti-custom-validation');
+      if (!form) {
+        console.error("❌ No encontré <form.ti-custom-validation>");
+        return;
+      }
+
+      // Si tienes attachToForm (tu validador), mantenlo
+      document.querySelectorAll("form.ti-custom-validation").forEach(attachToForm);
+
+      form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Opción A: tu validador (recomendada si ya lo tienes)
+      const okCustom = typeof validateForm === "function" ? validateForm(form) : true;
+      if (!okCustom) {
+        form.reportValidity?.(); // opcional
+        return; // NO hacer fetch
+      }
+
+      // Opción B (extra): validación nativa por si no tienes la A
+      if (!form.checkValidity()) {
+        form.reportValidity(); // muestra tooltips nativos
+        return; // NO hacer fetch
+      }
+
+      // Si llegaste aquí, puedes enviar:
+      try {
+        const formData = new FormData(form);
+        const res = await fetch('php/add_cliente.php', { method: 'POST', body: formData });
+        const ct = res.headers.get('content-type') || '';
+        const json = ct.includes('application/json') ? await res.json() : { ok:false, message: await res.text() };
+
+        if (json.ok) {
+          //alert('Cliente guardado con éxito, ID: ' + json.id);
+          form.reset();
+          window.location.href = "clientes.html"
+        } else {
+          alert('Error: ' + (json.message || 'No se pudo guardar.'));
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Fallo de red o excepción en JS. Revisa la consola.');
+      }
+    });
+  });
+})();

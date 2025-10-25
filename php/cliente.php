@@ -2,11 +2,14 @@
 require_once "conexion.php";
 
 class Cliente {
-    private $conn;
+    private PDO $conn;
+    private string $nowLima;
 
     public function __construct() {
         $conexion = new Conexion();
         $this->conn = $conexion->conectar();
+        $tz = new DateTimeZone('America/Lima');
+        $this->nowLima = (new DateTimeImmutable('now', $tz))->format('Y-m-d H:i:s');
     }
 
     public function confirmarSiPendiente(int $id): bool {
@@ -17,28 +20,22 @@ class Cliente {
         return $stmt->rowCount() > 0;
     }
 
-    public function guardar($data) {
-        $sql = "INSERT INTO citas 
-                (nombre, email, dni, telefono, fecha_nacimiento, direccion, mensaje, fecha_cita, precio, fecha_registro, profesional, status, sede, tipo) 
-                VALUES ( :nombre, :email, :dni, :telefono, :fecha_nacimiento, :direccion, :mensaje, :fecha_cita, :precio, :fecha_registro, :profesional, :status, :sede, :tipo)";
-        
+    public function guardar(array $data): int {
+        $sql = "INSERT INTO cliente 
+                (nombres, apellidos, email, documento, telefono, sexo, fecha_creacion, id_sucursal)
+                VALUES 
+                (:nombres, :apellidos, :email, :documento, :telefono, :sexo, :fecha_creacion, 5)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(":nombre", $data["nombre"]);
-        $stmt->bindParam(":email", $data["email"]);
-        $stmt->bindParam(":dni", $data["dni"]);
-        $stmt->bindParam(":telefono", $data["telefono"]);
-        $stmt->bindParam(":fecha_nacimiento", $data["fecha_nacimiento"]);
-        $stmt->bindParam(":direccion", $data["direccion"]);
-        $stmt->bindParam(":mensaje", $data["mensaje"]);
-        $stmt->bindParam(":fecha_cita", $data["fecha_cita"]);
-        $stmt->bindParam(":precio", $data["precio"]);
-        $stmt->bindParam(":fecha_registro", $data["fecha_registro"]);
-        $stmt->bindParam(":profesional", $data["profesional"]); 
-        $stmt->bindParam(":status", $data["status"]);
-        $stmt->bindParam(":sede", $data["sede"]);
-        $stmt->bindParam(":tipo", $data["tipo"]);
-        //$stmt->debugDumpParams();
-        if (!$stmt->execute()) return false;
+
+        $stmt->bindValue(':nombres',   $data['nombres'] ?? '');
+        $stmt->bindValue(':apellidos', $data['apellidos'] ?? '');
+        $stmt->bindValue(':email',     $data['email'] ?? '');
+        $stmt->bindValue(':documento', $data['documento'] ?? '');
+        $stmt->bindValue(':telefono',  $data['telefono'] ?? '');
+        $stmt->bindValue(':sexo', (int)($data['sexo'] ?? 0), PDO::PARAM_INT);
+        $stmt->bindValue(':fecha_creacion', $this->nowLima);
+
+        $stmt->execute();
         return (int)$this->conn->lastInsertId();
     }
 
