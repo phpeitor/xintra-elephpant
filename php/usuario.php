@@ -23,10 +23,26 @@ class Usuario {
         return $stmt->rowCount() > 0;
     }
 
-    public function actualizar(int $id): bool {
-        $sql = "UPDATE personal SET IDESTADO = :IDESTADO, APELLIDOS = :APELLIDOS, NOMBRES = :NOMBRES, EMAIL = :EMAIL, DOC = :DOC, TLF = :TLF, SEXO = :SEXO WHERE id = :id";
+    public function actualizarPorHash(string $hash, array $data): bool {
+        $sql = "UPDATE personal 
+                SET APELLIDOS = :APELLIDOS,
+                    NOMBRES = :NOMBRES,
+                    EMAIL = :EMAIL,
+                    DOC = :DOC,
+                    TLF = :TLF,
+                    SEXO = :SEXO,
+                    IDESTADO = :IDESTADO
+                WHERE MD5(IDPERSONAL) = :hash";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+
+        $stmt->bindValue(':APELLIDOS', $data['apellidos']);
+        $stmt->bindValue(':NOMBRES', $data['nombres']);
+        $stmt->bindValue(':EMAIL', $data['email']);
+        $stmt->bindValue(':DOC', $data['documento']);
+        $stmt->bindValue(':TLF', $data['telefono']);
+        $stmt->bindValue(':SEXO', (int)$data['sexo'], PDO::PARAM_INT);
+        $stmt->bindValue(':IDESTADO', (int)$data['estado'], PDO::PARAM_INT);
+        $stmt->bindValue(':hash', $hash);
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }
@@ -45,7 +61,6 @@ class Usuario {
         $stmt->bindValue(':telefono',  $data['telefono'] ?? '');
         $stmt->bindValue(':sexo', (int)($data['sexo'] ?? 0), PDO::PARAM_INT);
         $stmt->bindValue(':fecha_registro', $this->nowLima);
-
         $stmt->execute();
         return (int)$this->conn->lastInsertId();
     }
@@ -70,14 +85,14 @@ class Usuario {
                     DOC,
                     EMAIL,
                     TLF,
-                    SEXO
+                    SEXO,
+                    IDESTADO
                 FROM personal
                 WHERE MD5(IDPERSONAL) = :hash
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
         $stmt->execute();
-
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data ?: null;
     }

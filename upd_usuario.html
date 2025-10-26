@@ -551,11 +551,13 @@
             
                <div class="col-span-12">
                   <div class="box">
-                     <div class="box-header">
-                        <h5 class="box-title">Data Validation</h5>
-                     </div>
-                     <div class="box-body">
-                        <form class="ti-custom-validation-user" novalidate>
+                     <form class="ti-custom-validation-user" novalidate>
+                        <div class="box-header">
+                           <h5 class="box-title">Data Validation</h5>
+                           <div id="estadoToggle" class="toggle toggle-sm mb-0"><span></span></div>
+                           <input type="hidden" name="estado" id="estadoInput" value="0">
+                        </div>
+                        <div class="box-body">
                            <div class="grid lg:grid-cols-2 gap-6">
                               <div class="space-y-2">
                                  <label class="ti-form-label">Nombres</label>
@@ -624,7 +626,10 @@
                               </div>
                            </div>
 
-                           <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
+                           <div class="my-5">
+                              <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
+                           </div>
+                           
                         </form>
                      </div>
                   </div>

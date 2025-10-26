@@ -140,9 +140,40 @@
         r.checked = parseInt(r.value) === parseInt(u.SEXO);
       });
 
+      const toggle = document.querySelector('#estadoToggle');
+      const estadoInput = document.querySelector('#estadoInput');
+
+      if (toggle && estadoInput) {
+        if (parseInt(u.IDESTADO) === 1) {
+          toggle.classList.add('on');
+          estadoInput.value = '1';
+        } else {
+          toggle.classList.remove('on');
+          estadoInput.value = '0';
+        }
+      }
+
+      inicializarToggle();
+
     } catch (err) {
       console.error("❌ Error al cargar usuario:", err);
     }
+  }
+
+  function inicializarToggle() {
+    const toggle = document.querySelector("#estadoToggle");
+    const estadoInput = document.querySelector("#estadoInput");
+
+    if (!toggle || !estadoInput) return;
+
+    // Limpia listeners antiguos (evita duplicados si vuelves a cargar)
+    toggle.replaceWith(toggle.cloneNode(true));
+
+    const nuevoToggle = document.querySelector("#estadoToggle");
+    nuevoToggle.addEventListener("click", () => {
+      nuevoToggle.classList.toggle("on");
+      estadoInput.value = nuevoToggle.classList.contains("on") ? "1" : "0";
+    });
   }
 
   document.addEventListener("DOMContentLoaded", () => {
@@ -152,10 +183,7 @@
 
       const params = new URLSearchParams(window.location.search);
       const hash = params.get("hash");
-
-      console.log(params);
-      console.log(hash);
-
+      
       if (hash && form.classList.contains("ti-custom-validation-user")) {
         cargarUsuario(hash);
         const hidden = document.createElement("input");
@@ -187,7 +215,8 @@
           actionUrl = "php/add_cliente.php";
           redirectUrl = "clientes.html";
         } else if (form.classList.contains("ti-custom-validation-user")) {
-          actionUrl = "php/add_usuario.php";
+          const isUpdate = form.dataset.mode === "update";
+          actionUrl = isUpdate ? "php/upd_usuario.php" : "php/add_usuario.php";
           redirectUrl = "usuarios.html";
         }
 
