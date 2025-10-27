@@ -1,0 +1,678 @@
+<html lang="en" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <title>Xintra Elephant</title>
+      <meta name="Description" content="Tailwind Responsive Admin Web Dashboard HTML5 Template">
+      <meta name="Author" content="Spruko Technologies Private Limited">
+      <meta name="keywords" content="tailwind template,tailwind dashboard,tailwind,tailwind admin template,dashboard,tailwind css templates,html dashboard template,tailwind dashboard template,dashboard tailwind,admin,html css templates,html dashboard,html css javascript templates,dashboard tailwind template,tailwind css dashboard">
+      <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+      <script src="./assets/js/main.js"></script> 
+      <link href="./assets/css/styles.css" rel="stylesheet">
+      <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
+      <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
+      <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
+      <link rel="stylesheet" href="./assets/libs/@simonwep/pickr/themes/nano.min.css">
+      <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
+      <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
+      <link rel="stylesheet" href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css">
+      <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
+      <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
+      <meta http-equiv="imagetoolbar" content="no">
+   </head>
+   <body>
+
+      <div id="hs-overlay-switcher" class="hs-overlay hidden ti-offcanvas ti-offcanvas-right" tabindex="-1">
+         <div class="ti-offcanvas-header z-10 relative">
+            <h5 class="ti-offcanvas-title"> Switcher </h5>
+            <button type="button" class="ti-btn flex-shrink-0 p-0 !mb-0  transition-none text-defaulttextcolor dark:text-defaulttextcolor/80 hover:text-gray-700 focus:ring-gray-400 focus:ring-offset-white  dark:hover:text-white/80 dark:focus:ring-white/10 dark:focus:ring-offset-white/10" data-hs-overlay="#hs-overlay-switcher"> <span class="sr-only">Close modal</span> <i class="ri-close-circle-line leading-none text-lg"></i> </button> 
+         </div>
+         <div class="ti-offcanvas-body !p-0 !border-b dark:border-white/10 z-10 relative !h-auto">
+            <div class="flex rtl:space-x-reverse" aria-label="Tabs" role="tablist"> <button type="button" class="hs-tab-active:bg-danger/20 w-full !py-2 !px-4 hs-tab-active:border-b-transparent text-[0.813rem] border-0 hs-tab-active:text-danger dark:hs-tab-active:bg-danger/20 dark:hs-tab-active:border-b-white/10 dark:hs-tab-active:text-danger -mb-px bg-white font-normal text-center  text-defaulttextcolor dark:text-defaulttextcolor/80 rounded-none hover:text-gray-700 dark:bg-bodybg dark:border-white/10  active" id="switcher-item-1" data-hs-tab="#switcher-1" aria-controls="switcher-1" role="tab"> Theme Style </button> <button type="button" class="hs-tab-active:bg-danger/20 w-full !py-2 !px-4 hs-tab-active:border-b-transparent text-[0.813rem] border-0 hs-tab-active:text-danger dark:hs-tab-active:bg-danger/20 dark:hs-tab-active:border-b-white/10 dark:hs-tab-active:text-danger -mb-px  bg-white font-normal text-center  text-defaulttextcolor dark:text-defaulttextcolor/80 rounded-none hover:text-gray-700 dark:bg-bodybg dark:border-white/10  dark:hover:text-gray-300" id="switcher-item-2" data-hs-tab="#switcher-2" aria-controls="switcher-2" role="tab"> Theme Colors </button> </div>
+         </div>
+         <div class="ti-offcanvas-body !p-0 !pb-[20rem]" id="switcher-body">
+            <div id="switcher-1" role="tabpanel" aria-labelledby="switcher-item-1" class="">
+               <div class="">
+                  <p class="switcher-style-head">Theme Color Mode:</p>
+                  <div class="grid grid-cols-3 switcher-style">
+                     <div class="flex items-center"> <input type="radio" name="theme-style" class="ti-form-radio" id="switcher-light-theme" checked=""> <label for="switcher-light-theme" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2 font-normal">Light</label> </div>
+                     <div class="flex items-center"> <input type="radio" name="theme-style" class="ti-form-radio" id="switcher-dark-theme"> <label for="switcher-dark-theme" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2 font-normal">Dark</label> </div>
+                  </div>
+               </div>
+               <div>
+                  <p class="switcher-style-head">Directions:</p>
+                  <div class="grid grid-cols-3  switcher-style">
+                     <div class="flex items-center"> <input type="radio" name="direction" class="ti-form-radio" id="switcher-ltr" checked=""> <label for="switcher-ltr" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">LTR</label> </div>
+                     <div class="flex items-center"> <input type="radio" name="direction" class="ti-form-radio" id="switcher-rtl"> <label for="switcher-rtl" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">RTL</label> </div>
+                  </div>
+               </div>
+               <div>
+                  <p class="switcher-style-head">Navigation Styles:</p>
+                  <div class="grid grid-cols-3  switcher-style">
+                     <div class="flex items-center"> <input type="radio" name="navigation-style" class="ti-form-radio" id="switcher-vertical" checked=""> <label for="switcher-vertical" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Vertical</label> </div>
+                     <div class="flex items-center"> <input type="radio" name="navigation-style" class="ti-form-radio" id="switcher-horizontal"> <label for="switcher-horizontal" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Horizontal</label> </div>
+                  </div>
+               </div>
+               <div>
+                  <p class="switcher-style-head">Navigation Menu Style:</p>
+                  <div class="grid grid-cols-2 gap-2 switcher-style">
+                     <div class="flex"> <input type="radio" name="navigation-data-menu-styles" class="ti-form-radio" id="switcher-menu-click" checked=""> <label for="switcher-menu-click" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Menu Click</label> </div>
+                     <div class="flex"> <input type="radio" name="navigation-data-menu-styles" class="ti-form-radio" id="switcher-menu-hover"> <label for="switcher-menu-hover" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Menu Hover</label> </div>
+                     <div class="flex"> <input type="radio" name="navigation-data-menu-styles" class="ti-form-radio" id="switcher-icon-click"> <label for="switcher-icon-click" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Icon Click</label> </div>
+                     <div class="flex"> <input type="radio" name="navigation-data-menu-styles" class="ti-form-radio" id="switcher-icon-hover"> <label for="switcher-icon-hover" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Icon Hover</label> </div>
+                  </div>
+               </div>
+               <div class=" sidemenu-layout-styles">
+                  <p class="switcher-style-head">Sidemenu Layout Syles:</p>
+                  <div class="grid grid-cols-2 gap-2 switcher-style">
+                     <div class="flex"> <input type="radio" name="sidemenu-layout-styles" class="ti-form-radio" id="switcher-default-menu" checked=""> <label for="switcher-default-menu" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal ">Default Menu</label> </div>
+                     <div class="flex"> <input type="radio" name="sidemenu-layout-styles" class="ti-form-radio" id="switcher-closed-menu"> <label for="switcher-closed-menu" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal "> Closed Menu</label> </div>
+                     <div class="flex"> <input type="radio" name="sidemenu-layout-styles" class="ti-form-radio" id="switcher-icontext-menu"> <label for="switcher-icontext-menu" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal ">Icon Text</label> </div>
+                     <div class="flex"> <input type="radio" name="sidemenu-layout-styles" class="ti-form-radio" id="switcher-icon-overlay"> <label for="switcher-icon-overlay" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal ">Icon Overlay</label> </div>
+                     <div class="flex"> <input type="radio" name="sidemenu-layout-styles" class="ti-form-radio" id="switcher-detached"> <label for="switcher-detached" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal ">Detached</label> </div>
+                     <div class="flex"> <input type="radio" name="sidemenu-layout-styles" class="ti-form-radio" id="switcher-double-menu"> <label for="switcher-double-menu" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Double Menu</label> </div>
+                  </div>
+               </div>
+               <div>
+                  <p class="switcher-style-head">Page Styles:</p>
+                  <div class="grid grid-cols-3  switcher-style">
+                     <div class="flex"> <input type="radio" name="data-page-styles" class="ti-form-radio" id="switcher-regular" checked=""> <label for="switcher-regular" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Regular</label> </div>
+                     <div class="flex"> <input type="radio" name="data-page-styles" class="ti-form-radio" id="switcher-classic"> <label for="switcher-classic" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Classic</label> </div>
+                     <div class="flex"> <input type="radio" name="data-page-styles" class="ti-form-radio" id="switcher-modern"> <label for="switcher-modern" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal"> Modern</label> </div>
+                  </div>
+               </div>
+               <div>
+                  <p class="switcher-style-head">Layout Width Styles:</p>
+                  <div class="grid grid-cols-3 switcher-style">
+                     <div class="flex"> <input type="radio" name="layout-width" class="ti-form-radio" id="switcher-full-width" checked=""> <label for="switcher-full-width" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">FullWidth</label> </div>
+                     <div class="flex"> <input type="radio" name="layout-width" class="ti-form-radio" id="switcher-boxed"> <label for="switcher-boxed" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Boxed</label> </div>
+                  </div>
+               </div>
+               <div>
+                  <p class="switcher-style-head">Menu Positions:</p>
+                  <div class="grid grid-cols-3  switcher-style">
+                     <div class="flex"> <input type="radio" name="data-menu-positions" class="ti-form-radio" id="switcher-menu-fixed" checked=""> <label for="switcher-menu-fixed" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Fixed</label> </div>
+                     <div class="flex"> <input type="radio" name="data-menu-positions" class="ti-form-radio" id="switcher-menu-scroll"> <label for="switcher-menu-scroll" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Scrollable </label> </div>
+                  </div>
+               </div>
+               <div>
+                  <p class="switcher-style-head">Header Positions:</p>
+                  <div class="grid grid-cols-3 switcher-style">
+                     <div class="flex"> <input type="radio" name="data-header-positions" class="ti-form-radio" id="switcher-header-fixed" checked=""> <label for="switcher-header-fixed" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal"> Fixed</label> </div>
+                     <div class="flex"> <input type="radio" name="data-header-positions" class="ti-form-radio" id="switcher-header-scroll"> <label for="switcher-header-scroll" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Scrollable </label> </div>
+                  </div>
+               </div>
+               <div class="">
+                  <p class="switcher-style-head">Loader:</p>
+                  <div class="grid grid-cols-3 switcher-style">
+                     <div class="flex"> <input type="radio" name="page-loader" class="ti-form-radio" id="switcher-loader-enable" checked=""> <label for="switcher-loader-enable" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal"> Enable</label> </div>
+                     <div class="flex"> <input type="radio" name="page-loader" class="ti-form-radio" id="switcher-loader-disable"> <label for="switcher-loader-disable" class="text-[0.813rem] text-defaulttextcolor dark:text-defaulttextcolor/80 ms-2  font-normal">Disable </label> </div>
+                  </div>
+               </div>
+            </div>
+            <div id="switcher-2" class="hidden" role="tabpanel" aria-labelledby="switcher-item-2">
+               <div class="theme-colors">
+                  <p class="switcher-style-head">Menu Colors:</p>
+                  <div class="flex switcher-style space-x-3 rtl:space-x-reverse">
+                     <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select "> <input class="hs-tooltip-toggle ti-form-radio color-input color-white" type="radio" name="menu-colors" id="switcher-menu-light"> <span class="hs-tooltip-content ti-main-tooltip-content !py-1 !px-2 !bg-black text-xs font-medium !text-white shadow-sm dark:!bg-black" role="tooltip" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: fixed; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 5px);"> Light Menu </span> </div>
+                     <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select "> <input class="hs-tooltip-toggle ti-form-radio color-input color-dark" type="radio" name="menu-colors" id="switcher-menu-dark" checked=""> <span class="hs-tooltip-content ti-main-tooltip-content !py-1 !px-2 !bg-black text-xs font-medium !text-white shadow-sm dark:!bg-black" role="tooltip" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: fixed; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 5px);"> Dark Menu </span> </div>
+                     <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select "> <input class="hs-tooltip-toggle ti-form-radio color-input color-primary" type="radio" name="menu-colors" id="switcher-menu-primary"> <span class="hs-tooltip-content ti-main-tooltip-content !py-1 !px-2 !bg-black text-xs font-medium !text-white shadow-sm dark:!bg-black" role="tooltip" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: fixed; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 5px);"> Color Menu </span> </div>
+                     <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select "> <input class="hs-tooltip-toggle ti-form-radio color-input color-gradient" type="radio" name="menu-colors" id="switcher-menu-gradient"> <span class="hs-tooltip-content ti-main-tooltip-content !py-1 !px-2 !bg-black text-xs font-medium !text-white shadow-sm dark:!bg-black" role="tooltip" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: fixed; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 5px);"> Gradient Menu </span> </div>
+                     <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select "> <input class="hs-tooltip-toggle ti-form-radio color-input color-transparent" type="radio" name="menu-colors" id="switcher-menu-transparent"> <span class="hs-tooltip-content ti-main-tooltip-content !py-1 !px-2 !bg-black text-xs !font-medium !text-white shadow-sm dark:!bg-black" role="tooltip" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: fixed; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 5px);"> Transparent Menu </span> </div>
+                  </div>
+                  <div class="px-4 text-textmuted dark:text-textmuted/50 text-[.6875rem]"><b class="me-2 font-normal">Note:</b>If you want to change color Menu dynamically change from below Theme Primary color picker.</div>
+               </div>
+               <div class="theme-colors">
+                  <p class="switcher-style-head">Header Colors:</p>
+                  <div class="flex switcher-style space-x-3 rtl:space-x-reverse">
+                     <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select "> <input class="hs-tooltip-toggle ti-form-radio color-input color-white !border" type="radio" name="header-colors" id="switcher-header-light" checked=""> <span class="hs-tooltip-content ti-main-tooltip-content !py-1 !px-2 !bg-black text-xs font-medium !text-white shadow-sm dark:!bg-black" role="tooltip" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: fixed; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 5px);"> Light Header </span> </div>
+                     <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select "> <input class="hs-tooltip-toggle ti-form-radio color-input color-dark" type="radio" name="header-colors" id="switcher-header-dark"> <span class="hs-tooltip-content ti-main-tooltip-content !py-1 !px-2 !bg-black text-xs font-medium !text-white shadow-sm dark:!bg-black" role="tooltip" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: fixed; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 5px);"> Dark Header </span> </div>
+                     <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select "> <input class="hs-tooltip-toggle ti-form-radio color-input color-primary" type="radio" name="header-colors" id="switcher-header-primary"> <span class="hs-tooltip-content ti-main-tooltip-content !py-1 !px-2 !bg-black text-xs font-medium !text-white shadow-sm dark:!bg-black" role="tooltip" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: fixed; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 5px);"> Color Header </span> </div>
+                     <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select "> <input class="hs-tooltip-toggle ti-form-radio color-input color-gradient" type="radio" name="header-colors" id="switcher-header-gradient"> <span class="hs-tooltip-content ti-main-tooltip-content !py-1 !px-2 !bg-black text-xs font-medium !text-white shadow-sm dark:!bg-black" role="tooltip" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: fixed; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 5px);"> Gradient Header </span> </div>
+                     <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select "> <input class="hs-tooltip-toggle ti-form-radio color-input color-transparent" type="radio" name="header-colors" id="switcher-header-transparent"> <span class="hs-tooltip-content ti-main-tooltip-content !py-1 !px-2 !bg-black text-xs font-medium !text-white shadow-sm dark:!bg-black" role="tooltip" data-popper-reference-hidden="" data-popper-escaped="" data-popper-placement="bottom" style="position: fixed; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 5px);"> Transparent Header </span> </div>
+                  </div>
+                  <div class="px-4 text-textmuted dark:text-textmuted/50 text-[.6875rem]"><b class="me-2 !font-normal">Note:</b>If you want to change color Header dynamically change from below Theme Primary color picker.</div>
+               </div>
+               <div class="theme-colors">
+                  <p class="switcher-style-head">Theme Primary:</p>
+                  <div class="flex switcher-style space-x-3 rtl:space-x-reverse">
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio color-input color-primary-1" type="radio" name="theme-primary" id="switcher-primary"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio color-input color-primary-2" type="radio" name="theme-primary" id="switcher-primary1"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio color-input color-primary-3" type="radio" name="theme-primary" id="switcher-primary2"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio color-input color-primary-4" type="radio" name="theme-primary" id="switcher-primary3"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio color-input color-primary-5" type="radio" name="theme-primary" id="switcher-primary4"> </div>
+                     <div class="ti-form-radio switch-select ps-0 mt-1 color-primary-light">
+                        <div class="theme-container-primary"><button class="">nano</button></div>
+                        <div class="pickr-container-primary">
+                           <div class="pickr">
+                              <button type="button" class="pcr-button" role="button" aria-label="toggle color picker dialog" style="--pcr-color: rgba(92, 103, 247, 1);"></button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="theme-colors">
+                  <p class="switcher-style-head">Theme Background:</p>
+                  <div class="flex switcher-style space-x-3 rtl:space-x-reverse">
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio color-input color-bg-1" type="radio" name="theme-background" id="switcher-background"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio color-input color-bg-2" type="radio" name="theme-background" id="switcher-background1"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio color-input color-bg-3" type="radio" name="theme-background" id="switcher-background2"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio color-input color-bg-4" type="radio" name="theme-background" id="switcher-background3"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio color-input color-bg-5" type="radio" name="theme-background" id="switcher-background4"> </div>
+                     <div class="ti-form-radio switch-select ps-0 mt-1 color-bg-transparent">
+                        <div class="theme-container-background hidden"><button>nano</button></div>
+                        <div class="pickr-container-background">
+                           <div class="pickr">
+                              <button type="button" class="pcr-button" role="button" aria-label="toggle color picker dialog" style="--pcr-color: rgba(92, 103, 247, 1);"></button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               <div class="menu-image theme-colors">
+                  <p class="switcher-style-head">Menu With Background Image:</p>
+                  <div class="flex switcher-style space-x-3 rtl:space-x-reverse flex-wrap gap-3">
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio bgimage-input bg-img1" type="radio" name="theme-images" id="switcher-bg-img"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio bgimage-input bg-img2" type="radio" name="theme-images" id="switcher-bg-img1"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio bgimage-input bg-img3" type="radio" name="theme-images" id="switcher-bg-img2"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio bgimage-input bg-img4" type="radio" name="theme-images" id="switcher-bg-img3"> </div>
+                     <div class="ti-form-radio switch-select"> <input class="ti-form-radio bgimage-input bg-img5" type="radio" name="theme-images" id="switcher-bg-img4"> </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="ti-offcanvas-footer sm:flex justify-between"> <a href="https://1.envato.market/9LxNGy" target="_blank" class="ti-btn ti-btn-primary m-1">Buy Now</a> <a href="https://1.envato.market/MGEaN" target="_blank" class="ti-btn ti-btn-secondary m-1">Our Portfolio</a> <a href="javascript:void(0);" id="reset-all" class="ti-btn ti-btn-danger m-1">Reset</a> </div>
+      </div>
+      <!-- ========== END Switcher  ========== --> <!-- Loader --> 
+      <div id="loader" class="loader-disable"> <img src="./assets/images/media/loader.svg" alt=""> </div>
+      <!-- Loader --> 
+      <div class="page">
+         <!-- app-header --> 
+         <header class="app-header sticky sticky-pin" id="header">
+            <!-- Start::main-header-container --> 
+            <div class="main-header-container container-fluid">
+               <!-- Start::header-content-left --> 
+               <div class="header-content-left">
+                  <!-- Start::header-element --> 
+                  <div class="header-element">
+                     <div class="horizontal-logo"> <a href="index.html" class="header-logo"> <img src="./assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo"> <img src="./assets/images/brand-logos/toggle-dark.png" alt="logo" class="toggle-dark"> <img src="./assets/images/brand-logos/desktop-dark.png" alt="logo" class="desktop-dark"> <img src="./assets/images/brand-logos/toggle-logo.png" alt="logo" class="toggle-logo"> <img src="./assets/images/brand-logos/toggle-white.png" alt="logo" class="toggle-white"> <img src="./assets/images/brand-logos/desktop-white.png" alt="logo" class="desktop-white"> </a> </div>
+                  </div>
+                  <!-- End::header-element --> <!-- Start::header-element --> 
+                  <div class="header-element mx-lg-0"> <a aria-label="Hide Sidebar" class="sidemenu-toggle header-link animated-arrow hor-toggle horizontal-navtoggle" data-bs-toggle="sidebar" href="javascript:void(0);"><span></span></a> </div>
+                  <!-- End::header-element --> <!-- Start::header-element --> 
+                  <div class="header-element header-search md:!block !hidden my-auto auto-complete-search">
+                     <!-- Start::header-link --> 
+                     <div class="autoComplete_wrapper" role="combobox" aria-owns="autoComplete_list_1" aria-haspopup="true" aria-expanded="false">
+                        <input type="text" class="header-search-bar form-control" id="header-search" placeholder="Search anything here ..." autocomplete="off" autocapitalize="off" aria-controls="autoComplete_list_1" aria-autocomplete="both">
+                        <ul id="autoComplete_list_1" role="listbox" hidden=""></ul>
+                     </div>
+                     <a aria-label="anchor" href="javascript:void(0);" class="header-search-icon border-0"> <i class="ri-search-line"></i> </a> <!-- End::header-link --> 
+                  </div>
+                  <!-- End::header-element --> 
+               </div>
+               <!-- End::header-content-left --> <!-- Start::header-content-right --> 
+               <ul class="header-content-right">
+                  <!-- Start::header-element --> 
+                  <li class="header-element md:!hidden block">
+                     <a aria-label="anchor" href="javascript:void(0);" class="header-link" data-bs-toggle="modal" data-hs-overlay="#header-responsive-search">
+                        <!-- Start::header-link-icon --> <i class="bi bi-search header-link-icon"></i> <!-- End::header-link-icon --> 
+                     </a>
+                  </li>
+                  
+                  <!-- End::header-element --> <!-- Start::header-element --> <!-- light and dark theme --> 
+                  <li class="header-element header-theme-mode hidden !items-center sm:block md:!px-[0.5rem] px-2">
+                     <a aria-label="anchor" class="hs-dark-mode-active:hidden flex hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium transition-all text-xs dark:bg-bgdark dark:hover:bg-black/20 text-textmuted dark:text-textmuted/50 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10" href="javascript:void(0);" data-hs-theme-click-value="dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"></path>
+                        </svg>
+                     </a>
+                     <a aria-label="anchor" class="hs-dark-mode-active:flex hidden hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium text-defaulttextcolor  transition-all text-xs dark:bg-bodybg dark:bg-bgdark dark:hover:bg-black/20  dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10" href="javascript:void(0);" data-hs-theme-click-value="light">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"></path>
+                        </svg>
+                     </a>
+                  </li>
+                  
+                  <li class="header-element cart-dropdown hs-dropdown ti-dropdown [--auto-close:inside]">
+                     <!--<a aria-label="anchor" href="javascript:void(0);" class="header-link hs-dropdown-toggle ti-dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"></path>
+                        </svg>
+                        <span class="badge bg-secondary rounded-full header-icon-badge text-white" id="cart-icon-badge">5</span> 
+                     </a>-->
+                     <div class="main-header-dropdown hs-dropdown-menu ti-dropdown-menu hidden" data-popper-placement="none" role="menu">
+                        <div class="p-4">
+                           <div class="flex items-center justify-between">
+                              <p class="mb-0 text-[15px] font-medium">Cart Items<span class="badge bg-primarytint2color text-white ms-1 !py-[0.15rem] rounded-full" id="cart-data">5</span></p>
+                              <div class="flex items-center gap-2">
+                                 <span class="text-xs font-medium text-textmuted dark:text-textmuted/50">Sub Total : </span> 
+                                 <h6 class="mb-0"> $740</h6>
+                              </div>
+                           </div>
+                        </div>
+                        <hr class="dropdown-divider">
+                        <ul class="list-none mb-0" id="header-cart-items-scroll" data-simplebar="init">
+                           <div class="simplebar-wrapper" style="margin: 0px;">
+                              <div class="simplebar-height-auto-observer-wrapper">
+                                 <div class="simplebar-height-auto-observer"></div>
+                              </div>
+                              <div class="simplebar-mask">
+                                 <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;">
+                                       <div class="simplebar-content" style="padding: 0px;">
+                                          <li class="ti-dropdown-item block">
+                                             <div class="flex items-center cart-dropdown-item gap-4">
+                                                <div class="leading-none"> <span class="avatar avatar-xl bg-primary/10"> <img src="./assets/images/ecommerce/png/30.png" alt="Wireless Headphones"> </span> </div>
+                                                <div class="flex-auto">
+                                                   <div class="flex items-center justify-between mb-0">
+                                                      <div class="mb-0 text-[14px] font-medium">
+                                                         <a href="cart.html">Wireless Headphones</a> 
+                                                         <div class="truncate">
+                                                            <p class="mb-0 header-cart-text truncate text-[11px] text-textmuted dark:text-textmuted/50"> Wireless freedom with crystal-clear sound and comfortable </p>
+                                                            <h6 class="font-medium mb-0 mt-1"><span class="text-success font-normal me-1 text-[11px] inline-block">(Qty : 1)</span>$78</h6>
+                                                         </div>
+                                                      </div>
+                                                      <div class="text-end">
+                                                         <a href="javascript:void(0);" class="header-cart-remove dropdown-item-close" aria-label="anchor"><i class="ri-close-line"></i></a> 
+                                                         <h6 class="font-medium mb-0 mt-3"><span class="text-info op-4 font-normal me-1 text-[11px] inline-block">Total :</span>$75</h6>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </div>
+                                          </li>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="simplebar-placeholder" style="width: 0px; height: 0px;"></div>
+                           </div>
+                           <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                              <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+                           </div>
+                           <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
+                              <div class="simplebar-scrollbar" style="height: 0px; display: none;"></div>
+                           </div>
+                        </ul>
+                        <div class="p-4 empty-header-item border-t grid items-center"> <a href="checkout.html" class="ti-btn ti-btn-primary btn-wave text-center waves-effect waves-light">Proceed to checkout</a> </div>
+                        <div class="p-[3rem] empty-item hidden">
+                           <div class="text-center">
+                              <span class="avatar avatar-xl avatar-rounded bg-primary/10 !text-primary"> <i class="ri-shopping-cart-2-line fs-2"></i> </span> 
+                              <h6 class="font-medium mb-1 mt-3">Your Cart is Empty</h6>
+                              <span class="mb-3 font-normal text-[13px] block">Add some items to make me happy :)</span> <a href="products.html" class="ti-btn bg-primarytint1color text-white btn-wave ti-btn-sm m-1 waves-effect waves-light" data-abc="true">continue shopping <i class="bi bi-arrow-right ms-1"></i></a> 
+                           </div>
+                        </div>
+                     </div>
+                  </li>
+
+                  <li class="header-element notifications-dropdown !hidden xl:!block hs-dropdown ti-dropdown [--auto-close:inside]">
+                     <!-- Start::header-link|dropdown-toggle --> 
+                     <a aria-label="anchor" href="javascript:void(0);" class="header-link hs-dropdown-toggle ti-dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" id="messageDropdown" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5"></path>
+                        </svg>
+                        <span class="header-icon-pulse bg-primarytint2color rounded pulse pulse-secondary"></span> 
+                     </a>
+                     <!-- End::header-link|dropdown-toggle --> <!-- Start::main-header-dropdown --> 
+                     <div class="main-header-dropdown hs-dropdown-menu ti-dropdown-menu hidden" data-popper-placement="none" role="menu">
+                        <div class="p-4">
+                           <div class="flex items-center justify-between">
+                              <p class="mb-0 text-[15px] font-medium">Notifications</p>
+                              <span class="badge bg-secondary text-white rounded-sm" id="notifiation-data">2 Unread</span> 
+                           </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <ul class="list-none mb-0" id="header-notification-scroll" data-simplebar="init">
+                           <div class="simplebar-wrapper" style="margin: 0px;">
+                              <div class="simplebar-height-auto-observer-wrapper">
+                                 <div class="simplebar-height-auto-observer"></div>
+                              </div>
+                              <div class="simplebar-mask">
+                                 <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;">
+                                       <div class="simplebar-content" style="padding: 0px;">
+                                          <li class="ti-dropdown-item block">
+                                             <div class="flex items-center">
+                                                <div class="pe-2 leading-none"> <span class="avatar avatar-md bg-success avatar-rounded"> <img src="./assets/images/faces/11.jpg" alt="user1"> </span> </div>
+                                                <div class="grow flex items-center justify-between">
+                                                   <div>
+                                                      <p class="mb-0 font-medium"><a href="chat.html">Follow Request</a></p>
+                                                      <div class="text-textmuted dark:text-textmuted/50 font-normal text-xs header-notification-text truncate"> <span class="text-info">Kelin Brown</span> has sent you the request.</div>
+                                                      <div class="font-normal text-[10px] text-textmuted dark:text-textmuted/50 op-8"> 1 Day ago</div>
+                                                   </div>
+                                                   <div> <a aria-label="anchor" href="javascript:void(0);" class="min-w-fit-content dropdown-item-close1"> <i class="ri-close-line"></i> </a> </div>
+                                                </div>
+                                             </div>
+                                          </li>
+                                          <li class="ti-dropdown-item block">
+                                             <div class="flex items-center">
+                                                <div class="pe-2 leading-none"> <span class="avatar avatar-md bg-primarytint2color avatar-rounded"> <i class="ri-gift-line leading-none text-[1rem]"></i> </span> </div>
+                                                <div class="grow flex items-center justify-between">
+                                                   <div>
+                                                      <p class="mb-0 font-medium"><a href="chat.html">Exclusive Offers</a></p>
+                                                      <div class="text-textmuted dark:text-textmuted/50 font-normal text-xs header-notification-text truncate"> Enjoy<span class="text-success">20% off</span> on your next purchase!</div>
+                                                      <div class="font-normal text-[10px] text-textmuted dark:text-textmuted/50 op-8"> 5 hours ago</div>
+                                                   </div>
+                                                   <div> <a aria-label="anchor" href="javascript:void(0);" class="min-w-fit-content dropdown-item-close1"> <i class="ri-close-line"></i> </a> </div>
+                                                </div>
+                                             </div>
+                                          </li>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="simplebar-placeholder" style="width: 0px; height: 0px;"></div>
+                           </div>
+                           <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                              <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+                           </div>
+                           <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
+                              <div class="simplebar-scrollbar" style="height: 0px; display: none;"></div>
+                           </div>
+                        </ul>
+                        <div class="p-4 empty-header-item1 border-t">
+                           <div class="grid"> <a href="javascript:void(0);" class="ti-btn ti-btn-primary btn-wave waves-effect waves-light">View All</a> </div>
+                        </div>
+                        <div class="p-[3rem] empty-item1 hidden">
+                           <div class="text-center">
+                              <span class="avatar avatar-xl avatar-rounded bg-secondary/10 !text-secondary"> <i class="ri-notification-off-line fs-2"></i> </span> 
+                              <h6 class="font-medium mt-3">No New Notifications</h6>
+                           </div>
+                        </div>
+                     </div>
+                     <!-- End::main-header-dropdown --> 
+                  </li>
+                  <!-- End::header-element --> <!-- Start::header-element --> 
+                  <li class="header-element header-fullscreen">
+                     <!-- Start::header-link --> 
+                     <a onclick="openFullscreen();" href="javascript:void(0);" class="header-link" aria-label="anchor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 full-screen-open header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"></path>
+                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 full-screen-close header-link-icon hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9 3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5 5.25 5.25"></path>
+                        </svg>
+                     </a>
+                     <!-- End::header-link --> 
+                  </li>
+                  <!-- End::header-element --> <!-- Start::header-element --> 
+                  <li class="header-element ti-dropdown hs-dropdown">
+                     <!-- Start::header-link|dropdown-toggle --> 
+                     <a aria-label="anchor" href="javascript:void(0);" class="header-link hs-dropdown-toggle ti-dropdown-toggle" id="mainHeaderProfile" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                        <div class="flex items-center">
+                           <div> <img src="./assets/images/faces/15.jpg" alt="img" class="avatar avatar-sm mb-0"> </div>
+                        </div>
+                     </a>
+                     <!-- End::header-link|dropdown-toggle --> 
+                     <ul class="main-header-dropdown hs-dropdown-menu ti-dropdown-menu pt-0 overflow-hidden header-profile-dropdown hidden" aria-labelledby="mainHeaderProfile" role="menu">
+                        <li>
+                           <div class="ti-dropdown-item text-center border-b border-defaultborder dark:border-defaultborder/10 block"> <span> Mr.Henry </span> <span class="block text-xs text-textmuted dark:text-textmuted/50">UI/UX Designer</span> </div>
+                        </li>
+                        <li><a class="ti-dropdown-item flex items-center" href="profile.html"><i class="fe fe-user p-1 rounded-full bg-primary/10 text-primary me-2 text-[1rem]"></i>Profile</a> </li>
+                        <li class="border-t border-defaultborder dark:border-defaultborder/10 bg-light"><a class="ti-dropdown-item flex items-center" href="chat.html"><i class="fe fe-help-circle p-1 rounded-full bg-primary/10 text-primary set me-2 text-[1rem]"></i>Help</a> </li>
+                        <li><a class="ti-dropdown-item flex items-center" href="sign-in-cover.html"><i class="fe fe-lock p-1 rounded-full bg-primary/10 text-primary ut me-2 text-[1rem]"></i>Log Out</a></li>
+                     </ul>
+                  </li>
+                  <!-- End::header-element --> <!-- Start::header-element --> 
+                  <li class="header-element">
+                     <!-- Start::header-link|switcher-icon --> 
+                     <a href="javascript:void(0);" class="header-link switcher-icon" data-hs-overlay="#hs-overlay-switcher" aria-label="anchor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"></path>
+                           <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
+                        </svg>
+                     </a>
+                     <!-- End::header-link|switcher-icon --> 
+                  </li>
+                  <!-- End::header-element --> 
+               </ul>
+               <!-- End::header-content-right --> 
+            </div>
+            <!-- End::main-header-container --> 
+         </header>
+         <!-- /app-header --> <!-- Start::app-sidebar --> 
+         <aside class="app-sidebar sticky-pin" id="sidebar">
+            <!-- Start::main-sidebar-header --> 
+            <div class="main-sidebar-header"> <a href="index.html" class="header-logo"> <img src="./assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo"> <img src="./assets/images/brand-logos/toggle-dark.png" alt="logo" class="toggle-dark"> <img src="./assets/images/brand-logos/desktop-dark.png" alt="logo" class="desktop-dark"> <img src="./assets/images/brand-logos/toggle-logo.png" alt="logo" class="toggle-logo"> <img src="./assets/images/brand-logos/toggle-white.png" alt="logo" class="toggle-white"> <img src="./assets/images/brand-logos/desktop-white.png" alt="logo" class="desktop-white"> </a> </div>
+            <!-- End::main-sidebar-header --> <!-- Start::main-sidebar --> 
+            <div class="main-sidebar" id="sidebar-scroll" data-simplebar="init">
+               <div class="simplebar-wrapper" style="margin: -8px 0px -80px;">
+                  <div class="simplebar-height-auto-observer-wrapper">
+                     <div class="simplebar-height-auto-observer"></div>
+                  </div>
+                  <div class="simplebar-mask">
+                     <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                        <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+                           <div class="simplebar-content" style="padding: 8px 0px 80px;">
+                              <!-- Start::nav --> 
+                              <nav aria-label="nav2" class="main-menu-container nav nav-pills flex-col sub-open open active">
+                                 <div class="slide-left active hidden" id="slide-left">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+                                       <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path>
+                                    </svg>
+                                 </div>
+                                 <ul class="main-menu" style="display: block; margin-left: 0px; margin-right: 0px;">
+                                    <li class="slide">
+                                       <a href="index.html" class="side-menu__item">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z"></path>
+                                          </svg>
+                                          <span class="side-menu__label">Inicio</span> 
+                                       </a>
+                                    </li>
+
+                                    <li class="slide__category"><span class="category-name">Personal &amp; Clientes</span></li>
+                                    <li class="slide has-sub">
+                                       <a href="javascript:void(0);" class="side-menu__item">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
+                                          </svg>
+                                          <span class="side-menu__label">Personal</span> <i class="ri-arrow-down-s-line side-menu__angle"></i> 
+                                       </a>
+                                       <ul class="slide-menu child1" data-popper-placement="top" data-popper-reference-hidden="" data-popper-escaped="" style="position: relative; left: 0px; top: 0px; margin: 0px; transform: translate(120px, 3222px);">
+                                          <li class="slide"> <a href="usuarios.html" class="side-menu__item">Usuarios</a> </li>
+                                          <li class="slide"> <a href="horarios.html" class="side-menu__item">Horarios</a> </li>
+                                       </ul>
+                                    </li>
+
+                                    <li class="slide">
+                                       <a href="clientes.html" class="side-menu__item">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h.5" /><path d="M18 22l3.35 -3.284a2.143 2.143 0 0 0 .005 -3.071a2.242 2.242 0 0 0 -3.129 -.006l-.224 .22l-.223 -.22a2.242 2.242 0 0 0 -3.128 -.006a2.143 2.143 0 0 0 -.006 3.071l3.355 3.296z" />
+                                          </svg>
+                                          <span class="side-menu__label">Clientes</span> 
+                                       </a>
+                                    </li>
+
+                                    <li class="slide__category"><span class="category-name">Categoria &amp; Items</span></li>
+                                    <li class="slide">
+                                       <a href="categoria.html" class="side-menu__item">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H6.911a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661Z"></path> </svg>
+                                          <span class="side-menu__label">Categoria</span> 
+                                       </a>
+                                    </li>
+
+                                    <li class="slide">
+                                       <a href="items.html" class="side-menu__item">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"></path> </svg>
+                                          <span class="side-menu__label">Items</span> 
+                                       </a>
+                                    </li>
+
+                                    <li class="slide__category"><span class="category-name">Ingresos &amp; Egresos</span></li>
+                                    <li class="slide has-sub">
+                                       <a href="javascript:void(0);" class="side-menu__item">
+                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 7v10" />
+                                          </svg>
+                                          <span class="side-menu__label">Ingresos</span> <i class="ri-arrow-down-s-line side-menu__angle"></i> 
+                                       </a>
+                                       <ul class="slide-menu child1" data-popper-placement="top" data-popper-reference-hidden="" data-popper-escaped="" style="position: relative; left: 0px; top: 0px; margin: 0px; transform: translate(120px, 3222px);">
+                                          <li class="slide"> <a href="ventas.html" class="side-menu__item">Ventas</a> </li>
+                                          <li class="slide"> <a href="reporte.html" class="side-menu__item">Reporte</a> </li>
+                                       </ul>
+                                    </li>
+                                 </ul>
+                                 <div class="slide-right hidden" id="slide-right">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+                                       <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+                                    </svg>
+                                 </div>
+                              </nav>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="simplebar-placeholder" style="width: auto; height: 1210px;"></div>
+               </div>
+               <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                  <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+               </div>
+               <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+                  <div class="simplebar-scrollbar" style="height: 42px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+               </div>
+            </div>
+         </aside>
+         <!-- START MAINCONTENT --> 
+         <div class="main-content app-content">
+            <div class="container-fluid">
+               <div class="flex items-center justify-between page-header-breadcrumb flex-wrap gap-2">
+                  <div>
+                     <nav aria-label="nav">
+                        <ol class="breadcrumb mb-1">
+                           <li class="breadcrumb-item"><a href="javascript:void(0);">Items</a></li>
+                           <li class="breadcrumb-item active" aria-current="page">Data Items</li>
+                        </ol>
+                     </nav>
+                     <h1 class="page-title font-medium text-lg mb-0">Data Items</h1>
+                  </div>
+                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> 
+                     <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"
+                                                         onclick="window.location.href='add_usuario.html'"> <i class="ri-share-forward-line me-1"></i> Registrar </button> 
+                  </div>
+               </div>
+            
+               <div class="grid grid-cols-12 gap-6">
+                  <div class="col-span-12">
+                     <div class="box">
+                        <div class="box-header">
+                           <h5 class="box-title">Download DataTable</h5>
+                        </div>
+                        <div class="box-body space-y-3">
+                           <div class="download-data"> <button type="button" class="ti-btn ti-btn-primary" id="download-csv">Download CSV</button></div>
+                           <div class="overflow-hidden table-bordered">
+                              <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
+                                 
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <!-- END MAINCONTENT --> 
+         <footer class="mt-auto py-4 bg-white dark:bg-bodybg text-center border-t border-defaultborder dark:border-defaultborder/10">
+            <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2025</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.spruko.com/" target="_blank"> <span class="font-medium text-primary">Spruko</span> </a> All rights reserved </span> </div>
+         </footer>
+         <div class="hs-overlay ti-modal hidden" id="header-responsive-search" tabindex="-1" aria-labelledby="header-responsive-search">
+            <div class="ti-modal-box">
+               <div class="ti-modal-dialog">
+                  <div class="ti-modal-content">
+                     <div class="ti-modal-body">
+                        <div class="input-group"> <input type="text" class="form-control border-end-0 !border-s" placeholder="Search Anything ..." aria-label="Search Anything ..." aria-describedby="button-addon2"> <button aria-label="button" class="ti-btn ti-btn-primary !m-0" type="button" id="button-addon2"><i class="bi bi-search"></i></button> </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Scroll To Top --> 
+      <div class="scrollToTop" style="display: flex;"> <span class="arrow"><i class="ti ti-arrow-narrow-up text-xl"></i></span> </div>
+      <div id="responsive-overlay"></div>
+      <script src="./assets/js/switch.js"></script>
+      <script src="./assets/libs/@popperjs/core/umd/popper.min.js"></script>
+      <script src="./assets/libs/preline/preline.js"></script>
+      <script src="./assets/js/defaultmenu.min.js"> </script>
+      <script src="./assets/libs/node-waves/waves.min.js"></script>
+      <script src="./assets/js/sticky.js"></script>
+      <script src="./assets/libs/simplebar/simplebar.min.js"></script>
+      <script src="./assets/js/simplebar.js"></script>
+      <script src="./assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
+      <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
+      <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
+      <script src="./assets/js/custom-switcher.min.js"></script>
+      <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
+      <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+      <script src="./assets/libs/xlsx/xlsx.full.min.js"></script>
+      <script src="./assets/libs/jspdf/jspdf.umd.min.js"></script>
+      <script src="./assets/libs/jspdf-autotable/jspdf.plugin.autotable.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+      <script src="./assets/js/datatables_item.js"></script>
+      <script src="./assets/js/custom.js"></script>
+      <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
+         <div class="pcr-selection">
+            <div class="pcr-color-preview">
+               <button type="button" class="pcr-last-color" aria-label="use previous color" style="--pcr-color: rgba(92, 103, 247, 1);"></button>
+               <div class="pcr-current-color" style="--pcr-color: rgba(92, 103, 247, 1);"></div>
+            </div>
+            <div class="pcr-color-palette">
+               <div class="pcr-picker" style="left: calc(62.753% - 9px); top: calc(3.13725% - 9px); background: rgb(92, 103, 247);"></div>
+               <div class="pcr-palette" tabindex="0" aria-label="color selection area" role="listbox" style="background: linear-gradient(to top, rgb(0, 0, 0), transparent), linear-gradient(to left, rgb(0, 18, 255), rgb(255, 255, 255));"></div>
+            </div>
+            <div class="pcr-color-chooser">
+               <div class="pcr-picker" style="left: calc(65.4839% - 9px); background-color: rgb(0, 18, 255);"></div>
+               <div class="pcr-hue pcr-slider" tabindex="0" aria-label="hue selection slider" role="slider"></div>
+            </div>
+            <div class="pcr-color-opacity" style="display:none" hidden="">
+               <div class="pcr-picker"></div>
+               <div class="pcr-opacity pcr-slider" tabindex="0" aria-label="selection slider" role="slider"></div>
+            </div>
+         </div>
+         <div class="pcr-swatches "></div>
+         <div class="pcr-interaction">
+            <input class="pcr-result" type="text" spellcheck="false" aria-label="color input field">
+            <input class="pcr-type" data-type="HEXA" value="HEXA" type="button" style="display:none" hidden="">
+            <input class="pcr-type active" data-type="RGBA" value="RGBA" type="button">
+            <input class="pcr-type" data-type="HSLA" value="HSLA" type="button" style="display:none" hidden="">
+            <input class="pcr-type" data-type="HSVA" value="HSVA" type="button" style="display:none" hidden="">
+            <input class="pcr-type" data-type="CMYK" value="CMYK" type="button" style="display:none" hidden="">
+            <input class="pcr-save" value="Save" type="button" style="display:none" hidden="" aria-label="save and close">
+            <input class="pcr-cancel" value="Cancel" type="button" style="display:none" hidden="" aria-label="cancel and close">
+            <input class="pcr-clear" value="Clear" type="button" style="display:none" hidden="" aria-label="clear and close">
+         </div>
+      </div>
+      <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
+         <div class="pcr-selection">
+            <div class="pcr-color-preview">
+               <button type="button" class="pcr-last-color" aria-label="use previous color" style="--pcr-color: rgba(92, 103, 247, 1);"></button>
+               <div class="pcr-current-color" style="--pcr-color: rgba(92, 103, 247, 1);"></div>
+            </div>
+            <div class="pcr-color-palette">
+               <div class="pcr-picker" style="left: calc(62.753% - 9px); top: calc(3.13725% - 9px); background: rgb(92, 103, 247);"></div>
+               <div class="pcr-palette" tabindex="0" aria-label="color selection area" role="listbox" style="background: linear-gradient(to top, rgb(0, 0, 0), transparent), linear-gradient(to left, rgb(0, 18, 255), rgb(255, 255, 255));"></div>
+            </div>
+            <div class="pcr-color-chooser">
+               <div class="pcr-picker" style="left: calc(65.4839% - 9px); background-color: rgb(0, 18, 255);"></div>
+               <div class="pcr-hue pcr-slider" tabindex="0" aria-label="hue selection slider" role="slider"></div>
+            </div>
+            <div class="pcr-color-opacity" style="display:none" hidden="">
+               <div class="pcr-picker"></div>
+               <div class="pcr-opacity pcr-slider" tabindex="0" aria-label="selection slider" role="slider"></div>
+            </div>
+         </div>
+         <div class="pcr-swatches "></div>
+         <div class="pcr-interaction">
+            <input class="pcr-result" type="text" spellcheck="false" aria-label="color input field">
+            <input class="pcr-type" data-type="HEXA" value="HEXA" type="button" style="display:none" hidden="">
+            <input class="pcr-type active" data-type="RGBA" value="RGBA" type="button">
+            <input class="pcr-type" data-type="HSLA" value="HSLA" type="button" style="display:none" hidden="">
+            <input class="pcr-type" data-type="HSVA" value="HSVA" type="button" style="display:none" hidden="">
+            <input class="pcr-type" data-type="CMYK" value="CMYK" type="button" style="display:none" hidden="">
+            <input class="pcr-save" value="Save" type="button" style="display:none" hidden="" aria-label="save and close">
+            <input class="pcr-cancel" value="Cancel" type="button" style="display:none" hidden="" aria-label="cancel and close">
+            <input class="pcr-clear" value="Clear" type="button" style="display:none" hidden="" aria-label="clear and close">
+         </div>
+      </div>
+   </body>
+</html>
