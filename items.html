@@ -559,10 +559,22 @@
                            <h5 class="box-title">Download DataTable</h5>
                         </div>
                         <div class="box-body space-y-3">
-                           <div class="download-data"> <button type="button" class="ti-btn ti-btn-primary" id="download-csv">Download CSV</button></div>
+                           <div class="sm:grid grid-cols-12 gap-6 space-y-2 sm:space-y-0"> 
+                               <div class="col-span-12 lg:!col-span-2 sm:col-span-3">
+                                 <select id="filtroTipo" class="form-select">
+                                    <option value="">Seleccione Grupo</option>
+                                    <option value="PRODUCTO">Productos</option>
+                                    <option value="SERVICIO">Servicios</option>
+                                 </select>
+                               </div>
+                              
+                              <div class="col-span-12 lg:!col-span-2 sm:col-span-3">
+                                 <button type="button" class="ti-btn ti-btn-primary" id="download-csv">Download CSV</button>
+                              </div>
+                           </div>
+                           
                            <div class="overflow-hidden table-bordered">
                               <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
-                                 
                               </div>
                            </div>
                         </div>

@@ -65,23 +65,34 @@ class Item {
         return (int)$this->conn->lastInsertId();
     }
 
-    public function table_item(): array{
-         $sql = "select t.id_product,(ifnull(stock1,0)-ifnull(stock2,0)) as stock_final ,c.tpo, b.*,
+    public function table_item(string $tpo = ''): array {
+         $sql = "select t.id_product,
+                    GREATEST(IFNULL(stock1, 0) - IFNULL(stock2, 0), 0) AS stock_final,
+                    c.tpo, b.*,
                     c.nombre as nom_categoria,
                     b.precio
                     from 
                     product_service b 
                     left join categoria c on b.categoria=c.id
                     left join (
-                                SELECT a.id_product,sum(stock) as stock1,b.stock2 as stock2 FROM stock_black a 
+                                SELECT a.id_product,sum(stock) as stock1,b.stock2 as stock2 
+                                FROM stock_black a 
                                 left join (SELECT id_product as id_product2,sum(stock) as stock2 
-                                FROM stock_black where tipo='S' group by id_product) 
-                                b on a.id_product=b.id_product2 where  tipo='E' 
+                                            FROM stock_black where tipo='S' 
+                                            group by id_product) 
+                                b on a.id_product=b.id_product2 where tipo='E' 
                                 group by id_product) t on t.id_product=b.id 
-                    where b.id_sucursal=5
-                    order by b.id desc
-                ";
+                    where b.id_sucursal=5";
+
+        if ($tpo !== '') {
+            $sql .= " AND c.tpo = :tpo";
+        }
+        $sql .= " ORDER BY b.id DESC";
+
         $stmt = $this->conn->prepare($sql);
+        if ($tpo !== '') {
+            $stmt->bindValue(':tpo', $tpo, PDO::PARAM_STR);
+        }
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
