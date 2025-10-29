@@ -117,5 +117,18 @@ class Item {
         return $data ?: null;
     }
 
+    public function obtenerCategoria(string $grupo): ?array {
+        $sql = "SELECT 
+                    *
+                FROM product_service
+                WHERE MD5(tpo) = :grupo
+                LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':grupo', $grupo);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
 }
 ?>
