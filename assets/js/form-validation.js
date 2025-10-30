@@ -33,7 +33,6 @@
       errorEl.textContent = message || "";
       errorEl.classList.toggle("hidden", !message);
     }
-    // Para usar también el Constraint Validation API si prefieres reportValidity():
     el.setCustomValidity(message || "");
   }
 
@@ -48,7 +47,6 @@
     el.setCustomValidity("");
   }
 
-  // ====== Ejecutor de reglas por campo ======
   function validateElement(el) {
     const raw = (el.getAttribute("data-rules") || "").trim();
     if (!raw) { clearError(el); return true; }
@@ -176,7 +174,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector("form.ti-custom-validation, form.ti-custom-validation-user");
+      const form = document.querySelector("form.ti-custom-validation, form.ti-custom-validation-user, form.ti-custom-validation-item");
       if (!form) return;
       attachToForm(form);
 
@@ -217,6 +215,10 @@
           const isUpdate = form.dataset.mode === "update";
           actionUrl = isUpdate ? "php/upd_usuario.php" : "php/add_usuario.php";
           redirectUrl = "usuarios.html";
+        }else if (form.classList.contains("ti-custom-validation-item")) {
+          const isUpdate = form.dataset.mode === "update";
+          actionUrl = isUpdate ? "php/upd_item.php" : "php/add_item.php";
+          redirectUrl = "items.html";
         }
 
         try {

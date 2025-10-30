@@ -553,11 +553,11 @@
                         <h5 class="box-title">Data Validation</h5>
                      </div>
                      <div class="box-body">
-                        <form class="ti-custom-validation-user" novalidate>
+                        <form class="ti-custom-validation-item" novalidate>
                            <div class="grid lg:grid-cols-3 gap-6">
                               <div class="space-y-2">
                                  <label class="ti-form-label">Grupo</label>
-                                 <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3">
+                                 <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
                                     <option value="">Seleccione</option>
                                     <option value="PRODUCTO">Producto</option>
                                     <option value="SERVICIO">Servicio</option>
@@ -567,10 +567,10 @@
 
                               <div class="space-y-2">
                                  <label class="ti-form-label">Categoria</label>
-                                 <select id="categoria" name="categoria" class="ti-form-select rounded-sm !py-2 !px-3">
+                                 <select id="categoria" name="categoria" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
                                     <option value="">Seleccione</option>
                                  </select>
-                                 <span class="text-red-500 text-xs hidden" data-error-for="grupo"></span>
+                                 <span class="text-red-500 text-xs hidden" data-error-for="categoria"></span>
                               </div>
                            </div>
 
