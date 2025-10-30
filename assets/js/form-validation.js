@@ -169,32 +169,22 @@
       }
 
       const u = json.data;
-      console.log("🟢 Datos del item cargado:", u);
 
-      // 🟢 Establecer grupo y lógica de stock
       const grupoSelect = document.querySelector("#grupo");
       grupoSelect.value = u.grupo || "";
       window.itemChoices.toggleStockField(u.grupo);
 
-      // 🟢 Cargar categorías del grupo seleccionado
       await window.itemChoices.cargarCategorias(u.grupo);
 
-      // 🕐 Esperar un poco para asegurar render interno de Choices
       await new Promise((resolve) => setTimeout(resolve, 150));
 
-      // 🟢 Obtener instancia actual de Choices
       const choices = window.itemChoices.categoriaInstance;
       const categoriaValor = String(u.categoria);
       const opciones = choices._currentState.choices.map((c) => String(c.value));
 
-      console.log("🟢 Categoría a seleccionar:", categoriaValor);
-      console.log("🟢 Opciones disponibles:", opciones);
-
       if (opciones.includes(categoriaValor)) {
-        console.log("✅ Categoría encontrada, aplicando selección...");
         choices.setChoiceByValue(categoriaValor);
 
-        // ⚙️ Forzar sincronización del <select> nativo (en caso Choices no actualice visualmente)
         const sel = document.querySelector("#categoria");
         sel.value = categoriaValor;
         sel.dispatchEvent(new Event("change", { bubbles: true }));
@@ -202,12 +192,10 @@
         console.warn("⚠️ Categoría no encontrada en las opciones cargadas");
       }
 
-      // 🟢 Rellenar los demás campos
       document.querySelector("#nombre").value = u.nombre || "";
       document.querySelector("#precio").value = u.precio || "";
-      document.querySelector("#stock").value = u.stock || "";
+      document.querySelector("#stock").value = u.stock_final || "";
 
-      // 🟢 Estado (toggle)
       const toggle = document.querySelector("#estadoToggle");
       const estadoInput = document.querySelector("#estadoInput");
       if (toggle && estadoInput) {

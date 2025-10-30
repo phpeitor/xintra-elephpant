@@ -559,7 +559,7 @@
                            <div class="grid lg:grid-cols-3 gap-6">
                               <div class="space-y-2">
                                  <label class="ti-form-label">Grupo</label>
-                                 <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
+                                 <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required" disabled>
                                     <option value="">Seleccione</option>
                                     <option value="PRODUCTO">Producto</option>
                                     <option value="SERVICIO">Servicio</option>
@@ -610,6 +610,7 @@
                                     max="500"
                                     class="ti-form-input rounded-sm"
                                     placeholder="100"
+                                    readonly
                                     data-rules="required|numeric|min_value:1|max_value:500"
                                  />
                                  <span class="text-red-500 text-xs hidden" data-error-for="stock"></span>
