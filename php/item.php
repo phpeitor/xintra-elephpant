@@ -13,18 +13,17 @@ class Item {
     }
 
     public function baja(int $id): bool {
-        $sql = "UPDATE personal 
-                SET IDESTADO = 0, fecha_baja = :fecha_baja 
-                WHERE IDPERSONAL = :id";
+        $sql = "UPDATE product_service 
+                SET estado = 0
+                WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':fecha_baja', $this->nowLima);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->rowCount() > 0;
     }
 
     public function actualizarPorHash(string $hash, array $data): bool {
-        $sql = "UPDATE personal 
+        $sql = "UPDATE product_service 
                 SET APELLIDOS = :APELLIDOS,
                     NOMBRES = :NOMBRES,
                     EMAIL = :EMAIL,
@@ -49,9 +48,9 @@ class Item {
 
     public function guardar(array $data): int {
         $sql = "INSERT INTO product_service 
-                (nombre, categoria, precio, estado, stock, fecha_creacion, id_sucursal)
+                (nombre, categoria, precio, estado, stock, fecha_creacion, id_sucursal, medida)
                 VALUES 
-                (:nombre, :categoria, :precio, 1, :stock, :fecha_creacion, 5)";
+                (:nombre, :categoria, :precio, 1, :stock, :fecha_creacion, 5, '')";
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(':nombre',   $data['nombre'] ?? '');
@@ -96,17 +95,10 @@ class Item {
     }
 
     public function obtenerPorHash(string $hash): ?array {
-        $sql = "SELECT 
-                    IDPERSONAL,
-                    NOMBRES,
-                    APELLIDOS,
-                    DOC,
-                    EMAIL,
-                    TLF,
-                    SEXO,
-                    IDESTADO
-                FROM personal
-                WHERE MD5(IDPERSONAL) = :hash
+        $sql = "SELECT b.*, c.tpo as grupo
+                FROM product_service b
+                left join categoria c on b.categoria=c.id
+                WHERE MD5(b.id) = :hash
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);

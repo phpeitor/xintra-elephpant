@@ -89,10 +89,10 @@
                     const idHash = md5(row.IDPERSONAL.toString()); 
                     return `
                     <div style="display:flex;gap:.5rem;justify-content:center;">
-                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave  waves-effect waves-light" data-id="${idHash}">
+                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
                             <i class="ri-edit-2-line"></i>
                         </button>
-                        <button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave  me-5 waves-effect waves-light" data-id="${id}">
+                        <button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave me-5 waves-effect waves-light" data-id="${id}">
                             <i class="ri-delete-bin-line"></i>
                         </button>
                     </div>`;

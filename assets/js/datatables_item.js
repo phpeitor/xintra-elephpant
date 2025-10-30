@@ -73,6 +73,36 @@ document.addEventListener("DOMContentLoaded", function () {
                             </button>
                         </div>`;
                 },
+                cellClick: function (e, cell) {
+                    const id = cell.getRow().getData().id;
+                    if (e.target.closest(".btn-edit")) {
+                        console.log("Actualizar ID:", id);
+                        const idHash = e.target.closest(".btn-edit").dataset.id;
+                        window.location.href = "upd_item.html?hash=" + idHash;
+                    } else if (e.target.closest(".btn-delete")) {
+
+                        if (confirm("¿Seguro que deseas eliminar el registro " + id + "?")) {
+                            fetch("php/delete_item.php", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                body: "id=" + encodeURIComponent(id),
+                            })
+                            .then((res) => res.json())
+                            .then((json) => {
+                                if (json.ok) {
+                                    alert("✅ Registro suspendido correctamente");
+                                    table.replaceData();
+                                } else {
+                                    alert("❌ Error al suspender: " + json.message);
+                                }
+                            })
+                            .catch((err) => {
+                                console.error(err);
+                                alert("❌ Error de red al suspender");
+                            });
+                        }
+                    }
+                },
             }
         );
 
