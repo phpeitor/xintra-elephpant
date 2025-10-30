@@ -24,23 +24,16 @@ class Item {
 
     public function actualizarPorHash(string $hash, array $data): bool {
         $sql = "UPDATE product_service 
-                SET APELLIDOS = :APELLIDOS,
-                    NOMBRES = :NOMBRES,
-                    EMAIL = :EMAIL,
-                    DOC = :DOC,
-                    TLF = :TLF,
-                    SEXO = :SEXO,
-                    IDESTADO = :IDESTADO
-                WHERE MD5(IDPERSONAL) = :hash";
+                SET nombre = :nombre,
+                    categoria = :categoria,
+                    precio = :precio,
+                    estado = :estado
+                WHERE MD5(id) = :hash";
         $stmt = $this->conn->prepare($sql);
-
-        $stmt->bindValue(':APELLIDOS', $data['apellidos']);
-        $stmt->bindValue(':NOMBRES', $data['nombres']);
-        $stmt->bindValue(':EMAIL', $data['email']);
-        $stmt->bindValue(':DOC', $data['documento']);
-        $stmt->bindValue(':TLF', $data['telefono']);
-        $stmt->bindValue(':SEXO', (int)$data['sexo'], PDO::PARAM_INT);
-        $stmt->bindValue(':IDESTADO', (int)$data['estado'], PDO::PARAM_INT);
+        $stmt->bindValue(':nombre', $data['nombre']);
+        $stmt->bindValue(':categoria', $data['categoria']);
+        $stmt->bindValue(':precio', $data['precio']);
+        $stmt->bindValue(':estado', (int)$data['estado'], PDO::PARAM_INT);
         $stmt->bindValue(':hash', $hash);
         $stmt->execute();
         return $stmt->rowCount() > 0;
@@ -61,6 +54,23 @@ class Item {
         $stmt->execute();
         return (int)$this->conn->lastInsertId();
     }
+
+    public function guardar_stock(array $data): int {
+        $sql = "INSERT INTO stock_black 
+                (id_product, id_pedido, tipo, stock, fecha, user)
+                VALUES 
+                (:id_product, :id_pedido, :tipo, :stock, :fecha, 'admin')";
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(':id_product',   $data['id_product'] ?? '');
+        $stmt->bindValue(':id_pedido', $data['id_pedido'] ?? '');
+        $stmt->bindValue(':tipo',     $data['tipo'] ?? '');
+        $stmt->bindValue(':stock',  $data['stock'] ?? '0');
+        $stmt->bindValue(':fecha', $this->nowLima);
+        $stmt->execute();
+        return (int)$this->conn->lastInsertId();
+    }
+
 
     public function table_item(string $tpo = ''): array {
          $sql = "select t.id_product,

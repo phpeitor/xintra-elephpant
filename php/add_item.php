@@ -36,6 +36,15 @@ try {
         'grupo'     => $grupo,
     ]);
 
+    if ($grupo === 'PRODUCTO') {
+        $item->guardar_stock([
+            'id_product'    => $id,
+            'id_pedido'     => 0,
+            'tipo'          => 'E',
+            'stock'         => $stock,
+        ]);
+    }
+
     echo json_encode(['ok' => true, 'id' => $id]);
 } catch (Throwable $e) {
     http_response_code(500);

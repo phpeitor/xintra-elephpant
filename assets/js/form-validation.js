@@ -169,13 +169,11 @@
       }
 
       const u = json.data;
-
       const grupoSelect = document.querySelector("#grupo");
       grupoSelect.value = u.grupo || "";
       window.itemChoices.toggleStockField(u.grupo);
 
       await window.itemChoices.cargarCategorias(u.grupo);
-
       await new Promise((resolve) => setTimeout(resolve, 150));
 
       const choices = window.itemChoices.categoriaInstance;
