@@ -118,16 +118,16 @@ class Item {
     }
 
     public function obtenerCategoria(string $grupo): ?array {
-        $sql = "SELECT 
-                    *
-                FROM product_service
-                WHERE MD5(tpo) = :grupo
-                LIMIT 1";
+        $sql = "SELECT *
+                FROM categoria
+                WHERE estado=1 and id_sucursal=5
+                and tpo=:grupo";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':grupo', $grupo);
+        if ($grupo !== '') {
+            $stmt->bindValue(':grupo', $grupo, PDO::PARAM_STR);
+        }
         $stmt->execute();
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $data ?: null;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

@@ -12,7 +12,7 @@
       return (el.value || "").trim() ? true : "Este campo es obligatorio.";
     },
     email:   (el) => /\S+@\S+\.\S+/.test((el.value || "").trim()) || "Correo inválido.",
-    numeric: (el) => /^-?\d+$/.test((el.value || "").trim()) || "Solo números.",
+    numeric: (el) => /^-?\d+(\.\d+)?$/.test((el.value || "").trim()) || "Solo números (o decimales).",
     min:     (n)  => (el) => ((el.value || "").trim().length >= +n) || `Mínimo ${n} caracteres.`,
     max:     (n)  => (el) => ((el.value || "").trim().length <= +n) || `Máximo ${n} caracteres.`,
     length:  (n)  => (el) => ((el.value || "").trim().length === +n) || `Debe tener ${n} caracteres.`,
@@ -166,7 +166,6 @@
 
     if (!toggle || !estadoInput) return;
 
-    // Limpia listeners antiguos (evita duplicados si vuelves a cargar)
     toggle.replaceWith(toggle.cloneNode(true));
 
     const nuevoToggle = document.querySelector("#estadoToggle");
