@@ -362,3 +362,32 @@ function initLoginForm() {
 }
 
 initLoginForm();
+
+document.getElementById('login').addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  const usuario = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+
+  if (!usuario || !password) {
+    alert("Ingrese usuario y contraseña");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('usuario', usuario);
+  formData.append('password', password);
+
+  const res = await fetch('php/acceso.php', {
+    method: 'POST',
+    body: formData
+  });
+
+  const data = await res.json();
+
+  if (data.ok) {
+    window.location.href = "home.html";
+  } else {
+    alert(data.message || "Error al iniciar sesión");
+  }
+});

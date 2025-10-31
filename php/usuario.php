@@ -97,5 +97,25 @@ class Usuario {
         return $data ?: null;
     }
 
+    public function acceso_user(array $data):  ?array {
+        $sql = "SELECT 
+                    IDPERSONAL,
+                    DOC,
+                    NOMBRES,
+                    USUARIO,
+                    PASSWORD,
+                    IDESTADO
+                FROM personal
+                WHERE USUARIO = :USUARIO
+                AND PASSWORD= :PASSWORD
+                LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':USUARIO', $data['usuario']);
+        $stmt->bindValue(':PASSWORD', $data['password']);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
 }
 ?>
