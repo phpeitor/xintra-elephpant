@@ -264,7 +264,6 @@
     }
 
     const logoutBtn = document.getElementById("logout-btn");
-    console.log(logoutBtn);
     if (logoutBtn) {
       logoutBtn.addEventListener("click", function (e) {
         e.preventDefault();

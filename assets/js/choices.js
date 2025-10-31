@@ -35,7 +35,7 @@
         return;
       }
 
-      const response = await fetch(`php/get_categoria.php?tpo=${encodeURIComponent(tipo)}`);
+      const response = await fetch(`controller/get_categoria.php?tpo=${encodeURIComponent(tipo)}`);
       const data = await response.json();
 
       categoria.clearChoices();

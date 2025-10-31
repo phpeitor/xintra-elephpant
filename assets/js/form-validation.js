@@ -119,7 +119,7 @@
 
   async function cargarUsuario(hash) {
     try {
-      const res = await fetch(`php/get_usuario.php?hash=${hash}`);
+      const res = await fetch(`controller/get_usuario.php?hash=${hash}`);
       const json = await res.json();
 
       if (!json.ok) {
@@ -160,7 +160,7 @@
 
   async function cargarItem(hash) {
     try {
-      const res = await fetch(`php/get_item.php?hash=${hash}`);
+      const res = await fetch(`controller/get_item.php?hash=${hash}`);
       const json = await res.json();
 
       if (!json.ok) {
@@ -273,15 +273,15 @@
         let redirectUrl = "";
 
         if (form.classList.contains("ti-custom-validation")) {
-          actionUrl = "php/add_cliente.php";
+          actionUrl = "controller/add_cliente.php";
           redirectUrl = "clientes.php";
         } else if (form.classList.contains("ti-custom-validation-user")) {
           const isUpdate = form.dataset.mode === "update";
-          actionUrl = isUpdate ? "php/upd_usuario.php" : "php/add_usuario.php";
+          actionUrl = isUpdate ? "controller/upd_usuario.php" : "controller/add_usuario.php";
           redirectUrl = "usuarios.php";
         }else if (form.classList.contains("ti-custom-validation-item")) {
           const isUpdate = form.dataset.mode === "update";
-          actionUrl = isUpdate ? "php/upd_item.php" : "php/add_item.php";
+          actionUrl = isUpdate ? "controller/upd_item.php" : "controller/add_item.php";
           redirectUrl = "items.php";
         }
 
