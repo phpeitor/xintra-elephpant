@@ -102,7 +102,7 @@
                     if (e.target.closest(".btn-edit")) {
                         console.log("Actualizar ID:", id);
                         const idHash = e.target.closest(".btn-edit").dataset.id;
-                        window.location.href = "upd_usuario.html?hash=" + idHash;
+                        window.location.href = "upd_usuario.php?hash=" + idHash;
                     } else if (e.target.closest(".btn-delete")) {
 
                         if (confirm("¿Seguro que deseas eliminar el registro " + id + "?")) {

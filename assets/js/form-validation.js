@@ -274,15 +274,15 @@
 
         if (form.classList.contains("ti-custom-validation")) {
           actionUrl = "php/add_cliente.php";
-          redirectUrl = "clientes.html";
+          redirectUrl = "clientes.php";
         } else if (form.classList.contains("ti-custom-validation-user")) {
           const isUpdate = form.dataset.mode === "update";
           actionUrl = isUpdate ? "php/upd_usuario.php" : "php/add_usuario.php";
-          redirectUrl = "usuarios.html";
+          redirectUrl = "usuarios.php";
         }else if (form.classList.contains("ti-custom-validation-item")) {
           const isUpdate = form.dataset.mode === "update";
           actionUrl = isUpdate ? "php/upd_item.php" : "php/add_item.php";
-          redirectUrl = "items.html";
+          redirectUrl = "items.php";
         }
 
         try {

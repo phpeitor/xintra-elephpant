@@ -260,7 +260,7 @@
                   </div>
                   <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> 
                      <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"
-                                                         onclick="window.location.href='add_cliente.html'"> <i class="ri-share-forward-line me-1"></i> Registrar </button> 
+                                                         onclick="window.location.href='add_cliente.php'"> <i class="ri-share-forward-line me-1"></i> Registrar </button> 
                   </div>
                </div>
             
