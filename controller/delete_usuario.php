@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require_once __DIR__ . '/item.php';
+require_once __DIR__ . '/../model/usuario.php';
 
 try {
     if (!isset($_POST['id']) || !is_numeric($_POST['id'])) {
@@ -9,12 +9,12 @@ try {
     }
 
     $id = (int) $_POST['id'];
-    $item = new Item();
+    $usuario = new Usuario();
 
-    if ($item->baja($id)) {
-        echo json_encode(['ok' => true, 'message' => 'Item de baja correctamente']);
+    if ($usuario->baja($id)) {
+        echo json_encode(['ok' => true, 'message' => 'Usuario de baja correctamente']);
     } else {
-        echo json_encode(['ok' => false, 'message' => 'No se pudo dar de baja al item']);
+        echo json_encode(['ok' => false, 'message' => 'No se pudo dar de baja el usuario']);
     }
 
 } catch (Throwable $e) {

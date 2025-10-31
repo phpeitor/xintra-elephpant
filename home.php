@@ -1,5 +1,5 @@
 <?php
-  require_once __DIR__ . "/php/check_session.php";
+  require_once __DIR__ . "/controller/check_session.php";
 ?>
 
 <html bg-img="bgimg5" class="light" data-header-styles="light" data-menu-styles="dark" data-nav-layout="vertical" data-vertical-style="overlay" data-width="fullwidth" dir="ltr" lang="en" loader="disable">

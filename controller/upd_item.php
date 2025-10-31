@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require_once __DIR__ . '/usuario.php';
+require_once __DIR__ . '/../model/item.php';
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -16,21 +16,18 @@ try {
     $hash = $_POST['hash'];
 
     $data = [
-        'nombres'   => $_POST['nombres'] ?? '',
-        'apellidos' => $_POST['apellidos'] ?? '',
-        'documento' => $_POST['documento'] ?? '',
-        'email'     => $_POST['email'] ?? '',
-        'telefono'  => $_POST['telefono'] ?? '',
-        'sexo'      => $_POST['sexo'] ?? 0,
-        'estado'    => ($_POST['estado'] ?? '0') === '1' ? 1 : 0,
+        'nombre'       => $_POST['nombre'] ?? '',
+        'categoria'    => $_POST['categoria'] ?? '',
+        'precio'       => $_POST['precio'] ?? '',
+        'estado'       => ($_POST['estado'] ?? '0') === '1' ? 1 : 0,
     ];
 
-    $usuario = new Usuario();
-    $ok = $usuario->actualizarPorHash($hash, $data);
+    $item = new Item();
+    $ok = $item->actualizarPorHash($hash, $data);
 
     echo json_encode([
         'ok' => $ok,
-        'message' => $ok ? 'Usuario actualizado correctamente' : 'No se realizaron cambios'
+        'message' => $ok ? 'Item actualizado correctamente' : 'No se realizaron cambios'
     ]);
 
 } catch (Throwable $e) {

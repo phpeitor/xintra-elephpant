@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require_once __DIR__ . '/item.php';
+require_once __DIR__ . '/../model/item.php';
 
 try {
     $nombre    = trim($_POST['nombre'] ?? '');

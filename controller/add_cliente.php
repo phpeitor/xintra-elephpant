@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require_once __DIR__ . '/cliente.php';
+require_once __DIR__ . '/../model/cliente.php';
 
 try {
     $cli = new Cliente();

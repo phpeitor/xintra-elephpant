@@ -1,5 +1,5 @@
 <?php
-require_once "conexion.php";
+require_once "../database/conexion.php";
 
 class Cliente {
     private PDO $conn;

@@ -26,7 +26,7 @@
         paginationCounter: "rows",
         movableColumns: true,
         reactiveData: true,
-        ajaxURL: "php/table_cliente.php",
+        ajaxURL: "controller/table_cliente.php",
 
         // OPCIONAL: inspecciona lo que devuelve tu PHP
         ajaxResponse: function(url, params, response) {

@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     } else if (e.target.closest(".btn-delete")) {
 
                         if (confirm("¿Seguro que deseas eliminar el registro " + id + "?")) {
-                            fetch("php/delete_item.php", {
+                            fetch("controller/delete_item.php", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                                 body: "id=" + encodeURIComponent(id),
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
             layout: "fitColumns",
             pagination: "local",
             paginationSize: 10,
-            ajaxURL: `php/table_item.php?tpo=${tpo}`,
+            ajaxURL: `controller/table_item.php?tpo=${tpo}`,
             columns: columnsBase,
         });
     }

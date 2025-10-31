@@ -19,7 +19,7 @@
         paginationCounter: "rows",
         movableColumns: true,
         reactiveData: true,
-        ajaxURL: "php/table_usuario.php",
+        ajaxURL: "controller/table_usuario.php",
 
         ajaxResponse: function(url, params, response) {
             return response;
@@ -106,7 +106,7 @@
                     } else if (e.target.closest(".btn-delete")) {
 
                         if (confirm("¿Seguro que deseas eliminar el registro " + id + "?")) {
-                            fetch("php/delete_usuario.php", {
+                            fetch("controller/delete_usuario.php", {
                                 method: "POST",
                                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
                                 body: "id=" + encodeURIComponent(id),

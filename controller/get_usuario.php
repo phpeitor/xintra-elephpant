@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require_once __DIR__ . '/item.php';
+require_once __DIR__ . '/../model/usuario.php';
 
 try {
     if (!isset($_GET['hash']) || strlen($_GET['hash']) !== 32) {
@@ -9,14 +9,14 @@ try {
     }
 
     $hash = $_GET['hash'];
-    $item = new Item();
+    $usuario = new Usuario();
 
-    $data = $item->obtenerPorHash($hash);
+    $data = $usuario->obtenerPorHash($hash);
 
     if ($data) {
         echo json_encode(['ok' => true, 'data' => $data]);
     } else {
-        echo json_encode(['ok' => false, 'message' => 'Item no encontrado']);
+        echo json_encode(['ok' => false, 'message' => 'Usuario no encontrado']);
     }
 
 } catch (Throwable $e) {
