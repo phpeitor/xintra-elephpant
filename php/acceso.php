@@ -26,10 +26,9 @@ try {
         $_SESSION['session_id'] = $data['IDPERSONAL'];
         $_SESSION['session_nombre'] = $data['NOMBRES'];
         $_SESSION['session_time'] = time(); 
-
         echo json_encode(['ok' => true]);
     } else {
-        echo json_encode(['ok' => false, 'message' => 'Usuario o contraseña incorrectos.']);
+        echo json_encode(['ok' => false, 'message' => '🚫 Usuario o contraseña incorrectos']);
     }
 } catch (Throwable $e) {
     http_response_code(500);

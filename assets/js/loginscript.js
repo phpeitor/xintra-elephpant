@@ -370,7 +370,7 @@ document.getElementById('login').addEventListener('click', async (e) => {
   const password = document.getElementById('loginPassword').value.trim();
 
   if (!usuario || !password) {
-    alert("Ingrese usuario y contraseña");
+    alertify.warning("⚠️ Ingrese usuario y contraseña");
     return;
   }
 
@@ -378,16 +378,22 @@ document.getElementById('login').addEventListener('click', async (e) => {
   formData.append('usuario', usuario);
   formData.append('password', password);
 
-  const res = await fetch('php/acceso.php', {
-    method: 'POST',
-    body: formData
-  });
+  try {
+    const res = await fetch('php/acceso.php', {
+      method: 'POST',
+      body: formData
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (data.ok) {
-    window.location.href = "home.html";
-  } else {
-    alert(data.message || "Error al iniciar sesión");
+    if (data.ok) {
+      alertify.success("✅ Acceso correcto, redirigiendo...");
+      setTimeout(() => window.location.href = "home.html", 1000);
+    } else {
+      alertify.error(data.message || "❌ Usuario o contraseña incorrectos");
+    }
+  } catch (error) {
+    alertify.error("❌ Error al conectar con el servidor");
+    console.error(error);
   }
 });

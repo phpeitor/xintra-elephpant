@@ -1,8 +1,13 @@
+<?php
+  require_once __DIR__ . "/php/check_session.php";
+?>
+
 <html lang="en" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
    <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🐘</text></svg>" />
       <title>Xintra Elephant</title>
       <meta name="Description" content="Tailwind Responsive Admin Web Dashboard HTML5 Template">
       <meta name="Author" content="Spruko Technologies Private Limited">
@@ -199,235 +204,17 @@
                   </div>
                   <!-- End::header-element --> <!-- Start::header-element --> 
                   <div class="header-element mx-lg-0"> <a aria-label="Hide Sidebar" class="sidemenu-toggle header-link animated-arrow hor-toggle horizontal-navtoggle" data-bs-toggle="sidebar" href="javascript:void(0);"><span></span></a> </div>
-                  <!-- End::header-element --> <!-- Start::header-element --> 
                   <div class="header-element header-search md:!block !hidden my-auto auto-complete-search">
                      <!-- Start::header-link --> 
                      <div class="autoComplete_wrapper" role="combobox" aria-owns="autoComplete_list_1" aria-haspopup="true" aria-expanded="false">
                         <input type="text" class="header-search-bar form-control" id="header-search" placeholder="Search anything here ..." autocomplete="off" autocapitalize="off" aria-controls="autoComplete_list_1" aria-autocomplete="both">
                         <ul id="autoComplete_list_1" role="listbox" hidden=""></ul>
                      </div>
-                     <a aria-label="anchor" href="javascript:void(0);" class="header-search-icon border-0"> <i class="ri-search-line"></i> </a> <!-- End::header-link --> 
+                     <a aria-label="anchor" href="javascript:void(0);" class="header-search-icon border-0"> <i class="ri-search-line"></i> </a> 
                   </div>
-                  <!-- End::header-element --> 
                </div>
-               <!-- End::header-content-left --> <!-- Start::header-content-right --> 
-               <ul class="header-content-right">
-                  <!-- Start::header-element --> 
-                  <li class="header-element md:!hidden block">
-                     <a aria-label="anchor" href="javascript:void(0);" class="header-link" data-bs-toggle="modal" data-hs-overlay="#header-responsive-search">
-                        <!-- Start::header-link-icon --> <i class="bi bi-search header-link-icon"></i> <!-- End::header-link-icon --> 
-                     </a>
-                  </li>
-                  
-                  <!-- End::header-element --> <!-- Start::header-element --> <!-- light and dark theme --> 
-                  <li class="header-element header-theme-mode hidden !items-center sm:block md:!px-[0.5rem] px-2">
-                     <a aria-label="anchor" class="hs-dark-mode-active:hidden flex hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium transition-all text-xs dark:bg-bgdark dark:hover:bg-black/20 text-textmuted dark:text-textmuted/50 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10" href="javascript:void(0);" data-hs-theme-click-value="dark">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"></path>
-                        </svg>
-                     </a>
-                     <a aria-label="anchor" class="hs-dark-mode-active:flex hidden hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium text-defaulttextcolor  transition-all text-xs dark:bg-bodybg dark:bg-bgdark dark:hover:bg-black/20  dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10" href="javascript:void(0);" data-hs-theme-click-value="light">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"></path>
-                        </svg>
-                     </a>
-                  </li>
-                  
-                  <li class="header-element cart-dropdown hs-dropdown ti-dropdown [--auto-close:inside]">
-                     <!--<a aria-label="anchor" href="javascript:void(0);" class="header-link hs-dropdown-toggle ti-dropdown-toggle" data-bs-auto-close="outside" data-bs-toggle="dropdown">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"></path>
-                        </svg>
-                        <span class="badge bg-secondary rounded-full header-icon-badge text-white" id="cart-icon-badge">5</span> 
-                     </a>-->
-                     <div class="main-header-dropdown hs-dropdown-menu ti-dropdown-menu hidden" data-popper-placement="none" role="menu">
-                        <div class="p-4">
-                           <div class="flex items-center justify-between">
-                              <p class="mb-0 text-[15px] font-medium">Cart Items<span class="badge bg-primarytint2color text-white ms-1 !py-[0.15rem] rounded-full" id="cart-data">5</span></p>
-                              <div class="flex items-center gap-2">
-                                 <span class="text-xs font-medium text-textmuted dark:text-textmuted/50">Sub Total : </span> 
-                                 <h6 class="mb-0"> $740</h6>
-                              </div>
-                           </div>
-                        </div>
-                        <hr class="dropdown-divider">
-                        <ul class="list-none mb-0" id="header-cart-items-scroll" data-simplebar="init">
-                           <div class="simplebar-wrapper" style="margin: 0px;">
-                              <div class="simplebar-height-auto-observer-wrapper">
-                                 <div class="simplebar-height-auto-observer"></div>
-                              </div>
-                              <div class="simplebar-mask">
-                                 <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;">
-                                       <div class="simplebar-content" style="padding: 0px;">
-                                          <li class="ti-dropdown-item block">
-                                             <div class="flex items-center cart-dropdown-item gap-4">
-                                                <div class="leading-none"> <span class="avatar avatar-xl bg-primary/10"> <img src="./assets/images/ecommerce/png/30.png" alt="Wireless Headphones"> </span> </div>
-                                                <div class="flex-auto">
-                                                   <div class="flex items-center justify-between mb-0">
-                                                      <div class="mb-0 text-[14px] font-medium">
-                                                         <a href="cart.html">Wireless Headphones</a> 
-                                                         <div class="truncate">
-                                                            <p class="mb-0 header-cart-text truncate text-[11px] text-textmuted dark:text-textmuted/50"> Wireless freedom with crystal-clear sound and comfortable </p>
-                                                            <h6 class="font-medium mb-0 mt-1"><span class="text-success font-normal me-1 text-[11px] inline-block">(Qty : 1)</span>$78</h6>
-                                                         </div>
-                                                      </div>
-                                                      <div class="text-end">
-                                                         <a href="javascript:void(0);" class="header-cart-remove dropdown-item-close" aria-label="anchor"><i class="ri-close-line"></i></a> 
-                                                         <h6 class="font-medium mb-0 mt-3"><span class="text-info op-4 font-normal me-1 text-[11px] inline-block">Total :</span>$75</h6>
-                                                      </div>
-                                                   </div>
-                                                </div>
-                                             </div>
-                                          </li>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="simplebar-placeholder" style="width: 0px; height: 0px;"></div>
-                           </div>
-                           <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
-                              <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
-                           </div>
-                           <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
-                              <div class="simplebar-scrollbar" style="height: 0px; display: none;"></div>
-                           </div>
-                        </ul>
-                        <div class="p-4 empty-header-item border-t grid items-center"> <a href="checkout.html" class="ti-btn ti-btn-primary btn-wave text-center waves-effect waves-light">Proceed to checkout</a> </div>
-                        <div class="p-[3rem] empty-item hidden">
-                           <div class="text-center">
-                              <span class="avatar avatar-xl avatar-rounded bg-primary/10 !text-primary"> <i class="ri-shopping-cart-2-line fs-2"></i> </span> 
-                              <h6 class="font-medium mb-1 mt-3">Your Cart is Empty</h6>
-                              <span class="mb-3 font-normal text-[13px] block">Add some items to make me happy :)</span> <a href="products.html" class="ti-btn bg-primarytint1color text-white btn-wave ti-btn-sm m-1 waves-effect waves-light" data-abc="true">continue shopping <i class="bi bi-arrow-right ms-1"></i></a> 
-                           </div>
-                        </div>
-                     </div>
-                  </li>
-
-                  <li class="header-element notifications-dropdown !hidden xl:!block hs-dropdown ti-dropdown [--auto-close:inside]">
-                     <!-- Start::header-link|dropdown-toggle --> 
-                     <a aria-label="anchor" href="javascript:void(0);" class="header-link hs-dropdown-toggle ti-dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" id="messageDropdown" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5"></path>
-                        </svg>
-                        <span class="header-icon-pulse bg-primarytint2color rounded pulse pulse-secondary"></span> 
-                     </a>
-                     <!-- End::header-link|dropdown-toggle --> <!-- Start::main-header-dropdown --> 
-                     <div class="main-header-dropdown hs-dropdown-menu ti-dropdown-menu hidden" data-popper-placement="none" role="menu">
-                        <div class="p-4">
-                           <div class="flex items-center justify-between">
-                              <p class="mb-0 text-[15px] font-medium">Notifications</p>
-                              <span class="badge bg-secondary text-white rounded-sm" id="notifiation-data">2 Unread</span> 
-                           </div>
-                        </div>
-                        <div class="dropdown-divider"></div>
-                        <ul class="list-none mb-0" id="header-notification-scroll" data-simplebar="init">
-                           <div class="simplebar-wrapper" style="margin: 0px;">
-                              <div class="simplebar-height-auto-observer-wrapper">
-                                 <div class="simplebar-height-auto-observer"></div>
-                              </div>
-                              <div class="simplebar-mask">
-                                 <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;">
-                                       <div class="simplebar-content" style="padding: 0px;">
-                                          <li class="ti-dropdown-item block">
-                                             <div class="flex items-center">
-                                                <div class="pe-2 leading-none"> <span class="avatar avatar-md bg-success avatar-rounded"> <img src="./assets/images/faces/11.jpg" alt="user1"> </span> </div>
-                                                <div class="grow flex items-center justify-between">
-                                                   <div>
-                                                      <p class="mb-0 font-medium"><a href="chat.html">Follow Request</a></p>
-                                                      <div class="text-textmuted dark:text-textmuted/50 font-normal text-xs header-notification-text truncate"> <span class="text-info">Kelin Brown</span> has sent you the request.</div>
-                                                      <div class="font-normal text-[10px] text-textmuted dark:text-textmuted/50 op-8"> 1 Day ago</div>
-                                                   </div>
-                                                   <div> <a aria-label="anchor" href="javascript:void(0);" class="min-w-fit-content dropdown-item-close1"> <i class="ri-close-line"></i> </a> </div>
-                                                </div>
-                                             </div>
-                                          </li>
-                                          <li class="ti-dropdown-item block">
-                                             <div class="flex items-center">
-                                                <div class="pe-2 leading-none"> <span class="avatar avatar-md bg-primarytint2color avatar-rounded"> <i class="ri-gift-line leading-none text-[1rem]"></i> </span> </div>
-                                                <div class="grow flex items-center justify-between">
-                                                   <div>
-                                                      <p class="mb-0 font-medium"><a href="chat.html">Exclusive Offers</a></p>
-                                                      <div class="text-textmuted dark:text-textmuted/50 font-normal text-xs header-notification-text truncate"> Enjoy<span class="text-success">20% off</span> on your next purchase!</div>
-                                                      <div class="font-normal text-[10px] text-textmuted dark:text-textmuted/50 op-8"> 5 hours ago</div>
-                                                   </div>
-                                                   <div> <a aria-label="anchor" href="javascript:void(0);" class="min-w-fit-content dropdown-item-close1"> <i class="ri-close-line"></i> </a> </div>
-                                                </div>
-                                             </div>
-                                          </li>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <div class="simplebar-placeholder" style="width: 0px; height: 0px;"></div>
-                           </div>
-                           <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
-                              <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
-                           </div>
-                           <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
-                              <div class="simplebar-scrollbar" style="height: 0px; display: none;"></div>
-                           </div>
-                        </ul>
-                        <div class="p-4 empty-header-item1 border-t">
-                           <div class="grid"> <a href="javascript:void(0);" class="ti-btn ti-btn-primary btn-wave waves-effect waves-light">View All</a> </div>
-                        </div>
-                        <div class="p-[3rem] empty-item1 hidden">
-                           <div class="text-center">
-                              <span class="avatar avatar-xl avatar-rounded bg-secondary/10 !text-secondary"> <i class="ri-notification-off-line fs-2"></i> </span> 
-                              <h6 class="font-medium mt-3">No New Notifications</h6>
-                           </div>
-                        </div>
-                     </div>
-                     <!-- End::main-header-dropdown --> 
-                  </li>
-                  <!-- End::header-element --> <!-- Start::header-element --> 
-                  <li class="header-element header-fullscreen">
-                     <!-- Start::header-link --> 
-                     <a onclick="openFullscreen();" href="javascript:void(0);" class="header-link" aria-label="anchor">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 full-screen-open header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"></path>
-                        </svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 full-screen-close header-link-icon hidden" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9 3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5 5.25 5.25"></path>
-                        </svg>
-                     </a>
-                     <!-- End::header-link --> 
-                  </li>
-                  <!-- End::header-element --> <!-- Start::header-element --> 
-                  <li class="header-element ti-dropdown hs-dropdown">
-                     <!-- Start::header-link|dropdown-toggle --> 
-                     <a aria-label="anchor" href="javascript:void(0);" class="header-link hs-dropdown-toggle ti-dropdown-toggle" id="mainHeaderProfile" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                        <div class="flex items-center">
-                           <div> <img src="./assets/images/faces/15.jpg" alt="img" class="avatar avatar-sm mb-0"> </div>
-                        </div>
-                     </a>
-                     <!-- End::header-link|dropdown-toggle --> 
-                     <ul class="main-header-dropdown hs-dropdown-menu ti-dropdown-menu pt-0 overflow-hidden header-profile-dropdown hidden" aria-labelledby="mainHeaderProfile" role="menu">
-                        <li>
-                           <div class="ti-dropdown-item text-center border-b border-defaultborder dark:border-defaultborder/10 block"> <span> Mr.Henry </span> <span class="block text-xs text-textmuted dark:text-textmuted/50">UI/UX Designer</span> </div>
-                        </li>
-                        <li><a class="ti-dropdown-item flex items-center" href="profile.html"><i class="fe fe-user p-1 rounded-full bg-primary/10 text-primary me-2 text-[1rem]"></i>Profile</a> </li>
-                        <li class="border-t border-defaultborder dark:border-defaultborder/10 bg-light"><a class="ti-dropdown-item flex items-center" href="chat.html"><i class="fe fe-help-circle p-1 rounded-full bg-primary/10 text-primary set me-2 text-[1rem]"></i>Help</a> </li>
-                        <li><a class="ti-dropdown-item flex items-center" href="sign-in-cover.html"><i class="fe fe-lock p-1 rounded-full bg-primary/10 text-primary ut me-2 text-[1rem]"></i>Log Out</a></li>
-                     </ul>
-                  </li>
-                  <!-- End::header-element --> <!-- Start::header-element --> 
-                  <li class="header-element">
-                     <!-- Start::header-link|switcher-icon --> 
-                     <a href="javascript:void(0);" class="header-link switcher-icon" data-hs-overlay="#hs-overlay-switcher" aria-label="anchor">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 0 1 0 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 0 1 0-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28Z"></path>
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"></path>
-                        </svg>
-                     </a>
-                     <!-- End::header-link|switcher-icon --> 
-                  </li>
-                  <!-- End::header-element --> 
-               </ul>
-               <!-- End::header-content-right --> 
+               <?php include __DIR__ . '/navbar.php'; ?>
             </div>
-            <!-- End::main-header-container --> 
          </header>
          <!-- /app-header --> <!-- Start::app-sidebar --> 
          <aside class="app-sidebar sticky-pin" id="sidebar">
@@ -443,81 +230,7 @@
                      <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
                         <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
                            <div class="simplebar-content" style="padding: 8px 0px 80px;">
-                              <!-- Start::nav --> 
-                              <nav aria-label="nav2" class="main-menu-container nav nav-pills flex-col sub-open open active">
-                                 <div class="slide-left active hidden" id="slide-left">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
-                                       <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path>
-                                    </svg>
-                                 </div>
-                                 <ul class="main-menu" style="display: block; margin-left: 0px; margin-right: 0px;">
-                                    <li class="slide">
-                                       <a href="index.html" class="side-menu__item">
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z"></path>
-                                          </svg>
-                                          <span class="side-menu__label">Inicio</span> 
-                                       </a>
-                                    </li>
-
-                                    <li class="slide__category"><span class="category-name">Personal &amp; Clientes</span></li>
-                                    <li class="slide has-sub">
-                                       <a href="javascript:void(0);" class="side-menu__item">
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855" />
-                                          </svg>
-                                          <span class="side-menu__label">Personal</span> <i class="ri-arrow-down-s-line side-menu__angle"></i> 
-                                       </a>
-                                       <ul class="slide-menu child1" data-popper-placement="top" data-popper-reference-hidden="" data-popper-escaped="" style="position: relative; left: 0px; top: 0px; margin: 0px; transform: translate(120px, 3222px);">
-                                          <li class="slide"> <a href="usuarios.html" class="side-menu__item">Usuarios</a> </li>
-                                          <li class="slide"> <a href="horarios.html" class="side-menu__item">Horarios</a> </li>
-                                       </ul>
-                                    </li>
-
-                                    <li class="slide">
-                                       <a href="clientes.html" class="side-menu__item">
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h.5" /><path d="M18 22l3.35 -3.284a2.143 2.143 0 0 0 .005 -3.071a2.242 2.242 0 0 0 -3.129 -.006l-.224 .22l-.223 -.22a2.242 2.242 0 0 0 -3.128 -.006a2.143 2.143 0 0 0 -.006 3.071l3.355 3.296z" />
-                                          </svg>
-                                          <span class="side-menu__label">Clientes</span> 
-                                       </a>
-                                    </li>
-
-                                    <li class="slide__category"><span class="category-name">Categoria &amp; Items</span></li>
-                                    <li class="slide">
-                                       <a href="categoria.html" class="side-menu__item">
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H6.911a2.25 2.25 0 0 0-2.15 1.588L2.35 13.177a2.25 2.25 0 0 0-.1.661Z"></path> </svg>
-                                          <span class="side-menu__label">Categoria</span> 
-                                       </a>
-                                    </li>
-
-                                    <li class="slide">
-                                       <a href="items.html" class="side-menu__item">
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 11.25v8.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5v-8.25M12 4.875A2.625 2.625 0 1 0 9.375 7.5H12m0-2.625V7.5m0-2.625A2.625 2.625 0 1 1 14.625 7.5H12m0 0V21m-8.625-9.75h18c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125h-18c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z"></path> </svg>
-                                          <span class="side-menu__label">Items</span> 
-                                       </a>
-                                    </li>
-
-                                    <li class="slide__category"><span class="category-name">Ingresos &amp; Egresos</span></li>
-                                    <li class="slide has-sub">
-                                       <a href="javascript:void(0);" class="side-menu__item">
-                                          <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                                             <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 7v10" />
-                                          </svg>
-                                          <span class="side-menu__label">Ingresos</span> <i class="ri-arrow-down-s-line side-menu__angle"></i> 
-                                       </a>
-                                       <ul class="slide-menu child1" data-popper-placement="top" data-popper-reference-hidden="" data-popper-escaped="" style="position: relative; left: 0px; top: 0px; margin: 0px; transform: translate(120px, 3222px);">
-                                          <li class="slide"> <a href="ventas.html" class="side-menu__item">Ventas</a> </li>
-                                          <li class="slide"> <a href="reporte.html" class="side-menu__item">Reporte</a> </li>
-                                       </ul>
-                                    </li>
-                                 </ul>
-                                 <div class="slide-right hidden" id="slide-right">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
-                                       <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
-                                    </svg>
-                                 </div>
-                              </nav>
+                             <?php include __DIR__ . '/menu.php'; ?>
                            </div>
                         </div>
                      </div>
