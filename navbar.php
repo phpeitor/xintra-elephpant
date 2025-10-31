@@ -185,7 +185,7 @@
         </li>
         <li><a class="ti-dropdown-item flex items-center" href="#"><i class="fe fe-user p-1 rounded-full bg-primary/10 text-primary me-2 text-[1rem]"></i>Profile</a> </li>
         <li class="border-t border-defaultborder dark:border-defaultborder/10 bg-light"><a class="ti-dropdown-item flex items-center" href="#"><i class="fe fe-help-circle p-1 rounded-full bg-primary/10 text-primary set me-2 text-[1rem]"></i>Help</a> </li>
-        <li><a class="ti-dropdown-item flex items-center" href="#" onclick="cerrarSesion(event)"><i class="fe fe-lock p-1 rounded-full bg-primary/10 text-primary ut me-2 text-[1rem]"></i>Log Out</a></li>
+        <li><a class="ti-dropdown-item flex items-center" href="#" id="logout-btn"><i class="fe fe-lock p-1 rounded-full bg-primary/10 text-primary ut me-2 text-[1rem]"></i>Log Out</a></li>
         </ul>
     </li>
     <li class="header-element">

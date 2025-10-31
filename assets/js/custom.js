@@ -1,6 +1,5 @@
 (function () {
   "use strict";
-
   /* page loader */
   function hideLoader() {
     const loader = document.getElementById("loader");
@@ -261,6 +260,22 @@
         allowHTML: true,
         placeholderValue: "This is a placeholder set in the config",
         searchPlaceholderValue: "Search",
+      });
+    }
+
+    const logoutBtn = document.getElementById("logout-btn");
+    console.log(logoutBtn);
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        alertify.confirm("Cerrar sesión", "¿Seguro que deseas salir?",
+          function() {
+            window.location.href = "php/logout.php";
+          },
+          function() {
+            alertify.message("Cancelado");
+          }
+        );
       });
     }
   });

@@ -20,6 +20,8 @@
   <link href="./assets/libs/@simonwep/pickr/themes/nano.min.css" rel="stylesheet"/>
   <link href="./assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet"/>
   <link href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
   <meta content="no" http-equiv="imagetoolbar"/>
   <style id="apexcharts-css">
    @keyframes opaque {
@@ -1168,7 +1170,7 @@ rect.legend-mouseover-inactive,
      <div class="header-content-left">
       <div class="header-element">
        <div class="horizontal-logo">
-        <a class="header-logo" href="index.html">
+        <a class="header-logo" href="index.php">
          <img alt="logo" class="desktop-logo" src="./assets/images/brand-logos/desktop-logo.png"/>
          <img alt="logo" class="toggle-dark" src="./assets/images/brand-logos/toggle-dark.png"/>
          <img alt="logo" class="desktop-dark" src="./assets/images/brand-logos/desktop-dark.png"/>
@@ -1201,7 +1203,7 @@ rect.legend-mouseover-inactive,
    </header>
    <aside class="app-sidebar" id="sidebar">
     <div class="main-sidebar-header">
-     <a class="header-logo" href="index.html">
+     <a class="header-logo" href="index.php">
       <img alt="logo" class="desktop-logo" src="./assets/images/brand-logos/desktop-logo.png"/>
       <img alt="logo" class="toggle-dark" src="./assets/images/brand-logos/toggle-dark.png"/>
       <img alt="logo" class="desktop-dark" src="./assets/images/brand-logos/desktop-dark.png"/>
@@ -4975,7 +4977,8 @@ rect.legend-mouseover-inactive,
    <path d="M0 0 " id="SvgjsPath1009">
    </path>
   </svg>
-  <script src="./assets/js/custom.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+  <script src="./assets/js/custom.js?v=1"></script>
   <div class="flatpickr-calendar rangeMode animate" tabindex="-1">
    <div class="flatpickr-months">
     <span class="flatpickr-prev-month">

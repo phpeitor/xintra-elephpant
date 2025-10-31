@@ -388,7 +388,7 @@ document.getElementById('login').addEventListener('click', async (e) => {
 
     if (data.ok) {
       alertify.success("✅ Acceso correcto, redirigiendo...");
-      setTimeout(() => window.location.href = "home.html", 1000);
+      setTimeout(() => window.location.href = "home.php", 1000);
     } else {
       alertify.error(data.message || "❌ Usuario o contraseña incorrectos");
     }
