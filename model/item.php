@@ -59,7 +59,7 @@ class Item {
         $sql = "INSERT INTO stock_black 
                 (id_product, id_pedido, tipo, stock, fecha, user)
                 VALUES 
-                (:id_product, :id_pedido, :tipo, :stock, :fecha, 'admin')";
+                (:id_product, :id_pedido, :tipo, :stock, :fecha, :user)";
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(':id_product',   $data['id_product'] ?? '');
@@ -67,6 +67,7 @@ class Item {
         $stmt->bindValue(':tipo',     $data['tipo'] ?? '');
         $stmt->bindValue(':stock',  $data['stock'] ?? '0');
         $stmt->bindValue(':fecha', $this->nowLima);
+        $stmt->bindValue(':user',  $data['user'] ?? 'admin');
         $stmt->execute();
         return (int)$this->conn->lastInsertId();
     }
@@ -106,7 +107,10 @@ class Item {
 
     public function obtenerPorHash(string $hash): ?array {
         $sql = "SELECT b.*, c.tpo as grupo,
-                GREATEST(IFNULL(stock1, 0) - IFNULL(stock2, 0), 0) AS stock_final
+                GREATEST(IFNULL(stock1, 0) - IFNULL(stock2, 0), 0) AS stock_final,
+                c.nombre as nom_categoria,
+                IFNULL(stock1, 0) as stock1,
+                IFNULL(stock2, 0) as stock2
                 FROM product_service b
                 left join categoria c on b.categoria=c.id
                     left join (

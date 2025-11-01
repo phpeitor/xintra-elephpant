@@ -212,6 +212,56 @@
     }
   }
 
+  async function cargarStock(hash) {
+    try {
+      const res = await fetch(`controller/get_item.php?hash=${hash}`);
+      const json = await res.json();
+
+      if (!json.ok) {
+        alert(json.message || "Item no encontrado");
+        return;
+      }
+
+      const u = json.data;
+      document.querySelector("#producto").textContent  = u.nombre || "";
+      document.querySelector("#categoria").textContent  = u.nom_categoria || "";
+      document.querySelector("#almacen").textContent  = u.stock1 || "0";
+      document.querySelector("#ventas").textContent  = u.stock2 || "0";
+
+      updateStockVisual(u.stock_final);
+
+    } catch (err) {
+      console.error("❌ Error al cargar item:", err);
+    }
+  }
+
+  function updateStockVisual(stock) {
+    const box = document.getElementById("stock-box");
+    const icon = document.getElementById("stock-icon");
+    const badge = document.getElementById("stock-badge");
+    const s = parseInt(stock ?? 0, 10);
+
+    box.className = "box border";
+    icon.className = "ri-circle-fill p-1 leading-none text-[0.4375rem] rounded-md me-2 align-middle";
+    badge.className = "badge text-white";
+
+    if (s <= 5) {
+      box.classList.add("border-primarytint2color/50");
+      icon.classList.add("bg-primarytint2color/10", "text-primarytint2color");
+      badge.classList.add("bg-primarytint2color");
+    } else if (s <= 10) {
+      box.classList.add("border-primarytint3color/50");
+      icon.classList.add("bg-primarytint3color/10", "text-primarytint3color");
+      badge.classList.add("bg-primarytint3color");
+    } else {
+      box.classList.add("border-success/50");
+      icon.classList.add("bg-success/10", "text-success");
+      badge.classList.add("bg-success");
+    }
+
+    badge.textContent = s;
+  }
+
   function inicializarToggle() {
     const toggle = document.querySelector("#estadoToggle");
     const estadoInput = document.querySelector("#estadoInput");
@@ -229,80 +279,94 @@
 
   document.addEventListener("DOMContentLoaded", () => {
       const form = document.querySelector("form.ti-custom-validation, form.ti-custom-validation-user, form.ti-custom-validation-item");
-      if (!form) return;
-      attachToForm(form);
 
       const params = new URLSearchParams(window.location.search);
       const hash = params.get("hash");
-      
-      if (hash && form.classList.contains("ti-custom-validation-user")) {
-        cargarUsuario(hash);
-        const hidden = document.createElement("input");
-        hidden.type = "hidden";
-        hidden.name = "hash";
-        hidden.value = hash;
-        form.appendChild(hidden);
-        form.dataset.mode = "update";
-      }
 
-      if (hash && form.classList.contains("ti-custom-validation-item")) {
-        cargarItem(hash);
-        const hidden = document.createElement("input");
-        hidden.type = "hidden";
-        hidden.name = "hash";
-        hidden.value = hash;
-        form.appendChild(hidden);
-        form.dataset.mode = "update";
-      }
+      // --- FORMULARIOS (si existe alguno) ---
+      if (form) {
+        attachToForm(form);
 
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const okCustom = typeof validateForm === "function" ? validateForm(form) : true;
-        if (!okCustom) {
-          form.reportValidity?.(); 
-          return; 
+        if (hash && form.classList.contains("ti-custom-validation-user")) {
+          cargarUsuario(hash);
+          const hidden = document.createElement("input");
+          hidden.type = "hidden";
+          hidden.name = "hash";
+          hidden.value = hash;
+          form.appendChild(hidden);
+          form.dataset.mode = "update";
         }
 
-        if (!form.checkValidity()) {
-          form.reportValidity(); 
-          return; 
+        if (hash && form.classList.contains("ti-custom-validation-item")) {
+          cargarItem(hash);
+          const hidden = document.createElement("input");
+          hidden.type = "hidden";
+          hidden.name = "hash";
+          hidden.value = hash;
+          form.appendChild(hidden);
+          form.dataset.mode = "update";
         }
 
-        let actionUrl = "";
-        let redirectUrl = "";
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
 
-        if (form.classList.contains("ti-custom-validation")) {
-          actionUrl = "controller/add_cliente.php";
-          redirectUrl = "clientes.php";
-        } else if (form.classList.contains("ti-custom-validation-user")) {
-          const isUpdate = form.dataset.mode === "update";
-          actionUrl = isUpdate ? "controller/upd_usuario.php" : "controller/add_usuario.php";
-          redirectUrl = "usuarios.php";
-        }else if (form.classList.contains("ti-custom-validation-item")) {
-          const isUpdate = form.dataset.mode === "update";
-          actionUrl = isUpdate ? "controller/upd_item.php" : "controller/add_item.php";
-          redirectUrl = "items.php";
-        }
-
-        try {
-          const formData = new FormData(form);
-          const res = await fetch(actionUrl, { method: "POST", body: formData });
-          const ct = res.headers.get("content-type") || "";
-          const json = ct.includes("application/json")
-            ? await res.json()
-            : { ok: false, message: await res.text() };
-
-          if (json.ok) {
-            form.reset();
-            window.location.href = redirectUrl;
-          } else {
-            alert("Error: " + (json.message || "No se pudo guardar."));
+          const okCustom = typeof validateForm === "function" ? validateForm(form) : true;
+          if (!okCustom) {
+            form.reportValidity?.();
+            return;
           }
-        } catch (err) {
-          console.error(err);
-          alert("Fallo de red o excepción en JS. Revisa la consola.");
-        }
-    });
+
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+          }
+
+          let actionUrl = "";
+          let redirectUrl = "";
+
+          if (form.classList.contains("ti-custom-validation")) {
+            actionUrl = "controller/add_cliente.php";
+            redirectUrl = "clientes.php";
+          } else if (form.classList.contains("ti-custom-validation-user")) {
+            const isUpdate = form.dataset.mode === "update";
+            actionUrl = isUpdate
+              ? "controller/upd_usuario.php"
+              : "controller/add_usuario.php";
+            redirectUrl = "usuarios.php";
+          } else if (form.classList.contains("ti-custom-validation-item")) {
+            const isUpdate = form.dataset.mode === "update";
+            actionUrl = isUpdate
+              ? "controller/upd_item.php"
+              : "controller/add_item.php";
+            redirectUrl = "items.php";
+          }
+
+          try {
+            const formData = new FormData(form);
+            const res = await fetch(actionUrl, { method: "POST", body: formData });
+            const ct = res.headers.get("content-type") || "";
+            const json = ct.includes("application/json")
+              ? await res.json()
+              : { ok: false, message: await res.text() };
+
+            if (json.ok) {
+              form.reset();
+              window.location.href = redirectUrl;
+            } else {
+              alert("Error: " + (json.message || "No se pudo guardar."));
+            }
+          } catch (err) {
+            console.error(err);
+            alert("Fallo de red o excepción en JS. Revisa la consola.");
+          }
+        });
+      }
+
+      // --- SECCIÓN STOCK (sin form) ---
+      const stockContainer = document.querySelector(".ti-stock-item");
+      if (hash && stockContainer && stockContainer.classList.contains("ti-stock-item")) {
+        cargarStock(hash);
+      }
+      
   });
 })();

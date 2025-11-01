@@ -42,6 +42,7 @@ try {
             'id_pedido'     => 0,
             'tipo'          => 'E',
             'stock'         => $stock,
+            'user'         => $_SESSION['session_usuario'],
         ]);
     }
 

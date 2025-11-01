@@ -379,7 +379,7 @@ document.getElementById('login').addEventListener('click', async (e) => {
   formData.append('password', password);
 
   try {
-    const res = await fetch('php/acceso.php', {
+    const res = await fetch('controller/acceso.php', {
       method: 'POST',
       body: formData
     });

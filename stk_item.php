@@ -213,7 +213,6 @@
                   </div>
                   <!-- End::header-element --> 
                </div>
-               <!-- End::header-content-left --> <!-- Start::header-content-right --> 
                <?php include __DIR__ . '/navbar.php'; ?>
             </div>
             <!-- End::main-header-container --> 
@@ -249,95 +248,94 @@
          </aside>
          <!-- START MAINCONTENT --> 
          <div class="main-content app-content">
-            <div class="container-fluid">
+            <div class="container-fluid ti-stock-item">
                <div class="flex items-center justify-between page-header-breadcrumb flex-wrap gap-2">
                   <div>
                      <nav aria-label="nav">
                         <ol class="breadcrumb mb-1">
                            <li class="breadcrumb-item"><a href="javascript:void(0);">Items</a></li>
-                           <li class="breadcrumb-item active" aria-current="page">Registrar</li>
+                           <li class="breadcrumb-item active" aria-current="page">Stock</li>
                         </ol>
                      </nav>
-                     <h1 class="page-title font-medium text-lg mb-0">Nuevo Item</h1>
+                     <h1 class="page-title font-medium text-lg mb-0">Stock Item</h1>
                   </div>
-                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='items.php'"> <i class="ri-reply-line"></i> </button> </div>
+                  <div class="btn-list"> 
+                     <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='items.php'"> <i class="ri-reply-line"></i> </button> 
+                  </div>
+               </div>
+
+               <div class="grid grid-cols-12 gap-x-6">
+                  <div class="xl:col-span-12 col-span-12">
+                     <div class="box">
+                        <div class="box-body">
+                        <div class="flex items-center flex-wrap gap-2 justify-between">
+                           <div class="flex items-center">
+                              <span class="font-medium text-[1rem] me-2" id="producto">Producto</span>
+                              <span class="badge bg-primary align-middle" id="categoria">Categoria</span>
+                           </div>
+                           <div class="flex flex-wrap gap-2">
+                              <button aria-label="button" type="button" class="ti-btn ti-btn-primary ti-btn-sm" data-hs-overlay="#create-contact">
+                              <i class="ri-add-line me-1 font-medium align-middle"></i>Stock </button>
+                           </div>
+                        </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="grid grid-cols-12 gap-x-6">
+                  <div class="xxl:col-span-2 md:col-span-4 col-span-12">
+                     <div class="box border border-primary/50">
+                        <div class="box-body p-4">
+                        <div class="flex items-top flex-wrap justify-between">
+                           <div>
+                              <h6 class="font-medium lead-discovered">
+                              <i class="ri-circle-fill p-1 leading-none text-[0.4375rem] rounded-md bg-primary/10 text-primary me-2 align-middle"></i>Almacén
+                              </h6>
+                           </div>
+                           <div class="ms-auto text-center">
+                              <span class=" badge bg-primary" id="almacen">0</span>
+                           </div>
+                        </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="xxl:col-span-2 md:col-span-4 col-span-12">
+                     <div class="box border border-primarytint1color/50">
+                        <div class="box-body p-4">
+                           <div class="flex items-top flex-wrap justify-between">
+                              <div>
+                                 <h6 class="font-medium lead-qualified">
+                                 <i class="ri-circle-fill p-1 leading-none text-[0.4375rem] rounded-md bg-primarytint1color/10 text-primarytint1color me-2 align-middle"></i>Ventas
+                                 </h6>
+                              </div>
+                              <div>
+                                 <span class=" badge bg-primarytint1color text-white" id="ventas">0</span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="xxl:col-span-2 md:col-span-4 col-span-12">   
+                     <div id="stock-box" class="box border border-primarytint2color/50">
+                        <div class="box-body p-4">
+                           <div class="flex items-top flex-wrap justify-between">
+                              <div>
+                              <h6 class="font-medium">
+                                 <i id="stock-icon" class="ri-circle-fill p-1 leading-none text-[0.4375rem] rounded-md bg-primarytint2color/10 text-primarytint2color me-2 align-middle"></i>
+                                 Stock
+                              </h6>
+                              </div>
+                              <div>
+                              <span id="stock-badge" class="badge bg-primarytint2color text-white">0</span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+
                </div>
             
-               <div class="col-span-12">
-                  <div class="box">
-                     <div class="box-header">
-                        <h5 class="box-title">Data Validation</h5>
-                     </div>
-                     <div class="box-body">
-                        <form class="ti-custom-validation-item" novalidate>
-                           <div class="grid lg:grid-cols-3 gap-6">
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Grupo</label>
-                                 <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
-                                    <option value="">Seleccione</option>
-                                    <option value="PRODUCTO">Producto</option>
-                                    <option value="SERVICIO">Servicio</option>
-                                 </select>
-                                 <span class="text-red-500 text-xs hidden" data-error-for="grupo"></span>
-                              </div>
-
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Categoria</label>
-                                 <select id="categoria" name="categoria" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
-                                    <option value="">Seleccione</option>
-                                 </select>
-                                 <span class="text-red-500 text-xs hidden" data-error-for="categoria"></span>
-                              </div>
-                           </div>
-
-                           <div class="grid lg:grid-cols-3 gap-6">   
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Nombre</label>
-                                 <input id="nombre" name="nombre" type="text" class="ti-form-input rounded-sm"
-                                       placeholder="Igora 100ml" data-rules="required|min:2|max:50">
-                                 <span class="text-red-500 text-xs hidden" data-error-for="nombre"></span>
-                              </div>
-
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Precio</label>
-                                 <input
-                                    id="precio"
-                                    name="precio"
-                                    type="number"
-                                    step="0.01"
-                                    min="0.01"
-                                    class="ti-form-input rounded-sm"
-                                    placeholder="25.00"
-                                    data-rules="required|numeric|min_value:0.01"
-                                 />
-                                 <span class="text-red-500 text-xs hidden" data-error-for="precio"></span>
-                              </div>
-
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Stock</label>
-                                 <input
-                                    id="stock"
-                                    name="stock"
-                                    type="number"
-                                    step="1"
-                                    min="1"
-                                    max="500"
-                                    class="ti-form-input rounded-sm"
-                                    placeholder="100"
-                                    data-rules="required|numeric|min_value:1|max_value:500"
-                                 />
-                                 <span class="text-red-500 text-xs hidden" data-error-for="stock"></span>
-                              </div>
-
-                           </div>
-
-                           <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
-                        </form>
-
-                     </div>
-                  </div>
-               </div>
-               
             </div>
          </div>
          <!-- END MAINCONTENT --> 
@@ -369,13 +367,10 @@
       <script src="./assets/js/simplebar.js"></script>
       <script src="./assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
       <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
-      <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
-      <script src="./assets/js/choices.js"></script>
-
       <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
       <script src="./assets/js/custom-switcher.min.js"></script>
       <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
-      <script src="./assets/js/form-validation.js"></script>
+      <script src="./assets/js/form-validation.js?v=1"></script>
       <script src="./assets/js/custom.js"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
          <div class="pcr-selection">

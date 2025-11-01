@@ -63,15 +63,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 formatter: (cell) => {
                     const id = cell.getRow().getData().id;
                     const idHash = md5(id.toString());
-                    return `
-                        <div style="display:flex;gap:.5rem;justify-content:center;">
-                            <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full" data-id="${idHash}">
-                                <i class="ri-edit-2-line"></i>
+                    let buttons = `
+                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full" data-id="${idHash}">
+                            <i class="ri-edit-2-line"></i>
+                        </button>
+                        <button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full" data-id="${id}">
+                            <i class="ri-delete-bin-line"></i>
+                        </button>
+                    `;
+
+                    if (filtroTipo.value === "PRODUCTO") {
+                        buttons += `
+                            <button class="btn-stock ti-btn ti-btn-icon bg-info/10 text-info hover:bg-info hover:text-white !rounded-full" data-id="${idHash}">
+                                <i class="ri-box-3-line"></i>
                             </button>
-                            <button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full" data-id="${id}">
-                                <i class="ri-delete-bin-line"></i>
-                            </button>
-                        </div>`;
+                        `;
+                    }
+
+                    return `<div style="display:flex;gap:.5rem;justify-content:center;">${buttons}</div>`;
                 },
                 cellClick: function (e, cell) {
                     const id = cell.getRow().getData().id;
@@ -101,6 +110,9 @@ document.addEventListener("DOMContentLoaded", function () {
                                 alert("❌ Error de red al suspender");
                             });
                         }
+                    } else if (e.target.closest(".btn-stock")) {
+                        const idHash = e.target.closest(".btn-stock").dataset.id;
+                        window.location.href = "stk_item.php?hash=" + idHash;
                     }
                 },
             }
@@ -115,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    crearTabla();
+    crearTabla(filtroTipo.value);
 
     filtroTipo.addEventListener("change", (e) => {
         crearTabla(e.target.value);
