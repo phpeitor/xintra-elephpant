@@ -130,6 +130,21 @@ class Item {
         return $data ?: null;
     }
 
+    public function GraficoPorHash(string $hash): ?array {
+        $sql = "SELECT *,
+                case when tipo='E' then 'Almacen' else 'Venta' end as Tipo, 
+                date(fecha) as Fecha, 
+                date_format(fecha, '%b-%y') as Date,stock as Total 
+                FROM stock_black 
+                WHERE MD5(id_product) = :hash
+                order by fecha desc";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':hash', $hash);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
     public function obtenerCategoria(string $grupo): ?array {
         $sql = "SELECT *
                 FROM categoria
