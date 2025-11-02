@@ -24,7 +24,7 @@
         </a>
         <ul class="slide-menu child1" data-popper-placement="top" data-popper-reference-hidden="" data-popper-escaped="" style="position: relative; left: 0px; top: 0px; margin: 0px; transform: translate(120px, 3222px);">
             <li class="slide"> <a href="usuarios.php" class="side-menu__item">Usuarios</a> </li>
-            <li class="slide"> <a href="horarios.php" class="side-menu__item">Horarios</a> </li>
+            <li class="slide"> <a href="#" class="side-menu__item">Horarios</a> </li>
         </ul>
     </li>
 
@@ -52,17 +52,17 @@
         </a>
     </li>
 
-    <li class="slide__category"><span class="category-name">Ingresos &amp; Egresos</span></li>
+    <li class="slide__category"><span class="category-name">Ventas &amp; Compras</span></li>
     <li class="slide has-sub">
         <a href="javascript:void(0);" class="side-menu__item">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /><path d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1 -1.8 -1" /><path d="M12 7v10" />
             </svg>
-            <span class="side-menu__label">Ingresos</span> <i class="ri-arrow-down-s-line side-menu__angle"></i> 
+            <span class="side-menu__label">Ventas</span> <i class="ri-arrow-down-s-line side-menu__angle"></i> 
         </a>
         <ul class="slide-menu child1" data-popper-placement="top" data-popper-reference-hidden="" data-popper-escaped="" style="position: relative; left: 0px; top: 0px; margin: 0px; transform: translate(120px, 3222px);">
-            <li class="slide"> <a href="ventas.php" class="side-menu__item">Ventas</a> </li>
-            <li class="slide"> <a href="reporte.php" class="side-menu__item">Reporte</a> </li>
+            <li class="slide"> <a href="tickets.php" class="side-menu__item">Tickets</a> </li>
+            <li class="slide"> <a href="#" class="side-menu__item">Reporte</a> </li>
         </ul>
     </li>
     </ul>

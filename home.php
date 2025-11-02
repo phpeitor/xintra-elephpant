@@ -4920,7 +4920,7 @@ rect.legend-mouseover-inactive,
        ❤
       </span>
       by
-      <a href="https://www.spruko.com/" target="_blank">
+      <a href="https://www.instagram.com/amvsoft.tech/" target="_blank">
        <span class="font-medium text-primary">
         Spruko
        </span>

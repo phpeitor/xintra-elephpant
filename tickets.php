@@ -1,6 +1,8 @@
+
 <?php
   require_once __DIR__ . "/controller/check_session.php";
 ?>
+
 <html lang="en" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
    <head>
       <meta charset="UTF-8">
@@ -213,7 +215,6 @@
                   </div>
                   <!-- End::header-element --> 
                </div>
-               <!-- End::header-content-left --> <!-- Start::header-content-right --> 
                <?php include __DIR__ . '/navbar.php'; ?>
             </div>
             <!-- End::main-header-container --> 
@@ -254,95 +255,40 @@
                   <div>
                      <nav aria-label="nav">
                         <ol class="breadcrumb mb-1">
-                           <li class="breadcrumb-item"><a href="javascript:void(0);">Items</a></li>
-                           <li class="breadcrumb-item active" aria-current="page">Registrar</li>
+                           <li class="breadcrumb-item"><a href="javascript:void(0);">Tickets</a></li>
+                           <li class="breadcrumb-item active" aria-current="page">Data Tickets</li>
                         </ol>
                      </nav>
-                     <h1 class="page-title font-medium text-lg mb-0">Nuevo Item</h1>
+                     <h1 class="page-title font-medium text-lg mb-0">Data Tickets</h1>
                   </div>
-                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='items.php'"> <i class="ri-reply-line"></i> </button> </div>
+                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> 
+                     <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"
+                                                         onclick="window.location.href='add_usuario.php'"> <i class="ri-share-forward-line me-1"></i> Registrar </button> 
+                  </div>
                </div>
             
-               <div class="col-span-12">
-                  <div class="box">
-                     <div class="box-header">
-                        <h5 class="box-title">Data Validation</h5>
-                     </div>
-                     <div class="box-body">
-                        <form class="ti-custom-validation-item" novalidate>
-                           <div class="grid lg:grid-cols-3 gap-6">
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Grupo</label>
-                                 <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
-                                    <option value="">Seleccione</option>
-                                    <option value="PRODUCTO">Producto</option>
-                                    <option value="SERVICIO">Servicio</option>
-                                 </select>
-                                 <span class="text-red-500 text-xs hidden" data-error-for="grupo"></span>
-                              </div>
-
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Categoria</label>
-                                 <select id="categoria" name="categoria" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
-                                    <option value="">Seleccione</option>
-                                 </select>
-                                 <span class="text-red-500 text-xs hidden" data-error-for="categoria"></span>
+               <div class="grid grid-cols-12 gap-6">
+                  <div class="col-span-12">
+                     <div class="box">
+                        <div class="box-header">
+                           <h5 class="box-title">Download DataTable</h5>
+                        </div>
+                        <div class="box-body space-y-3">
+                           <div class="download-data"> <button type="button" class="ti-btn ti-btn-primary" id="download-csv">Download CSV</button> <button type="button" class="ti-btn ti-btn-primary" id="download-json">Download JSON</button> <button type="button" class="ti-btn ti-btn-primary" id="download-xlsx">Download XLSX</button> <button type="button" class="ti-btn ti-btn-primary" id="download-pdf">Download PDF</button> <button type="button" class="ti-btn ti-btn-primary" id="download-html">Download HTML</button> </div>
+                           <div class="overflow-hidden table-bordered">
+                              <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
+                                 
                               </div>
                            </div>
-
-                           <div class="grid lg:grid-cols-3 gap-6">   
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Nombre</label>
-                                 <input id="nombre" name="nombre" type="text" class="ti-form-input rounded-sm"
-                                       placeholder="Igora 100ml" data-rules="required|min:2|max:50">
-                                 <span class="text-red-500 text-xs hidden" data-error-for="nombre"></span>
-                              </div>
-
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Precio</label>
-                                 <input
-                                    id="precio"
-                                    name="precio"
-                                    type="number"
-                                    step="0.01"
-                                    min="0.01"
-                                    class="ti-form-input rounded-sm"
-                                    placeholder="25.00"
-                                    data-rules="required|numeric|min_value:0.01"
-                                 />
-                                 <span class="text-red-500 text-xs hidden" data-error-for="precio"></span>
-                              </div>
-
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Stock</label>
-                                 <input
-                                    id="stock"
-                                    name="stock"
-                                    type="number"
-                                    step="1"
-                                    min="1"
-                                    max="500"
-                                    class="ti-form-input rounded-sm"
-                                    placeholder="100"
-                                    data-rules="required|numeric|min_value:1|max_value:500"
-                                 />
-                                 <span class="text-red-500 text-xs hidden" data-error-for="stock"></span>
-                              </div>
-
-                           </div>
-
-                           <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
-                        </form>
-
+                        </div>
                      </div>
                   </div>
                </div>
-               
             </div>
          </div>
          <!-- END MAINCONTENT --> 
          <footer class="mt-auto py-4 bg-white dark:bg-bodybg text-center border-t border-defaultborder dark:border-defaultborder/10">
-            <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2025</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.instagram.com/amvsoft.tech/" target="_blank"> <span class="font-medium text-primary">AMV</span> </a> All rights reserved </span> </div>
+            <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2025</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra Elephpant</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.instagram.com/amvsoft.tech/" target="_blank"> <span class="font-medium text-primary">AMV</span> </a> All rights reserved </span> </div>
          </footer>
          <div class="hs-overlay ti-modal hidden" id="header-responsive-search" tabindex="-1" aria-labelledby="header-responsive-search">
             <div class="ti-modal-box">
@@ -369,13 +315,14 @@
       <script src="./assets/js/simplebar.js"></script>
       <script src="./assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
       <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
-      <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
-      <script src="./assets/js/choices.js"></script>
-
       <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
       <script src="./assets/js/custom-switcher.min.js"></script>
       <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
-      <script src="./assets/js/form-validation.js"></script>
+      <script src="./assets/libs/xlsx/xlsx.full.min.js"></script>
+      <script src="./assets/libs/jspdf/jspdf.umd.min.js"></script>
+      <script src="./assets/libs/jspdf-autotable/jspdf.plugin.autotable.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+      <script src="./assets/js/datatables_user.js"></script>
       <script src="./assets/js/custom.js"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
          <div class="pcr-selection">

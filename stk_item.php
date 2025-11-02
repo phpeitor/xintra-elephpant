@@ -352,7 +352,7 @@
          </div>
          <!-- END MAINCONTENT --> 
          <footer class="mt-auto py-4 bg-white dark:bg-bodybg text-center border-t border-defaultborder dark:border-defaultborder/10">
-            <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2025</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.spruko.com/" target="_blank"> <span class="font-medium text-primary">Spruko</span> </a> All rights reserved </span> </div>
+            <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2025</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.instagram.com/amvsoft.tech/" target="_blank"> <span class="font-medium text-primary">AMV</span> </a> All rights reserved </span> </div>
          </footer>
          <div class="hs-overlay ti-modal hidden" id="header-responsive-search" tabindex="-1" aria-labelledby="header-responsive-search">
             <div class="ti-modal-box">
