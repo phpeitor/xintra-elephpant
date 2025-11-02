@@ -365,7 +365,43 @@
       // --- SECCIÓN STOCK (sin form) ---
       const stockContainer = document.querySelector(".ti-stock-item");
       if (hash && stockContainer && stockContainer.classList.contains("ti-stock-item")) {
-        cargarStock(hash);
+          cargarStock(hash);
+
+          const cantidadInput = document.querySelector("#deal-lead-score");
+          const fechaInput = document.querySelector("#targetDate");
+          const btnGuardar = document.querySelector("#btnGuardarStock");
+
+          if (window.flatpickr) flatpickr("#targetDate", { dateFormat: "Y-m-d" });
+
+          btnGuardar?.addEventListener("click", async () => {
+            const stock = cantidadInput.value.trim();
+            const fecha = fechaInput.value.trim();
+
+            if (!stock || isNaN(stock) || stock <= 0) {
+              alert("Por favor ingrese una cantidad válida");
+              return;
+            }
+
+            try {
+              const res = await fetch("./controller/add_stock.php", {
+                method: "POST",
+                body: new URLSearchParams({ stock, fecha, id: hash })
+              });
+
+              const data = await res.json();
+
+              if (data.ok) {
+                alert("Stock guardado correctamente ✅");
+                location.reload(); 
+              } else {
+                alert("Error: " + (data.message || "No se pudo guardar"));
+              }
+            } catch (e) {
+              console.error(e);
+              alert("Error al guardar stock.");
+            }
+          });
+        
       }
       
   });

@@ -13,10 +13,9 @@ if (isset($_SESSION['session_time'])) {
     if ($inactive > $max_inactive) {
         session_unset();
         session_destroy();
-        header('Location: ../index.php');
+        header('Location: ./index.php');
         exit;
     } else {
-        // refrescar tiempo
         $_SESSION['session_time'] = time();
     }
 }

@@ -257,7 +257,7 @@
                            <li class="breadcrumb-item active" aria-current="page">Stock</li>
                         </ol>
                      </nav>
-                     <h1 class="page-title font-medium text-lg mb-0">Stock Item</h1>
+                     <h1 class="page-title font-medium text-lg mb-0">Stock Item </h1>
                   </div>
                   <div class="btn-list"> 
                      <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='items.php'"> <i class="ri-reply-line"></i> </button> 
@@ -321,13 +321,13 @@
                         <div class="box-body p-4">
                            <div class="flex items-top flex-wrap justify-between">
                               <div>
-                              <h6 class="font-medium">
-                                 <i id="stock-icon" class="ri-circle-fill p-1 leading-none text-[0.4375rem] rounded-md bg-primarytint2color/10 text-primarytint2color me-2 align-middle"></i>
-                                 Stock
-                              </h6>
+                                 <h6 class="font-medium">
+                                    <i id="stock-icon" class="ri-circle-fill p-1 leading-none text-[0.4375rem] rounded-md bg-primarytint2color/10 text-primarytint2color me-2 align-middle"></i>
+                                    Stock
+                                 </h6>
                               </div>
                               <div>
-                              <span id="stock-badge" class="badge bg-primarytint2color text-white">0</span>
+                                 <span id="stock-badge" class="badge bg-primarytint2color text-white">0</span>
                               </div>
                            </div>
                         </div>
@@ -385,7 +385,7 @@
       <script src="./assets/js/form-validation.js?v=1"></script>
       <script src="./assets/js/custom.js"></script>
       <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
-      <script src="./assets/js/widgets.js"></script>
+      <script src="./assets/js/widgets.js?v=2"></script>
 
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
          <div class="pcr-selection">
@@ -452,7 +452,7 @@
          </div>
       </div>
 
-      <div id="create-stock" class="hs-overlay ti-modal open opened" aria-overlay="true" tabindex="-1">
+      <div id="create-stock" class="hs-overlay ti-modal" aria-overlay="true" tabindex="-1">
          <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out">
             <div class="max-h-full overflow-hidden ti-modal-content">
                <div class="ti-modal-header">
@@ -467,15 +467,11 @@
                <div class="ti-modal-body overflow-y-auto">
                   <div class="grid grid-cols-12 gap-x-6 gap-y-3">
                      <div class="xl:col-span-6 col-span-12">
-                        <label for="deal-lead-score" class="form-label">Deal Value</label>
-                        <input type="number" class="form-control" id="deal-lead-score" placeholder="Deal Value">
+                        <label for="deal-lead-score" class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" id="deal-lead-score" placeholder="1" min=1 max=100>
                      </div>
-                     <div class="xl:col-span-12 col-span-12">
-                        <label for="company-name" class="form-label">Company Name</label>
-                        <input type="text" class="form-control" id="company-name" placeholder="Company Name">
-                     </div>
-                     <div class="xl:col-span-12 col-span-12">
-                        <label class="form-label">Last Contacted</label>
+                     <div class="xl:col-span-6 col-span-12">
+                        <label class="form-label">Fecha</label>
                         <div class="input-group">
                         <div class="input-group-text text-textmuted dark:text-textmuted/50">
                            <i class="ri-calendar-line"></i>
@@ -486,8 +482,12 @@
                   </div>
                </div>
                <div class="ti-modal-footer">
-                  <button type="button" class="hs-dropdown-toggle ti-btn ti-btn-soft-secondary" data-hs-overlay="#create-stock"> Cancel </button>
-                  <a class="ti-btn ti-btn-primary" href="javascript:void(0);"> Create Deal </a>
+                  <button type="button" class="hs-dropdown-toggle ti-btn ti-btn-soft-secondary" data-hs-overlay="#create-stock"> 
+                     Cancel 
+                  </button>
+                  <button id="btnGuardarStock" class="ti-btn ti-btn-primary" type="button">
+                     Guardar
+                  </button>
                </div>
             </div>
          </div>

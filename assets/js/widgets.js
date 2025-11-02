@@ -6,6 +6,7 @@
   if (!hash || !contenedor) return;
 
   try {
+
     const res = await fetch(`controller/stk_item.php?hash=${hash}`);
     const json = await res.json();
 
@@ -74,9 +75,15 @@
       }
     };
 
-    // 🧩 Renderizar
     const chart = new ApexCharts(contenedor, options);
     chart.render();
+
+    flatpickr("#targetDate", {
+        enableTime: true,
+        minTime: "08:00",
+        maxTime: "22:00",
+        disableMobile: true
+    });
 
   } catch (error) {
     console.error("Error al cargar gráfico:", error);

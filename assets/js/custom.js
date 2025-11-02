@@ -269,7 +269,7 @@
         e.preventDefault();
         alertify.confirm("Cerrar sesión", "¿Seguro que deseas salir?",
           function() {
-            window.location.href = "php/logout.php";
+            window.location.href = "controller/logout.php";
           },
           function() {
             alertify.message("Cancelado");

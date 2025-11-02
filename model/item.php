@@ -56,19 +56,33 @@ class Item {
     }
 
     public function guardar_stock(array $data): int {
-        $sql = "INSERT INTO stock_black 
-                (id_product, id_pedido, tipo, stock, fecha, user)
-                VALUES 
-                (:id_product, :id_pedido, :tipo, :stock, :fecha, :user)";
-        $stmt = $this->conn->prepare($sql);
+        $id_product = $data['id_product'] ?? '';
+        $id_pedido  = (int)($data['id_pedido'] ?? 0);
+        $tipo       = $data['tipo'] ?? 'E';
+        $stock      = (float)($data['stock'] ?? 0);
+        $fecha      = $data['fecha'] ?? $this->nowLima;
+        $user       = $data['user'] ?? 'admin';
 
-        $stmt->bindValue(':id_product',   $data['id_product'] ?? '');
-        $stmt->bindValue(':id_pedido', $data['id_pedido'] ?? '');
-        $stmt->bindValue(':tipo',     $data['tipo'] ?? '');
-        $stmt->bindValue(':stock',  $data['stock'] ?? '0');
-        $stmt->bindValue(':fecha', $this->nowLima);
-        $stmt->bindValue(':user',  $data['user'] ?? 'admin');
+        $sql = "INSERT INTO stock_black (id_product, id_pedido, tipo, stock, fecha, user)
+                VALUES (
+                    (CASE 
+                        WHEN LENGTH(:id_product) = 32 THEN (
+                            SELECT id FROM product_service WHERE MD5(id) = :id_product LIMIT 1
+                        )
+                        ELSE :id_product
+                    END),
+                    :id_pedido, :tipo, :stock, :fecha, :user
+                )";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':id_product', $id_product);
+        $stmt->bindValue(':id_pedido', $id_pedido, PDO::PARAM_INT);
+        $stmt->bindValue(':tipo', $tipo);
+        $stmt->bindValue(':stock', $stock);
+        $stmt->bindValue(':fecha', $fecha);
+        $stmt->bindValue(':user', $user);
         $stmt->execute();
+
         return (int)$this->conn->lastInsertId();
     }
 
