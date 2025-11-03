@@ -327,325 +327,66 @@
                   <div class="xl:col-span-9 col-span-12">
                      <div class="box" id="cart-container-delete">
                         <div class="box-header">
-                        <div class="box-title"> Cart Items </div>
+                        <div class="box-title"> Tabla Items </div>
                         </div>
                         <div class="box-body">
                         <div class="table-responsive">
                            <table class="table table-bordered whitespace-nowrap min-w-full">
                               <thead>
-                              <tr class="border border-solid dark:!border-defaultborder/10 !border-defaultborder">
-                                 <th scope="col"> Product Name </th>
-                                 <th scope="col"> Price </th>
-                                 <th scope="col"> Quantity </th>
-                                 <th scope="col"> Total </th>
-                                 <th scope="col"> Action </th>
-                              </tr>
+                                 <tr class="border border-solid dark:!border-defaultborder/10 !border-defaultborder">
+                                    <th scope="col"> Nombre </th>
+                                    <th scope="col"> Precio </th>
+                                    <th scope="col"> Cantidad </th>
+                                    <th scope="col"> Total </th>
+                                    <th scope="col"> Opciones </th>
+                                 </tr>
                               </thead>
                               <tbody>
-                              <tr class="border border-solid dark:!border-defaultborder/10 !border-defaultborder">
-                                 <td>
-                                    <div class="flex items-center">
-                                    <div class="me-3">
-                                       <span class="avatar avatar-xxl bg-light">
-                                          <img src="../assets/images/ecommerce/png/1.png" alt="">
-                                       </span>
-                                    </div>
-                                    <div class="flex-auto">
-                                       <div class="mb-1 text-[14px] font-semibold">
-                                          <a href="javascript:void(0);">Compact Laptop <span class="badge bg-primarytint3color text-white text-[0.5625rem] inline-flex gap-1">
-                                             <i class="ri-discount-percent-line text-[10px]"></i>20 OFF </span>
-                                          </a>
-                                       </div>
-                                       <div class="flex gap-4 flex-wrap mb-1 items-center">
-                                          <div>
-                                          <span class="me-1">Size:</span>
-                                          <span class="font-medium text-textmuted dark:text-textmuted/50">Compact</span>
-                                          </div>
-                                          <div>
-                                          <span class="me-1">Color:</span>
-                                          <span class="font-medium text-textmuted dark:text-textmuted/50">Grey</span>
+                                 <tr class="border border-solid dark:!border-defaultborder/10 !border-defaultborder">
+                                    <td>
+                                       <div class="flex items-center">
+                                          <div class="flex-auto">
+                                             <div class="mb-1 text-[14px] font-semibold">
+                                                <a href="javascript:void(0);">Compact Laptop</a>
+                                             </div>
+                                             <span class="badge bg-success/10 text-success">In Stock</span>
                                           </div>
                                        </div>
-                                       <span class="badge bg-success/10 text-success">In Stock</span>
-                                    </div>
-                                    </div>
-                                 </td>
-                                 <td>
-                                    <div class="font-semibold text-[14px]"> $554 </div>
-                                 </td>
-                                 <td class="product-quantity-container">
-                                    <div class="flex items-center flex-nowrap gap-1 rounded-full cart-input-group">
-                                    <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-minus1 border-end-0 waves-effect waves-light">
-                                       <i class="ri-subtract-line"></i>
-                                    </button>
-                                    <input type="number" class="form-control form-control-sm !rounded-full text-center p-0" aria-label="quantity" value="1">
-                                    <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-plus1 border-start-0 waves-effect waves-light">
-                                       <i class="ri-add-line"></i>
-                                    </button>
-                                    </div>
-                                 </td>
-                                 <td>
-                                    <div class="text-[14px] font-semibold"> $554 </div>
-                                 </td>
-                                 <td>
-                                    <div class="flex items-center">
-                                    <div class="hs-tooltip ti-main-tooltip">
-                                       <a href="wishlist.html" class="ti-btn ti-btn-icon bg-primary text-white ti-btn-sm me-1 hs-tooltip-toggle">
-                                          <i class="ri-heart-line"></i>
-                                          <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm hidden" role="tooltip" data-popper-placement="top" style="position: fixed; inset: auto auto 0px 0px; margin: 0px; transform: translate(918px, -311px);"> Add To Wishlist </span>
-                                       </a>
-                                    </div>
-                                    <div class="hs-tooltip ti-main-tooltip ltr:[--placement:left] rtl:[--placement:right]">
-                                       <a href="javascript:void(0);" class="hs-tooltip-toggle ti-btn ti-btn-icon bg-primarytint2color text-white ti-btn-sm btn-delete waves-effect waves-light">
-                                          <i class="ri-delete-bin-line"></i>
-                                          <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm" role="tooltip" data-popper-placement="left" style="position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate(-362px, 51px);"> Remove From cart </span>
-                                       </a>
-                                    </div>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr class="border-b !border-defaultborder dark:!border-defaultborder/10">
-                                 <td class="cart-items01">
-                                    <div class="flex items-center">
-                                    <div class="me-3">
-                                       <span class="avatar avatar-xxl bg-light">
-                                          <img src="../assets/images/ecommerce/png/7.png" alt="">
-                                       </span>
-                                    </div>
-                                    <div class="flex-auto">
-                                       <div class="mb-1 text-[14px] font-semibold">
-                                          <a href="javascript:void(0);">Bespoke Hand Bag</a>
+                                    </td>
+                                    <td>
+                                       <div class="font-semibold text-[14px]"> $554 </div>
+                                    </td>
+                                    <td class="product-quantity-container">
+                                       <div class="flex items-center flex-nowrap gap-1 rounded-full cart-input-group">
+                                          <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-minus1 border-end-0 waves-effect waves-light">
+                                             <i class="ri-subtract-line"></i>
+                                          </button>
+                                          <input type="number" class="form-control form-control-sm !rounded-full text-center p-0" aria-label="quantity" value="1" min=1 max=10>
+                                          <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-plus1 border-start-0 waves-effect waves-light">
+                                             <i class="ri-add-line"></i>
+                                          </button>
                                        </div>
-                                       <div class="flex gap-4 flex-wrap mb-1 items-center">
-                                          <div>
-                                          <span class="me-1">Size:</span>
-                                          <span class="font-normal text-textmuted dark:text-textmuted/50">Medium</span>
+                                    </td>
+                                    <td>
+                                       <div class="text-[14px] font-semibold"> $554 </div>
+                                    </td>
+                                    <td>
+                                       <div class="flex items-center">
+                                          <div class="hs-tooltip ti-main-tooltip">
+                                             <a href="#" class="ti-btn ti-btn-icon bg-primary text-white ti-btn-sm me-1 hs-tooltip-toggle">
+                                                <i class="ri-heart-line"></i>
+                                                <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm hidden" role="tooltip" data-popper-placement="top" style="position: fixed; inset: auto auto 0px 0px; margin: 0px; transform: translate(918px, -311px);"> Agregar Wishlist </span>
+                                             </a>
                                           </div>
-                                          <div>
-                                          <span class="me-1">Color:</span>
-                                          <span class="font-normal text-textmuted dark:text-textmuted/50">Deep Lavendar</span>
+                                          <div class="hs-tooltip ti-main-tooltip ltr:[--placement:left] rtl:[--placement:right]">
+                                             <a href="#" class="hs-tooltip-toggle ti-btn ti-btn-icon bg-primarytint2color text-white ti-btn-sm btn-delete waves-effect waves-light">
+                                                <i class="ri-delete-bin-line"></i>
+                                                <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm" role="tooltip" data-popper-placement="left" style="position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate(-362px, 51px);"> Eliminar </span>
+                                             </a>
                                           </div>
                                        </div>
-                                       <span class="badge bg-danger/10 text-danger">Out Of Stock</span>
-                                    </div>
-                                    </div>
-                                 </td>
-                                 <td>
-                                    <div class="font-semibold text-[14px]"> $187 </div>
-                                 </td>
-                                 <td class="product-quantity-container">
-                                    <div class="flex items-center flex-nowrap gap-1 rounded-full cart-input-group">
-                                    <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-minus1 border-end-0 waves-effect waves-light">
-                                       <i class="ri-subtract-line"></i>
-                                    </button>
-                                    <input type="number" class="form-control form-control-sm !rounded-full text-center p-0" aria-label="number" value="2">
-                                    <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-plus1 border-start-0 waves-effect waves-light">
-                                       <i class="ri-add-line"></i>
-                                    </button>
-                                    </div>
-                                 </td>
-                                 <td>
-                                    <div class="text-[14px] font-semibold"> $374 </div>
-                                 </td>
-                                 <td>
-                                    <div class="flex items-center">
-                                    <div class="hs-tooltip ti-main-tooltip">
-                                       <a href="wishlist.html" class="ti-btn ti-btn-icon bg-primary text-white ti-btn-sm me-1 hs-tooltip-toggle">
-                                          <i class="ri-heart-line"></i>
-                                          <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm hidden" role="tooltip" data-popper-placement="top" style="position: fixed; inset: auto auto 0px 0px; margin: 0px; transform: translate(918px, -201px);"> Add To Wishlist </span>
-                                       </a>
-                                    </div>
-                                    <div class="hs-tooltip ti-main-tooltip ltr:[--placement:left] rtl:[--placement:right]">
-                                       <a href="javascript:void(0);" class="hs-tooltip-toggle ti-btn ti-btn-icon bg-primarytint2color text-white ti-btn-sm btn-delete waves-effect waves-light">
-                                          <i class="ri-delete-bin-line"></i>
-                                          <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm" role="tooltip" data-popper-placement="left" style="position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate(-362px, 161px);"> Remove From cart </span>
-                                       </a>
-                                    </div>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr class="border-b !border-defaultborder dark:!border-defaultborder/10">
-                                 <td class="cart-items01">
-                                    <div class="flex items-center">
-                                    <div class="me-3">
-                                       <span class="avatar avatar-xxl bg-light">
-                                          <img src="../assets/images/ecommerce/png/15.png" alt="">
-                                       </span>
-                                    </div>
-                                    <div class="flex-auto">
-                                       <div class="mb-1 text-[14px] font-semibold">
-                                          <a href="javascript:void(0);">StrideMax Shoes <span class="badge bg-info text-[0.5625rem] inline-flex gap-1">
-                                             <i class="ri-discount-percent-line text-[10px]"></i> 12 OFF </span>
-                                          </a>
-                                       </div>
-                                       <div class="flex gap-4 flex-wrap mb-1 items-center">
-                                          <div>
-                                          <span class="me-1">Size:</span>
-                                          <span class="font-normal text-textmuted dark:text-textmuted/50">44mm dial</span>
-                                          </div>
-                                          <div>
-                                          <span class="me-1">Color:</span>
-                                          <span class="font-normal text-textmuted dark:text-textmuted/50">Bronze</span>
-                                          </div>
-                                       </div>
-                                       <span class="badge bg-success/10 text-success">In Stock</span>
-                                    </div>
-                                    </div>
-                                 </td>
-                                 <td>
-                                    <div class="font-semibold text-[14px]"> $503 </div>
-                                 </td>
-                                 <td class="product-quantity-container">
-                                    <div class="flex items-center flex-nowrap gap-1 rounded-full cart-input-group">
-                                    <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-minus1 border-end-0 waves-effect waves-light">
-                                       <i class="ri-subtract-line"></i>
-                                    </button>
-                                    <input type="number" class="form-control form-control-sm !rounded-full text-center p-0" aria-label="quantity" value="2">
-                                    <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-plus1 border-start-0 waves-effect waves-light">
-                                       <i class="ri-add-line"></i>
-                                    </button>
-                                    </div>
-                                 </td>
-                                 <td>
-                                    <div class="text-[14px] font-semibold"> $1,006 </div>
-                                 </td>
-                                 <td>
-                                    <div class="flex items-center">
-                                    <div class="hs-tooltip ti-main-tooltip">
-                                       <a href="wishlist.html" class="ti-btn ti-btn-icon bg-primary text-white ti-btn-sm me-1 hs-tooltip-toggle">
-                                          <i class="ri-heart-line"></i>
-                                          <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm hidden" role="tooltip" data-popper-placement="top" style="position: fixed; inset: auto auto 0px 0px; margin: 0px; transform: translate(918px, -91px);"> Add To Wishlist </span>
-                                       </a>
-                                    </div>
-                                    <div class="hs-tooltip ti-main-tooltip ltr:[--placement:left] rtl:[--placement:right]">
-                                       <a href="javascript:void(0);" class="hs-tooltip-toggle ti-btn ti-btn-icon bg-primarytint2color text-white ti-btn-sm btn-delete waves-effect waves-light">
-                                          <i class="ri-delete-bin-line"></i>
-                                          <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm" role="tooltip" data-popper-placement="left" style="position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate(-362px, 271px);"> Remove From cart </span>
-                                       </a>
-                                    </div>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr class="border-b !border-defaultborder dark:!border-defaultborder/10">
-                                 <td class="cart-items01">
-                                    <div class="flex items-center">
-                                    <div class="me-3">
-                                       <span class="avatar avatar-xxl bg-light">
-                                          <img src="../assets/images/ecommerce/png/12.png" alt="">
-                                       </span>
-                                    </div>
-                                    <div class="flex-auto">
-                                       <div class="mb-1 text-[14px] font-semibold">
-                                          <a href="javascript:void(0);">Kids' Party Wear Frock</a>
-                                       </div>
-                                       <div class="flex gap-4 flex-wrap mb-1 items-center">
-                                          <div>
-                                          <span class="me-1">Size:</span>
-                                          <span class="font-normal text-textmuted dark:text-textmuted/50">Medium</span>
-                                          </div>
-                                          <div>
-                                          <span class="me-1">Color:</span>
-                                          <span class="font-normal text-textmuted dark:text-textmuted/50">Light Pink</span>
-                                          </div>
-                                       </div>
-                                       <span class="badge bg-danger/10 text-danger">Out of Stock</span>
-                                    </div>
-                                    </div>
-                                 </td>
-                                 <td>
-                                    <div class="font-semibold text-[14px]"> $248 </div>
-                                 </td>
-                                 <td class="product-quantity-container">
-                                    <div class="flex items-center flex-nowrap gap-1 rounded-full cart-input-group">
-                                    <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-minus1 border-end-0 waves-effect waves-light">
-                                       <i class="ri-subtract-line"></i>
-                                    </button>
-                                    <input type="number" class="form-control form-control-sm !rounded-full text-center p-0" aria-label="quantity" value="1">
-                                    <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-plus1 border-start-0 waves-effect waves-light">
-                                       <i class="ri-add-line"></i>
-                                    </button>
-                                    </div>
-                                 </td>
-                                 <td>
-                                    <div class="text-[14px] font-semibold"> $248 </div>
-                                 </td>
-                                 <td>
-                                    <div class="flex items-center">
-                                    <div class="hs-tooltip ti-main-tooltip">
-                                       <a href="wishlist.html" class="ti-btn ti-btn-icon bg-primary text-white ti-btn-sm me-1 hs-tooltip-toggle">
-                                          <i class="ri-heart-line"></i>
-                                          <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm hidden" role="tooltip" data-popper-placement="top" data-popper-reference-hidden="" style="position: fixed; inset: auto auto 0px 0px; margin: 0px; transform: translate(918px, 19px);"> Add To Wishlist </span>
-                                       </a>
-                                    </div>
-                                    <div class="hs-tooltip ti-main-tooltip ltr:[--placement:left] rtl:[--placement:right]">
-                                       <a href="javascript:void(0);" class="hs-tooltip-toggle ti-btn ti-btn-icon bg-primarytint2color text-white ti-btn-sm btn-delete waves-effect waves-light">
-                                          <i class="ri-delete-bin-line"></i>
-                                          <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm" role="tooltip" data-popper-placement="left" data-popper-reference-hidden="" data-popper-escaped="" style="position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate(-362px, 355px);"> Remove From cart </span>
-                                       </a>
-                                    </div>
-                                    </div>
-                                 </td>
-                              </tr>
-                              <tr class="border-b !border-defaultborder dark:!border-defaultborder/10">
-                                 <td class="cart-items01">
-                                    <div class="flex items-center">
-                                    <div class="me-3">
-                                       <span class="avatar avatar-xxl bg-light">
-                                          <img src="../assets/images/ecommerce/png/11.png" alt="">
-                                       </span>
-                                    </div>
-                                    <div class="flex-auto">
-                                       <div class="mb-1 text-[14px] font-semibold">
-                                          <a href="javascript:void(0);">Trendy Sunglasses</a>
-                                       </div>
-                                       <div class="flex gap-4 flex-wrap mb-1 items-center">
-                                          <div>
-                                          <span class="me-1">Size:</span>
-                                          <span class="font-medium text-textmuted dark:text-textmuted/50">Large</span>
-                                          </div>
-                                          <div>
-                                          <span class="me-1">Color:</span>
-                                          <span class="font-medium text-textmuted dark:text-textmuted/50">Black</span>
-                                          </div>
-                                       </div>
-                                       <span class="badge bg-success/10 text-success">In Stock</span>
-                                    </div>
-                                    </div>
-                                 </td>
-                                 <td>
-                                    <div class="font-semibold text-[14px]"> $1,299 </div>
-                                 </td>
-                                 <td class="product-quantity-container">
-                                    <div class="flex items-center flex-nowrap gap-1 rounded-full cart-input-group">
-                                    <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-minus1 border-end-0 waves-effect waves-light">
-                                       <i class="ri-subtract-line"></i>
-                                    </button>
-                                    <input type="number" class="form-control form-control-sm !rounded-full text-center p-0" aria-label="quantity" value="1">
-                                    <button type="button" aria-label="button" class="ti-btn ti-btn-icon btn-wave ti-btn-sm  !rounded-full bg-primary/10 text-primary border product-quantity-plus1 border-start-0 waves-effect waves-light">
-                                       <i class="ri-add-line"></i>
-                                    </button>
-                                    </div>
-                                 </td>
-                                 <td>
-                                    <div class="text-[14px] font-semibold"> $1,299 </div>
-                                 </td>
-                                 <td>
-                                    <div class="flex items-center">
-                                    <div class="hs-tooltip ti-main-tooltip">
-                                       <a href="wishlist.html" class="ti-btn ti-btn-icon bg-primary text-white ti-btn-sm me-1 hs-tooltip-toggle">
-                                          <i class="ri-heart-line"></i>
-                                          <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm hidden" role="tooltip" data-popper-placement="top" data-popper-reference-hidden="" data-popper-escaped="" style="position: fixed; inset: auto auto 0px 0px; margin: 0px; transform: translate(918px, 129px);"> Add To Wishlist </span>
-                                       </a>
-                                    </div>
-                                    <div class="hs-tooltip ti-main-tooltip ltr:[--placement:left] rtl:[--placement:right]">
-                                       <a href="javascript:void(0);" class="hs-tooltip-toggle ti-btn ti-btn-icon bg-primarytint2color text-white ti-btn-sm btn-delete waves-effect waves-light">
-                                          <i class="ri-delete-bin-line"></i>
-                                          <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm" role="tooltip" data-popper-placement="left" data-popper-reference-hidden="" data-popper-escaped="" style="position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate(-362px, 465px);"> Remove From cart </span>
-                                       </a>
-                                    </div>
-                                    </div>
-                                 </td>
-                              </tr>
+                                    </td>
+                                 </tr>
                               </tbody>
                            </table>
                         </div>
@@ -676,95 +417,93 @@
                   <div class="xl:col-span-3 col-span-12">
                      <div class="box">
                         <div class="box-header">
-                        <div class="box-title"> Order Summary </div>
+                           <div class="box-title"> Order Summary </div>
                         </div>
                         <div class="box-body p-0">
-                        <div class="p-4 border-b border-defaultborder dark:border-defaultborder/10 border-dashed">
-                           <label for="promo-code" class="font-medium mb-0">Have a Promo Code?</label>
-                           <div class="text-[11px] text-textmuted dark:text-textmuted/50 mb-3">Apply Your Promo Code for an Instant Discount!</div>
-                           <div class="input-group mb-0">
-                              <input type="text" class="form-control form-control-sm !border-s" id="promo-code" name="promo-code" placeholder="Enter Promo Code" aria-label="Enter Promo Code" aria-describedby="coupons">
-                              <button class="ti-btn ti-btn-primary !m-0" type="button" id="coupons">Apply</button>
-                           </div>
-                        </div>
-                        <div class="p-4 pb-2">
-                           <p class="mb-2 font-semibold">Delivery:</p>
-                           <ul class="nav nav-tabs tab-style-8 scaleX rounded cart-summary-nav gap-2 flex" role="tablist">
-                              <li class="nav-item grow me-0" role="presentation">
-                              <button type="button" class="nav-link w-full active" data-hs-tab="#freeshipping-pane" role="tab">Free Shipping</button>
-                              </li>
-                              <li class="nav-item grow" role="presentation">
-                              <button type="button" class="nav-link w-full" data-hs-tab="#expressshipping-tab-pane" role="tab">Express Shipping</button>
-                              </li>
-                           </ul>
-                        </div>
-                        <div class="p-4 border-b border-defaultborder dark:border-defaultborder/10 border-dashed">
-                           <div class="overflow-hidden p-0 border-0" id="freeshipping-pane" role="tabpanel">
-                              <div class="text-xs text-textmuted dark:text-textmuted/50 mb-3">
-                              <i class="ri-information-fill"></i> Delivered Within 7 Days
-                              </div>
-                              <div class="flex items-center justify-between mb-3">
-                              <div class="text-textmuted dark:text-textmuted/50">Sub Total</div>
-                              <div class="font-medium text-[14px]">$2,547</div>
-                              </div>
-                              <div class="flex items-center justify-between mb-3">
-                              <div class="text-textmuted dark:text-textmuted/50">Discount</div>
-                              <div class="font-medium text-[14px] text-success">20% - $124</div>
-                              </div>
-                              <div class="flex items-center justify-between mb-3">
-                              <div class="text-textmuted dark:text-textmuted/50">Delivery Charges</div>
-                              <div class="font-medium text-[14px] text-danger">- $0</div>
-                              </div>
-                              <div class="flex items-center justify-between mb-3">
-                              <div class="text-textmuted dark:text-textmuted/50">Service Tax (18%)</div>
-                              <div class="font-medium text-[14px]">- $12</div>
-                              </div>
-                              <div class="flex items-center justify-between h5">
-                              <div class="text-[1rem]">Total :</div>
-                              <div class="font-semibold"> $2,254</div>
-                              </div>
-                              <div class="grid">
-                              <a href="checkout.html" class="ti-btn bg-primary text-white text-center btn-wave mb-1 waves-effect waves-light">Proceed To Checkout</a>
-                              <a href="products.html" class="ti-btn ti-btn-soft-primary1 text-center btn-wave waves-effect waves-light">Continue Shopping</a>
+                           <div class="p-4 border-b border-defaultborder dark:border-defaultborder/10 border-dashed">
+                              <label for="promo-code" class="font-medium mb-0">Have a Promo Code?</label>
+                              <div class="text-[11px] text-textmuted dark:text-textmuted/50 mb-3">Apply Your Promo Code for an Instant Discount!</div>
+                              <div class="input-group mb-0">
+                                 <input type="text" class="form-control form-control-sm !border-s" id="promo-code" name="promo-code" placeholder="Enter Promo Code" aria-label="Enter Promo Code" aria-describedby="coupons">
+                                 <button class="ti-btn ti-btn-primary !m-0" type="button" id="coupons">Apply</button>
                               </div>
                            </div>
-                           <div class="overflow-hidden p-0 border-0 hidden" id="expressshipping-tab-pane" role="tabpanel">
-                              <div class="text-xs text-textmuted dark:text-textmuted/50 mb-3">
-                              <i class="ri-information-fill"></i> Delivered by Tomorrow
+                           <div class="p-4 pb-2">
+                              <p class="mb-2 font-semibold">Delivery:</p>
+                              <ul class="nav nav-tabs tab-style-8 scaleX rounded cart-summary-nav gap-2 flex" role="tablist">
+                                 <li class="nav-item grow me-0" role="presentation">
+                                 <button type="button" class="nav-link w-full active" data-hs-tab="#freeshipping-pane" role="tab">Free Shipping</button>
+                                 </li>
+                                 <li class="nav-item grow" role="presentation">
+                                 <button type="button" class="nav-link w-full" data-hs-tab="#expressshipping-tab-pane" role="tab">Express Shipping</button>
+                                 </li>
+                              </ul>
+                           </div>
+                           <div class="p-4 border-b border-defaultborder dark:border-defaultborder/10 border-dashed">
+                              <div class="overflow-hidden p-0 border-0" id="freeshipping-pane" role="tabpanel">
+                                 <div class="text-xs text-textmuted dark:text-textmuted/50 mb-3">
+                                 <i class="ri-information-fill"></i> Delivered Within 7 Days
+                                 </div>
+                                 <div class="flex items-center justify-between mb-3">
+                                 <div class="text-textmuted dark:text-textmuted/50">Sub Total</div>
+                                 <div class="font-medium text-[14px]">$2,547</div>
+                                 </div>
+                                 <div class="flex items-center justify-between mb-3">
+                                 <div class="text-textmuted dark:text-textmuted/50">Discount</div>
+                                 <div class="font-medium text-[14px] text-success">20% - $124</div>
+                                 </div>
+                                 <div class="flex items-center justify-between mb-3">
+                                 <div class="text-textmuted dark:text-textmuted/50">Delivery Charges</div>
+                                 <div class="font-medium text-[14px] text-danger">- $0</div>
+                                 </div>
+                                 <div class="flex items-center justify-between mb-3">
+                                 <div class="text-textmuted dark:text-textmuted/50">Service Tax (18%)</div>
+                                 <div class="font-medium text-[14px]">- $12</div>
+                                 </div>
+                                 <div class="flex items-center justify-between h5">
+                                 <div class="text-[1rem]">Total :</div>
+                                 <div class="font-semibold"> $2,254</div>
+                                 </div>
+                                 <div class="grid">
+                                 <a href="checkout.html" class="ti-btn bg-primary text-white text-center btn-wave mb-1 waves-effect waves-light">Proceed To Checkout</a>
+                                 <a href="products.html" class="ti-btn ti-btn-soft-primary1 text-center btn-wave waves-effect waves-light">Continue Shopping</a>
+                                 </div>
                               </div>
-                              <div class="flex items-center justify-between mb-3">
-                              <div class="text-textmuted dark:text-textmuted/50">Sub Total</div>
-                              <div class="font-medium text-[14px]">$2,547</div>
-                              </div>
-                              <div class="flex items-center justify-between mb-3">
-                              <div class="text-textmuted dark:text-textmuted/50">Discount</div>
-                              <div class="font-medium text-[14px] text-success">20% - $124</div>
-                              </div>
-                              <div class="flex items-center justify-between mb-3">
-                              <div class="text-textmuted dark:text-textmuted/50">Delivery Charges</div>
-                              <div class="font-medium text-[14px] text-danger">- $15</div>
-                              </div>
-                              <div class="flex items-center justify-between mb-3">
-                              <div class="text-textmuted dark:text-textmuted/50">Service Tax (18%)</div>
-                              <div class="font-medium text-[14px]">- $12</div>
-                              </div>
-                              <div class="flex items-center justify-between h5">
-                              <div class="text-[1rem]">Total :</div>
-                              <div class="font-semibold"> $2,546</div>
-                              </div>
-                              <div class="grid">
-                              <a href="checkout.html" class="ti-btn bg-primary text-white btn-wave mb-2 waves-effect waves-light">Proceed To Checkout</a>
-                              <a href="products.html" class="ti-btn ti-btn-soft-primary1 btn-wave waves-effect waves-light">Continue Shopping</a>
+                              <div class="overflow-hidden p-0 border-0 hidden" id="expressshipping-tab-pane" role="tabpanel">
+                                 <div class="text-xs text-textmuted dark:text-textmuted/50 mb-3">
+                                 <i class="ri-information-fill"></i> Delivered by Tomorrow
+                                 </div>
+                                 <div class="flex items-center justify-between mb-3">
+                                 <div class="text-textmuted dark:text-textmuted/50">Sub Total</div>
+                                 <div class="font-medium text-[14px]">$2,547</div>
+                                 </div>
+                                 <div class="flex items-center justify-between mb-3">
+                                 <div class="text-textmuted dark:text-textmuted/50">Discount</div>
+                                 <div class="font-medium text-[14px] text-success">20% - $124</div>
+                                 </div>
+                                 <div class="flex items-center justify-between mb-3">
+                                 <div class="text-textmuted dark:text-textmuted/50">Delivery Charges</div>
+                                 <div class="font-medium text-[14px] text-danger">- $15</div>
+                                 </div>
+                                 <div class="flex items-center justify-between mb-3">
+                                 <div class="text-textmuted dark:text-textmuted/50">Service Tax (18%)</div>
+                                 <div class="font-medium text-[14px]">- $12</div>
+                                 </div>
+                                 <div class="flex items-center justify-between h5">
+                                 <div class="text-[1rem]">Total :</div>
+                                 <div class="font-semibold"> $2,546</div>
+                                 </div>
+                                 <div class="grid">
+                                 <a href="checkout.html" class="ti-btn bg-primary text-white btn-wave mb-2 waves-effect waves-light">Proceed To Checkout</a>
+                                 <a href="products.html" class="ti-btn ti-btn-soft-primary1 btn-wave waves-effect waves-light">Continue Shopping</a>
+                                 </div>
                               </div>
                            </div>
-                        </div>
                         </div>
                      </div>
                   </div>
                </div>
 
-
-               
             </div>
          </div>
          <!-- END MAINCONTENT --> 

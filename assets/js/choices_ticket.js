@@ -3,10 +3,18 @@
 
   const categoriaSelect = document.getElementById("categoria");
   const clienteSelect = document.getElementById("cliente");
+  const itemSelect = document.getElementById("item");
   const grupoSelect = document.getElementById("grupo");
 
   let categoria = new Choices(categoriaSelect, {
     searchPlaceholderValue: "Buscar categoría...",
+    shouldSort: false,
+    allowHTML: true,
+    itemSelectText: "",
+  });
+
+  let item = new Choices(itemSelect, {
+    searchPlaceholderValue: "Buscar item...",
     shouldSort: false,
     allowHTML: true,
     itemSelectText: "",
@@ -19,13 +27,46 @@
     itemSelectText: "",
   });
 
-  // ---- CATEGORÍAS ----
+  async function cargarItems(categoria) {
+    try {
+      item.destroy();
+      item = new Choices(itemSelect, {
+        searchPlaceholderValue: "Buscar item...",
+        shouldSort: false,
+        allowHTML: true,
+        itemSelectText: "",
+      });
+
+      const response = await fetch(`controller/venta/get_item_categoria.php?categoria=${encodeURIComponent(categoria)}`);
+      const data = await response.json();
+
+      if (!Array.isArray(data) || !data.length) {
+        item.setChoices(
+          [{ value: "", label: "Sin items para esta categoría", disabled: true }],
+          "value",
+          "label",
+          false
+        );
+        return;
+      }
+
+      item.setChoices(
+        data.map(cat => ({
+          value: String(cat.id),
+          label: cat.nombre,
+        })),
+        "value",
+        "label",
+        false
+      );
+    } catch (error) {
+      console.error("Error cargando items:", error);
+    }
+  }
+
   async function cargarCategorias(tipo) {
     try {
-      // 🔹 Destruir instancia anterior completamente (el truco para limpiar)
       categoria.destroy();
-
-      // 🔹 Crear una nueva instancia limpia
       categoria = new Choices(categoriaSelect, {
         searchPlaceholderValue: "Buscar categoría...",
         shouldSort: false,
@@ -122,12 +163,25 @@
   grupoSelect.addEventListener("change", (e) => {
     const tipo = e.target.value;
     cargarCategorias(tipo);
+
+    item.destroy();
+    item = new Choices(itemSelect, {
+      searchPlaceholderValue: "Buscar item...",
+      shouldSort: false,
+      allowHTML: true,
+      itemSelectText: "",
+    });
+
+  });
+
+  categoriaSelect.addEventListener("change", (e) => {
+    const categoria = e.target.value;
+    cargarItems(categoria);
   });
 
   // ---- CARGA INICIAL ----
   cargarClientes();
 
-  // ---- Exportar referencias globales (opcional) ----
   window.itemChoices = {
     cargarCategorias,
     cargarClientes,

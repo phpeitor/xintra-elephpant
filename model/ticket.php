@@ -55,7 +55,6 @@ class Ticket {
     }
 
     public function table_ticket(?string $fecha_inicio = null, ?string $fecha_fin = null): array {
-        // Si no se envían fechas, usar últimos 7 días
         if (!$fecha_inicio || !$fecha_fin) {
             $fecha_fin = date('Y-m-d');
             $fecha_inicio = date('Y-m-d', strtotime('-7 days', strtotime($fecha_fin)));
@@ -86,7 +85,6 @@ class Ticket {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
     public function obtenerPorHash(string $hash): ?array {
         $sql = "SELECT 
                     IDPERSONAL,
@@ -107,24 +105,17 @@ class Ticket {
         return $data ?: null;
     }
 
-    public function acceso_user(array $data):  ?array {
-        $sql = "SELECT 
-                    IDPERSONAL,
-                    DOC,
-                    NOMBRES,
-                    USUARIO,
-                    PASSWORD,
-                    IDESTADO
-                FROM personal
-                WHERE USUARIO = :USUARIO
-                AND PASSWORD= :PASSWORD
-                LIMIT 1";
+    public function obtenerItem(string $categoria): ?array {
+        $sql = "SELECT *
+                FROM product_service
+                WHERE estado=1 
+                and categoria=:categoria";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindValue(':USUARIO', $data['usuario']);
-        $stmt->bindValue(':PASSWORD', $data['password']);
+        if ($categoria !== '') {
+            $stmt->bindValue(':categoria', $categoria, PDO::PARAM_STR);
+        }
         $stmt->execute();
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $data ?: null;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }
