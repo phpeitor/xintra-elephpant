@@ -1,8 +1,6 @@
-
 <?php
   require_once __DIR__ . "/controller/check_session.php";
 ?>
-
 <html lang="en" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
    <head>
       <meta charset="UTF-8">
@@ -215,6 +213,7 @@
                   </div>
                   <!-- End::header-element --> 
                </div>
+               <!-- End::header-content-left --> <!-- Start::header-content-right --> 
                <?php include __DIR__ . '/navbar.php'; ?>
             </div>
             <!-- End::main-header-container --> 
@@ -256,56 +255,78 @@
                      <nav aria-label="nav">
                         <ol class="breadcrumb mb-1">
                            <li class="breadcrumb-item"><a href="javascript:void(0);">Tickets</a></li>
-                           <li class="breadcrumb-item active" aria-current="page">Data Tickets</li>
+                           <li class="breadcrumb-item active" aria-current="page">Registrar</li>
                         </ol>
                      </nav>
-                     <h1 class="page-title font-medium text-lg mb-0">Data Tickets</h1>
+                     <h1 class="page-title font-medium text-lg mb-0">Nuevo Ticket</h1>
                   </div>
-                  <div class="flex gap-2 flex-wrap">
-                     <div class="form-group">
-                        <div class="input-group">
-                           <div class="input-group-text bg-white dark:bg-bodybg border">
-                              <i class="ri-calendar-line"></i>
-                           </div>
-                           <input class="form-control breadcrumb-input flatpickr-input" id="daterange" placeholder="Search By Date Range" readonly="readonly" type="text"/>
-                           <button type="button" class="ti-btn ti-btn-icon ti-btn-outline-secondary !rounded-full btn-wave  waves-effect waves-light">   
-                              <i class="ri-search-line me-1"></i> 
-                           </button>   
-                        </div>
-                     </div>
-
-                     <div class="btn-list"> 
-                        <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> 
-                        <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light" onclick="window.location.href='add_ticket.php'"> <i class="ri-share-forward-line me-1"></i> Registrar 
-                        </button> 
-                     </div>
-                  </div>
+                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='tickets.php'"> <i class="ri-reply-line"></i> </button> </div>
                </div>
             
-               <div class="grid grid-cols-12 gap-6">
-                  <div class="col-span-12">
-                     <div class="box">
+               <div class="col-span-12">
+                  <div class="box">
+                     <div class="box-header">
+                        <h5 class="box-title">Data Validation</h5>
+                     </div>
+                     <div class="box-body">
+                        <form class="ti-custom-validation-ticket" novalidate>
 
-                        <div class="box-body space-y-3">
+                           <div class="grid lg:grid-cols-3 gap-6">
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Fecha</label>
+                                 <div class="input-group"> <div class="input-group-text !text-textmuted dark:text-textmuted/50 !border-defaultborder dark:!border-defaultborder/10"> <i class="ri-calendar-line"></i> </div> <input type="text" class="form-control flatpickr-input active" id="date" placeholder="<?php echo date("Y-m-d"); ?>" readonly="readonly" data-rules="required"> </div>
+                                 <span class="text-red-500 text-xs hidden" data-error-for="fecha"></span>
+                              </div>
 
-                           <div class="download-data"> 
-                              <button type="button" class="ti-btn ti-btn-primary" id="download-csv">Download CSV</button> 
-                              <button type="button" class="ti-btn ti-btn-primary" id="download-json">Download JSON</button> <button type="button" class="ti-btn ti-btn-primary" id="download-xlsx">Download XLSX</button> <button type="button" class="ti-btn ti-btn-primary" id="download-pdf">Download PDF</button> 
-                           </div>
-
-                           <div class="overflow-hidden table-bordered">
-                              <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Cliente</label>
+                                 <select id="cliente" name="cliente" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
+                                    <option value="">Seleccione</option>
+                                 </select>
+                                 <span class="text-red-500 text-xs hidden" data-error-for="cliente"></span>
                               </div>
                            </div>
-                        </div>
+
+                           <div class="grid lg:grid-cols-3 gap-6">
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Grupo</label>
+                                 <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
+                                    <option value="">Seleccione</option>
+                                    <option value="PRODUCTO">Producto</option>
+                                    <option value="SERVICIO">Servicio</option>
+                                 </select>
+                                 <span class="text-red-500 text-xs hidden" data-error-for="grupo"></span>
+                              </div>
+
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Categoria</label>
+                                 <select id="categoria" name="categoria" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
+                                    <option value="">Seleccione</option>
+                                 </select>
+                                 <span class="text-red-500 text-xs hidden" data-error-for="categoria"></span>
+                              </div>
+
+                               <div class="space-y-2">
+                                 <label class="ti-form-label">Item</label>
+                                 <select id="item" name="item" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
+                                    <option value="">Seleccione</option>
+                                 </select>
+                                 <span class="text-red-500 text-xs hidden" data-error-for="categoria"></span>
+                              </div>
+                           </div>
+
+                           <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
+                        </form>
+
                      </div>
                   </div>
                </div>
+               
             </div>
          </div>
          <!-- END MAINCONTENT --> 
          <footer class="mt-auto py-4 bg-white dark:bg-bodybg text-center border-t border-defaultborder dark:border-defaultborder/10">
-            <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2025</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra Elephpant</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.instagram.com/amvsoft.tech/" target="_blank"> <span class="font-medium text-primary">AMV</span> </a> All rights reserved </span> </div>
+            <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2025</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.instagram.com/amvsoft.tech/" target="_blank"> <span class="font-medium text-primary">AMV</span> </a> All rights reserved </span> </div>
          </footer>
          <div class="hs-overlay ti-modal hidden" id="header-responsive-search" tabindex="-1" aria-labelledby="header-responsive-search">
             <div class="ti-modal-box">
@@ -332,14 +353,12 @@
       <script src="./assets/js/simplebar.js"></script>
       <script src="./assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
       <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
+      <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+      <script src="./assets/js/choices.js"></script>
       <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
       <script src="./assets/js/custom-switcher.min.js"></script>
       <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
-      <script src="./assets/libs/xlsx/xlsx.full.min.js"></script>
-      <script src="./assets/libs/jspdf/jspdf.umd.min.js"></script>
-      <script src="./assets/libs/jspdf-autotable/jspdf.plugin.autotable.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-      <script src="./assets/js/datatables_ticket.js"></script>
+      <script src="./assets/js/form-validation.js"></script>
       <script src="./assets/js/custom.js"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
          <div class="pcr-selection">

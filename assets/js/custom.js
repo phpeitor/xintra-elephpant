@@ -18,13 +18,17 @@
     (popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl)
   );
 
-  /* breadcrumb date range picker */
+  const hoy = new Date();
+  const hace7dias = new Date();
+  hace7dias.setDate(hoy.getDate() - 7);
+  const formatDate = (d) => d.toISOString().split("T")[0];
+
   flatpickr("#daterange", {
     mode: "range",
     dateFormat: "Y-m-d",
-    defaultDate: ["2024-05-01", "2024-05-30"]
+    defaultDate: [formatDate(hace7dias), formatDate(hoy)]
   });
-  /* breadcrumb date range picker */
+ 
 
   if (document.querySelector("#hs-overlay-switcher")) {
   

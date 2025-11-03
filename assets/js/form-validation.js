@@ -278,7 +278,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector("form.ti-custom-validation, form.ti-custom-validation-user, form.ti-custom-validation-item");
+      const form = document.querySelector("form.ti-custom-validation, form.ti-custom-validation-user, form.ti-custom-validation-item, form.ti-custom-validation-ticket");
 
       const params = new URLSearchParams(window.location.search);
       const hash = params.get("hash");
@@ -305,6 +305,10 @@
           hidden.value = hash;
           form.appendChild(hidden);
           form.dataset.mode = "update";
+        }
+
+        if (form.classList.contains("ti-custom-validation-ticket")) {
+           flatpickr("#date", {});
         }
 
         form.addEventListener("submit", async (e) => {
