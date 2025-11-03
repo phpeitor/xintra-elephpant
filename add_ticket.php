@@ -306,13 +306,23 @@
                                  <span class="text-red-500 text-xs hidden" data-error-for="categoria"></span>
                               </div>
 
-                               <div class="space-y-2">
+                              <div class="space-y-2">
                                  <label class="ti-form-label">Item</label>
-                                 <select id="item" name="item" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
-                                    <option value="">Seleccione</option>
-                                 </select>
+                                 <div class="flex items-stretch gap-2">
+                                    <div class="flex-1">
+                                       <select id="item" name="item" class="ti-form-select w-full rounded-sm !py-2 !px-3" data-rules="required">
+                                       <option value="">Seleccione</option>
+                                       </select>
+                                    </div>
+
+                                    <div class="hs-tooltip ti-main-tooltip ltr:[--placement:left] rtl:[--placement:right]"> <a href="javascript:void(0);" class="hs-tooltip-toggle ti-btn ti-btn-icon bg-primarytint2color text-white ti-btn-sm btn-delete waves-effect waves-light"> <i class="ri-shopping-cart-line"></i> <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm hidden" role="tooltip" data-popper-placement="left" style="position: fixed; inset: 0px 0px auto auto; margin: 0px; transform: translate(-362px, 319px);"> Agregar </span> </a> 
+                                    </div>
+                                 </div>
+
                                  <span class="text-red-500 text-xs hidden" data-error-for="item"></span>
                               </div>
+
+
                            </div>
 
                            <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
@@ -494,8 +504,8 @@
                                  <div class="font-semibold"> $2,546</div>
                                  </div>
                                  <div class="grid">
-                                 <a href="checkout.html" class="ti-btn bg-primary text-white btn-wave mb-2 waves-effect waves-light">Proceed To Checkout</a>
-                                 <a href="products.html" class="ti-btn ti-btn-soft-primary1 btn-wave waves-effect waves-light">Continue Shopping</a>
+                                 <a href="#" class="ti-btn bg-primary text-white btn-wave mb-2 waves-effect waves-light">Enviar</a>
+                                 <a href="#" class="ti-btn ti-btn-soft-primary1 btn-wave waves-effect waves-light">Continue Shopping</a>
                                  </div>
                               </div>
                            </div>

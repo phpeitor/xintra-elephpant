@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 if (isset($_SESSION['session_usuario'])) {
     header("Location: home.php");
     exit();
@@ -21,6 +20,10 @@ if (isset($_SESSION['session_usuario'])) {
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
 </head>
 <body>
+<video autoplay loop muted playsinline id="background-video">
+	<source src="./assets/resources/video.mp4" type="video/mp4">
+	Tu navegador no soporta la reproducción de video.
+</video>
 <form>
 	<div class="svgContainer">
 		<div>

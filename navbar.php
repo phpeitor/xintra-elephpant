@@ -5,14 +5,14 @@
     </li>
     <li class="header-element header-theme-mode hidden !items-center sm:block md:!px-[0.5rem] px-2">
         <a aria-label="anchor" class="hs-dark-mode-active:hidden flex hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium transition-all text-xs dark:bg-bgdark dark:hover:bg-black/20 text-textmuted dark:text-textmuted/50 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10" href="javascript:void(0);" data-hs-theme-click-value="dark">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"></path>
-        </svg>
-        </a>
-        <a aria-label="anchor" class="hs-dark-mode-active:flex hidden hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium text-defaulttextcolor  transition-all text-xs dark:bg-bodybg dark:bg-bgdark dark:hover:bg-black/20  dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10" href="javascript:void(0);" data-hs-theme-click-value="light">
-        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"></path>
-        </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"></path>
+            </svg>
+            </a>
+            <a aria-label="anchor" class="hs-dark-mode-active:flex hidden hs-dark-mode group flex-shrink-0 justify-center items-center gap-2  rounded-full font-medium text-defaulttextcolor  transition-all text-xs dark:bg-bodybg dark:bg-bgdark dark:hover:bg-black/20  dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10" href="javascript:void(0);" data-hs-theme-click-value="light">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 header-link-icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"></path>
+            </svg>
         </a>
     </li>
     <li class="header-element cart-dropdown hs-dropdown ti-dropdown [--auto-close:inside]">
@@ -23,66 +23,66 @@
         <span class="badge bg-secondary rounded-full header-icon-badge text-white" id="cart-icon-badge">5</span> 
         </a>-->
         <div class="main-header-dropdown hs-dropdown-menu ti-dropdown-menu hidden" data-popper-placement="none" role="menu">
-        <div class="p-4">
-            <div class="flex items-center justify-between">
-                <p class="mb-0 text-[15px] font-medium">Cart Items<span class="badge bg-primarytint2color text-white ms-1 !py-[0.15rem] rounded-full" id="cart-data">5</span></p>
-                <div class="flex items-center gap-2">
-                    <span class="text-xs font-medium text-textmuted dark:text-textmuted/50">Sub Total : </span> 
-                    <h6 class="mb-0"> $740</h6>
+            <div class="p-4">
+                <div class="flex items-center justify-between">
+                    <p class="mb-0 text-[15px] font-medium">Cart Items<span class="badge bg-primarytint2color text-white ms-1 !py-[0.15rem] rounded-full" id="cart-data">5</span></p>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-medium text-textmuted dark:text-textmuted/50">Sub Total : </span> 
+                        <h6 class="mb-0"> $740</h6>
+                    </div>
                 </div>
             </div>
-        </div>
-        <hr class="dropdown-divider">
-        <ul class="list-none mb-0" id="header-cart-items-scroll" data-simplebar="init">
-            <div class="simplebar-wrapper" style="margin: 0px;">
-                <div class="simplebar-height-auto-observer-wrapper">
-                    <div class="simplebar-height-auto-observer"></div>
-                </div>
-                <div class="simplebar-mask">
-                    <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;">
-                        <div class="simplebar-content" style="padding: 0px;">
-                            <li class="ti-dropdown-item block">
-                                <div class="flex items-center cart-dropdown-item gap-4">
-                                <div class="leading-none"> <span class="avatar avatar-xl bg-primary/10"> <img src="./assets/images/ecommerce/png/30.png" alt="Wireless Headphones"> </span> </div>
-                                <div class="flex-auto">
-                                    <div class="flex items-center justify-between mb-0">
-                                        <div class="mb-0 text-[14px] font-medium">
-                                            <a href="#">Wireless Headphones</a> 
-                                            <div class="truncate">
-                                            <p class="mb-0 header-cart-text truncate text-[11px] text-textmuted dark:text-textmuted/50"> Wireless freedom with crystal-clear sound and comfortable </p>
-                                            <h6 class="font-medium mb-0 mt-1"><span class="text-success font-normal me-1 text-[11px] inline-block">(Qty : 1)</span>$78</h6>
+            <hr class="dropdown-divider">
+            <ul class="list-none mb-0" id="header-cart-items-scroll" data-simplebar="init">
+                <div class="simplebar-wrapper" style="margin: 0px;">
+                    <div class="simplebar-height-auto-observer-wrapper">
+                        <div class="simplebar-height-auto-observer"></div>
+                    </div>
+                    <div class="simplebar-mask">
+                        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+                        <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;">
+                            <div class="simplebar-content" style="padding: 0px;">
+                                <li class="ti-dropdown-item block">
+                                    <div class="flex items-center cart-dropdown-item gap-4">
+                                    <div class="leading-none"> <span class="avatar avatar-xl bg-primary/10"> <img src="./assets/images/ecommerce/png/30.png" alt="Wireless Headphones"> </span> </div>
+                                    <div class="flex-auto">
+                                        <div class="flex items-center justify-between mb-0">
+                                            <div class="mb-0 text-[14px] font-medium">
+                                                <a href="#">Wireless Headphones</a> 
+                                                <div class="truncate">
+                                                <p class="mb-0 header-cart-text truncate text-[11px] text-textmuted dark:text-textmuted/50"> Wireless freedom with crystal-clear sound and comfortable </p>
+                                                <h6 class="font-medium mb-0 mt-1"><span class="text-success font-normal me-1 text-[11px] inline-block">(Qty : 1)</span>$78</h6>
+                                                </div>
+                                            </div>
+                                            <div class="text-end">
+                                                <a href="javascript:void(0);" class="header-cart-remove dropdown-item-close" aria-label="anchor"><i class="ri-close-line"></i></a> 
+                                                <h6 class="font-medium mb-0 mt-3"><span class="text-info op-4 font-normal me-1 text-[11px] inline-block">Total :</span>$75</h6>
                                             </div>
                                         </div>
-                                        <div class="text-end">
-                                            <a href="javascript:void(0);" class="header-cart-remove dropdown-item-close" aria-label="anchor"><i class="ri-close-line"></i></a> 
-                                            <h6 class="font-medium mb-0 mt-3"><span class="text-info op-4 font-normal me-1 text-[11px] inline-block">Total :</span>$75</h6>
-                                        </div>
                                     </div>
-                                </div>
-                                </div>
-                            </li>
+                                    </div>
+                                </li>
+                            </div>
+                        </div>
                         </div>
                     </div>
-                    </div>
+                    <div class="simplebar-placeholder" style="width: 0px; height: 0px;"></div>
                 </div>
-                <div class="simplebar-placeholder" style="width: 0px; height: 0px;"></div>
+                <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+                    <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+                </div>
+                <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
+                    <div class="simplebar-scrollbar" style="height: 0px; display: none;"></div>
+                </div>
+            </ul>
+            <div class="p-4 empty-header-item border-t grid items-center"> <a href="#" class="ti-btn ti-btn-primary btn-wave text-center waves-effect waves-light">Proceed to checkout</a> </div>
+            <div class="p-[3rem] empty-item hidden">
+                <div class="text-center">
+                    <span class="avatar avatar-xl avatar-rounded bg-primary/10 !text-primary"> <i class="ri-shopping-cart-2-line fs-2"></i> </span> 
+                    <h6 class="font-medium mb-1 mt-3">Your Cart is Empty</h6>
+                    <span class="mb-3 font-normal text-[13px] block">Add some items to make me happy :)</span> <a href="#" class="ti-btn bg-primarytint1color text-white btn-wave ti-btn-sm m-1 waves-effect waves-light" data-abc="true">continue shopping <i class="bi bi-arrow-right ms-1"></i></a> 
+                </div>
             </div>
-            <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
-                <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
-            </div>
-            <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
-                <div class="simplebar-scrollbar" style="height: 0px; display: none;"></div>
-            </div>
-        </ul>
-        <div class="p-4 empty-header-item border-t grid items-center"> <a href="#" class="ti-btn ti-btn-primary btn-wave text-center waves-effect waves-light">Proceed to checkout</a> </div>
-        <div class="p-[3rem] empty-item hidden">
-            <div class="text-center">
-                <span class="avatar avatar-xl avatar-rounded bg-primary/10 !text-primary"> <i class="ri-shopping-cart-2-line fs-2"></i> </span> 
-                <h6 class="font-medium mb-1 mt-3">Your Cart is Empty</h6>
-                <span class="mb-3 font-normal text-[13px] block">Add some items to make me happy :)</span> <a href="#" class="ti-btn bg-primarytint1color text-white btn-wave ti-btn-sm m-1 waves-effect waves-light" data-abc="true">continue shopping <i class="bi bi-arrow-right ms-1"></i></a> 
-            </div>
-        </div>
         </div>
     </li>
 
