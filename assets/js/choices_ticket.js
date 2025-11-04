@@ -54,6 +54,10 @@
         data.map(cat => ({
           value: String(cat.id),
           label: cat.nombre,
+          customProperties: {
+            stock: cat.stock_final,
+            precio: cat.precio
+          }
         })),
         "value",
         "label",
@@ -178,6 +182,130 @@
     const categoria = e.target.value;
     cargarItems(categoria);
   });
+
+
+  const cartBody = document.getElementById("cartBody");
+  const btnAddToCart = document.getElementById("btnAddToCart");
+
+  // --- Evento: agregar al carrito ---
+  btnAddToCart.addEventListener("click", () => {
+    const selected = item.getValue();
+    if (!selected || !selected.value) {
+      alert("Seleccione un item primero.");
+      return;
+    }
+
+    const { value: id, label: nombre, customProperties } = selected;
+    const precio = parseFloat(customProperties?.precio) || 0;
+    const stock = parseInt(customProperties?.stock) || 0;
+
+
+    if (cartBody.querySelector(`tr[data-id="${id}"]`)) {
+      alert("Este item ya está en el carrito.");
+      return;
+    }
+
+    if (stock <= 0) {
+      alert(`El producto "${nombre}" no tiene stock disponible.`);
+      return;
+    }
+
+    const row = document.createElement("tr");
+    row.setAttribute("data-id", id);
+    row.innerHTML = `
+      <td>
+        <div class="flex items-center">
+          <div class="flex-auto">
+            <div class="mb-1 text-[14px] font-semibold">
+              <a href="javascript:void(0);">${nombre}</a>
+            </div>
+            <span class="badge ${stock > 5 ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}">
+              ${stock > 0 ? 'Stock: ' + stock : 'Sin stock'}
+            </span>
+          </div>
+        </div>
+      </td>
+      <td>
+        <div class="font-semibold text-[14px]">S/. ${precio.toFixed(2)}</div>
+      </td>
+      <td class="product-quantity-container">
+        <div class="flex items-center flex-nowrap gap-1 rounded-full cart-input-group">
+          <button type="button" class="ti-btn ti-btn-icon ti-btn-sm !rounded-full bg-primary/10 text-primary border btn-minus">
+            <i class="ri-subtract-line"></i>
+          </button>
+          <input type="number" class="form-control form-control-sm !rounded-full text-center p-0 qty-input" value="1" min="0" max="${stock}" readonly>
+          <button type="button" class="ti-btn ti-btn-icon ti-btn-sm !rounded-full bg-primary/10 text-primary border btn-plus">
+            <i class="ri-add-line"></i>
+          </button>
+        </div>
+      </td>
+      <td>
+        <div class="text-[14px] font-semibold total-cell">S/. ${precio.toFixed(2)}</div>
+      </td>
+      <td>
+        <div class="flex items-center">
+          <a href="#" class="ti-btn ti-btn-icon bg-primary text-white ti-btn-sm me-1 hs-tooltip-toggle"> 
+            <i class="ri-heart-line"></i> 
+          </a>
+          <div class="hs-tooltip ti-main-tooltip ltr:[--placement:left] rtl:[--placement:right]"> 
+            <a href="javascript:void(0);" class="ti-btn ti-btn-icon bg-danger text-white ti-btn-sm btn-remove waves-effect waves-light">
+              <i class="ri-delete-bin-line"></i> 
+              <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm hidden" role="tooltip"> Eliminar</span> 
+            </a> 
+          </div>
+        </div>
+      </td>
+    `;
+
+    cartBody.appendChild(row);
+    reinitTooltips(row);
+    updateCartEvents(row);
+  });
+
+  function reinitTooltips(container = document) {
+    if (window.HSTooltip && typeof window.HSTooltip.autoInit === "function") {
+      window.HSTooltip.autoInit(container);
+    }
+  }
+
+  function updateCartEvents(row) {
+    const btnMinus = row.querySelector(".btn-minus");
+    const btnPlus = row.querySelector(".btn-plus");
+    const qtyInput = row.querySelector(".qty-input");
+    const totalCell = row.querySelector(".total-cell");
+    const btnRemove = row.querySelector(".btn-remove");
+
+    const precio = parseFloat(row.querySelector("td:nth-child(2)").innerText.replace("S/.", "")) || 0;
+
+    const updateTotal = () => {
+      const qty = parseInt(qtyInput.value) || 1;
+      totalCell.innerText = `S/.${(qty * precio).toFixed(2)}`;
+    };
+
+    btnMinus.addEventListener("click", () => {
+      let val = parseInt(qtyInput.value) || 1;
+      if (val > 1) {
+        qtyInput.value = val - 1;
+        updateTotal();
+      }
+    });
+
+    btnPlus.addEventListener("click", () => {
+      let val = parseInt(qtyInput.value) || 1;
+      const max = parseInt(qtyInput.getAttribute("max")) || 99;
+      if (val < max) {
+        qtyInput.value = val + 1;
+        updateTotal();
+      }
+    });
+
+    qtyInput.addEventListener("input", updateTotal);
+
+    btnRemove.addEventListener("click", () => {
+      row.remove();
+    });
+  }
+
 
   // ---- CARGA INICIAL ----
   cargarClientes();

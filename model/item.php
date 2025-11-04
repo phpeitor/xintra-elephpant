@@ -127,14 +127,15 @@ class Item {
                 IFNULL(stock2, 0) as stock2
                 FROM product_service b
                 left join categoria c on b.categoria=c.id
-                    left join (
-                                SELECT a.id_product,sum(stock) as stock1,b.stock2 as stock2 
-                                FROM stock_black a 
-                                left join (SELECT id_product as id_product2,sum(stock) as stock2 
-                                            FROM stock_black where tipo='S' 
-                                            group by id_product) 
-                                b on a.id_product=b.id_product2 where tipo='E' 
-                                group by id_product) t on t.id_product=b.id 
+                left join (
+                            SELECT a.id_product,sum(stock) as stock1,b.stock2 as stock2 
+                            FROM stock_black a 
+                            left join (SELECT id_product as id_product2,sum(stock) as stock2 
+                                        FROM stock_black where tipo='S' 
+                                        group by id_product) 
+                            b on a.id_product=b.id_product2 where tipo='E' 
+                            group by id_product
+                        ) t on t.id_product=b.id 
                 WHERE MD5(b.id) = :hash
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);

@@ -106,10 +106,24 @@ class Ticket {
     }
 
     public function obtenerItem(string $categoria): ?array {
-        $sql = "SELECT *
-                FROM product_service
-                WHERE estado=1 
-                and categoria=:categoria";
+        $sql = "select t.id_product,
+                    GREATEST(IFNULL(stock1, 0) - IFNULL(stock2, 0), 0) AS stock_final,
+                    c.tpo, b.*,
+                    c.nombre as nom_categoria,
+                    b.precio
+                    from 
+                    product_service b 
+                    left join categoria c on b.categoria=c.id
+                    left join (
+                                SELECT a.id_product,sum(stock) as stock1,b.stock2 as stock2 
+                                FROM stock_black a 
+                                left join (SELECT id_product as id_product2,sum(stock) as stock2 
+                                            FROM stock_black where tipo='S' 
+                                            group by id_product) 
+                                b on a.id_product=b.id_product2 where tipo='E' 
+                                group by id_product) t on t.id_product=b.id 
+                WHERE b.estado=1 
+                and b.categoria=:categoria";
         $stmt = $this->conn->prepare($sql);
         if ($categoria !== '') {
             $stmt->bindValue(':categoria', $categoria, PDO::PARAM_STR);
