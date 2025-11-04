@@ -27,8 +27,6 @@
         movableColumns: true,
         reactiveData: true,
         ajaxURL: "controller/table_cliente.php",
-
-        // OPCIONAL: inspecciona lo que devuelve tu PHP
         ajaxResponse: function(url, params, response) {
             console.log("🔎 respuesta tabla:", response?.[0] ?? response);
             return response;
@@ -39,10 +37,9 @@
             { title: "Nombre Completo", field: "nombre_completo", headerFilter: "input", widthGrow: 2, minWidth: 100 },
             { title: "Documento", field: "documento", headerFilter: "input" },
 
-            // 2) CONTACTO compuesto sin depender de un 'field' real
             {
             title: "Contacto",
-            field: "email",                 // usa un field existente cualquiera; el valor mostrado lo calcula el formatter
+            field: "email",                 
             headerFilter: "input",
             headerFilterFunc: (needle, _val, rowData) =>
                 buildContacto(rowData).toLowerCase().includes(String(needle || "").toLowerCase()),

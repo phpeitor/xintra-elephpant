@@ -49,7 +49,7 @@ class Ticket {
         $stmt->bindValue(':fecha',          $data['fecha'] ?? '');
         $stmt->bindValue(':fecha_registro', $this->nowLima);
         $stmt->bindValue(':dscto',          $data['dscto'] ?? '');
-        $stmt->bindValue(':tipo_dscto',     $data['tipo_dscto'] ?? '');
+        $stmt->bindValue(':tipo_dscto',     $data['tipo_dscto'] ?? 'NO APLICA');
         $stmt->bindValue(':pago',           $data['pago'] ?? '');
         $stmt->execute();
         return (int)$this->conn->lastInsertId();
@@ -67,6 +67,23 @@ class Ticket {
         $stmt->bindValue(':precio',            $data['precio'] ?? '0');
         $stmt->bindValue(':cantidad',          $data['cantidad'] ?? '0');
         $stmt->bindValue(':subtotal',          $data['subtotal'] ?? '0');
+        $stmt->execute();
+        return (int)$this->conn->lastInsertId();
+    }
+
+    public function guardar_stock(array $data): int {
+        $sql = "INSERT INTO stock_black 
+                (id_product, id_pedido, tipo, stock, fecha, user)
+                VALUES 
+                (:id_product, :id_pedido, :tipo, :stock, :fecha, :user)";
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(':id_product',     $data['id_product'] ?? '');
+        $stmt->bindValue(':id_pedido',      $data['id_pedido'] ?? '');
+        $stmt->bindValue(':tipo',           $data['tipo'] ?? 'S');
+        $stmt->bindValue(':stock',          $data['stock'] ?? '0');
+        $stmt->bindValue(':fecha',          $this->nowLima);
+        $stmt->bindValue(':user',           $data['user'] ?? 'admin');
         $stmt->execute();
         return (int)$this->conn->lastInsertId();
     }

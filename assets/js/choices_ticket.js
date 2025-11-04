@@ -259,7 +259,7 @@
   btnAddToCart.addEventListener("click", () => {
     const selected = item.getValue();
     if (!selected || !selected.value) {
-      alert("Seleccione un item primero.");
+      alertify.error("Seleccione un item primero.");
       return;
     }
 
@@ -269,12 +269,12 @@
 
 
     if (cartBody.querySelector(`tr[data-id="${id}"]`)) {
-      alert("Este item ya está en el carrito.");
+      alertify.error("Este item ya está en el carrito.");
       return;
     }
 
     if (stock <= 0) {
-      alert(`El producto "${nombre}" no tiene stock disponible.`);
+      alertify.error(`El producto "${nombre}" no tiene stock disponible.`);
       return;
     }
 

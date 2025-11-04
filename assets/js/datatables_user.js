@@ -114,15 +114,15 @@
                             .then((res) => res.json())
                             .then((json) => {
                                 if (json.ok) {
-                                    alert("✅ Registro suspendido correctamente");
+                                    alertify.success("✅ Registro suspendido correctamente");
                                     table.replaceData();
                                 } else {
-                                    alert("❌ Error al suspender: " + json.message);
+                                    alertify.error("❌ Error al suspender: " + json.message);
                                 }
                             })
                             .catch((err) => {
                                 console.error(err);
-                                alert("❌ Error de red al suspender");
+                                alertify.error("❌ Error de red al suspender");
                             });
                         }
                     }

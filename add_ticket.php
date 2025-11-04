@@ -271,7 +271,7 @@
                            <div class="grid lg:grid-cols-3 gap-6">
                               <div class="space-y-2">
                                  <label class="ti-form-label">Fecha</label>
-                                 <div class="input-group"> <div class="input-group-text !text-textmuted dark:text-textmuted/50 !border-defaultborder dark:!border-defaultborder/10"> <i class="ri-calendar-line"></i> </div> <input type="text" class="form-control flatpickr-input active" id="date" value="<?php echo date("Y-m-d"); ?>" readonly="readonly" data-rules="required"> </div>
+                                 <div class="input-group"> <div class="input-group-text !text-textmuted dark:text-textmuted/50 !border-defaultborder dark:!border-defaultborder/10"> <i class="ri-calendar-line"></i> </div> <input type="text" class="form-control flatpickr-input active" id="date" name="date" readonly="readonly" data-rules="required"> </div>
                                  <span class="text-red-500 text-xs hidden" data-error-for="fecha"></span>
                               </div>
 
@@ -478,7 +478,7 @@
       <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
       <script src="./assets/js/custom-switcher.min.js"></script>
       <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
-      <script src="./assets/js/form-validation.js?v=1"></script>
+      <script src="./assets/js/form-validation.js?v=2.1"></script>
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
       <script src="./assets/js/custom.js"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">

@@ -81,15 +81,15 @@
                     .then((res) => res.json())
                     .then((json) => {
                         if (json.ok) {
-                            alert("✅ Registro suspendido correctamente");
+                            alertify.success("✅ Registro suspendido correctamente");
                             table.replaceData();
                         } else {
-                            alert("❌ Error al suspender: " + json.message);
+                            alertify.error("❌ Error al suspender: " + json.message);
                         }
                     })
                     .catch((err) => {
                         console.error(err);
-                        alert("❌ Error de red al suspender");
+                        alertify.error("❌ Error de red al suspender");
                     });
                 }
                 }
@@ -101,15 +101,15 @@
     const btnBuscar = document.querySelector(".input-group button i.ri-search-line").closest("button");
     btnBuscar.addEventListener("click", () => {
         const rango = document.querySelector("#daterange").value;
-        if (!rango) return alert("Selecciona un rango de fechas");
+        if (!rango) return alertify.error("Selecciona un rango de fechas");
 
         const [fechaInicio, fechaFin] = rango.split(/ to | - /).map(s => s.trim());
-        if (!fechaInicio || !fechaFin) return alert("Rango inválido");
+        if (!fechaInicio || !fechaFin) return alertify.error("Rango inválido");
 
         const url = `controller/venta/table_ticket.php?fecha_inicio=${encodeURIComponent(fechaInicio)}&fecha_fin=${encodeURIComponent(fechaFin)}`;
         table.setData(url).catch(err => {
-        console.error("Error recargando datos:", err);
-        alert("No se pudo cargar el rango seleccionado");
+            console.error("Error recargando datos:", err);
+            alertify.error("No se pudo cargar el rango seleccionado");
         });
     });
 

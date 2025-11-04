@@ -22,17 +22,13 @@
     }
 
     const fechas = [...new Set(data.map(i => i.Date))].sort((a, b) => {
-      // intenta ordenar por mes-año si el formato es "Jan-25"
       const [ma, ya] = a.split('-');
       const [mb, yb] = b.split('-');
       const meses = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
       return (parseInt(yb) - parseInt(ya)) * 12 + (meses.indexOf(mb) - meses.indexOf(ma));
     });
 
-    // 🔢 Tipos dinámicos (Venta, Almacén, Entrada, etc.)
     const tipos = [...new Set(data.map(i => i.Tipo))];
-
-    // 🔁 Construir series
     const series = tipos.map(tipo => {
       const valores = fechas.map(f => {
         const items = data.filter(i => i.Date === f && i.Tipo === tipo);
@@ -41,7 +37,6 @@
       return { name: tipo, data: valores };
     });
 
-    // 🎨 Configuración ApexCharts
     const options = {
       series,
       chart: {

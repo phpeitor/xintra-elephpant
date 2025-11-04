@@ -23,7 +23,7 @@
         itemSelectText: "",
       });
 
-      window.itemChoices.categoriaInstance = categoria; // 👈 Guardar referencia global
+      window.itemChoices.categoriaInstance = categoria; 
 
       if (!tipo) {
         categoria.setChoices(

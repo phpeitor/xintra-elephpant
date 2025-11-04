@@ -1,9 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require_once __DIR__ . '/../controller/check_session.php';
-require_once __DIR__ . '/../../model/item.php';
+require_once __DIR__ . '/../../controller/check_session.php';
 require_once __DIR__ . '/../../model/ticket.php';
-
 
 try {
     $cliente    = trim($_POST['cliente'] ?? '');
@@ -30,14 +28,13 @@ try {
 
     $items = json_decode($_POST['items'] ?? '[]', true);
     if (!empty($items)) {
-        $item = new Item();
         foreach ($items as $it) {
             $id_item = $it['id'];
             $cantidad = $it['cantidad'];
             $precio = $it['precio'];
             $subtotal = $it['subtotal'];
 
-            $item->guardar_stock([
+            $ticket->guardar_stock([
                 'id_product' => $id_item,
                 'id_pedido' => $id,
                 'tipo' => 'S',

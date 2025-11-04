@@ -124,7 +124,7 @@
       const json = await res.json();
 
       if (!json.ok) {
-        alert(json.message || "Usuario no encontrado");
+        alertify.error(json.message || "Usuario no encontrado");
         return;
       }
 
@@ -165,7 +165,7 @@
       const json = await res.json();
 
       if (!json.ok) {
-        alert(json.message || "Item no encontrado");
+        alertify.error(json.message || "Item no encontrado");
         return;
       }
 
@@ -219,7 +219,7 @@
       const json = await res.json();
 
       if (!json.ok) {
-        alert(json.message || "Item no encontrado");
+        alertify.error(json.message || "Item no encontrado");
         return;
       }
 
@@ -309,7 +309,22 @@
         }
 
         if (form.classList.contains("ti-custom-validation-ticket")) {
-           flatpickr("#date", {});
+          const inputDate = document.querySelector("#date");
+
+          if (!inputDate.value) {
+            const hoy = new Date();
+            const yyyy = hoy.getFullYear();
+            const mm = String(hoy.getMonth() + 1).padStart(2, "0");
+            const dd = String(hoy.getDate()).padStart(2, "0");
+            inputDate.value = `${yyyy}-${mm}-${dd}`; 
+          }
+
+          flatpickr(inputDate, {
+            dateFormat: "Y-m-d",
+            defaultDate: inputDate.value, 
+            maxDate: "today",
+            disableMobile: true,
+          });
         }
 
         form.addEventListener("submit", async (e) => {
@@ -361,7 +376,7 @@
                   : [];
 
               if (!items.length) {
-                alert("Debe agregar al menos un ítem al carrito.");
+                alertify.error("Debe agregar al menos un ítem al carrito.");
                 return;
               }
 
@@ -378,11 +393,11 @@
               form.reset();
               window.location.href = redirectUrl;
             } else {
-              alert("Error: " + (json.message || "No se pudo guardar."));
+              alertify.error("Error: " + (json.message || "No se pudo guardar."));
             }
           } catch (err) {
             console.error(err);
-            alert("Fallo de red o excepción en JS. Revisa la consola.");
+            alertify.error("Fallo de red o excepción en JS. Revisa la consola.");
           }
         });
       }
@@ -403,7 +418,7 @@
             const fecha = fechaInput.value.trim();
 
             if (!stock || isNaN(stock) || stock <= 0) {
-              alert("Por favor ingrese una cantidad válida");
+              alertify.error("Por favor ingrese una cantidad válida");
               return;
             }
 
@@ -416,14 +431,14 @@
               const data = await res.json();
 
               if (data.ok) {
-                alert("Stock guardado correctamente ✅");
+                alertify.success("Stock guardado correctamente ✅");
                 location.reload(); 
               } else {
-                alert("Error: " + (data.message || "No se pudo guardar"));
+                alertify.error("Error: " + (data.message || "No se pudo guardar"));
               }
             } catch (e) {
               console.error(e);
-              alert("Error al guardar stock.");
+              alertify.error("Error al guardar stock.");
             }
           });
         
