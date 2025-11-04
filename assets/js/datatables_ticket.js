@@ -74,17 +74,17 @@
                 } else if (e.target.closest(".btn-delete")) {
                 if (confirm("¿Seguro que deseas eliminar el registro " + id + "?")) {
                     fetch("controller/delete_usuario.php", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: "id=" + encodeURIComponent(id),
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                        body: "id=" + encodeURIComponent(id),
                     })
                     .then((res) => res.json())
                     .then((json) => {
                         if (json.ok) {
-                        alert("✅ Registro suspendido correctamente");
-                        table.replaceData();
+                            alert("✅ Registro suspendido correctamente");
+                            table.replaceData();
                         } else {
-                        alert("❌ Error al suspender: " + json.message);
+                            alert("❌ Error al suspender: " + json.message);
                         }
                     })
                     .catch((err) => {

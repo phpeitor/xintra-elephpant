@@ -85,6 +85,7 @@
     }
     return ok;
   }
+  
 
   function attachToForm(form) {
     form.addEventListener("submit", (e) => {
@@ -343,10 +344,30 @@
               ? "controller/upd_item.php"
               : "controller/add_item.php";
             redirectUrl = "items.php";
+          }else if (form.classList.contains("ti-custom-validation-ticket")) {
+            const isUpdate = form.dataset.mode === "update";
+            actionUrl = isUpdate
+              ? "controller/venta/upd_ticket.php"
+              : "controller/venta/add_ticket.php";
+            redirectUrl = "tickets.php";
           }
 
           try {
             const formData = new FormData(form);
+            if (form.classList.contains("ti-custom-validation-ticket")) {
+              const items =
+                typeof window.obtenerItemsCarrito === "function"
+                  ? window.obtenerItemsCarrito()
+                  : [];
+
+              if (!items.length) {
+                alert("Debe agregar al menos un ítem al carrito.");
+                return;
+              }
+
+              formData.append("items", JSON.stringify(items));
+            }
+
             const res = await fetch(actionUrl, { method: "POST", body: formData });
             const ct = res.headers.get("content-type") || "";
             const json = ct.includes("application/json")

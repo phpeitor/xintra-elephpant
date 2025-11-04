@@ -271,7 +271,7 @@
                            <div class="grid lg:grid-cols-3 gap-6">
                               <div class="space-y-2">
                                  <label class="ti-form-label">Fecha</label>
-                                 <div class="input-group"> <div class="input-group-text !text-textmuted dark:text-textmuted/50 !border-defaultborder dark:!border-defaultborder/10"> <i class="ri-calendar-line"></i> </div> <input type="text" class="form-control flatpickr-input active" id="date" placeholder="<?php echo date("Y-m-d"); ?>" readonly="readonly" data-rules="required"> </div>
+                                 <div class="input-group"> <div class="input-group-text !text-textmuted dark:text-textmuted/50 !border-defaultborder dark:!border-defaultborder/10"> <i class="ri-calendar-line"></i> </div> <input type="text" class="form-control flatpickr-input active" id="date" value="<?php echo date("Y-m-d"); ?>" readonly="readonly" data-rules="required"> </div>
                                  <span class="text-red-500 text-xs hidden" data-error-for="fecha"></span>
                               </div>
 
@@ -281,6 +281,14 @@
                                     <option value="">Seleccione</option>
                                  </select>
                                  <span class="text-red-500 text-xs hidden" data-error-for="cliente"></span>
+                              </div>
+
+                               <div class="space-y-2">
+                                 <label class="ti-form-label">Personal</label>
+                                 <select id="personal" name="personal" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
+                                    <option value="">Seleccione</option>
+                                 </select>
+                                 <span class="text-red-500 text-xs hidden" data-error-for="personal"></span>
                               </div>
                            </div>
 
@@ -323,7 +331,7 @@
                                  <span class="text-red-500 text-xs hidden" data-error-for="item"></span>
                               </div>
                            </div>
-                        </form>
+                        
                      </div>
                   </div>
                </div>
@@ -404,30 +412,31 @@
                                  </select>
                               </div>
                            </div>
-                           <div class="p-4 border-b border-defaultborder dark:border-defaultborder/10 border-dashed">
-                              <div class="overflow-hidden p-0 border-0" id="freeshipping-pane" role="tabpanel">
-                                 <div class="flex items-center justify-between mb-3">
-                                    <div class="text-textmuted dark:text-textmuted/50">Sub Total</div>
-                                    <div id="subtotal" class="font-medium text-[14px]">S/. 0.00</div>
+                              <div class="p-4 border-b border-defaultborder dark:border-defaultborder/10 border-dashed">
+                                 <div class="overflow-hidden p-0 border-0" id="freeshipping-pane" role="tabpanel">
+                                    <div class="flex items-center justify-between mb-3">
+                                       <div class="text-textmuted dark:text-textmuted/50">Sub Total</div>
+                                       <div id="subtotal" class="font-medium text-[14px]">S/. 0.00</div>
+                                    </div>
+                                    <div class="flex items-center justify-between mb-3">
+                                       <div class="text-textmuted dark:text-textmuted/50">Descuento</div>
+                                       <div id="descuento" class="font-medium text-[14px] text-success">S/. 0.00</div>
+                                    </div>
                                  </div>
                                  <div class="flex items-center justify-between mb-3">
-                                    <div class="text-textmuted dark:text-textmuted/50">Descuento</div>
-                                    <div id="descuento" class="font-medium text-[14px] text-success">S/. 0.00</div>
+                                    <div class="text-textmuted dark:text-textmuted/50">IGV (18%)</div>
+                                    <div id="igv" class="font-medium text-[14px]">S/. 0.00</div>
+                                 </div>
+                                 <div class="flex items-center justify-between h5">
+                                    <div class="text-[1rem]">Total :</div>
+                                    <div id="total" class="font-semibold">S/. 0.00</div>
+                                 </div>
+                                 <div class="grid">
+                                    <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
+                                    <a href="#" class="ti-btn ti-btn-soft-primary1 text-center btn-wave waves-effect waves-light">Continuar</a>
                                  </div>
                               </div>
-                              <div class="flex items-center justify-between mb-3">
-                                 <div class="text-textmuted dark:text-textmuted/50">IGV (18%)</div>
-                                 <div id="igv" class="font-medium text-[14px]">S/. 0.00</div>
-                              </div>
-                              <div class="flex items-center justify-between h5">
-                                 <div class="text-[1rem]">Total :</div>
-                                 <div id="total" class="font-semibold">S/. 0.00</div>
-                              </div>
-                              <div class="grid">
-                                 <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
-                                 <a href="#" class="ti-btn ti-btn-soft-primary1 text-center btn-wave waves-effect waves-light">Continuar</a>
-                              </div>
-                           </div>
+                            </form>
                         </div>
                      </div>
                   </div>
@@ -465,11 +474,11 @@
       <script src="./assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
       <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
       <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
-      <script src="./assets/js/choices_ticket.js?v=1"></script>
+      <script src="./assets/js/choices_ticket.js?v=2"></script>
       <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
       <script src="./assets/js/custom-switcher.min.js"></script>
       <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
-      <script src="./assets/js/form-validation.js"></script>
+      <script src="./assets/js/form-validation.js?v=1"></script>
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
       <script src="./assets/js/custom.js"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">

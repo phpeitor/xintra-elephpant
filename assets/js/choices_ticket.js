@@ -3,6 +3,7 @@
 
   const categoriaSelect = document.getElementById("categoria");
   const clienteSelect = document.getElementById("cliente");
+  const personalSelect = document.getElementById("personal");
   const itemSelect = document.getElementById("item");
   const grupoSelect = document.getElementById("grupo");
 
@@ -26,6 +27,14 @@
     allowHTML: true,
     itemSelectText: "",
   });
+
+  let personal = new Choices(personalSelect, {
+    searchPlaceholderValue: "Buscar personal...",
+    shouldSort: false,
+    allowHTML: true,
+    itemSelectText: "",
+  });
+
 
   async function cargarItems(categoria) {
     try {
@@ -156,6 +165,65 @@
       console.error("Error cargando clientes:", error);
       cliente.setChoices(
         [{ value: "", label: "Error al cargar clientes", disabled: true }],
+        "value",
+        "label",
+        false
+      );
+    }
+  }
+
+  // ---- PERSONAL ----
+  async function cargarPersonal() {
+    try {
+      personal.clearChoices();
+      const response = await fetch(`controller/table_usuario.php`);
+      const data = await response.json();
+
+      if (!Array.isArray(data) || !data.length) {
+        personal.setChoices(
+          [{ value: "", label: "No hay usuarios registrados", disabled: true }],
+          "value",
+          "label",
+          false
+        );
+        return;
+      }
+
+      const activos = data.filter(u => parseInt(u.IDESTADO) === 1);
+
+      if (!activos.length) {
+        personal.setChoices(
+          [{ value: "", label: "No hay usuarios activos", disabled: true }],
+          "value",
+          "label",
+          false
+        );
+        return;
+      }
+
+      const usuariosUnicos = activos.filter(
+        (cli, index, self) =>
+          index ===
+          self.findIndex(
+            (t) =>
+              t.nombre_completo?.trim().toLowerCase() ===
+              cli.nombre_completo?.trim().toLowerCase()
+          )
+      );
+
+      personal.setChoices(
+        usuariosUnicos.map((cli) => ({
+          value: String(cli.IDPERSONAL),
+          label: cli.nombre_completo,
+        })),
+        "value",
+        "label",
+        false
+      );
+    } catch (error) {
+      console.error("Error cargando usuarios:", error);
+      personal.setChoices(
+        [{ value: "", label: "Error al cargar usuarios", disabled: true }],
         "value",
         "label",
         false
@@ -357,6 +425,7 @@
 
   // ---- CARGA INICIAL ----
   cargarClientes();
+  cargarPersonal();
   validarCarrito();
 
   window.itemChoices = {
@@ -365,4 +434,25 @@
     categoriaInstance: categoria,
     clienteInstance: cliente,
   };
+
+  window.obtenerItemsCarrito = function () {
+    const rows = document.querySelectorAll("#cartBody tr");
+    const items = [];
+
+    rows.forEach((row) => {
+      const id = row.getAttribute("data-id");
+      const precioText = row.querySelector("td:nth-child(2)").innerText.replace("S/.", "").trim();
+      const precio = parseFloat(precioText) || 0;
+      const cantidad = parseFloat(row.querySelector(".qty-input").value) || 0;
+      const subtotalText = row.querySelector(".total-cell").innerText.replace("S/.", "").trim();
+      const subtotal = parseFloat(subtotalText) || 0;
+
+      if (id && cantidad > 0) {
+        items.push({ id, precio, cantidad, subtotal });
+      }
+    });
+
+    return items;
+  };
+
 })();

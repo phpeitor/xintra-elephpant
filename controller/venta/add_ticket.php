@@ -1,37 +1,60 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../controller/check_session.php';
-require_once __DIR__ . '/../model/item.php';
+require_once __DIR__ . '/../../model/item.php';
+require_once __DIR__ . '/../../model/ticket.php';
+
 
 try {
-    $nombre    = trim($_POST['nombre'] ?? '');
-    $categoria = trim($_POST['categoria'] ?? '');
-    $precio    = trim($_POST['precio'] ?? '');
-    $stock     = trim($_POST['stock'] ?? '');
-    $grupo     = trim($_POST['grupo'] ?? '');
+    $cliente    = trim($_POST['cliente'] ?? '');
+    $usuario    = trim($_POST['personal'] ?? '');
+    $fecha      = trim($_POST['date'] ?? '');
+    $dscto      = trim($_POST['descuento'] ?? '0');
+    $tipo_dscto = trim($_POST['promo-code'] ?? '');
+    $pago       = trim($_POST['pago'] ?? '');
 
-    if ($nombre === '' || $categoria === '' || $precio === '' || $grupo === '') {
+    if ($cliente === '' || $usuario === '' || $fecha === '') {
         throw new Exception('Faltan campos obligatorios.');
     }
 
-    $item = new Item();
-    $id = $item->guardar([
-        'nombre'    => $nombre,
-        'categoria' => $categoria,
-        'precio'    => $precio,
-        'stock'     => $stock,
-        'grupo'     => $grupo,
+    $ticket = new Ticket();
+    $id = $ticket->guardar([
+        'cliente'       => $cliente,
+        'usuario'       => $usuario,
+        'user_registro' => $_SESSION['session_id'],
+        'fecha'         => $fecha,
+        'dscto'         => $dscto,
+        'tipo_dscto'    => $tipo_dscto,
+        'pago'          => $pago,
     ]);
 
-    if ($grupo === 'PRODUCTO') {
-        $item->guardar_stock([
-            'id_product'    => $id,
-            'id_pedido'     => 0,
-            'tipo'          => 'E',
-            'stock'         => $stock,
-            'user'         => $_SESSION['session_usuario'],
-        ]);
+    $items = json_decode($_POST['items'] ?? '[]', true);
+    if (!empty($items)) {
+        $item = new Item();
+        foreach ($items as $it) {
+            $id_item = $it['id'];
+            $cantidad = $it['cantidad'];
+            $precio = $it['precio'];
+            $subtotal = $it['subtotal'];
+
+            $item->guardar_stock([
+                'id_product' => $id_item,
+                'id_pedido' => $id,
+                'tipo' => 'S',
+                'stock' => $cantidad,
+                'user' => $_SESSION['session_usuario'],
+            ]);
+
+            $ticket->guardar_detalle([
+                'id_pedido' => $id,
+                'id_productservice' => $id_item,
+                'precio' => $precio,
+                'cantidad' => $cantidad,
+                'subtotal' => $subtotal,
+            ]);
+        }
     }
+
 
     echo json_encode(['ok' => true, 'id' => $id]);
 } catch (Throwable $e) {
