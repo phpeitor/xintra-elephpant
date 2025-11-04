@@ -51,8 +51,7 @@ try {
             ]);
         }
     }
-
-
+    
     echo json_encode(['ok' => true, 'id' => $id]);
 } catch (Throwable $e) {
     http_response_code(500);

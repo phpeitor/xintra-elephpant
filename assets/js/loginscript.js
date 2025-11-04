@@ -308,7 +308,6 @@ function isMobileDevice() {
 };
 
 function initLoginForm() {
-	// some measurements for the svg's elements
 	svgCoords = getPosition(mySVG);
 	emailCoords = getPosition(email);
 	screenCenter = svgCoords.x + (mySVG.offsetWidth / 2);
@@ -346,18 +345,14 @@ function initLoginForm() {
 	// activate blinking
 	startBlinking(5);
 	
-	// determine how far email input can go before scrolling occurs
-	// will be used as the furthest point avatar will look to the right
 	emailScrollMax = email.scrollWidth;
 	
-	// check if we're on mobile/tablet, if so then show password initially
 	if(isMobileDevice()) {
 		password.type = "text";
 		showPasswordCheck.checked = true;
 		TweenMax.set(twoFingers, {transformOrigin: "bottom left", rotation: 30, x: -9, y: -2, ease: Power2.easeInOut});
 	}
 	
-	// clear the console
 	console.clear();
 }
 
@@ -366,11 +361,21 @@ initLoginForm();
 document.getElementById('login').addEventListener('click', async (e) => {
   e.preventDefault();
 
+  const btn = e.currentTarget; 
+
+  if (btn.disabled) return;
+  btn.disabled = true;
+  btn.classList.add("opacity-50", "cursor-not-allowed");
+  btn.textContent = "Ingresando..."; 
+
   const usuario = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value.trim();
 
   if (!usuario || !password) {
     alertify.warning("⚠️ Ingrese usuario y contraseña");
+    btn.disabled = false;
+    btn.classList.remove("opacity-50", "cursor-not-allowed");
+    btn.textContent = "Ingresar";
     return;
   }
 
@@ -388,12 +393,19 @@ document.getElementById('login').addEventListener('click', async (e) => {
 
     if (data.ok) {
       alertify.success("✅ Acceso correcto, redirigiendo...");
+      btn.textContent = "Ingresando...";
       setTimeout(() => window.location.href = "home.php", 1000);
     } else {
       alertify.error(data.message || "❌ Usuario o contraseña incorrectos");
+      btn.disabled = false;
+      btn.classList.remove("opacity-50", "cursor-not-allowed");
+      btn.textContent = "Ingresar";
     }
   } catch (error) {
     alertify.error("❌ Error al conectar con el servidor");
     console.error(error);
+    btn.disabled = false;
+    btn.classList.remove("opacity-50", "cursor-not-allowed");
+    btn.textContent = "Ingresar";
   }
 });

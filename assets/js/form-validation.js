@@ -330,6 +330,13 @@
         form.addEventListener("submit", async (e) => {
           e.preventDefault();
 
+          const submitBtn = form.querySelector("[type='submit']");
+          if (submitBtn) {
+            if (submitBtn.disabled) return; 
+            submitBtn.disabled = true;
+            submitBtn.classList.add("opacity-50", "cursor-not-allowed");
+          }
+
           const okCustom = typeof validateForm === "function" ? validateForm(form) : true;
           if (!okCustom) {
             form.reportValidity?.();
@@ -377,6 +384,8 @@
 
               if (!items.length) {
                 alertify.error("Debe agregar al menos un ítem al carrito 🛒");
+                submitBtn.disabled = false;
+                submitBtn.classList.remove("opacity-50", "cursor-not-allowed");
                 return;
               }
 
@@ -396,8 +405,13 @@
               alertify.error("Error: " + (json.message || "No se pudo guardar."));
             }
           } catch (err) {
-            console.error(err);
-            alertify.error("Fallo de red o excepción en JS. Revisa la consola.");
+              console.error(err);
+              alertify.error("Fallo de red o excepción en JS. Revisa la consola.");
+          } finally {
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove("opacity-50", "cursor-not-allowed");
+              }
           }
         });
       }
