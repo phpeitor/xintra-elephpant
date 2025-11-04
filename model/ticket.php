@@ -37,19 +37,36 @@ class Ticket {
     }
 
     public function guardar(array $data): int {
-        $sql = "INSERT INTO personal 
-                (APELLIDOS, NOMBRES, EMAIL, DOC, TLF, SEXO, fecha_registro, IDSUCURSAL, IDESTADO, CARGO, fecha_baja, id_cartera)
+        $sql = "INSERT INTO pedido 
+                (cliente,usuario,user_registro,fecha,fecha_registro,dscto,tipo_dscto,pago)
                 VALUES 
-                (:nombres, :apellidos, :email, :documento, :telefono, :sexo, :fecha_registro, 5, 1, 5, '1900-01-01 00:00:00', 5)";
+                (:cliente, :usuario, :user_registro, :fecha, :fecha_registro, :dscto, :tipo_dscto, :pago)";
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(':nombres',   $data['nombres'] ?? '');
-        $stmt->bindValue(':apellidos', $data['apellidos'] ?? '');
-        $stmt->bindValue(':email',     $data['email'] ?? '');
-        $stmt->bindValue(':documento', $data['documento'] ?? '');
-        $stmt->bindValue(':telefono',  $data['telefono'] ?? '');
-        $stmt->bindValue(':sexo', (int)($data['sexo'] ?? 0), PDO::PARAM_INT);
+        $stmt->bindValue(':cliente',        $data['cliente'] ?? '');
+        $stmt->bindValue(':usuario',        $data['usuario'] ?? '');
+        $stmt->bindValue(':user_registro',  $data['user_registro'] ?? '');
+        $stmt->bindValue(':fecha',          $data['fecha'] ?? '');
         $stmt->bindValue(':fecha_registro', $this->nowLima);
+        $stmt->bindValue(':dscto',          $data['dscto'] ?? '');
+        $stmt->bindValue(':tipo_dscto',     $data['tipo_dscto'] ?? '');
+        $stmt->bindValue(':pago',           $data['pago'] ?? '');
+        $stmt->execute();
+        return (int)$this->conn->lastInsertId();
+    }
+
+    public function guardar_detalle(array $data): int {
+        $sql = "INSERT INTO detalle_pedido 
+                (id_pedido,id_productservice,precio,cantidad,subtotal)
+                VALUES 
+                (:id_pedido, :id_productservice, :precio, :cantidad, :subtotal)";
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(':id_pedido',         $data['id_pedido'] ?? '');
+        $stmt->bindValue(':id_productservice', $data['id_productservice'] ?? '');
+        $stmt->bindValue(':precio',            $data['precio'] ?? '0');
+        $stmt->bindValue(':cantidad',          $data['cantidad'] ?? '0');
+        $stmt->bindValue(':subtotal',          $data['subtotal'] ?? '0');
         $stmt->execute();
         return (int)$this->conn->lastInsertId();
     }

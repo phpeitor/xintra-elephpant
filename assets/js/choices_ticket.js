@@ -261,6 +261,7 @@
     reinitTooltips(row);
     updateCartEvents(row);
     actualizarResumen();
+    validarCarrito();
   });
 
   function reinitTooltips(container = document) {
@@ -308,6 +309,7 @@
     btnRemove.addEventListener("click", () => {
       row.remove();
       actualizarResumen();
+      validarCarrito();
     });
   }
 
@@ -323,7 +325,6 @@
       }
     });
 
-    // Si el total es 0, todo en cero
     if (total === 0) {
       document.getElementById("subtotal").innerText = "S/. 0.00";
       document.getElementById("igv").innerText = "S/. 0.00";
@@ -331,17 +332,32 @@
       return;
     }
 
-    // Calcular desde el total
-    const subtotal = total / 1.18; // base imponible
-    const igv = total - subtotal;  // IGV (18%)
+    const subtotal = total / 1.18; 
+    const igv = total - subtotal;  
 
     document.getElementById("subtotal").innerText = `S/. ${subtotal.toFixed(2)}`;
     document.getElementById("igv").innerText = `S/. ${igv.toFixed(2)}`;
     document.getElementById("total").innerText = `S/. ${total.toFixed(2)}`;
   }
 
+  function validarCarrito() {
+    const cartContainer = document.getElementById("cart-container-delete");
+    const cartEmpty = document.getElementById("cart-empty-cart");
+    const cartBody = document.getElementById("cartBody");
+    const tieneItems = cartBody.children.length > 0;
+
+    if (tieneItems) {
+      cartContainer.classList.remove("hidden", "!hidden");
+      cartEmpty.classList.add("hidden");
+    } else {
+      cartContainer.classList.add("hidden");
+      cartEmpty.classList.remove("hidden", "!hidden");
+    }
+  }
+
   // ---- CARGA INICIAL ----
   cargarClientes();
+  validarCarrito();
 
   window.itemChoices = {
     cargarCategorias,

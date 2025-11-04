@@ -21,6 +21,8 @@
       <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
       <link rel="stylesheet" href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css">
       <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
       <meta http-equiv="imagetoolbar" content="no">
    </head>
    <body>
@@ -353,23 +355,23 @@
                      </div>
                      <div class="box !hidden" id="cart-empty-cart">
                         <div class="box-header">
-                        <div class="box-title">Carrito vacío</div>
+                           <div class="box-title">Carrito vacío</div>
                         </div>
                         <div class="box-body">
-                        <div class="cart-empty text-center">
-                           <span class="svg-muted">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="!inline-flex" width="24" height="24" viewBox="0 0 24 24">
-                              <path d="M18.6 16.5H8.9c-.9 0-1.6-.6-1.9-1.4L4.8 6.7c0-.1 0-.3.1-.4.1-.1.2-.1.4-.1h17.1c.1 0 .3.1.4.2.1.1.1.3.1.4L20.5 15c-.2.8-1 1.5-1.9 1.5zM5.9 7.1 8 14.8c.1.4.5.8 1 .8h9.7c.5 0 .9-.3 1-.8l2.1-7.7H5.9z"></path>
-                              <path d="M6 10.9 3.7 2.5H1.3v-.9H4c.2 0 .4.1.4.3l2.4 8.7-.8.3zM8.1 18.8 6 11l.9-.3L9 18.5z"></path>
-                              <path d="M20.8 20.4h-.9V20c0-.7-.6-1.3-1.3-1.3H8.9c-.7 0-1.3.6-1.3 1.3v.5h-.9V20c0-1.2 1-2.2 2.2-2.2h9.7c1.2 0 2.2 1 2.2 2.2v.4z"></path>
-                              <path d="M8.9 22.2c-1.2 0-2.2-1-2.2-2.2s1-2.2 2.2-2.2c1.2 0 2.2 1 2.2 2.2s-1 2.2-2.2 2.2zm0-3.5c-.7 0-1.3.6-1.3 1.3 0 .7.6 1.3 1.3 1.3.8 0 1.3-.6 1.3-1.3 0-.7-.5-1.3-1.3-1.3zM18.6 22.2c-1.2 0-2.2-1-2.2-2.2s1-2.2 2.2-2.2c1.2 0 2.2 1 2.2 2.2s-.9 2.2-2.2 2.2zm0-3.5c-.8 0-1.3.6-1.3 1.3 0 .7.6 1.3 1.3 1.3.7 0 1.3-.6 1.3-1.3 0-.7-.5-1.3-1.3-1.3z"></path>
-                              </svg>
-                           </span>
-                           <h3 class="font-bold mb-1">Carrito sin items</h3>
-                           <h5 class="mb-3">Agrega items para sonreir 😃</h5>
-                           <a href="#" class="ti-btn bg-primary text-white btn-wave m-3 waves-effect waves-light" data-abc="true">Continuar <i class="bi bi-arrow-right ms-1"></i>
-                           </a>
-                        </div>
+                           <div class="cart-empty text-center">
+                              <span class="svg-muted">
+                                 <svg xmlns="http://www.w3.org/2000/svg" class="!inline-flex" width="24" height="24" viewBox="0 0 24 24">
+                                 <path d="M18.6 16.5H8.9c-.9 0-1.6-.6-1.9-1.4L4.8 6.7c0-.1 0-.3.1-.4.1-.1.2-.1.4-.1h17.1c.1 0 .3.1.4.2.1.1.1.3.1.4L20.5 15c-.2.8-1 1.5-1.9 1.5zM5.9 7.1 8 14.8c.1.4.5.8 1 .8h9.7c.5 0 .9-.3 1-.8l2.1-7.7H5.9z"></path>
+                                 <path d="M6 10.9 3.7 2.5H1.3v-.9H4c.2 0 .4.1.4.3l2.4 8.7-.8.3zM8.1 18.8 6 11l.9-.3L9 18.5z"></path>
+                                 <path d="M20.8 20.4h-.9V20c0-.7-.6-1.3-1.3-1.3H8.9c-.7 0-1.3.6-1.3 1.3v.5h-.9V20c0-1.2 1-2.2 2.2-2.2h9.7c1.2 0 2.2 1 2.2 2.2v.4z"></path>
+                                 <path d="M8.9 22.2c-1.2 0-2.2-1-2.2-2.2s1-2.2 2.2-2.2c1.2 0 2.2 1 2.2 2.2s-1 2.2-2.2 2.2zm0-3.5c-.7 0-1.3.6-1.3 1.3 0 .7.6 1.3 1.3 1.3.8 0 1.3-.6 1.3-1.3 0-.7-.5-1.3-1.3-1.3zM18.6 22.2c-1.2 0-2.2-1-2.2-2.2s1-2.2 2.2-2.2c1.2 0 2.2 1 2.2 2.2s-.9 2.2-2.2 2.2zm0-3.5c-.8 0-1.3.6-1.3 1.3 0 .7.6 1.3 1.3 1.3.7 0 1.3-.6 1.3-1.3 0-.7-.5-1.3-1.3-1.3z"></path>
+                                 </svg>
+                              </span>
+                              <h3 class="font-bold mb-1">Carrito sin items</h3>
+                              <h5 class="mb-3">Agrega items para sonreir 😃</h5>
+                              <a href="#" class="ti-btn bg-primary text-white btn-wave m-3 waves-effect waves-light" data-abc="true">Continuar <i class="bi bi-arrow-right ms-1"></i>
+                              </a>
+                           </div>
                         </div>
                      </div>
                   </div>
@@ -468,6 +470,7 @@
       <script src="./assets/js/custom-switcher.min.js"></script>
       <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
       <script src="./assets/js/form-validation.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
       <script src="./assets/js/custom.js"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
          <div class="pcr-selection">

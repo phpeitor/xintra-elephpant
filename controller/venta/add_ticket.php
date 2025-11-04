@@ -14,20 +14,6 @@ try {
         throw new Exception('Faltan campos obligatorios.');
     }
 
-    if ($grupo === 'SERVICIO') {
-        $stock = 0;
-    }
-
-    if (!is_numeric($precio) || $precio < 0) {
-        throw new Exception('El precio debe ser un número válido.');
-    }
-
-    if ($grupo === 'PRODUCTO') {
-        if (!is_numeric($stock) || $stock < 0) {
-            throw new Exception('El stock debe ser un número válido.');
-        }
-    }
-
     $item = new Item();
     $id = $item->guardar([
         'nombre'    => $nombre,

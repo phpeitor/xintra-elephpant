@@ -23,6 +23,8 @@
       <link rel="stylesheet" href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css">
       <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
       <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
       <meta http-equiv="imagetoolbar" content="no">
    </head>
    <body>
@@ -335,6 +337,7 @@
       <script src="./assets/libs/jspdf-autotable/jspdf.plugin.autotable.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
       <script src="./assets/js/datatables_item.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
       <script src="./assets/js/custom.js"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
          <div class="pcr-selection">
