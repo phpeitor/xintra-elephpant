@@ -260,6 +260,7 @@
     cartBody.appendChild(row);
     reinitTooltips(row);
     updateCartEvents(row);
+    actualizarResumen();
   });
 
   function reinitTooltips(container = document) {
@@ -280,6 +281,7 @@
     const updateTotal = () => {
       const qty = parseInt(qtyInput.value) || 1;
       totalCell.innerText = `S/.${(qty * precio).toFixed(2)}`;
+      actualizarResumen(); 
     };
 
     btnMinus.addEventListener("click", () => {
@@ -288,6 +290,7 @@
         qtyInput.value = val - 1;
         updateTotal();
       }
+      actualizarResumen(); 
     });
 
     btnPlus.addEventListener("click", () => {
@@ -297,15 +300,45 @@
         qtyInput.value = val + 1;
         updateTotal();
       }
+      actualizarResumen(); 
     });
 
     qtyInput.addEventListener("input", updateTotal);
 
     btnRemove.addEventListener("click", () => {
       row.remove();
+      actualizarResumen();
     });
   }
 
+  function actualizarResumen() {
+    const rows = cartBody.querySelectorAll("tr");
+    let total = 0;
+
+    rows.forEach(row => {
+      const totalCell = row.querySelector(".total-cell");
+      if (totalCell) {
+        const valor = parseFloat(totalCell.innerText.replace("S/.", "").trim()) || 0;
+        total += valor;
+      }
+    });
+
+    // Si el total es 0, todo en cero
+    if (total === 0) {
+      document.getElementById("subtotal").innerText = "S/. 0.00";
+      document.getElementById("igv").innerText = "S/. 0.00";
+      document.getElementById("total").innerText = "S/. 0.00";
+      return;
+    }
+
+    // Calcular desde el total
+    const subtotal = total / 1.18; // base imponible
+    const igv = total - subtotal;  // IGV (18%)
+
+    document.getElementById("subtotal").innerText = `S/. ${subtotal.toFixed(2)}`;
+    document.getElementById("igv").innerText = `S/. ${igv.toFixed(2)}`;
+    document.getElementById("total").innerText = `S/. ${total.toFixed(2)}`;
+  }
 
   // ---- CARGA INICIAL ----
   cargarClientes();

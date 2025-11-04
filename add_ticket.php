@@ -282,7 +282,7 @@
                               </div>
                            </div>
 
-                           <div class="grid lg:grid-cols-3 gap-6">
+                           <div class="grid lg:grid-cols-3 gap-6 mt-3">
                               <div class="space-y-2">
                                  <label class="ti-form-label">Grupo</label>
                                  <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3" >
@@ -366,7 +366,7 @@
                               </svg>
                            </span>
                            <h3 class="font-bold mb-1">Carrito sin items</h3>
-                           <h5 class="mb-3">Agrega items para sonreir :)</h5>
+                           <h5 class="mb-3">Agrega items para sonreir 😃</h5>
                            <a href="#" class="ti-btn bg-primary text-white btn-wave m-3 waves-effect waves-light" data-abc="true">Continuar <i class="bi bi-arrow-right ms-1"></i>
                            </a>
                         </div>
@@ -377,46 +377,54 @@
                   <div class="xl:col-span-3 col-span-12">
                      <div class="box">
                         <div class="box-header">
-                           <div class="box-title"> Order Summary </div>
+                           <div class="box-title"> Resumen del pedido</div>
                         </div>
                         <div class="box-body p-0">
                            <div class="p-4 border-b border-defaultborder dark:border-defaultborder/10 border-dashed">
-                              <label for="promo-code" class="font-medium mb-0">Have a Promo Code?</label>
-                              <div class="text-[11px] text-textmuted dark:text-textmuted/50 mb-3">Apply Your Promo Code for an Instant Discount!</div>
+                              <label for="promo-code" class="font-medium mb-0">¿Tienes un código promocional?</label>
+                              <div class="text-[11px] text-textmuted dark:text-textmuted/50 mb-3">
+                                 Aplica tu código promocional para obtener un descuento instantáneo
+                              </div>
                               <div class="input-group mb-0">
                                  <input type="text" class="form-control form-control-sm !border-s" id="promo-code" name="promo-code" placeholder="Enter Promo Code" aria-label="Enter Promo Code" aria-describedby="coupons">
-                                 <button class="ti-btn ti-btn-primary !m-0" type="button" id="coupons">Apply</button>
+                                 <button class="ti-btn ti-btn-primary !m-0" type="button" id="coupons">Aplicar</button>
+                              </div>
+                              <div class="text-[11px] text-textmuted dark:text-textmuted/50 mt-2 mb-3">
+                                 Seleccione tipo de pago
+                              </div>
+                              <div class="input-group mt-2 mb-0">
+                                 <select id="pago" name="pago" class="ti-form-select rounded-sm !py-1 !px-2" >
+                                    <option value="EFECTIVO">EFECTIVO</option>
+                                    <option value="YAPE">YAPE</option>
+                                    <option value="PLIN">PLIN</option>
+                                    <option value="VISA">VISA</option>
+                                    <option value="MASTERCARD">MASTERCARD</option>
+                                 </select>
                               </div>
                            </div>
                            <div class="p-4 border-b border-defaultborder dark:border-defaultborder/10 border-dashed">
                               <div class="overflow-hidden p-0 border-0" id="freeshipping-pane" role="tabpanel">
-                                 
                                  <div class="flex items-center justify-between mb-3">
                                     <div class="text-textmuted dark:text-textmuted/50">Sub Total</div>
-                                       <div class="font-medium text-[14px]">$2,547</div>
-                                    </div>
-                                    <div class="flex items-center justify-between mb-3">
-                                       <div class="text-textmuted dark:text-textmuted/50">Discount</div>
-                                    <div class="font-medium text-[14px] text-success">20% - $124</div>
-                                    </div>
-                                    <div class="flex items-center justify-between mb-3">
-                                       <div class="text-textmuted dark:text-textmuted/50">Delivery Charges</div>
-                                    <div class="font-medium text-[14px] text-danger">- $0</div>
+                                    <div id="subtotal" class="font-medium text-[14px]">S/. 0.00</div>
                                  </div>
                                  <div class="flex items-center justify-between mb-3">
-                                    <div class="text-textmuted dark:text-textmuted/50">Service Tax (18%)</div>
-                                    <div class="font-medium text-[14px]">- $12</div>
-                                 </div>
-                                 <div class="flex items-center justify-between h5">
-                                    <div class="text-[1rem]">Total :</div>
-                                    <div class="font-semibold"> $2,254</div>
-                                 </div>
-                                 <div class="grid">
-                                    <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
-                                    <a href="products.html" class="ti-btn ti-btn-soft-primary1 text-center btn-wave waves-effect waves-light">Continuar</a>
+                                    <div class="text-textmuted dark:text-textmuted/50">Descuento</div>
+                                    <div id="descuento" class="font-medium text-[14px] text-success">S/. 0.00</div>
                                  </div>
                               </div>
-                              
+                              <div class="flex items-center justify-between mb-3">
+                                 <div class="text-textmuted dark:text-textmuted/50">IGV (18%)</div>
+                                 <div id="igv" class="font-medium text-[14px]">S/. 0.00</div>
+                              </div>
+                              <div class="flex items-center justify-between h5">
+                                 <div class="text-[1rem]">Total :</div>
+                                 <div id="total" class="font-semibold">S/. 0.00</div>
+                              </div>
+                              <div class="grid">
+                                 <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
+                                 <a href="#" class="ti-btn ti-btn-soft-primary1 text-center btn-wave waves-effect waves-light">Continuar</a>
+                              </div>
                            </div>
                         </div>
                      </div>
