@@ -52,7 +52,7 @@
         position: "top",
         horizontalAlign: "center"
       },
-      colors: ["#f87171", "#60a5fa", "#34d399", "#fbbf24", "#a78bfa"], // paleta adaptable
+      colors: ["#f87171", "#60a5fa", "#34d399", "#fbbf24", "#a78bfa"],
       grid: {
         borderColor: '#f3f3f3',
         strokeDashArray: 3
@@ -72,13 +72,6 @@
 
     const chart = new ApexCharts(contenedor, options);
     chart.render();
-
-    flatpickr("#targetDate", {
-        enableTime: true,
-        minTime: "08:00",
-        maxTime: "22:00",
-        disableMobile: true
-    });
 
   } catch (error) {
     console.error("Error al cargar gráfico:", error);

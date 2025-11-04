@@ -259,7 +259,7 @@
   btnAddToCart.addEventListener("click", () => {
     const selected = item.getValue();
     if (!selected || !selected.value) {
-      alertify.error("Seleccione un item primero.");
+      alertify.error("Seleccione un item primero 📦");
       return;
     }
 
@@ -269,12 +269,18 @@
 
 
     if (cartBody.querySelector(`tr[data-id="${id}"]`)) {
-      alertify.error("Este item ya está en el carrito.");
+      alertify.error("Este item ya está en el carrito 🛒");
       return;
     }
 
     if (stock <= 0) {
-      alertify.error(`El producto "${nombre}" no tiene stock disponible.`);
+      const hash = md5(id); 
+      const enlace = `<a href="stk_item.php?hash=${hash}" 
+                    target="_blank" 
+                    style="color:#fff; text-decoration:underline; font-weight:500;">
+                    Ver stock
+                  </a>`;
+      alertify.error(`🚨 El producto "${nombre}" no tiene stock disponible. ${enlace}`);
       return;
     }
 

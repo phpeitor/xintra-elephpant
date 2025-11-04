@@ -385,10 +385,10 @@
       <script src="./assets/js/custom-switcher.min.js"></script>
       <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
       <script src="./assets/js/form-validation.js?v=1"></script>
-      <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
       <script src="./assets/js/custom.js"></script>
       <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
-      <script src="./assets/js/widgets.js?v=2"></script>
+      <script src="./assets/js/widgets.js?v=3.1"></script>
+      <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
 
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
          <div class="pcr-selection">
@@ -455,11 +455,11 @@
          </div>
       </div>
 
-      <div id="create-stock" class="hs-overlay ti-modal" aria-overlay="true" tabindex="-1">
+      <div id="create-stock" class="hs-overlay hidden ti-modal  [--overlay-backdrop:static]" aria-overlay="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
          <div class="hs-overlay-open:mt-7 ti-modal-box mt-0 ease-out">
             <div class="max-h-full overflow-hidden ti-modal-content">
                <div class="ti-modal-header">
-                  <h6 class="modal-title text-[1rem] font-semiboldmodal-title" id="staticBackdropLabel3">Stock </h6>
+                  <h6 class="modal-title text-[1rem] font-semiboldmodal-title" id="staticBackdropLabel3">Agregar Stock </h6>
                   <button type="button" class="hs-dropdown-toggle ti-modal-close-btn" data-hs-overlay="#create-stock">
                      <span class="sr-only">Close</span>
                      <svg class="w-3.5 h-3.5" width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -479,7 +479,7 @@
                         <div class="input-group-text text-textmuted dark:text-textmuted/50">
                            <i class="ri-calendar-line"></i>
                         </div>
-                        <input type="text" class="form-control flatpickr-input" id="targetDate" placeholder="Choose date and time" readonly="readonly">
+                        <input type="text" class="form-control flatpickr-input" id="targetDate" placeholder="Seleccione date and time" readonly="readonly">
                         </div>
                      </div>
                   </div>

@@ -376,7 +376,7 @@
                   : [];
 
               if (!items.length) {
-                alertify.error("Debe agregar al menos un ítem al carrito.");
+                alertify.error("Debe agregar al menos un ítem al carrito 🛒");
                 return;
               }
 
@@ -411,7 +411,29 @@
           const fechaInput = document.querySelector("#targetDate");
           const btnGuardar = document.querySelector("#btnGuardarStock");
 
-          if (window.flatpickr) flatpickr("#targetDate", { dateFormat: "Y-m-d" });
+          if (window.flatpickr && fechaInput) {
+            const ahora = new Date();
+            const yyyy = ahora.getFullYear();
+            const mm = String(ahora.getMonth() + 1).padStart(2, "0");
+            const dd = String(ahora.getDate()).padStart(2, "0");
+            const hh = String(ahora.getHours()).padStart(2, "0");
+            const min = String(ahora.getMinutes()).padStart(2, "0");
+
+            const fechaHoraActual = `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+            fechaInput.value = fechaHoraActual;
+
+            flatpickr(fechaInput, {
+              dateFormat: "Y-m-d H:i", 
+              defaultDate: fechaHoraActual,
+              enableTime: true,
+              time_24hr: true, 
+              minTime: "08:00",
+              maxTime: "22:00",
+              maxDate: "today",
+              disableMobile: true,
+              appendTo: fechaInput.closest('.modal') || document.body,
+            });
+          }
 
           btnGuardar?.addEventListener("click", async () => {
             const stock = cantidadInput.value.trim();
@@ -441,7 +463,6 @@
               alertify.error("Error al guardar stock.");
             }
           });
-        
       }
       
   });
