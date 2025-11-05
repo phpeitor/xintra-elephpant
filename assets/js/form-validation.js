@@ -236,6 +236,10 @@
   }
 
   async function cargarTicket(hash) {
+
+    const cargandoDiv = document.querySelector('.cargando');
+    cargandoDiv?.classList.remove('!hidden');
+
     try {
       const res = await fetch(`controller/venta/get_ticket.php?hash=${hash}`);
       const json = await res.json();
@@ -263,7 +267,14 @@
       if (dsctoInput) dsctoInput.value = u.dscto;
 
       const tipoDsctoInput = document.querySelector("#promo-code");
-      if (tipoDsctoInput) tipoDsctoInput.value = u.tipo_dscto;
+      if (tipoDsctoInput) {
+        tipoDsctoInput.value = (u.tipo_dscto === "NA" || u.tipo_dscto === "NO APLICA") ? "" : u.tipo_dscto;
+      }
+
+      const pagoSelect = document.querySelector("#pago");
+      if (pagoSelect) {
+        pagoSelect.value = u.pago || "EFECTIVO"; 
+      }
 
       const cartBody = document.querySelector("#cartBody");
       if (!cartBody) return;
@@ -350,6 +361,8 @@
 
     } catch (err) {
       console.error("❌ Error al cargar ticket:", err);
+    }finally {
+      cargandoDiv?.classList.add('!hidden');
     }
   }
 

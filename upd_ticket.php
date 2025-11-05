@@ -362,6 +362,11 @@
                         </div>
                      </div>
                      <div class="box !hidden" id="cart-empty-cart">
+
+                        <div class="cargando flex items-center justify-between !hidden"> <strong>Cargando...</strong> 
+                           <div class="ti-spinner" role="status"> <span class="sr-only">Cargando...</span> </div> 
+                        </div>
+
                         <div class="box-header">
                            <div class="box-title">Carrito vacío</div>
                         </div>
@@ -444,6 +449,8 @@
 
             </div>
          </div>
+
+         
          <!-- END MAINCONTENT --> 
          <footer class="mt-auto py-4 bg-white dark:bg-bodybg text-center border-t border-defaultborder dark:border-defaultborder/10">
             <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2025</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.instagram.com/amvsoft.tech/" target="_blank"> <span class="font-medium text-primary">AMV</span> </a> All rights reserved </span> </div>
