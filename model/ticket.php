@@ -120,17 +120,9 @@ class Ticket {
     }
 
     public function obtenerPorHash(string $hash): ?array {
-        $sql = "SELECT 
-                    IDPERSONAL,
-                    NOMBRES,
-                    APELLIDOS,
-                    DOC,
-                    EMAIL,
-                    TLF,
-                    SEXO,
-                    IDESTADO
-                FROM personal
-                WHERE MD5(IDPERSONAL) = :hash
+        $sql = "SELECT *
+                FROM pedido
+                WHERE MD5(id) = :hash
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);

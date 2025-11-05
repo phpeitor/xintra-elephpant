@@ -8,7 +8,7 @@ try {
     $usuario    = trim($_POST['personal'] ?? '');
     $fecha      = trim($_POST['date'] ?? '');
     $dscto      = trim($_POST['descuento'] ?? '0');
-    $tipo_dscto = trim($_POST['promo-code'] ?? '');
+    $tipo_dscto = trim($_POST['promo-code'] ?? 'SIN CODE');
     $pago       = trim($_POST['pago'] ?? '');
 
     if ($cliente === '' || $usuario === '' || $fecha === '') {
@@ -34,13 +34,15 @@ try {
             $precio = $it['precio'];
             $subtotal = $it['subtotal'];
 
-            $ticket->guardar_stock([
-                'id_product' => $id_item,
-                'id_pedido' => $id,
-                'tipo' => 'S',
-                'stock' => $cantidad,
-                'user' => $_SESSION['session_usuario'],
-            ]);
+            if (isset($it['tipo']) && strtoupper($it['tipo']) === 'PRODUCTO') {
+                $ticket->guardar_stock([
+                    'id_product' => $id_item,
+                    'id_pedido' => $id,
+                    'tipo' => 'S',
+                    'stock' => $cantidad,
+                    'user' => $_SESSION['session_usuario'],
+                ]);
+            }
 
             $ticket->guardar_detalle([
                 'id_pedido' => $id,
@@ -51,7 +53,7 @@ try {
             ]);
         }
     }
-    
+
     echo json_encode(['ok' => true, 'id' => $id]);
 } catch (Throwable $e) {
     http_response_code(500);

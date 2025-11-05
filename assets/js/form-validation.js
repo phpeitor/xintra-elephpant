@@ -236,6 +236,54 @@
     }
   }
 
+  async function cargarTicket(hash) {
+    try {
+      const res = await fetch(`controller/venta/get_ticket.php?hash=${hash}`);
+      const json = await res.json();
+
+      if (!json.ok) {
+        alertify.error(json.message || "Ticket no encontrado");
+        return;
+      }
+
+      const u = json.data;
+      
+      if (window.itemChoices?.clienteInstance) {
+        setChoiceValueWhenReady(window.itemChoices.clienteInstance, u.cliente);
+      }
+
+      const fechaInput = document.querySelector("#date");
+      if (fechaInput) fechaInput.value = u.fecha;
+
+      const dsctoInput = document.querySelector("#descuento");
+      if (dsctoInput) dsctoInput.value = u.dscto;
+
+      const tipoDsctoInput = document.querySelector("#promo-code");
+      if (tipoDsctoInput) tipoDsctoInput.value = u.tipo_dscto;
+
+
+    } catch (err) {
+      console.error("❌ Error al cargar ticket:", err);
+    }
+  }
+
+  function setChoiceValueWhenReady(choiceInstance, value, maxRetries = 20) {
+    let retries = 0;
+    const interval = setInterval(() => {
+      const choice = choiceInstance._store.choices.find(
+        c => String(c.value) === String(value)
+      );
+
+      if (choice) {
+        choiceInstance.setChoiceByValue(String(value));
+        clearInterval(interval);
+      } else if (retries++ >= maxRetries) {
+        clearInterval(interval);
+        console.warn(`⚠️ No se encontró el valor "${value}" en Choices.`);
+      }
+    }, 150);
+  }
+
   function updateStockVisual(stock) {
     const box = document.getElementById("stock-box");
     const icon = document.getElementById("stock-icon");
@@ -325,6 +373,18 @@
             maxDate: "today",
             disableMobile: true,
           });
+
+          if(hash){
+            setTimeout(() => {
+              cargarTicket(hash);
+            }, 300);
+            const hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.name = "hash";
+            hidden.value = hash;
+            form.appendChild(hidden);
+            form.dataset.mode = "update";
+          }
         }
 
         form.addEventListener("submit", async (e) => {

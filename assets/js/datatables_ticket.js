@@ -70,7 +70,7 @@
                 const id = cell.getRow().getData().id;
                 if (e.target.closest(".btn-edit")) {
                 const idHash = e.target.closest(".btn-edit").dataset.id;
-                window.location.href = "upd_usuario.php?hash=" + idHash;
+                window.location.href = "upd_ticket.php?hash=" + idHash;
                 } else if (e.target.closest(".btn-delete")) {
                 if (confirm("¿Seguro que deseas eliminar el registro " + id + "?")) {
                     fetch("controller/delete_usuario.php", {

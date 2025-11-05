@@ -65,7 +65,8 @@
           label: cat.nombre,
           customProperties: {
             stock: cat.stock_final,
-            precio: cat.precio
+            precio: cat.precio,
+            tipo: cat.tpo
           }
         })),
         "value",
@@ -266,6 +267,7 @@
     const { value: id, label: nombre, customProperties } = selected;
     const precio = parseFloat(customProperties?.precio) || 0;
     const stock = parseInt(customProperties?.stock) || 0;
+    const tipo = customProperties?.tipo;
 
 
     if (cartBody.querySelector(`tr[data-id="${id}"]`)) {
@@ -273,7 +275,7 @@
       return;
     }
 
-    if (stock <= 0) {
+    if (tipo === "PRODUCTO" && stock <= 0 ) {
       const hash = md5(id); 
       const enlace = `<a href="stk_item.php?hash=${hash}" 
                     target="_blank" 
@@ -286,6 +288,7 @@
 
     const row = document.createElement("tr");
     row.setAttribute("data-id", id);
+    row.setAttribute("data-tipo", tipo); 
     row.innerHTML = `
       <td>
         <div class="flex items-center">
@@ -293,9 +296,17 @@
             <div class="mb-1 text-[14px] font-semibold">
               <a href="javascript:void(0);">${nombre}</a>
             </div>
-            <span class="badge ${stock > 5 ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'}">
-              ${stock > 0 ? 'Stock: ' + stock : 'Sin stock'}
-            </span>
+            ${
+              tipo === "PRODUCTO"
+                ? `<span class="badge ${
+                    stock > 5
+                      ? 'bg-success/10 text-success'
+                      : 'bg-danger/10 text-danger'
+                  }">
+                    ${stock > 0 ? 'Stock: ' + stock : 'Sin stock'}
+                  </span>`
+                : ''
+            }
           </div>
         </div>
       </td>
@@ -447,6 +458,7 @@
 
     rows.forEach((row) => {
       const id = row.getAttribute("data-id");
+      const tipo = row.getAttribute("data-tipo");
       const precioText = row.querySelector("td:nth-child(2)").innerText.replace("S/.", "").trim();
       const precio = parseFloat(precioText) || 0;
       const cantidad = parseFloat(row.querySelector(".qty-input").value) || 0;
@@ -454,7 +466,7 @@
       const subtotal = parseFloat(subtotalText) || 0;
 
       if (id && cantidad > 0) {
-        items.push({ id, precio, cantidad, subtotal });
+        items.push({ id, precio, cantidad, subtotal, tipo });
       }
     });
 
