@@ -450,6 +450,7 @@
     cargarClientes,
     categoriaInstance: categoria,
     clienteInstance: cliente,
+    personalInstance: personal,
   };
 
   window.obtenerItemsCarrito = function () {

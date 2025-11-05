@@ -14,7 +14,12 @@ try {
     $data = $ticket->obtenerPorHash($hash);
 
     if ($data) {
-        echo json_encode(['ok' => true, 'data' => $data]);
+        $data2 = $ticket->obtenerDetallePorHash($hash);
+        echo json_encode([
+            'ok' => true,
+            'data' => $data,
+            'detalle' => $data2,
+        ]);
     } else {
         echo json_encode(['ok' => false, 'message' => 'Ticket no encontrado']);
     }

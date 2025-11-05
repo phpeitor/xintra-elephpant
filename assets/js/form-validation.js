@@ -252,6 +252,10 @@
         setChoiceValueWhenReady(window.itemChoices.clienteInstance, u.cliente);
       }
 
+      if (window.itemChoices?.personalInstance) {
+        setChoiceValueWhenReady(window.itemChoices.personalInstance, u.usuario);
+      }
+
       const fechaInput = document.querySelector("#date");
       if (fechaInput) fechaInput.value = u.fecha;
 
