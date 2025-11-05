@@ -474,4 +474,9 @@
     return items;
   };
 
+  window.validarCarrito = validarCarrito;
+  window.actualizarResumen = actualizarResumen;
+  window.updateCartEvents = updateCartEvents;
+  window.reinitTooltips = reinitTooltips;
+
 })();

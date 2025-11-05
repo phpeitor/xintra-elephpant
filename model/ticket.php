@@ -150,7 +150,7 @@ class Ticket {
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
         $stmt->execute();
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $data ?: null;
     }
 

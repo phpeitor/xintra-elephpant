@@ -86,7 +86,6 @@
     return ok;
   }
   
-
   function attachToForm(form) {
     form.addEventListener("submit", (e) => {
       const ok = validateForm(form);
@@ -247,7 +246,8 @@
       }
 
       const u = json.data;
-      
+      const detalle = json.detalle || [];
+
       if (window.itemChoices?.clienteInstance) {
         setChoiceValueWhenReady(window.itemChoices.clienteInstance, u.cliente);
       }
@@ -265,6 +265,88 @@
       const tipoDsctoInput = document.querySelector("#promo-code");
       if (tipoDsctoInput) tipoDsctoInput.value = u.tipo_dscto;
 
+      const cartBody = document.querySelector("#cartBody");
+      if (!cartBody) return;
+      cartBody.innerHTML = ""; 
+
+      detalle.forEach((item) => {
+        const {
+          id_productservice: id,
+          item: nombre,
+          categoria,
+          precio,
+          cantidad,
+          subtotal,
+          stock_final,
+          tpo: tipo
+        } = item;
+
+        const row = document.createElement("tr");
+        row.setAttribute("data-id", id);
+        row.setAttribute("data-tipo", tipo);
+
+        row.innerHTML = `
+          <td>
+            <div class="flex items-center">
+              <div class="flex-auto">
+                <div class="mb-1 text-[14px] font-semibold">
+                  <a href="javascript:void(0);">${categoria}: ${nombre}</a>
+                </div>
+                ${
+                  tipo === "PRODUCTO"
+                    ? `<span class="badge ${
+                        stock_final > 5
+                          ? "bg-success/10 text-success"
+                          : "bg-danger/10 text-danger"
+                      }">
+                        ${stock_final > 0 ? "Stock: " + stock_final : "Sin stock"}
+                      </span>`
+                    : ""
+                }
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="font-semibold text-[14px]">S/. ${parseFloat(precio).toFixed(2)}</div>
+          </td>
+          <td class="product-quantity-container">
+            <div class="flex items-center flex-nowrap gap-1 rounded-full cart-input-group">
+              <button type="button" class="ti-btn ti-btn-icon ti-btn-sm !rounded-full bg-primary/10 text-primary border btn-minus">
+                <i class="ri-subtract-line"></i>
+              </button>
+              <input type="number" class="form-control form-control-sm !rounded-full text-center p-0 qty-input"
+                value="${cantidad}" min="0" max="${stock_final || 0}" readonly>
+              <button type="button" class="ti-btn ti-btn-icon ti-btn-sm !rounded-full bg-primary/10 text-primary border btn-plus">
+                <i class="ri-add-line"></i>
+              </button>
+            </div>
+          </td>
+          <td>
+            <div class="text-[14px] font-semibold total-cell">S/. ${parseFloat(subtotal).toFixed(2)}</div>
+          </td>
+          <td>
+            <div class="flex items-center">
+              <a href="#" class="ti-btn ti-btn-icon bg-primary text-white ti-btn-sm me-1 hs-tooltip-toggle"> 
+                <i class="ri-heart-line"></i> 
+              </a>
+              <div class="hs-tooltip ti-main-tooltip ltr:[--placement:left] rtl:[--placement:right]"> 
+                <a href="javascript:void(0);" class="ti-btn ti-btn-icon bg-danger text-white ti-btn-sm btn-remove waves-effect waves-light">
+                  <i class="ri-delete-bin-line"></i> 
+                  <span class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 !bg-black !text-xs !font-medium !text-white shadow-sm hidden" role="tooltip"> Eliminar</span> 
+                </a> 
+              </div>
+            </div>
+          </td>
+        `;
+
+        cartBody.appendChild(row);
+        if (typeof reinitTooltips === "function") reinitTooltips(row);
+        if (typeof updateCartEvents === "function") updateCartEvents(row);
+
+      });
+
+      if (typeof actualizarResumen === "function") actualizarResumen();
+      if (typeof validarCarrito === "function") validarCarrito();
 
     } catch (err) {
       console.error("❌ Error al cargar ticket:", err);
