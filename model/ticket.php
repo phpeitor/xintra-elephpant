@@ -13,24 +13,22 @@ class Ticket {
     }
 
     public function actualizarPorHash(string $hash, array $data): bool {
-        $sql = "UPDATE personal 
-                SET APELLIDOS = :APELLIDOS,
-                    NOMBRES = :NOMBRES,
-                    EMAIL = :EMAIL,
-                    DOC = :DOC,
-                    TLF = :TLF,
-                    SEXO = :SEXO,
-                    IDESTADO = :IDESTADO
-                WHERE MD5(IDPERSONAL) = :hash";
+        $sql = "UPDATE pedido 
+                SET cliente = :cliente,
+                    usuario = :usuario,
+                    fecha = :fecha,
+                    dscto = :dscto,
+                    tipo_dscto = :tipo_dscto,
+                    pago = :pago
+                WHERE MD5(id) = :hash";
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(':APELLIDOS', $data['apellidos']);
-        $stmt->bindValue(':NOMBRES', $data['nombres']);
-        $stmt->bindValue(':EMAIL', $data['email']);
-        $stmt->bindValue(':DOC', $data['documento']);
-        $stmt->bindValue(':TLF', $data['telefono']);
-        $stmt->bindValue(':SEXO', (int)$data['sexo'], PDO::PARAM_INT);
-        $stmt->bindValue(':IDESTADO', (int)$data['estado'], PDO::PARAM_INT);
+        $stmt->bindValue(':cliente', $data['apellidos']);
+        $stmt->bindValue(':usuario', $data['nombres']);
+        $stmt->bindValue(':fecha', $data['email']);
+        $stmt->bindValue(':dscto', $data['documento']);
+        $stmt->bindValue(':tipo_dscto', $data['telefono']);
+        $stmt->bindValue(':pago', $data['telefono']);
         $stmt->bindValue(':hash', $hash);
         $stmt->execute();
         return $stmt->rowCount() > 0;
@@ -95,11 +93,20 @@ class Ticket {
         }
 
         $sql = "
-            SELECT A.id, B.id_productservice as id_producto, date(A.fecha) as fecha_pedido, case when upper(C.USUARIO) is null then 'SALIDA INSUMOS' else upper(C.USUARIO) end as usuario,case when E.apellidos is null then 'INVENTARIO' else concat(E.nombres,' ',E.apellidos) end as cliente, GROUP_CONCAT('• ',D.nombre SEPARATOR ' </br> ') as productos, GROUP_CONCAT('S/.',B.precio,' x ',B.cantidad SEPARATOR ' </br> ') as precioxcant,
-			    case when dscto > 0 and pago='EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><code>',tipo_dscto,'</code>','<br/><i style=color:#f00>S/.',dscto,'</i><br/><b>S/.',(sum(B.subtotal)-dscto),'<b>') 
-			     when pago != 'EFECTIVO' and dscto=0 then concat('S/.',sum(B.subtotal),'<br/><code>',pago,'</code>','<br/><b>S/.',round((sum(B.subtotal)*1.05),2),'<b>')
-			     when dscto > 0 and pago != 'EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><code>',tipo_dscto,'</code><br/><i style=color:#f00>S/.',dscto,'</i><br/><code>',pago,' 5%</code><br/><b>S/.',round((sum(B.subtotal)*1.05)-dscto,2),'<b>') 
-			    else concat('S/.',sum(B.subtotal)) end as total,sum(B.cantidad) as cantidad
+            SELECT A.id, B.id_productservice as id_producto, date(A.fecha) as fecha_pedido, case when upper(C.USUARIO) is null then 'SALIDA INSUMOS' else upper(C.USUARIO) end as usuario,
+            case when E.apellidos is null then 'INVENTARIO' else concat(E.nombres,' ',E.apellidos) end as cliente, 
+            GROUP_CONCAT('• ',D.nombre SEPARATOR ' </br> ') as productos, 
+            GROUP_CONCAT('S/.',B.precio,' x ',B.cantidad SEPARATOR ' </br> ') as precioxcant,
+            case when dscto > 0 and pago='EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><code>',tipo_dscto,
+            '</code>','<br/><i style=color:#f00>S/.',dscto,'</i><br/><b>S/.',(sum(B.subtotal)-dscto),'<b>') 
+            when pago not in ('EFECTIVO','YAPE','PLIN') and dscto=0 then concat('S/.',sum(B.subtotal),'<br/><code>',pago,'</code>',
+            '<br/><b>S/.',round((sum(B.subtotal)*1.05),2),'<b>')
+            when dscto > 0 and pago not in ('EFECTIVO','YAPE','PLIN') then concat('S/.',sum(B.subtotal),'<br/><code>',
+            tipo_dscto,'</code><br/><i style=color:#f00>S/.',dscto,'</i><br/><code>',pago,
+            ' 5%</code><br/><b>S/.',round((sum(B.subtotal)*1.05)-dscto,2),'<b>') 
+            when pago ='EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><i class=ri-currency-line></i>')
+            else concat('S/.',sum(B.subtotal),'<br/><code>', pago,'</code>') end as total,
+            sum(B.cantidad) as cantidad
 			    FROM pedido A 
 			    LEFT JOIN detalle_pedido B ON A.id = B.id_pedido 
 			    LEFT JOIN personal C ON A.usuario = C.IDPERSONAL 

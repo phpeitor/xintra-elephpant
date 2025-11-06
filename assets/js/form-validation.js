@@ -535,11 +535,19 @@
 
           try {
             const formData = new FormData(form);
+
             if (form.classList.contains("ti-custom-validation-ticket")) {
-              const items =
-                typeof window.obtenerItemsCarrito === "function"
-                  ? window.obtenerItemsCarrito()
-                  : [];
+              let items = [];
+
+              try {
+                items =
+                  typeof window.obtenerItemsCarrito === "function"
+                    ? window.obtenerItemsCarrito()
+                    : [];
+              } catch (e) {
+                console.error("Error al obtener items del carrito:", e);
+                items = [];
+              }
 
               if (!items.length) {
                 alertify.error("Debe agregar al menos un ítem al carrito 🛒");
@@ -565,7 +573,7 @@
             }
           } catch (err) {
               console.error(err);
-              alertify.error("Fallo de red o excepción en JS. Revisa la consola.");
+              alertify.error("Fallo de red o excepción, revisa la consola");
           } finally {
               if (submitBtn) {
                 submitBtn.disabled = false;
