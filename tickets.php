@@ -264,14 +264,14 @@
                               <span class="avatar avatar-rounded bg-primary svg-white">
                               <i class="bx bx-group text-[22px]"></i>
                               </span>
-                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Total Followers</span>
+                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Total Clientes</span>
                            </div>
                         </div>
                         <div class="flex items-end justify-between">
                            <div class="pb-3">
-                              <span class="text-[20px] font-medium flex items-center">13,124</span>
-                              <div class="text-textmuted dark:text-textmuted/50 text-[13px]">Increased By</div>
-                              <span class="text-success">2.62% <i class="ti ti-arrow-narrow-up text-[16px]"></i></span>
+                              <span class="text-[20px] font-medium flex items-center" id="total_21">0</span>
+                              <div class="text-textmuted dark:text-textmuted/50 text-[13px]" id="inc_21">Increased By</div>
+                              <span class="text-success" id="pct_21">0% <i class="ti ti-arrow-narrow-up text-[16px]"></i></span>
                            </div>
                            <div id="chart-21" style="min-height:85px;"></div>
                         </div>
@@ -286,14 +286,15 @@
                               <span class="avatar avatar-rounded bg-primarytint1color svg-white">
                               <i class="bx bx-trending-up text-[22px]"></i>
                               </span>
-                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Total Mensual</span>
+                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Total Mensual <code id="mes_22">?</code></span>
+                              
                            </div>
                         </div>
                         <div class="flex items-end justify-between">
                            <div class="pb-3">
-                              <span class="text-[20px] font-medium flex items-center" id="total_22">1,230</span>
+                              <span class="text-[20px] font-medium flex items-center" id="total_22">0</span>
                               <div class="text-textmuted dark:text-textmuted/50 text-[13px]" id="inc_22">Increased By</div>
-                              <span class="text-success" id="pct_22">0.56% <i class="ti ti-arrow-narrow-up text-[16px]"></i></span>
+                              <span class="text-success" id="pct_22">0% <i class="ti ti-arrow-narrow-up text-[16px]"></i></span>
                            </div>
                            <div id="chart-22" style="min-height:85px;"></div>
                         </div>
@@ -308,14 +309,14 @@
                               <span class="avatar avatar-rounded bg-primarytint2color svg-white">
                               <i class="bx bx-dollar text-[22px]"></i>
                               </span>
-                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Conversion Rate</span>
+                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Total Diario <code id="mes_23">?</code></span>
                            </div>
                         </div>
                         <div class="flex items-end justify-between">
                            <div class="pb-3">
-                              <span class="text-[20px] font-medium flex items-center">17,658</span>
-                              <div class="text-textmuted dark:text-textmuted/50 text-[13px]">Decreased By</div>
-                              <span class="text-danger">3.76% <i class="ti ti-arrow-narrow-down text-[16px]"></i></span>
+                              <span class="text-[20px] font-medium flex items-center" id="total_23">0</span>
+                              <div class="text-textmuted dark:text-textmuted/50 text-[13px]" id="inc_23">Decreased By</div>
+                              <span class="text-danger" id="pct_23"> 0% <i class="ti ti-arrow-narrow-down text-[16px]"></i></span>
                            </div>
                            <div id="chart-23" style="min-height:85px;"></div>
                         </div>
@@ -363,7 +364,7 @@
 
                            <div class="download-data"> 
                               <button type="button" class="ti-btn ti-btn-primary" id="download-csv">Download CSV</button> 
-                              <button type="button" class="ti-btn ti-btn-primary" id="download-json">Download JSON</button> <button type="button" class="ti-btn ti-btn-primary" id="download-xlsx">Download XLSX</button> <button type="button" class="ti-btn ti-btn-primary" id="download-pdf">Download PDF</button> 
+                              <button type="button" class="ti-btn ti-btn-primary" id="download-json">Download JSON</button> <button type="button" class="ti-btn ti-btn-primary" id="download-xlsx">Download XLSX</button>
                            </div>
 
                            <div class="overflow-hidden table-bordered">
@@ -416,7 +417,7 @@
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
       <script src="./assets/js/custom.js"></script>
       <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
-      <script src="./assets/js/analytics-dashboard.js"></script>
+      <script src="./assets/js/analytics-dashboard.js?v=1.0"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
          <div class="pcr-selection">
             <div class="pcr-color-preview">

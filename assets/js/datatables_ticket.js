@@ -121,15 +121,6 @@
         table.download("xlsx", "data.xlsx", { sheetName: "My Data" });
     });
 
-    //trigger download of data.pdf file
-    document.getElementById("download-pdf").addEventListener("click", function () {
-        table.download("pdf", "data.pdf", {
-            orientation: "portrait", //set page orientation to portrait
-            title: "Example Report", //add title to report
-        });
-    });
-
-
     document.querySelector("#switcher-rtl").addEventListener("click",()=>{
         document.querySelectorAll(".tabulator").forEach((ele)=>{
             ele.classList.add("tabulator-rtl")

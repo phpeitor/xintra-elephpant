@@ -179,32 +179,31 @@ class Ticket {
             $fecha_inicio = date('Y-m-d', strtotime('-7 days', strtotime($fecha_fin)));
         }
 
-        $sql = "
-            SELECT A.id, B.id_productservice as id_producto, date(A.fecha) as fecha_pedido, case when upper(C.USUARIO) is null then 'SALIDA INSUMOS' else upper(C.USUARIO) end as usuario,
-            case when E.apellidos is null then 'INVENTARIO' else concat(E.nombres,' ',E.apellidos) end as cliente, 
-            GROUP_CONCAT('• ',D.nombre SEPARATOR ' </br> ') as productos, 
-            GROUP_CONCAT('S/.',B.precio,' x ',B.cantidad SEPARATOR ' </br> ') as precioxcant,
-            case when dscto > 0 and pago='EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><code>',tipo_dscto,
-            '</code>','<br/><i style=color:#f00>S/.',dscto,'</i><br/><b>S/.',(sum(B.subtotal)-dscto),'<b>') 
-            when pago not in ('EFECTIVO','YAPE','PLIN') and dscto=0 then concat('S/.',sum(B.subtotal),'<br/><code>',pago,'</code>',
-            '<br/><b>S/.',round((sum(B.subtotal)*1.05),2),'<b>')
-            when dscto > 0 and pago not in ('EFECTIVO','YAPE','PLIN') then concat('S/.',sum(B.subtotal),'<br/><code>',
-            tipo_dscto,'</code><br/><i style=color:#f00>S/.',dscto,'</i><br/><code>',pago,
-            ' 5%</code><br/><b>S/.',round((sum(B.subtotal)*1.05)-dscto,2),'<b>') 
-            when pago ='EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><i class=ri-currency-line></i>')
-            else concat('S/.',sum(B.subtotal),'<br/><code>', pago,'</code>') end as total,
-            sum(B.cantidad) as cantidad
-			    FROM pedido A 
-			    LEFT JOIN detalle_pedido B ON A.id = B.id_pedido 
-			    LEFT JOIN personal C ON A.usuario = C.IDPERSONAL 
-			    LEFT JOIN product_service D ON B.id_productservice = D.id 
-			    LEFT JOIN cliente E on E.id=A.cliente 
-            WHERE DATE(A.fecha) BETWEEN :fecha_inicio AND :fecha_fin
-            AND D.id_sucursal = 5 
-            AND A.cliente > 0
-            GROUP BY A.id 
-            ORDER BY A.id DESC
-        ";
+        $sql = "SELECT A.id, B.id_productservice as id_producto, date(A.fecha) as fecha_pedido, case when upper(C.USUARIO) is null then 'SALIDA INSUMOS' else upper(C.USUARIO) end as usuario,
+                case when E.apellidos is null then 'INVENTARIO' else concat(E.nombres,' ',E.apellidos) end as cliente, 
+                GROUP_CONCAT('• ',D.nombre SEPARATOR ' </br> ') as productos, 
+                GROUP_CONCAT('S/.',B.precio,' x ',B.cantidad SEPARATOR ' </br> ') as precioxcant,
+                case when dscto > 0 and pago='EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><code>',tipo_dscto,
+                '</code>','<br/><i style=color:#f00>S/.',dscto,'</i><br/><b>S/.',(sum(B.subtotal)-dscto),'<b>') 
+                when pago not in ('EFECTIVO','YAPE','PLIN') and dscto=0 then concat('S/.',sum(B.subtotal),'<br/><code>',pago,'</code>',
+                '<br/><b>S/.',round((sum(B.subtotal)*1.05),2),'<b>')
+                when dscto > 0 and pago not in ('EFECTIVO','YAPE','PLIN') then concat('S/.',sum(B.subtotal),'<br/><code>',
+                tipo_dscto,'</code><br/><i style=color:#f00>S/.',dscto,'</i><br/><code>',pago,
+                ' 5%</code><br/><b>S/.',round((sum(B.subtotal)*1.05)-dscto,2),'<b>') 
+                when pago ='EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><i class=ri-currency-line></i>')
+                else concat('S/.',sum(B.subtotal),'<br/><code>', pago,'</code>') end as total,
+                sum(B.cantidad) as cantidad
+                    FROM pedido A 
+                    LEFT JOIN detalle_pedido B ON A.id = B.id_pedido 
+                    LEFT JOIN personal C ON A.usuario = C.IDPERSONAL 
+                    LEFT JOIN product_service D ON B.id_productservice = D.id 
+                    LEFT JOIN cliente E on E.id=A.cliente 
+                WHERE DATE(A.fecha) BETWEEN :fecha_inicio AND :fecha_fin
+                AND D.id_sucursal = 5 
+                AND A.cliente > 0
+                GROUP BY A.id 
+                ORDER BY A.id DESC
+            ";
         $this->conn->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':fecha_inicio', $fecha_inicio);
@@ -264,7 +263,46 @@ class Ticket {
                     AND A.cliente > 0
                     AND A.fecha >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
                 GROUP BY DATE_FORMAT(A.fecha, '%Y-%m')
-                ORDER BY mes DESC";
+                ORDER BY mes desc";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
+    public function obtenerTotalDiario(): ?array {
+        $sql = "SELECT 
+                    IFNULL(SUM(b.subtotal), 0) AS total,
+                    DATE_FORMAT(A.fecha, '%Y-%m-%d') AS dia
+                FROM pedido A
+                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
+                LEFT JOIN product_service D ON b.id_productservice = D.id
+                WHERE 
+                    D.id_sucursal = 5
+                    AND A.cliente > 0
+                GROUP BY DATE_FORMAT(A.fecha, '%Y-%m-%d')
+                ORDER BY dia DESC
+                LIMIT 7";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
+    public function obtenerTotalCliente(): ?array {
+        $sql = "SELECT 
+                    count(distinct A.cliente) as cliente,
+                    count(distinct A.usuario) as usuario,
+                    DATE_FORMAT(A.fecha, '%Y-%m') AS mes
+                FROM pedido A
+                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
+                LEFT JOIN product_service D ON b.id_productservice = D.id
+                WHERE 
+                    D.id_sucursal = 5
+                    AND A.cliente > 0
+                GROUP BY DATE_FORMAT(A.fecha, '%Y-%m')
+                ORDER BY mes DESC
+                LIMIT 7";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -272,7 +310,7 @@ class Ticket {
     }
 
     public function obtenerItem(string $categoria): ?array {
-        $sql = "select t.id_product,
+        $sql = "SELECT t.id_product,
                     GREATEST(IFNULL(stock1, 0) - IFNULL(stock2, 0), 0) AS stock_final,
                     c.tpo, b.*,
                     c.nombre as nom_categoria,
