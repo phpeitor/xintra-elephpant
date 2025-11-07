@@ -255,83 +255,72 @@
             <div class="container-fluid">
 
                <div class="xxl:col-span-8 col-span-12">
-                  <div class="grid grid-cols-12 gap-x-6">
-                     <div class="xxl:col-span-3 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                        <div class="box overflow-hidden">
-                           <div class="box-body pb-0 pe-0">
-                              <div class="mb-4">
-                                 <div class="flex justify-between flex-wrap">
-                                    <span class="avatar avatar-rounded bg-primary svg-white">
-                                       <i class="bx bx-group text-[22px]"></i>
-                                    </span>
-                                    <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50 pe-3">Total Followers</span>
-                                 </div>
-                              </div>
-                              <div class="flex items-end justify-between">
-                                 <div class="pb-3">
-                                    <span class="text-[20px] font-medium mb-0 flex items-center">13,124 </span>
-                                    <div class="text-textmuted dark:text-textmuted/50 text-[13px]">Increased By </div>
-                                    <span class="text-success">2.62% <i class="ti ti-arrow-narrow-up text-[16px]"></i>
-                                    </span>
-                                 </div>
-                                 <div id="chart-21" class="" style="min-height: 85px;">
-                                 
-                                 </div>
-                              </div>
+                  <div class="flex flex-wrap gap-6">
+                     <!-- Caja 1 -->
+                     <div class="flex-1 min-w-[250px] box overflow-hidden">
+                        <div class="box-body pb-0 pe-0">
+                        <div class="mb-4">
+                           <div class="flex justify-between">
+                              <span class="avatar avatar-rounded bg-primary svg-white">
+                              <i class="bx bx-group text-[22px]"></i>
+                              </span>
+                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Total Followers</span>
                            </div>
                         </div>
-                     </div>
-                     <div class="xxl:col-span-3 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                        <div class="box overflow-hidden">
-                        <div class="box-body pb-0 pe-0">
-                           <div class="mb-4">
-                              <div class="flex justify-between flex-wrap">
-                              <span class="avatar avatar-rounded bg-primarytint1color svg-white">
-                                 <i class="bx bx-trending-up text-[22px]"></i>
-                              </span>
-                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50 pe-3">Session Rate</span>
-                              </div>
+                        <div class="flex items-end justify-between">
+                           <div class="pb-3">
+                              <span class="text-[20px] font-medium flex items-center">13,124</span>
+                              <div class="text-textmuted dark:text-textmuted/50 text-[13px]">Increased By</div>
+                              <span class="text-success">2.62% <i class="ti ti-arrow-narrow-up text-[16px]"></i></span>
                            </div>
-                           <div class="flex items-end justify-between">
-                              <div class="pb-3">
-                              <span class="text-[20px] font-medium mb-0 flex items-center">11,287 </span>
-                              <div class="text-textmuted dark:text-textmuted/50 text-[13px]">Increased By </div>
-                              <span class="text-success">0.56% <i class="ti ti-arrow-narrow-up text-[16px]"></i>
-                              </span>
-                              </div>
-                              <div id="chart-22" style="min-height: 85px;">
+                           <div id="chart-21" style="min-height:85px;"></div>
+                        </div>
+                        </div>
+                     </div>
 
-                              </div>
-                           </div>
-                        </div>
-                        </div>
-                     </div>
-                     <div class="xxl:col-span-3 lg:col-span-6 md:col-span-6 sm:col-span-12 col-span-12">
-                        <div class="box overflow-hidden">
+                     <!-- Caja 2 -->
+                     <div class="flex-1 min-w-[250px] box overflow-hidden">
                         <div class="box-body pb-0 pe-0">
-                           <div class="mb-4">
-                              <div class="flex justify-between flex-wrap">
-                              <span class="avatar avatar-rounded bg-primarytint2color svg-white">
-                                 <i class="bx bx-dollar text-[22px]"></i>
+                        <div class="mb-4">
+                           <div class="flex justify-between">
+                              <span class="avatar avatar-rounded bg-primarytint1color svg-white">
+                              <i class="bx bx-trending-up text-[22px]"></i>
                               </span>
-                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50 pe-3">Conversion Rate</span>
-                              </div>
+                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Total Mensual</span>
                            </div>
-                           <div class="flex items-end justify-between">
-                              <div class="pb-3">
-                                 <span class="text-[20px] font-medium mb-0 flex items-center">17,658 </span>
-                                 <div class="text-textmuted dark:text-textmuted/50 text-[13px]">Decreased By </div>
-                                 <span class="text-danger">3.76% <i class="ti ti-arrow-narrow-down text-[16px]"></i>
-                                 </span>
-                              </div>
-                              <div id="chart-23" style="min-height: 85px;">
-                              
-                              </div>
+                        </div>
+                        <div class="flex items-end justify-between">
+                           <div class="pb-3">
+                              <span class="text-[20px] font-medium flex items-center" id="total_22">1,230</span>
+                              <div class="text-textmuted dark:text-textmuted/50 text-[13px]" id="inc_22">Increased By</div>
+                              <span class="text-success" id="pct_22">0.56% <i class="ti ti-arrow-narrow-up text-[16px]"></i></span>
                            </div>
+                           <div id="chart-22" style="min-height:85px;"></div>
                         </div>
                         </div>
                      </div>
-                     
+
+                     <!-- Caja 3 -->
+                     <div class="flex-1 min-w-[250px] box overflow-hidden">
+                        <div class="box-body pb-0 pe-0">
+                        <div class="mb-4">
+                           <div class="flex justify-between">
+                              <span class="avatar avatar-rounded bg-primarytint2color svg-white">
+                              <i class="bx bx-dollar text-[22px]"></i>
+                              </span>
+                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Conversion Rate</span>
+                           </div>
+                        </div>
+                        <div class="flex items-end justify-between">
+                           <div class="pb-3">
+                              <span class="text-[20px] font-medium flex items-center">17,658</span>
+                              <div class="text-textmuted dark:text-textmuted/50 text-[13px]">Decreased By</div>
+                              <span class="text-danger">3.76% <i class="ti ti-arrow-narrow-down text-[16px]"></i></span>
+                           </div>
+                           <div id="chart-23" style="min-height:85px;"></div>
+                        </div>
+                        </div>
+                     </div>
                   </div>
                </div>
                

@@ -252,6 +252,25 @@ class Ticket {
         return $data ?: null;
     }
 
+    public function obtenerTotalMensual(): ?array {
+        $sql = "SELECT 
+                    IFNULL(SUM(b.subtotal), 0) AS total,
+                    DATE_FORMAT(A.fecha, '%Y-%m') AS mes
+                FROM pedido A
+                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
+                LEFT JOIN product_service D ON b.id_productservice = D.id
+                WHERE 
+                    D.id_sucursal = 5
+                    AND A.cliente > 0
+                    AND A.fecha >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+                GROUP BY DATE_FORMAT(A.fecha, '%Y-%m')
+                ORDER BY mes DESC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
     public function obtenerItem(string $categoria): ?array {
         $sql = "select t.id_product,
                     GREATEST(IFNULL(stock1, 0) - IFNULL(stock2, 0), 0) AS stock_final,
