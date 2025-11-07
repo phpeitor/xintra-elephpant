@@ -56,6 +56,7 @@ $html .= '
 <html>
 <head>
 <meta charset=\'UTF-8\'>
+<link rel=\'icon\' type=\'image/png\' href=\'../../assets/images/brand-logos/toggle-logo.png\'>
 <title>Xintra PDF</title>
 <style>
 @page { margin: 0 }
