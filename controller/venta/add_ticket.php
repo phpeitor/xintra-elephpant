@@ -8,7 +8,7 @@ try {
     $usuario    = trim($_POST['personal'] ?? '');
     $fecha      = trim($_POST['date'] ?? '');
     $dscto      = trim($_POST['descuento'] ?? '0');
-    $tipo_dscto = trim($_POST['promo-code'] ?? 'SIN CODE');
+    $tipo_dscto = trim($_POST['promo-code'] ?? 'NO APLICA');
     $pago       = trim($_POST['pago'] ?? '');
 
     if ($cliente === '' || $usuario === '' || $fecha === '') {

@@ -23,15 +23,45 @@ class Ticket {
                 WHERE MD5(id) = :hash";
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindValue(':cliente', $data['apellidos']);
-        $stmt->bindValue(':usuario', $data['nombres']);
-        $stmt->bindValue(':fecha', $data['email']);
-        $stmt->bindValue(':dscto', $data['documento']);
-        $stmt->bindValue(':tipo_dscto', $data['telefono']);
-        $stmt->bindValue(':pago', $data['telefono']);
+        $stmt->bindValue(':cliente', $data['cliente']);
+        $stmt->bindValue(':usuario', $data['usuario']);
+        $stmt->bindValue(':fecha', $data['fecha']);
+        $stmt->bindValue(':dscto', $data['dscto'] ?? 0);    
+        $stmt->bindValue(':tipo_dscto', $data['tipo_dscto'] ?? 'NO APLICA');
+        $stmt->bindValue(':pago', $data['pago']);
+        $stmt->bindValue(':hash', $hash);
+        $stmt->execute();
+        return $stmt->rowCount() >= 0;
+    }
+
+    public function eliminar_pedido(string $hash): bool {
+        $sql = "DELETE from detalle_pedido 
+                WHERE MD5(id_pedido) = :hash";
+        $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
         $stmt->execute();
         return $stmt->rowCount() > 0;
+    }
+
+    public function eliminar_stock(string $hash): bool {
+        $sql = "DELETE from stock_black 
+                WHERE MD5(id_pedido) = :hash and tipo='S'";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':hash', $hash);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
+
+    public function beginTransaction(): void {
+        $this->conn->beginTransaction();
+    }
+
+    public function commit(): void {
+        $this->conn->commit();
+    }
+
+    public function rollback(): void {
+        $this->conn->rollBack();
     }
 
     public function guardar(array $data): int {
@@ -54,35 +84,92 @@ class Ticket {
     }
 
     public function guardar_detalle(array $data): int {
-        $sql = "INSERT INTO detalle_pedido 
-                (id_pedido,id_productservice,precio,cantidad,subtotal)
-                VALUES 
-                (:id_pedido, :id_productservice, :precio, :cantidad, :subtotal)";
-        $stmt = $this->conn->prepare($sql);
+        $id_pedido         = $data['id_pedido'] ?? '';
+        $id_productservice = $data['id_productservice'] ?? '';
+        $precio            = (float)($data['precio'] ?? 0);
+        $cantidad          = (float)($data['cantidad'] ?? 0);
+        $subtotal          = (float)($data['subtotal'] ?? 0);
 
-        $stmt->bindValue(':id_pedido',         $data['id_pedido'] ?? '');
-        $stmt->bindValue(':id_productservice', $data['id_productservice'] ?? '');
-        $stmt->bindValue(':precio',            $data['precio'] ?? '0');
-        $stmt->bindValue(':cantidad',          $data['cantidad'] ?? '0');
-        $stmt->bindValue(':subtotal',          $data['subtotal'] ?? '0');
+        $sql = "INSERT INTO detalle_pedido (
+                    id_pedido,
+                    id_productservice,
+                    precio,
+                    cantidad,
+                    subtotal
+                )
+                VALUES (
+                    (CASE 
+                        WHEN LENGTH(:id_pedido) = 32 THEN (
+                            SELECT id FROM pedido WHERE MD5(id) = :id_pedido LIMIT 1
+                        )
+                        ELSE :id_pedido
+                    END),
+                    (CASE 
+                        WHEN LENGTH(:id_productservice) = 32 THEN (
+                            SELECT id FROM product_service WHERE MD5(id) = :id_productservice LIMIT 1
+                        )
+                        ELSE :id_productservice
+                    END),
+                    :precio,
+                    :cantidad,
+                    :subtotal
+                )";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':id_pedido', $id_pedido);
+        $stmt->bindValue(':id_productservice', $id_productservice);
+        $stmt->bindValue(':precio', $precio);
+        $stmt->bindValue(':cantidad', $cantidad);
+        $stmt->bindValue(':subtotal', $subtotal);
         $stmt->execute();
+
         return (int)$this->conn->lastInsertId();
     }
 
     public function guardar_stock(array $data): int {
-        $sql = "INSERT INTO stock_black 
-                (id_product, id_pedido, tipo, stock, fecha, user)
-                VALUES 
-                (:id_product, :id_pedido, :tipo, :stock, :fecha, :user)";
-        $stmt = $this->conn->prepare($sql);
+        $id_product = $data['id_product'] ?? '';
+        $id_pedido  = $data['id_pedido'] ?? '';
+        $tipo       = $data['tipo'] ?? 'E';
+        $stock      = (float)($data['stock'] ?? 0);
+        $fecha      = $data['fecha'] ?? $this->nowLima;
+        $user       = $data['user'] ?? 'admin';
 
-        $stmt->bindValue(':id_product',     $data['id_product'] ?? '');
-        $stmt->bindValue(':id_pedido',      $data['id_pedido'] ?? '');
-        $stmt->bindValue(':tipo',           $data['tipo'] ?? 'S');
-        $stmt->bindValue(':stock',          $data['stock'] ?? '0');
-        $stmt->bindValue(':fecha',          $this->nowLima);
-        $stmt->bindValue(':user',           $data['user'] ?? 'admin');
+        $sql = "INSERT INTO stock_black (
+                    id_product,
+                    id_pedido,
+                    tipo,
+                    stock,
+                    fecha,
+                    user
+                )
+                VALUES (
+                    (CASE 
+                        WHEN LENGTH(:id_product) = 32 THEN (
+                            SELECT id FROM product_service WHERE MD5(id) = :id_product LIMIT 1
+                        )
+                        ELSE :id_product
+                    END),
+                    (CASE 
+                        WHEN LENGTH(:id_pedido) = 32 THEN (
+                            SELECT id FROM pedido WHERE MD5(id) = :id_pedido LIMIT 1
+                        )
+                        ELSE :id_pedido
+                    END),
+                    :tipo,
+                    :stock,
+                    :fecha,
+                    :user
+                )";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':id_product', $id_product);
+        $stmt->bindValue(':id_pedido', $id_pedido);
+        $stmt->bindValue(':tipo', $tipo);
+        $stmt->bindValue(':stock', $stock);
+        $stmt->bindValue(':fecha', $fecha);
+        $stmt->bindValue(':user', $user);
         $stmt->execute();
+
         return (int)$this->conn->lastInsertId();
     }
 
@@ -127,9 +214,13 @@ class Ticket {
     }
 
     public function obtenerPorHash(string $hash): ?array {
-        $sql = "SELECT *
-                FROM pedido
-                WHERE MD5(id) = :hash
+        $sql = "SELECT A.id,cliente,A.usuario,user_registro,fecha,A.fecha_registro,dscto,tipo_dscto,pago,
+                concat(E.nombres,' ',E.apellidos)  as cliente_nombre,
+                upper(C.USUARIO) as user
+                from pedido A
+                LEFT JOIN personal C ON A.usuario = C.IDPERSONAL 
+                LEFT JOIN cliente E on E.id=A.cliente 
+                where md5(A.id) = :hash
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);

@@ -39,61 +39,45 @@
         },
 
         columns: [
-            { title: "Id", field: "id", sorter: "number", width: 100 },
-            { title: "Fecha", field: "fecha_pedido", width: 140 },
-            { title: "Personal", field: "usuario", headerFilter: "input", width: 120},
-            { title: "Cliente", field: "cliente", headerFilter: "input", width: 180 },
+            { title: "Id",        field: "id", sorter: "number", width: 100 },
+            { title: "Fecha",     field: "fecha_pedido", width: 140 },
+            { title: "Personal",  field: "usuario", headerFilter: "input", width: 120},
+            { title: "Cliente",   field: "cliente", headerFilter: "input", width: 180 },
             { title: "Items",     field: "productos",  formatter: "html", cssClass: "wrap" },
             { title: "Subtotal",  field: "precioxcant",formatter: "html", cssClass: "wrap" },
             { title: "Total",     field: "total",      formatter: "html", cssClass: "wrap", width: 120 },
             {
-            title: "Opciones",
-            field: "acciones",
-            hozAlign: "center",
-            headerSort: false,
-            width: 160,
-            formatter: (cell) => {
-                const row = cell.getRow().getData();
-                const id = row.id;
-                const idHash = md5(id.toString());
-                return `
-                <div style="display:flex;gap:.5rem;justify-content:center;">
-                    <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
-                    <i class="ri-edit-2-line"></i>
-                    </button>
-                    <button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave me-5 waves-effect waves-light" data-id="${id}">
-                    <i class="ri-delete-bin-line"></i>
-                    </button>
-                </div>`;
-            },
-            cellClick: function (e, cell) {
-                const id = cell.getRow().getData().id;
-                if (e.target.closest(".btn-edit")) {
-                const idHash = e.target.closest(".btn-edit").dataset.id;
-                window.location.href = "upd_ticket.php?hash=" + idHash;
-                } else if (e.target.closest(".btn-delete")) {
-                if (confirm("¿Seguro que deseas eliminar el registro " + id + "?")) {
-                    fetch("controller/delete_usuario.php", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                        body: "id=" + encodeURIComponent(id),
-                    })
-                    .then((res) => res.json())
-                    .then((json) => {
-                        if (json.ok) {
-                            alertify.success("✅ Registro suspendido correctamente");
-                            table.replaceData();
-                        } else {
-                            alertify.error("❌ Error al suspender: " + json.message);
+                title: "Opciones",
+                field: "acciones",
+                hozAlign: "center",
+                headerSort: false,
+                width: 160,
+                formatter: (cell) => {
+                    const row = cell.getRow().getData();
+                    const id = row.id;
+                    const idHash = md5(id.toString());
+                    return `
+                    <div style="display:flex;gap:.5rem;justify-content:center;">
+                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
+                            <i class="ri-edit-2-line"></i>
+                        </button>
+                        <button class="btn-pdf ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave me-5 waves-effect waves-light" data-id="${idHash}">
+                            <i class="ri-file-pdf-2-line"></i>
+                        </button>
+                    </div>`;
+                },
+                cellClick: function (e, cell) {
+                    const id = cell.getRow().getData().id;
+                    if (e.target.closest(".btn-edit")) {
+                        const idHash = e.target.closest(".btn-edit").dataset.id;
+                        window.location.href = "upd_ticket.php?hash=" + idHash;
+                    } else if (e.target.closest(".btn-pdf")) {
+                        if (confirm("¿Deseas generar ticket pdf " + id + "?")) {
+                            const idHash = e.target.closest(".btn-pdf").dataset.id;
+                            window.location.href = "controller/venta/tkt_pdf.php?hash=" + idHash;
                         }
-                    })
-                    .catch((err) => {
-                        console.error(err);
-                        alertify.error("❌ Error de red al suspender");
-                    });
-                }
-                }
-            },
+                    }
+                },
             },
         ],
     });
