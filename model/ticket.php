@@ -212,6 +212,77 @@ class Ticket {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function excel(?string $fecha_inicio = null, ?string $fecha_fin = null): array {
+        if (!$fecha_inicio || !$fecha_fin) {
+            $fecha_fin = date('Y-m-d');
+            $fecha_inicio = date('Y-m-d', strtotime('-7 days', strtotime($fecha_fin)));
+        }
+
+        $sql = "SELECT 
+                A.id, B.id_productservice as id_producto, date(A.fecha) as fecha_pedido, 
+                C.USUARIO as usuario,
+                concat(C.NOMBRES,' ',C.APELLIDOS) as personal,
+                C.DOC as dni_personal,
+                concat(E.nombres,' ',E.apellidos) as cliente,
+                x.tpo as tipo, D.nombre as producto, 
+                B.precio, B.cantidad,
+                case when  D.nombre like 'corte%' then 0.45
+                when D.nombre like 'caballero%' then 0.45
+                when D.nombre like 'DEPILACION.HILO%' then 0.45
+                when D.nombre like 'DEPILACION%' then 0.45
+                when D.nombre like 'DEPIHILO%' then 0.45
+                when D.nombre like 'ALISADO%' then 0.25
+                when D.nombre like 'PIGMENTO DE CEJAS%' then 0.25
+                when  D.nombre like 'ONDAS%' then 0.4
+                when  D.nombre like 'DAMA.30%' then 0.45
+                when  x.tpo ='PRODUCTO' then 0.01
+                when  replace(D.nombre,'ñ','N') like '%PESTANA%' then 0.25
+                when  replace(D.nombre,'ñ','N') like '%UNAS%' then 0.4
+                when  D.nombre like 'cepillado%' then 0.4
+                when  D.nombre like '%planchado de cejas%' then 0.3 
+                when  D.nombre like 'planchado%' then 0.4
+                when  D.nombre like '%navaja%' then 0.45
+                when  D.nombre like '%maquillaje%' then 0.25 
+                when  C.USUARIO='MARYRG' and D.nombre like 'DEPILACION HILO%' then 0.45
+                when  D.nombre like 'DEPILACION HILO%' then 0.4
+                when  C.USUARIO='MARYRG' and D.nombre like '%DEPI.HILO%' then 0.45
+                when  D.nombre like '%DEPI.HILO%' then 0.4
+                when  D.nombre like 'tinte%' then 0.3
+                when  D.nombre like 'aplicacion%' then 0.4
+                when  D.nombre like 'aplicacion tinte%' then 0.4
+                when  C.USUARIO='MARYRG' and D.nombre like '%cera%' then 0.35
+                when  D.nombre like '%cera%' then 0.3
+                when  D.nombre like '%COLOCACION%' then 0.3
+                when  D.nombre like '%1POR1%' then 0.3
+                when  D.nombre like '%RIZADO%' then 0.25
+                when  D.nombre like 'manicur%' then 0.4
+                when  D.nombre like 'pedicur%' then 0.4
+                when  D.nombre like 'peinado%' then 0.4
+                when  D.nombre like 'mecha%' then 0.3
+                when  C.USUARIO in ('JCALDERON','DIANASG') and D.nombre like 'facial%' then 0.3
+                when  D.nombre like 'facial%' then 0.25
+                when  C.USUARIO in ('MARYRG','Junior.S') and D.nombre like 'botox%' then 0.2
+                when  D.nombre like 'botox%' then 0.25
+                when  D.nombre like 'pigmenta%' then 0.25
+                when  D.nombre like '%MANO%' then 0.40
+                else 1 end as dscto
+                FROM pedido A 
+                LEFT JOIN detalle_pedido B ON A.id = B.id_pedido 
+                LEFT JOIN personal C ON A.usuario = C.IDPERSONAL 
+                LEFT JOIN product_service D ON B.id_productservice = D.id 
+                left join categoria x on x.id = D.categoria
+                left join cliente E on E.id=A.cliente
+                where date(A.fecha) between :fecha_inicio AND :fecha_fin
+                and D.id_sucursal=5
+                ORDER BY A.id DESC
+            ";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':fecha_inicio', $fecha_inicio);
+        $stmt->bindValue(':fecha_fin', $fecha_fin);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function obtenerPorHash(string $hash): ?array {
         $sql = "SELECT A.id,cliente,A.usuario,user_registro,fecha,A.fecha_registro,dscto,tipo_dscto,pago,
                 concat(E.nombres,' ',E.apellidos)  as cliente_nombre,
@@ -303,6 +374,49 @@ class Ticket {
                 GROUP BY DATE_FORMAT(A.fecha, '%Y-%m')
                 ORDER BY mes DESC
                 LIMIT 7";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
+    public function obtenerTotalUsuario(): ?array {
+        $sql = "SELECT 
+                count( B.id_productservice) as tickets,
+                sum(subtotal) as total,
+                sum(cantidad) as items,
+                c.usuario as usuario
+                FROM pedido A
+                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
+                LEFT JOIN product_service D ON b.id_productservice = D.id
+                LEFT JOIN personal C ON A.usuario = C.IDPERSONAL 
+                WHERE 
+                D.id_sucursal = 5
+                AND A.cliente > 0
+                and A.fecha>= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                GROUP BY c.usuario
+                ORDER BY c.usuario ASC
+                ";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
+     public function obtenerTotalItem(): ?array {
+        $sql = "SELECT 
+                sum(subtotal) as total,
+                D.nombre as item
+                FROM pedido A
+                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
+                LEFT JOIN product_service D ON b.id_productservice = D.id
+                WHERE 
+                D.id_sucursal = 5
+                AND A.cliente > 0
+                and A.fecha>= DATE_SUB(CURDATE(), INTERVAL 15 DAY)
+                GROUP BY D.nombre
+                ORDER BY D.nombre ASC
+                ";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);

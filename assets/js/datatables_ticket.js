@@ -116,9 +116,38 @@
         table.download("json", "data.json");
     });
 
-    //trigger download of data.xlsx file
-    document.getElementById("download-xlsx").addEventListener("click", function () {
-        table.download("xlsx", "data.xlsx", { sheetName: "My Data" });
+    document.getElementById("download-xlsx").addEventListener("click", async function () {
+        const rango = document.querySelector("#daterange").value;
+
+        if (!rango) return alertify.error("Selecciona un rango de fechas");
+
+        const [fechaInicio, fechaFin] = rango.split(/ to | - /).map(s => s.trim());
+        if (!fechaInicio || !fechaFin) return alertify.error("Rango inválido");
+
+        const url = `controller/venta/excel.php?fecha_inicio=${encodeURIComponent(fechaInicio)}&fecha_fin=${encodeURIComponent(fechaFin)}`;
+
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error("Error al obtener datos del servidor");
+
+            const data = await res.json();
+            if (!Array.isArray(data) || data.length === 0) {
+                alertify.warning("No hay datos para exportar");
+                return;
+            }
+
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Tickts");
+
+            const nombreArchivo = `ticket_${fechaInicio}_a_${fechaFin}.xlsx`;
+            XLSX.writeFile(wb, nombreArchivo);
+
+            alertify.success("Excel generado correctamente");
+        } catch (error) {
+            console.error(error);
+            alertify.error("Error generando el Excel");
+        }
     });
 
     document.querySelector("#switcher-rtl").addEventListener("click",()=>{
