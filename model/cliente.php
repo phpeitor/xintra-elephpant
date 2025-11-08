@@ -40,7 +40,7 @@ class Cliente {
                 telefono,
                 sexo,
                 fecha_creacion
-            FROM bd_black.cliente
+            FROM cliente
             ORDER BY id DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();

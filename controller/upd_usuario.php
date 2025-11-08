@@ -26,6 +26,16 @@ try {
     ];
 
     $usuario = new Usuario();
+
+    $existe = $usuario->valida_documento_upd($data['documento'], $hash);
+    if ($existe) {
+        echo json_encode([
+            'ok' => false,
+            'message' => 'El documento ya está registrado por otro usuario'
+        ]);
+        exit;
+    }
+
     $ok = $usuario->actualizarPorHash($hash, $data);
 
     echo json_encode([

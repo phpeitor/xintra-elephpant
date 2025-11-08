@@ -14,6 +14,15 @@ try {
         'sexo'      => $_POST['sexo']      ?? '',
     ];
 
+    $existe = $cli->valida_documento($payload['documento']);
+    if ($existe) {
+        echo json_encode([
+            'ok' => false,
+            'message' => 'El documento ya está registrado'
+        ]);
+        exit;
+    }
+
     $id = $cli->guardar($payload);
     echo json_encode(['ok' => true, 'id' => $id]);
 

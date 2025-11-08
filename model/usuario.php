@@ -48,10 +48,16 @@ class Usuario {
     }
 
     public function guardar(array $data): int {
+        $nombres = trim($data['nombres'] ?? '');
+        $apellidos = trim($data['apellidos'] ?? '');
+        $primerNombre = explode(' ', $nombres)[0] ?? '';
+        $primerApellido = explode(' ', $apellidos)[0] ?? '';
+        $usuario = strtolower($primerNombre . '.' . $primerApellido);
+
         $sql = "INSERT INTO personal 
-                (APELLIDOS, NOMBRES, EMAIL, DOC, TLF, SEXO, fecha_registro, IDSUCURSAL, IDESTADO, CARGO, fecha_baja, id_cartera)
+                (APELLIDOS, NOMBRES, EMAIL, DOC, TLF, SEXO, USUARIO, PASSWORD, fecha_registro, IDSUCURSAL, IDESTADO, CARGO, fecha_baja, id_cartera)
                 VALUES 
-                (:nombres, :apellidos, :email, :documento, :telefono, :sexo, :fecha_registro, 5, 1, 5, '1900-01-01 00:00:00', 5)";
+                (:apellidos, :nombres, :email, :documento, :telefono, :sexo, :usuario, MD5(:documento), :fecha_registro, 5, 1, 5, '1900-01-01 00:00:00', 5)";
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(':nombres',   $data['nombres'] ?? '');
@@ -60,6 +66,7 @@ class Usuario {
         $stmt->bindValue(':documento', $data['documento'] ?? '');
         $stmt->bindValue(':telefono',  $data['telefono'] ?? '');
         $stmt->bindValue(':sexo', (int)($data['sexo'] ?? 0), PDO::PARAM_INT);
+        $stmt->bindValue(':usuario', $usuario);
         $stmt->bindValue(':fecha_registro', $this->nowLima);
         $stmt->execute();
         return (int)$this->conn->lastInsertId();
@@ -69,7 +76,7 @@ class Usuario {
          $sql = "SELECT
                 *,
                 CONCAT(nombres,' ',apellidos) AS nombre_completo
-                FROM bd_black.personal
+                FROM personal
                 WHERE IDSUCURSAL = 5 AND APELLIDOS <>'ERROR' AND IDPERSONAL > 1
                 ORDER BY idpersonal DESC";
         $stmt = $this->conn->prepare($sql);
@@ -112,6 +119,34 @@ class Usuario {
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':USUARIO', $data['usuario']);
         $stmt->bindValue(':PASSWORD', $data['password']);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
+    public function valida_documento(string $documento): ?array
+    {
+        $sql = "SELECT IDPERSONAL
+                FROM personal
+                WHERE DOC = :documento
+                LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':documento', $documento);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
+    public function valida_documento_upd(string $documento, string $hash): ?array
+    {
+        $sql = "SELECT IDPERSONAL
+                FROM personal
+                WHERE DOC = :documento
+                AND MD5(IDPERSONAL) <> :hash
+                LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':documento', $documento);
+        $stmt->bindValue(':hash', $hash);
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data ?: null;
