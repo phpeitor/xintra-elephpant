@@ -70,5 +70,38 @@ class Dashboard {
         $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $data ?: null;
     }
+
+    public function obtenerGrafUser(): ?array {
+        $sql = "SELECT 
+                    c.usuario,
+                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(CURDATE()) 
+                            AND MONTH(A.fecha) = MONTH(CURDATE()) THEN 1 ELSE 0 END) AS tickets_actuales,
+                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(CURDATE()) 
+                            AND MONTH(A.fecha) = MONTH(CURDATE()) THEN b.subtotal ELSE 0 END) AS total_actual,
+                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(CURDATE()) 
+                            AND MONTH(A.fecha) = MONTH(CURDATE()) THEN b.cantidad ELSE 0 END) AS items_actuales,
+
+                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
+                            AND MONTH(A.fecha) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) THEN 1 ELSE 0 END) AS tickets_anteriores,
+                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
+                            AND MONTH(A.fecha) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) THEN b.subtotal ELSE 0 END) AS total_anteriores,
+                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
+                            AND MONTH(A.fecha) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) THEN b.cantidad ELSE 0 END) AS items_anteriores
+                FROM pedido A
+                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
+                LEFT JOIN product_service D ON b.id_productservice = D.id
+                LEFT JOIN personal C ON A.usuario = C.IDPERSONAL
+                WHERE 
+                    D.id_sucursal = 5
+                    AND A.cliente > 0
+                    AND A.fecha >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
+                GROUP BY c.usuario
+                ORDER BY c.usuario ASC
+             ";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
 }
 ?>

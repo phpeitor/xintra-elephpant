@@ -72,19 +72,17 @@
                         const idHash = e.target.closest(".btn-edit").dataset.id;
                         window.location.href = "upd_ticket.php?hash=" + idHash;
                     } else if (e.target.closest(".btn-pdf")) {
-                        if (confirm("¿Deseas generar ticket pdf " + id + "?")) {
-                            const idHash = e.target.closest(".btn-pdf").dataset.id;
-                            alertify.confirm(
-                                'Generar Ticket PDF',
-                                '¿Deseas generar el ticket PDF?',
-                                function () {
-                                    window.open("controller/venta/tkt_pdf.php?hash=" + idHash, "_blank");
-                                },
-                                function () {
-                                    alertify.error('Acción cancelada');
-                                }
-                            ).set('labels', { ok: 'Sí', cancel: 'No' });
-                        }
+                        const idHash = e.target.closest(".btn-pdf").dataset.id;
+                        alertify.confirm(
+                            'Generar Ticket PDF',
+                            '¿Deseas generar el ticket PDF?',
+                            function () {
+                                window.open("controller/venta/tkt_pdf.php?hash=" + idHash, "_blank");
+                            },
+                            function () {
+                                alertify.error('Acción cancelada');
+                            }
+                        ).set('labels', { ok: 'Sí', cancel: 'No' });
                     }
                 },
             },

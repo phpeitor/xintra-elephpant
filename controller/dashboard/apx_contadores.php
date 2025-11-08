@@ -4,11 +4,13 @@ require_once __DIR__ . '/../../model/dashboard.php';
 
 try {
     $cli = new Dashboard();
-    $data = $cli->obtenerContadores();
+    $data1 = $cli->obtenerContadores();
     $data2 = $cli->obtenerGrafSales();
+    $data3 = $cli->obtenerGrafUser();
     echo json_encode([
-        'contadores' => $data,
-        'grafico'    => $data2
+        'contadores' => $data1,
+        'grafico'    => $data2,
+        'versus'    => $data3
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
 } catch (Throwable $e) {

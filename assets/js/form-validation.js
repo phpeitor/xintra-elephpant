@@ -490,13 +490,8 @@
           e.preventDefault();
 
           const submitBtn = form.querySelector("[type='submit']");
-          if (submitBtn) {
-            if (submitBtn.disabled) return; 
-            submitBtn.disabled = true;
-            submitBtn.classList.add("opacity-50", "cursor-not-allowed");
-          }
-
           const okCustom = typeof validateForm === "function" ? validateForm(form) : true;
+
           if (!okCustom) {
             form.reportValidity?.();
             return;
@@ -505,6 +500,12 @@
           if (!form.checkValidity()) {
             form.reportValidity();
             return;
+          }
+
+          if (submitBtn) {
+            if (submitBtn.disabled) return; 
+            submitBtn.disabled = true;
+            submitBtn.classList.add("opacity-50", "cursor-not-allowed");
           }
 
           let actionUrl = "";

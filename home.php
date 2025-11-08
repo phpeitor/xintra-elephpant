@@ -664,7 +664,7 @@
             <div class="xxl:col-span-8 xl:col-span-6 col-span-12">
               <div class="box">
                 <div class="box-header justify-between">
-                  <div class="box-title"> Sales Overview </div>
+                  <div class="box-title"> Total Sales  </div>
                   <div class="ti-dropdown hs-dropdown">
                     <a href="javascript:void(0);" class="ti-btn ti-btn-light ti-btn-sm text-textmuted dark:text-textmuted/50 ti-dropdown-toggle hs-dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"> Sort By <i class="ri-arrow-down-s-line align-middle fs-13 d-inline-block"></i>
                     </a>
@@ -692,7 +692,7 @@
             <div class="xxl:col-span-4 xl:col-span-6 col-span-12">
               <div class="box overflow-hidden">
                 <div class="box-header pb-0 justify-between">
-                  <div class="box-title"> Order Statistics </div>
+                  <div class="box-title"> Total Statistics </div>
                   <div class="ti-dropdown hs-dropdown">
                     <a aria-label="anchor" href="javascript:void(0);" class="ti-btn ti-btn-light ti-btn-sm ti-btn-icon text-textmuted dark:text-textmuted/50 hs-dropdown-toggle ti-dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="fe fe-more-vertical"></i>
@@ -717,10 +717,11 @@
                     </div>
                     <div class="flex-auto flex items-start justify-between w-full flex-wrap">
                       <div>
-                        <span class="text-[11px] mb-1 block font-medium">TOTAL ORDERS</span>
+                        <span class="text-[11px] mb-1 block font-medium">Productividad Usuarios</span>
                         <div class="flex items-center justify-between">
-                          <h4 class="mb-0 flex items-center">3,736 <span class="text-success text-xs ms-2 inline-flex items-center">
-                              <i class="ti ti-trending-up align-middle me-1"></i>0.57% </span>
+                          <h4 class="mb-0 flex items-center" id="total_item">0 
+                            <span class="text-success text-xs ms-2 inline-flex items-center" id="porcentaje_item">
+                              <i class="ti ti-trending-up align-middle me-1"></i>0% </span>
                           </h4>
                         </div>
                       </div>
@@ -765,7 +766,7 @@
             <div class="xl:col-span12 col-span-12">
               <div class="box overflow-hidden">
                 <div class="box-header justify-between pb-1">
-                  <div class="box-title"> Top Selling Categories </div>
+                  <div class="box-title"> Top Selling Usuarios </div>
                   <div class="ti-dropdown hs-dropdown">
                     <a href="javascript:void(0);" class="ti-btn ti-btn-light text-textmuted dark:text-textmuted/50 ti-dropdown-toggle hs-dropdown-toggle ti-btn-sm gap-0" data-bs-toggle="dropdown" aria-expanded="false"> Sort By <i class="ri-arrow-down-s-line align-middle ms-1 inline-block"></i>
                     </a>
@@ -794,89 +795,15 @@
                     <div class="flex items-center justify-between mb-2">
                       <div>Overall Sales</div>
                       <div class="h6 mb-0">
-                        <span class="text-success me-2 text-[11px]">2.74% <i class="ti ti-arrow-narrow-up"></i>
-                        </span>1,25,875
+                        <span class="text-success me-2 text-[11px]" id="porcentaje_actual" >0% <i class="ti ti-arrow-narrow-up"></i>
+                        </span><span id="total_actual">0</span>
                       </div>
                     </div>
                   </div>
                   <div class="table-responsive top-categories">
                     <table class="table text-nowrap">
                       <tbody>
-                        <tr class="border-b border-defaultborder dark:border-defaultborder/10">
-                          <td>
-                            <span class="font-medium top-category-name one">Clothing</span>
-                          </td>
-                          <td>
-                            <span class="font-medium">31,245</span>
-                          </td>
-                          <td class="text-center">
-                            <span class="text-textmuted dark:text-textmuted/50 text-xs">25% Gross</span>
-                          </td>
-                          <td class="!text-end">
-                            <span class="badge bg-success">0.45% <i class="ti ti-trending-up"></i>
-                            </span>
-                          </td>
-                        </tr>
-                        <tr class="border-b border-defaultborder dark:border-defaultborder/10">
-                          <td>
-                            <span class="font-medium top-category-name two">Electronics</span>
-                          </td>
-                          <td>
-                            <span class="font-medium">29,553</span>
-                          </td>
-                          <td class="text-center">
-                            <span class="text-textmuted dark:text-textmuted/50 text-xs">16% Gross</span>
-                          </td>
-                          <td class="!text-end">
-                            <span class="badge bg-warning">0.27% <i class="ti ti-trending-up"></i>
-                            </span>
-                          </td>
-                        </tr>
-                        <tr class="border-b border-defaultborder dark:border-defaultborder/10">
-                          <td>
-                            <span class="font-medium top-category-name three">Grocery</span>
-                          </td>
-                          <td>
-                            <span class="font-medium">24,577</span>
-                          </td>
-                          <td class="text-center">
-                            <span class="text-textmuted dark:text-textmuted/50 text-xs">22% Gross</span>
-                          </td>
-                          <td class="!text-end">
-                            <span class="badge bg-secondary">0.63% <i class="ti ti-trending-up"></i>
-                            </span>
-                          </td>
-                        </tr>
-                        <tr class="border-b border-defaultborder dark:border-defaultborder/10">
-                          <td>
-                            <span class="font-medium top-category-name four">Automobiles</span>
-                          </td>
-                          <td>
-                            <span class="font-medium">19,278</span>
-                          </td>
-                          <td class="text-center">
-                            <span class="text-textmuted dark:text-textmuted/50 text-xs">18% Gross</span>
-                          </td>
-                          <td class="!text-end">
-                            <span class="badge bg-primarytint1color">1.14% <i class="ti ti-trending-down"></i>
-                            </span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="border-b-0">
-                            <span class="font-medium top-category-name five">others</span>
-                          </td>
-                          <td class="border-b-0">
-                            <span class="font-medium">15,934</span>
-                          </td>
-                          <td class="text-center border-b-0">
-                            <span class="text-textmuted dark:text-textmuted/50 text-xs">15% Gross</span>
-                          </td>
-                          <td class="!text-end border-b-0">
-                            <span class="badge bg-primary">3.87% <i class="ti ti-trending-up"></i>
-                            </span>
-                          </td>
-                        </tr>
+                        
                       </tbody>
                     </table>
                   </div>
