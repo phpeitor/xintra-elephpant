@@ -1,3 +1,4 @@
+
 <?php
   require_once __DIR__ . "/controller/check_session.php";
 ?>
@@ -22,7 +23,6 @@
       <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
       <link rel="stylesheet" href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css">
       <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
-      <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
       <meta http-equiv="imagetoolbar" content="no">
@@ -206,17 +206,20 @@
                   </div>
                   <!-- End::header-element --> <!-- Start::header-element --> 
                   <div class="header-element mx-lg-0"> <a aria-label="Hide Sidebar" class="sidemenu-toggle header-link animated-arrow hor-toggle horizontal-navtoggle" data-bs-toggle="sidebar" href="javascript:void(0);"><span></span></a> </div>
+                  <!-- End::header-element --> <!-- Start::header-element --> 
                   <div class="header-element header-search md:!block !hidden my-auto auto-complete-search">
                      <!-- Start::header-link --> 
                      <div class="autoComplete_wrapper" role="combobox" aria-owns="autoComplete_list_1" aria-haspopup="true" aria-expanded="false">
                         <input type="text" class="header-search-bar form-control" id="header-search" placeholder="Search anything here ..." autocomplete="off" autocapitalize="off" aria-controls="autoComplete_list_1" aria-autocomplete="both">
                         <ul id="autoComplete_list_1" role="listbox" hidden=""></ul>
                      </div>
-                     <a aria-label="anchor" href="javascript:void(0);" class="header-search-icon border-0"> <i class="ri-search-line"></i> </a> 
+                     <a aria-label="anchor" href="javascript:void(0);" class="header-search-icon border-0"> <i class="ri-search-line"></i> </a> <!-- End::header-link --> 
                   </div>
+                  <!-- End::header-element --> 
                </div>
                <?php include __DIR__ . '/navbar.php'; ?>
             </div>
+            <!-- End::main-header-container --> 
          </header>
          <!-- /app-header --> <!-- Start::app-sidebar --> 
          <aside class="app-sidebar sticky-pin" id="sidebar">
@@ -232,7 +235,7 @@
                      <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
                         <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
                            <div class="simplebar-content" style="padding: 8px 0px 80px;">
-                             <?php include __DIR__ . '/menu.php'; ?>
+                              <?php include __DIR__ . '/menu.php'; ?>
                            </div>
                         </div>
                      </div>
@@ -255,34 +258,102 @@
                      <nav aria-label="nav">
                         <ol class="breadcrumb mb-1">
                            <li class="breadcrumb-item"><a href="javascript:void(0);">Clientes</a></li>
-                           <li class="breadcrumb-item active" aria-current="page">Data Clientes</li>
+                           <li class="breadcrumb-item active" aria-current="page">Actualizar</li>
                         </ol>
                      </nav>
-                     <h1 class="page-title font-medium text-lg mb-0">Data Clientes</h1>
+                     <h1 class="page-title font-medium text-lg mb-0">Editar Cliente</h1>
                   </div>
-                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> 
-                     <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"
-                                                         onclick="window.location.href='add_cliente.php'"> <i class="ri-share-forward-line me-1"></i> Registrar </button> 
-                  </div>
+                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='clientes.php'"> <i class="ri-reply-line"></i> </button> </div>
                </div>
             
-               <div class="grid grid-cols-12 gap-6">
-                  <div class="col-span-12">
-                     <div class="box">
-                        <div class="box-header">
-                           <h5 class="box-title">Download DataTable</h5>
-                        </div>
-                        <div class="box-body space-y-3">
-                           <div class="download-data"> <button type="button" class="ti-btn ti-btn-primary" id="download-csv">Download CSV</button> <button type="button" class="ti-btn ti-btn-primary" id="download-json">Download JSON</button> <button type="button" class="ti-btn ti-btn-primary" id="download-xlsx">Download XLSX</button> <button type="button" class="ti-btn ti-btn-primary" id="download-pdf">Download PDF</button> <button type="button" class="ti-btn ti-btn-primary" id="download-html">Download HTML</button> </div>
-                           <div class="overflow-hidden table-bordered">
-                              <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
-                                 
+               <div class="col-span-12">
+                  <div class="box">
+                     <div class="box-header">
+                        <h5 class="box-title">Data Validation</h5>
+                     </div>
+                     <div class="box-body">
+                        <form class="ti-custom-validation" novalidate>
+                           <div class="grid lg:grid-cols-2 gap-6">
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Nombres</label>
+                                 <input id="firstName" name="nombres" type="text" class="ti-form-input rounded-sm"
+                                       placeholder="Firstname" data-rules="required|min:2|max:50">
+                                 <span class="text-red-500 text-xs hidden" data-error-for="firstName"></span>
+                              </div>
+
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Apellidos</label>
+                                 <input id="lastName" name="apellidos" type="text" class="ti-form-input rounded-sm"
+                                       placeholder="Lastname" data-rules="required|min:2|max:50">
+                                 <span class="text-red-500 text-xs hidden" data-error-for="lastName"></span>
+                              </div>
+
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Documento</label>
+                                 <input id="documento" name="documento" type="text" inputmode="numeric" class="ti-form-input rounded-sm"
+                                       placeholder="12345678" data-rules="required|numeric|min:8|max:11">
+                                 <span class="text-red-500 text-xs hidden" data-error-for="documento"></span>
+                              </div>
+
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Email</label>
+                                 <input id="email" name="email" type="email" class="ti-form-input rounded-sm"
+                                       placeholder="your@site.com" data-rules="required|email">
+                                 <span class="text-red-500 text-xs hidden" data-error-for="email"></span>
+                              </div>
+
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Teléfono</label>
+                                 <input id="phone" name="telefono" type="text" inputmode="numeric" class="ti-form-input rounded-sm"
+                                       placeholder="987654321" data-rules="required|numeric|min:6|max:12">
+                                 <span class="text-red-500 text-xs hidden" data-error-for="phone"></span>
+                              </div>
+
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Sexo</label>
+                                 <ul class="flex flex-col sm:flex-row">
+                                 <li class="ti-list-group w-full gap-x-2.5 flex py-2 px-4">
+                                    <div class="relative flex items-start w-full">
+                                       <div class="flex items-center h-5">
+                                       <input id="sexo-f" name="sexo" type="radio" value="2" class="ti-form-radio" data-rules="required">
+                                       </div>
+                                       <label for="sexo-f" class="ms-3 block w-full text-sm">Femenino</label>
+                                    </div>
+                                 </li>
+                                 <li class="ti-list-group w-full gap-x-2.5 flex py-2 px-4">
+                                    <div class="relative flex items-start w-full">
+                                       <div class="flex items-center h-5">
+                                       <input id="sexo-m" name="sexo" type="radio" value="1" class="ti-form-radio" data-rules="required">
+                                       </div>
+                                       <label for="sexo-m" class="ms-3 block w-full text-sm">Masculino</label>
+                                    </div>
+                                 </li>
+                                 <li class="ti-list-group w-full gap-x-2.5 flex py-2 px-4">
+                                    <div class="relative flex items-start w-full">
+                                       <div class="flex items-center h-5">
+                                       <input id="sexo-o" name="sexo" type="radio" value="0" class="ti-form-radio" data-rules="required">
+                                       </div>
+                                       <label for="sexo-o" class="ms-3 block w-full text-sm">Otro</label>
+                                    </div>
+                                 </li>
+                                 </ul>
+                                 <span class="text-red-500 text-xs hidden" data-error-for="sexo"></span>
                               </div>
                            </div>
-                        </div>
+
+                           <div class="my-5">
+                              <input id="terms" name="terms" type="checkbox" class="ti-form-checkbox mt-0.5" data-rules="required">
+                              <label for="terms" class="text-sm inline">Acepto los términos y condiciones</label>
+                              <span class="text-red-500 text-xs hidden" data-error-for="terms"></span>
+                           </div>
+
+                           <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
+                        </form>
+
                      </div>
                   </div>
                </div>
+               
             </div>
          </div>
          <!-- END MAINCONTENT --> 
@@ -317,11 +388,7 @@
       <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
       <script src="./assets/js/custom-switcher.min.js"></script>
       <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
-      <script src="./assets/libs/xlsx/xlsx.full.min.js"></script>
-      <script src="./assets/libs/jspdf/jspdf.umd.min.js"></script>
-      <script src="./assets/libs/jspdf-autotable/jspdf.plugin.autotable.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-      <script src="./assets/js/datatables.js"></script>
+      <script src="./assets/js/form-validation.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
       <script src="./assets/js/custom.js"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">

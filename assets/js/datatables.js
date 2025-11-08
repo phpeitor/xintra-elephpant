@@ -81,6 +81,32 @@
 
             { title: "Fec. Registro", field: "fecha_creacion", sorter: "datetime",
             sorterParams:{format:"YYYY-MM-DD HH:mm:ss"} },
+            {
+                title: "Opciones",
+                field: "acciones",
+                hozAlign: "center",
+                headerSort: false,
+                width: 160,
+                formatter: (cell) => {
+                    const id = cell.getRow().getData().id;
+                    const row = cell.getRow().getData();
+                    const idHash = md5(row.id.toString()); 
+                    return `
+                    <div style="display:flex;gap:.5rem;justify-content:center;">
+                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
+                            <i class="ri-edit-2-line"></i>
+                        </button>
+                    </div>`;
+                },
+                cellClick: function (e, cell) {
+                    const id = cell.getRow().getData().id;
+                    if (e.target.closest(".btn-edit")) {
+                        console.log("Actualizar ID:", id);
+                        const idHash = e.target.closest(".btn-edit").dataset.id;
+                        window.location.href = "upd_cliente.php?hash=" + idHash;
+                    } 
+                },
+            },
         ],
     });
 

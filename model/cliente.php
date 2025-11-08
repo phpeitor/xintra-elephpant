@@ -12,6 +12,28 @@ class Cliente {
         $this->nowLima = (new DateTimeImmutable('now', $tz))->format('Y-m-d H:i:s');
     }
 
+    public function actualizarPorHash(string $hash, array $data): bool {
+        $sql = "UPDATE cliente 
+                SET apellidos = :apellidos,
+                    nombres = :nombres,
+                    email = :email,
+                    documento = :documento,
+                    telefono = :telefono,
+                    sexo = :sexo
+                WHERE MD5(id) = :hash";
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindValue(':apellidos', $data['apellidos']);
+        $stmt->bindValue(':nombres', $data['nombres']);
+        $stmt->bindValue(':email', $data['email']);
+        $stmt->bindValue(':documento', $data['documento']);
+        $stmt->bindValue(':telefono', $data['telefono']);
+        $stmt->bindValue(':sexo', (int)$data['sexo'], PDO::PARAM_INT);
+        $stmt->bindValue(':hash', $hash);
+        $stmt->execute();
+        return $stmt->rowCount() > 0;
+    }
+
     public function guardar(array $data): int {
         $sql = "INSERT INTO cliente 
                 (nombres, apellidos, email, documento, telefono, sexo, fecha_creacion, id_sucursal)
@@ -45,6 +67,18 @@ class Cliente {
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenerPorHash(string $hash): ?array {
+        $sql = "SELECT *
+                FROM cliente
+                WHERE MD5(id) = :hash
+                LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':hash', $hash);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ?: null;
     }
 }
 ?>

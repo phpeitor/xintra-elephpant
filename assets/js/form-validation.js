@@ -158,6 +158,33 @@
     }
   }
 
+  async function cargarCliente(hash) {
+    try {
+      const res = await fetch(`controller/get_cliente.php?hash=${hash}`);
+      const json = await res.json();
+
+      if (!json.ok) {
+        alertify.error(json.message || "Cliente no encontrado");
+        return;
+      }
+
+      const u = json.data;
+      document.querySelector('#firstName').value = u.nombres || '';
+      document.querySelector('#lastName').value = u.apellidos || '';
+      document.querySelector('#documento').value = u.documento || '';
+      document.querySelector('#email').value = u.email || '';
+      document.querySelector('#phone').value = u.telefono || '';
+
+      document.querySelectorAll('input[name="sexo"]').forEach(r => {
+        r.checked = parseInt(r.value) === parseInt(u.sexo);
+      });
+
+
+    } catch (err) {
+      console.error("❌ Error al cargar usuario:", err);
+    }
+  }
+
   async function cargarItem(hash) {
     try {
       const res = await fetch(`controller/get_item.php?hash=${hash}`);
@@ -383,6 +410,21 @@
     }, 150);
   }
 
+  function prepararFormularioEdicion(form, hash) {
+    if (!hash) return;
+
+    let hidden = form.querySelector("input[name='hash']");
+    if (!hidden) {
+      hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.name = "hash";
+      hidden.value = hash;
+      form.appendChild(hidden);
+    }
+
+    form.dataset.mode = "update";
+  }
+
   function updateStockVisual(stock) {
     const box = document.getElementById("stock-box");
     const icon = document.getElementById("stock-icon");
@@ -437,22 +479,17 @@
 
         if (hash && form.classList.contains("ti-custom-validation-user")) {
           cargarUsuario(hash);
-          const hidden = document.createElement("input");
-          hidden.type = "hidden";
-          hidden.name = "hash";
-          hidden.value = hash;
-          form.appendChild(hidden);
-          form.dataset.mode = "update";
+          prepararFormularioEdicion(form, hash);
+        }
+
+        if (hash && form.classList.contains("ti-custom-validation")) {
+          cargarCliente(hash);
+          prepararFormularioEdicion(form, hash);
         }
 
         if (hash && form.classList.contains("ti-custom-validation-item")) {
           cargarItem(hash);
-          const hidden = document.createElement("input");
-          hidden.type = "hidden";
-          hidden.name = "hash";
-          hidden.value = hash;
-          form.appendChild(hidden);
-          form.dataset.mode = "update";
+          prepararFormularioEdicion(form, hash);
         }
 
         if (form.classList.contains("ti-custom-validation-ticket")) {
@@ -477,12 +514,7 @@
             setTimeout(() => {
               cargarTicket(hash);
             }, 300);
-            const hidden = document.createElement("input");
-            hidden.type = "hidden";
-            hidden.name = "hash";
-            hidden.value = hash;
-            form.appendChild(hidden);
-            form.dataset.mode = "update";
+            prepararFormularioEdicion(form, hash);
           }
         }
 
@@ -512,7 +544,10 @@
           let redirectUrl = "";
 
           if (form.classList.contains("ti-custom-validation")) {
-            actionUrl = "controller/add_cliente.php";
+            const isUpdate = form.dataset.mode === "update";
+            actionUrl = isUpdate
+              ? "controller/upd_cliente.php"
+              : "controller/add_cliente.php";
             redirectUrl = "clientes.php";
           } else if (form.classList.contains("ti-custom-validation-user")) {
             const isUpdate = form.dataset.mode === "update";
