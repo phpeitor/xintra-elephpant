@@ -129,12 +129,12 @@ if (isset($_SESSION['session_usuario'])) {
 	
 	<div class="inputGroup inputGroup1">
 		<label for="loginEmail" id="loginEmailLabel">Usuario</label>
-		<input type="text" id="loginEmail" maxlength="100" />
+		<input type="text" id="loginEmail" maxlength="25" />
 		<p class="helper helper1">metadatape</p>
 	</div>
 	<div class="inputGroup inputGroup2">
 		<label for="loginPassword" id="loginPasswordLabel">Password</label>
-		<input type="password" id="loginPassword" />
+		<input type="password" id="loginPassword" maxlength="11" />
 		<label id="showPasswordToggle" for="showPasswordCheck">Show
 			<input id="showPasswordCheck" type="checkbox"/>
 			<div class="indicator"></div>
