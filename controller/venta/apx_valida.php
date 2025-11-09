@@ -4,9 +4,9 @@ require_once __DIR__ . '/../../model/ticket.php';
 
 try {
     $cli = new Ticket();
-    $data1 = $cli->obtenerTotalCliente();
+    $data1 = $cli->obtenerTotaPedido();
     echo json_encode([
-        'cliente' => $data1
+        'pedido'    => $data1,
     ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 } catch (Throwable $e) {
     http_response_code(500);

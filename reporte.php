@@ -1,4 +1,3 @@
-
 <?php
   require_once __DIR__ . "/controller/check_session.php";
 ?>

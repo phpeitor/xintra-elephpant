@@ -403,7 +403,7 @@ class Ticket {
         return $data ?: null;
     }
 
-     public function obtenerTotalItem(): ?array {
+    public function obtenerTotalItem(): ?array {
         $sql = "SELECT 
                 sum(subtotal) as total,
                 D.nombre as item
@@ -416,6 +416,21 @@ class Ticket {
                 and A.fecha>= DATE_SUB(CURDATE(), INTERVAL 15 DAY)
                 GROUP BY D.nombre
                 ORDER BY D.nombre ASC
+                ";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $data ?: null;
+    }
+
+    public function obtenerTotaPedido(): ?array {
+        $sql = "SELECT COUNT(1) as total_pedido
+                FROM pedido ped
+                WHERE EXISTS (
+                SELECT 1 
+                FROM personal per 
+                WHERE per.idpersonal = ped.usuario
+                AND per.idsucursal = 5)
                 ";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();

@@ -28,7 +28,38 @@
     dateFormat: "Y-m-d",
     defaultDate: [formatDate(hace7dias), formatDate(hoy)]
   });
- 
+  
+  function validarPedidoTotal() {
+    fetch("controller/venta/apx_valida.php")
+    .then(response => response.json())
+    .then(data => {
+
+      const totalPedido = data.pedido?.[0]?.total_pedido || 0;
+      const upgradeDivs = document.querySelectorAll(".div_upgrade");
+      const btnRegistrar = document.querySelector(".btn-registrar");
+
+      if (totalPedido > 14000) {
+        upgradeDivs.forEach(div => div.classList.remove("!hidden"));
+
+        if (btnRegistrar) {
+          btnRegistrar.disabled = true;
+          btnRegistrar.classList.remove("ti-btn-primary");
+          btnRegistrar.classList.add("ti-btn-instagram", "opacity-90", "cursor-not-allowed");
+        }
+      } else {
+        upgradeDivs.forEach(div => div.classList.add("!hidden"));
+
+        if (btnRegistrar) {
+          btnRegistrar.disabled = false;
+          btnRegistrar.classList.remove("ti-btn-instagram", "opacity-90", "cursor-not-allowed");
+          btnRegistrar.classList.add("ti-btn-primary");
+        }
+      }
+    })
+    .catch(err => console.error("Error cargando datos de clientes:", err));
+  }
+  window.validarPedidoTotal = validarPedidoTotal;
+
 
   if (document.querySelector("#hs-overlay-switcher")) {
   
@@ -495,4 +526,3 @@ headerbtn1.forEach((button) => {
     }
   });
 });
-/* for notifications dropdown */

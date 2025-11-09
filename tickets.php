@@ -1,4 +1,3 @@
-
 <?php
   require_once __DIR__ . "/controller/check_session.php";
 ?>
@@ -254,6 +253,24 @@
          <div class="main-content app-content">
             <div class="container-fluid">
 
+               <div class="xxl:col-span-4 col-span-12 div_upgrade !hidden">
+                  <div class="box main-dashboard-banner main-dashboard-banner2 overflow-hidden">
+                     <div class="box-body p-6">
+                        <div class="grid grid-cols-12 sm:gap-x-6 justify-between">
+                        <div class="xxl:col-span-8 xl:col-span-4 lg:col-span-5 md:col-span-5 sm:col-span-5 col-span-12">
+                           <h4 class="mb-3 font-medium text-white">¡Actualiza tu plan para obtener más!</h4>
+                           <p class="mb-3 text-white text-[11px]">Obtener acceso Premium y desbloquear funciones exclusivas</p>
+                           <a href="javascript:void(0);" class="font-medium text-white underline">Actualizar <i class="ti ti-arrow-narrow-right"></i>
+                           </a>
+                        </div>
+                        <div class="xxl:col-span-4 xl:col-span-7 lg:col-span-7 md:col-span-7 sm:col-span-7 col-span-12 sm:block hidden text-end my-auto">
+                           <img src="./assets/images/media/media-91.png" alt="" class="img-fluid">
+                        </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
                <div class="xxl:col-span-8 col-span-12">
                   <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                      <!-- Bloque 1 -->
@@ -350,7 +367,7 @@
 
                      <div class="btn-list"> 
                         <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> 
-                        <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light" onclick="window.location.href='add_ticket.php'"> <i class="ri-share-forward-line me-1"></i> Registrar 
+                        <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light btn-registrar" onclick="window.location.href='add_ticket.php'"> <i class="ri-share-forward-line me-1"></i> Registrar 
                         </button> 
                      </div>
                   </div>

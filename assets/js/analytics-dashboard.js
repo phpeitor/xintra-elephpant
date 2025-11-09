@@ -205,18 +205,16 @@ fetch("controller/venta/apx_diario.php")
 fetch("controller/venta/apx_cliente.php")
   .then(response => response.json())
   .then(data => {
-    if (!Array.isArray(data) || data.length < 2) return;
 
-    // Ordenar de más antiguo a más reciente
-    data.reverse();
+    const clientes = data.cliente;
 
-    const seriesData = data.map(item => parseFloat(item.cliente));
-    const categories = data.map(item => item.mes);
+    if (!Array.isArray(clientes) || clientes.length < 2) return;
+    clientes.reverse();
 
-    // Último y penúltimo registro
-    const last = data[data.length - 1];
-    const prev = data[data.length - 2];
-
+    const seriesData = clientes.map(item => parseFloat(item.cliente));
+    const categories = clientes.map(item => item.mes);
+    const last = clientes[clientes.length - 1];
+    const prev = clientes[clientes.length - 2];
     const lastTotal = parseFloat(last.cliente);
     const prevTotal = parseFloat(prev.cliente);
     const diff = lastTotal - prevTotal;
@@ -298,5 +296,6 @@ fetch("controller/venta/apx_cliente.php")
     };
 
     new ApexCharts(document.querySelector("#chart-21"), options).render();
+    validarPedidoTotal();
   })
   .catch(err => console.error("Error cargando datos de clientes:", err));

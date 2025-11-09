@@ -493,6 +493,9 @@
         }
 
         if (form.classList.contains("ti-custom-validation-ticket")) {
+
+          validarPedidoTotal();
+          
           const inputDate = document.querySelector("#date");
 
           if (!inputDate.value) {
