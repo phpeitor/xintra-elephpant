@@ -1,4 +1,3 @@
-
 <?php
   require_once __DIR__ . "/controller/check_session.php";
 ?>
@@ -339,12 +338,6 @@
                                  </ul>
                                  <span class="text-red-500 text-xs hidden" data-error-for="sexo"></span>
                               </div>
-                           </div>
-
-                           <div class="my-5">
-                              <input id="terms" name="terms" type="checkbox" class="ti-form-checkbox mt-0.5" data-rules="required">
-                              <label for="terms" class="text-sm inline">Acepto los términos y condiciones</label>
-                              <span class="text-red-500 text-xs hidden" data-error-for="terms"></span>
                            </div>
 
                            <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>

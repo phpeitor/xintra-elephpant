@@ -255,12 +255,12 @@
             <div class="container-fluid">
 
                <div class="xxl:col-span-8 col-span-12">
-                  <div class="flex flex-wrap gap-6">
-                     <!-- Caja 1 -->
-                     <div class="flex-1 min-w-[250px] box overflow-hidden">
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                     <!-- Bloque 1 -->
+                     <div class="box overflow-hidden">
                         <div class="box-body pb-0 pe-0">
                         <div class="mb-4">
-                           <div class="flex justify-between">
+                           <div class="flex justify-between flex-wrap">
                               <span class="avatar avatar-rounded bg-primary svg-white">
                               <i class="bx bx-group text-[22px]"></i>
                               </span>
@@ -278,8 +278,8 @@
                         </div>
                      </div>
 
-                     <!-- Caja 2 -->
-                     <div class="flex-1 min-w-[250px] box overflow-hidden">
+                     <!-- Bloque 2 -->
+                     <div class="box overflow-hidden">
                         <div class="box-body pb-0 pe-0">
                         <div class="mb-4">
                            <div class="flex justify-between">
@@ -287,7 +287,6 @@
                               <i class="bx bx-trending-up text-[22px]"></i>
                               </span>
                               <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Total Mensual <code id="mes_22">?</code></span>
-                              
                            </div>
                         </div>
                         <div class="flex items-end justify-between">
@@ -301,8 +300,8 @@
                         </div>
                      </div>
 
-                     <!-- Caja 3 -->
-                     <div class="flex-1 min-w-[250px] box overflow-hidden">
+                     <!-- Bloque 3 -->
+                     <div class="box overflow-hidden">
                         <div class="box-body pb-0 pe-0">
                         <div class="mb-4">
                            <div class="flex justify-between">
@@ -316,15 +315,16 @@
                            <div class="pb-3">
                               <span class="text-[20px] font-medium flex items-center" id="total_23">0</span>
                               <div class="text-textmuted dark:text-textmuted/50 text-[13px]" id="inc_23">Decreased By</div>
-                              <span class="text-danger" id="pct_23"> 0% <i class="ti ti-arrow-narrow-down text-[16px]"></i></span>
+                              <span class="text-danger" id="pct_23">0% <i class="ti ti-arrow-narrow-down text-[16px]"></i></span>
                            </div>
                            <div id="chart-23" style="min-height:85px;"></div>
                         </div>
                         </div>
                      </div>
+
                   </div>
                </div>
-               
+               <!-- Start::page-header -->
                <div class="flex items-center justify-between page-header-breadcrumb flex-wrap gap-2">
                   <div>
                      <nav aria-label="nav">
