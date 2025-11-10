@@ -272,6 +272,14 @@
                      <div class="box-body">
                         <form class="ti-custom-validation-user" novalidate>
                            <div class="grid lg:grid-cols-2 gap-6">
+
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Documento</label>
+                                 <input id="documento" name="documento" type="text" inputmode="numeric" class="ti-form-input rounded-sm"
+                                       placeholder="12345678" data-rules="required|numeric|min:8|max:11">
+                                 <span class="text-red-500 text-xs hidden" data-error-for="documento"></span>
+                              </div>
+
                               <div class="space-y-2">
                                  <label class="ti-form-label">Nombres</label>
                                  <input id="firstName" name="nombres" type="text" class="ti-form-input rounded-sm"
@@ -284,13 +292,6 @@
                                  <input id="lastName" name="apellidos" type="text" class="ti-form-input rounded-sm"
                                        placeholder="Lastname" data-rules="required|min:2|max:50">
                                  <span class="text-red-500 text-xs hidden" data-error-for="lastName"></span>
-                              </div>
-
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Documento</label>
-                                 <input id="documento" name="documento" type="text" inputmode="numeric" class="ti-form-input rounded-sm"
-                                       placeholder="12345678" data-rules="required|numeric|min:8|max:11">
-                                 <span class="text-red-500 text-xs hidden" data-error-for="documento"></span>
                               </div>
 
                               <div class="space-y-2">

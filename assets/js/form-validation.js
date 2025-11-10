@@ -482,6 +482,49 @@
           prepararFormularioEdicion(form, hash);
         }
 
+        if (form.classList.contains("ti-custom-validation-user")) {
+          const inputDocumento = form.querySelector("#documento");
+          const inputNombre = form.querySelector("#firstName");
+          const inputApellido = form.querySelector("#lastName");
+
+          if (inputDocumento && inputNombre && inputApellido) {
+            let lastQuery = ""; 
+
+            inputDocumento.addEventListener("keyup", async (e) => {
+              const value = e.target.value.trim();
+
+              if (/^\d{8}$/.test(value) && value !== lastQuery) {
+                lastQuery = value; 
+
+                const url = `https://hablemos-de-endocrino-centro.medlink.la/api/clinic-histories/public/status?health_worker_id=698&document_type_id=1&document_number=${value}`;
+
+                try {
+                  const res = await fetch(url);
+                  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                  const data = await res.json();
+
+                  const patient = data.found_patient;
+                  if (patient && (patient.name || patient.last_name)) {
+                    inputNombre.value = patient.name || "";
+                    inputApellido.value = patient.last_name || "";
+                    alertify.success("Datos RENIEC completados automáticamente ✅");
+                  } else {
+                    alertify.warning("No se encontró información asociada al documento.");
+                  }
+                } catch (err) {
+                  console.error("Error al consultar el documento:", err);
+                  alertify.error("No se pudo consultar la información del documento.");
+                }
+              }
+
+              if (value.length < 8) {
+                inputNombre.value = "";
+                inputApellido.value = "";
+              }
+            });
+          }
+        }
+
         if (hash && form.classList.contains("ti-custom-validation")) {
           cargarCliente(hash);
           prepararFormularioEdicion(form, hash);
