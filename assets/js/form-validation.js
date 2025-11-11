@@ -488,18 +488,16 @@
           const inputApellido = form.querySelector("#lastName");
 
           if (inputDocumento && inputNombre && inputApellido) {
-            let lastQuery = ""; 
+            let lastQuery = "";
 
             inputDocumento.addEventListener("keyup", async (e) => {
               const value = e.target.value.trim();
 
               if (/^\d{8}$/.test(value) && value !== lastQuery) {
-                lastQuery = value; 
-
-                const url = `https://hablemos-de-endocrino-centro.medlink.la/api/clinic-histories/public/status?health_worker_id=698&document_type_id=1&document_number=${value}`;
+                lastQuery = value;
 
                 try {
-                  const res = await fetch(url);
+                  const res = await fetch(`./config/api.php?dni=${value}`);
                   if (!res.ok) throw new Error(`HTTP ${res.status}`);
                   const data = await res.json();
 
@@ -538,7 +536,6 @@
         if (form.classList.contains("ti-custom-validation-ticket")) {
 
           validarPedidoTotal();
-          
           const inputDate = document.querySelector("#date");
 
           if (!inputDate.value) {
