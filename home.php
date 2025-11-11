@@ -466,12 +466,6 @@
     </div>
    </div>
    <div class="ti-offcanvas-footer sm:flex justify-between">
-    <a class="ti-btn ti-btn-primary m-1" href="https://1.envato.market/9LxNGy" target="_blank">
-     Buy Now
-    </a>
-    <a class="ti-btn ti-btn-secondary m-1" href="https://1.envato.market/MGEaN" target="_blank">
-     Our Portfolio
-    </a>
     <a class="ti-btn ti-btn-danger m-1" href="javascript:void(0);" id="reset-all">
      Reset
     </a>

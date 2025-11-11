@@ -188,7 +188,7 @@
                </div>
             </div>
          </div>
-         <div class="ti-offcanvas-footer sm:flex justify-between"> <a href="https://1.envato.market/9LxNGy" target="_blank" class="ti-btn ti-btn-primary m-1">Buy Now</a> <a href="https://1.envato.market/MGEaN" target="_blank" class="ti-btn ti-btn-secondary m-1">Our Portfolio</a> <a href="javascript:void(0);" id="reset-all" class="ti-btn ti-btn-danger m-1">Reset</a> </div>
+         <div class="ti-offcanvas-footer sm:flex justify-between"> <a href="javascript:void(0);" id="reset-all" class="ti-btn ti-btn-danger m-1">Reset</a> </div>
       </div>
       <!-- ========== END Switcher  ========== --> <!-- Loader --> 
       <div id="loader" class="loader-disable"> <img src="./assets/images/media/loader.svg" alt=""> </div>

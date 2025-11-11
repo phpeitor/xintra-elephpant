@@ -424,13 +424,23 @@ class Ticket {
     }
 
     public function obtenerTotaPedido(): ?array {
-        $sql = "SELECT COUNT(1) as total_pedido
-                FROM pedido ped
-                WHERE EXISTS (
-                SELECT 1 
-                FROM personal per 
-                WHERE per.idpersonal = ped.usuario
-                AND per.idsucursal = 5)
+        $sql = "SELECT 
+                (
+                    SELECT COUNT(1)
+                    FROM pedido ped
+                    WHERE EXISTS (
+                    SELECT 1 
+                    FROM personal per 
+                    WHERE per.idpersonal = ped.usuario
+                    AND per.idsucursal = 5
+                    )
+                ) AS total_pedido,
+                (
+                    SELECT cuota 
+                    FROM sucursal_cuota 
+                    WHERE id_sucursal = 5
+                    LIMIT 1
+                ) AS cuota
                 ";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();

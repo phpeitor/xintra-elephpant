@@ -35,10 +35,11 @@
     .then(data => {
 
       const totalPedido = data.pedido?.[0]?.total_pedido || 0;
+      const cuota = data.pedido?.[0]?.cuota || 0;
       const upgradeDivs = document.querySelectorAll(".div_upgrade");
       const btnRegistrar = document.querySelector(".btn-registrar");
-
-      if (totalPedido > 14000) {
+      
+      if (totalPedido > cuota) {
         upgradeDivs.forEach(div => div.classList.remove("!hidden"));
 
         if (btnRegistrar) {
