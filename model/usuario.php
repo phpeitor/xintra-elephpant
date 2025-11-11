@@ -72,6 +72,20 @@ class Usuario {
         return (int)$this->conn->lastInsertId();
     }
 
+    public function guardar_session(array $data): int {
+        $sql = "INSERT INTO login 
+                (tipo, fecha, id_user, ip)
+                VALUES 
+                (:tipo, :fecha, :id_user, :ip)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':tipo', $data['tipo'] ?? 'IN');
+        $stmt->bindValue(':fecha', $this->nowLima);
+        $stmt->bindValue(':id_user', $data['id_user'] ?? null);
+        $stmt->bindValue(':ip', $data['ip'] ?? '0.0.0.0');
+        $stmt->execute();
+        return (int)$this->conn->lastInsertId();
+    }
+
     public function table_personal(): array{
          $sql = "SELECT
                 *,

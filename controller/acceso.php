@@ -26,6 +26,23 @@ try {
         $_SESSION['session_id'] = $data['IDPERSONAL'];
         $_SESSION['session_nombre'] = $data['NOMBRES'];
         $_SESSION['session_time'] = time(); 
+
+        $ip = $_SERVER['REMOTE_ADDR'] ?? null;
+
+        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+            $ip = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0];
+        }
+
+        if (!$ip) {
+            $ip = file_get_contents('https://api.ipify.org');
+        }
+
+        $obj->guardar_session([
+            'tipo' => 'IN',
+            'id_user' => $data['IDPERSONAL'],
+            'ip' => $ip
+        ]);
+        
         echo json_encode(['ok' => true]);
     } else {
         echo json_encode(['ok' => false, 'message' => '🚫 Usuario o contraseña incorrectos']);

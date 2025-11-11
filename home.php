@@ -745,7 +745,7 @@
                 <div class="box-body p-6">
                   <div class="grid grid-cols-12 justify-between">
                     <div class="xxl:col-span-7 xl:col-span-5 lg:col-span-5 md:col-span-5 sm:col-span-5 col-span-12">
-                      <h4 class="mb-4 font-medium text-white">Actualiza a Profesional</h4>
+                      <h4 class="mb-4 font-medium text-white">Actualizar Profesional</h4>
                       <p class="mb-6 text-white">Maximiza la información sobre ventas. Optimiza el rendimiento.</p>
                       <a href="javascript:void(0);" class="font-medium text-white decoration-solid underline">Obtener más información <i class="ti ti-arrow-narrow-right"></i>
                       </a>
