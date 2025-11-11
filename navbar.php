@@ -119,9 +119,22 @@ $notificaciones = $obj->obtenerNotificacion();
                 <?php if (!empty($notificaciones)): ?>
                 <?php foreach ($notificaciones as $n): ?>
                     <?php
-                    $img = ($n['sexo'] == 1)
-                        ? './assets/images/faces/11.jpg'
-                        : './assets/images/faces/1.jpg';
+                    static $userFaces = [];
+
+                    $faces = [
+                        1 => ['11.jpg', '12.jpg', '10.jpg', '14.jpg'],
+                        2 => ['1.jpg', '3.jpg', '6.jpg'],  
+                    ];
+
+                    if (isset($userFaces[$n['usuario']])) {
+                        $img = $userFaces[$n['usuario']];
+                    } else {
+                        $sexo = (int)($n['sexo'] ?? 1);
+                        $imgs = $faces[$sexo] ?? $faces[1];
+                        $imgSeleccionada = './assets/images/faces/' . $imgs[array_rand($imgs)];
+                        $userFaces[$n['usuario']] = $imgSeleccionada;
+                        $img = $imgSeleccionada;
+                    }
 
                     if ($n['origen'] === 'login') {
                         $titulo = 'Login Request';
