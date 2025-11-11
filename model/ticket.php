@@ -179,9 +179,9 @@ class Ticket {
             $fecha_inicio = date('Y-m-d', strtotime('-7 days', strtotime($fecha_fin)));
         }
 
-        $sql = "SELECT A.id, B.id_productservice as id_producto, date(A.fecha) as fecha_pedido, case when upper(C.USUARIO) is null then 'SALIDA INSUMOS' else upper(C.USUARIO) end as usuario,
+        $sql = "SELECT a.id, B.id_productservice as id_producto, date(a.fecha) as fecha_pedido, case when upper(c.USUARIO) is null then 'SALIDA INSUMOS' else upper(c.USUARIO) end as usuario,
                 case when E.apellidos is null then 'INVENTARIO' else concat(E.nombres,' ',E.apellidos) end as cliente, 
-                GROUP_CONCAT('• ',D.nombre SEPARATOR ' </br> ') as productos, 
+                GROUP_CONCAT('• ',d.nombre SEPARATOR ' </br> ') as productos, 
                 GROUP_CONCAT('S/.',B.precio,' x ',B.cantidad SEPARATOR ' </br> ') as precioxcant,
                 case when dscto > 0 and pago='EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><code>',tipo_dscto,
                 '</code>','<br/><i style=color:#f00>S/.',dscto,'</i><br/><b>S/.',(sum(B.subtotal)-dscto),'<b>') 
@@ -193,16 +193,16 @@ class Ticket {
                 when pago ='EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><i class=ri-currency-line></i>')
                 else concat('S/.',sum(B.subtotal),'<br/><code>', pago,'</code>') end as total,
                 sum(B.cantidad) as cantidad
-                    FROM pedido A 
-                    LEFT JOIN detalle_pedido B ON A.id = B.id_pedido 
-                    LEFT JOIN personal C ON A.usuario = C.IDPERSONAL 
-                    LEFT JOIN product_service D ON B.id_productservice = D.id 
-                    LEFT JOIN cliente E on E.id=A.cliente 
-                WHERE DATE(A.fecha) BETWEEN :fecha_inicio AND :fecha_fin
-                AND D.id_sucursal = 5 
-                AND A.cliente > 0
-                GROUP BY A.id 
-                ORDER BY A.id DESC
+                    FROM pedido a 
+                    LEFT JOIN detalle_pedido b ON a.id = b.id_pedido 
+                    LEFT JOIN personal c ON a.usuario = c.IDPERSONAL 
+                    LEFT JOIN product_service d ON B.id_productservice = d.id 
+                    LEFT JOIN cliente e on e.id = a.cliente 
+                WHERE DATE(a.fecha) BETWEEN :fecha_inicio AND :fecha_fin
+                AND d.id_sucursal = 5 
+                AND a.cliente > 0
+                GROUP BY a.id 
+                ORDER BY a.id DESC
             ";
         $this->conn->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         $stmt = $this->conn->prepare($sql);
@@ -219,62 +219,62 @@ class Ticket {
         }
 
         $sql = "SELECT 
-                A.id, B.id_productservice as id_producto, date(A.fecha) as fecha_pedido, 
-                C.USUARIO as usuario,
-                concat(C.NOMBRES,' ',C.APELLIDOS) as personal,
-                C.DOC as dni_personal,
+                a.id, B.id_productservice as id_producto, date(a.fecha) as fecha_pedido, 
+                c.USUARIO as usuario,
+                concat(c.NOMBRES,' ',c.APELLIDOS) as personal,
+                c.DOC as dni_personal,
                 concat(E.nombres,' ',E.apellidos) as cliente,
-                x.tpo as tipo, D.nombre as producto, 
+                x.tpo as tipo, d.nombre as producto, 
                 B.precio, B.cantidad,
-                case when  D.nombre like 'corte%' then 0.45
-                when D.nombre like 'caballero%' then 0.45
-                when D.nombre like 'DEPILACION.HILO%' then 0.45
-                when D.nombre like 'DEPILACION%' then 0.45
-                when D.nombre like 'DEPIHILO%' then 0.45
-                when D.nombre like 'ALISADO%' then 0.25
-                when D.nombre like 'PIGMENTO DE CEJAS%' then 0.25
-                when  D.nombre like 'ONDAS%' then 0.4
-                when  D.nombre like 'DAMA.30%' then 0.45
+                case when  d.nombre like 'corte%' then 0.45
+                when d.nombre like 'caballero%' then 0.45
+                when d.nombre like 'DEPILACION.HILO%' then 0.45
+                when d.nombre like 'DEPILACION%' then 0.45
+                when d.nombre like 'DEPIHILO%' then 0.45
+                when d.nombre like 'ALISADO%' then 0.25
+                when d.nombre like 'PIGMENTO DE CEJAS%' then 0.25
+                when  d.nombre like 'ONDAS%' then 0.4
+                when  d.nombre like 'DAMa.30%' then 0.45
                 when  x.tpo ='PRODUCTO' then 0.01
-                when  replace(D.nombre,'ñ','N') like '%PESTANA%' then 0.25
-                when  replace(D.nombre,'ñ','N') like '%UNAS%' then 0.4
-                when  D.nombre like 'cepillado%' then 0.4
-                when  D.nombre like '%planchado de cejas%' then 0.3 
-                when  D.nombre like 'planchado%' then 0.4
-                when  D.nombre like '%navaja%' then 0.45
-                when  D.nombre like '%maquillaje%' then 0.25 
-                when  C.USUARIO='MARYRG' and D.nombre like 'DEPILACION HILO%' then 0.45
-                when  D.nombre like 'DEPILACION HILO%' then 0.4
-                when  C.USUARIO='MARYRG' and D.nombre like '%DEPI.HILO%' then 0.45
-                when  D.nombre like '%DEPI.HILO%' then 0.4
-                when  D.nombre like 'tinte%' then 0.3
-                when  D.nombre like 'aplicacion%' then 0.4
-                when  D.nombre like 'aplicacion tinte%' then 0.4
-                when  C.USUARIO='MARYRG' and D.nombre like '%cera%' then 0.35
-                when  D.nombre like '%cera%' then 0.3
-                when  D.nombre like '%COLOCACION%' then 0.3
-                when  D.nombre like '%1POR1%' then 0.3
-                when  D.nombre like '%RIZADO%' then 0.25
-                when  D.nombre like 'manicur%' then 0.4
-                when  D.nombre like 'pedicur%' then 0.4
-                when  D.nombre like 'peinado%' then 0.4
-                when  D.nombre like 'mecha%' then 0.3
-                when  C.USUARIO in ('JCALDERON','DIANASG') and D.nombre like 'facial%' then 0.3
-                when  D.nombre like 'facial%' then 0.25
-                when  C.USUARIO in ('MARYRG','Junior.S') and D.nombre like 'botox%' then 0.2
-                when  D.nombre like 'botox%' then 0.25
-                when  D.nombre like 'pigmenta%' then 0.25
-                when  D.nombre like '%MANO%' then 0.40
+                when  replace(d.nombre,'ñ','N') like '%PESTANA%' then 0.25
+                when  replace(d.nombre,'ñ','N') like '%UNAS%' then 0.4
+                when  d.nombre like 'cepillado%' then 0.4
+                when  d.nombre like '%planchado de cejas%' then 0.3 
+                when  d.nombre like 'planchado%' then 0.4
+                when  d.nombre like '%navaja%' then 0.45
+                when  d.nombre like '%maquillaje%' then 0.25 
+                when  c.USUARIO='MARYRG' and d.nombre like 'DEPILACION HILO%' then 0.45
+                when  d.nombre like 'DEPILACION HILO%' then 0.4
+                when  c.USUARIO='MARYRG' and d.nombre like '%DEPI.HILO%' then 0.45
+                when  d.nombre like '%DEPI.HILO%' then 0.4
+                when  d.nombre like 'tinte%' then 0.3
+                when  d.nombre like 'aplicacion%' then 0.4
+                when  d.nombre like 'aplicacion tinte%' then 0.4
+                when  c.USUARIO='MARYRG' and d.nombre like '%cera%' then 0.35
+                when  d.nombre like '%cera%' then 0.3
+                when  d.nombre like '%COLOCACION%' then 0.3
+                when  d.nombre like '%1POR1%' then 0.3
+                when  d.nombre like '%RIZADO%' then 0.25
+                when  d.nombre like 'manicur%' then 0.4
+                when  d.nombre like 'pedicur%' then 0.4
+                when  d.nombre like 'peinado%' then 0.4
+                when  d.nombre like 'mecha%' then 0.3
+                when  c.USUARIO in ('JCALDERON','DIANASG') and d.nombre like 'facial%' then 0.3
+                when  d.nombre like 'facial%' then 0.25
+                when  c.USUARIO in ('MARYRG','Junior.S') and d.nombre like 'botox%' then 0.2
+                when  d.nombre like 'botox%' then 0.25
+                when  d.nombre like 'pigmenta%' then 0.25
+                when  d.nombre like '%MANO%' then 0.40
                 else 1 end as dscto
-                FROM pedido A 
-                LEFT JOIN detalle_pedido B ON A.id = B.id_pedido 
-                LEFT JOIN personal C ON A.usuario = C.IDPERSONAL 
-                LEFT JOIN product_service D ON B.id_productservice = D.id 
-                left join categoria x on x.id = D.categoria
-                left join cliente E on E.id=A.cliente
-                where date(A.fecha) between :fecha_inicio AND :fecha_fin
-                and D.id_sucursal=5
-                ORDER BY A.id DESC
+                FROM pedido a 
+                LEFT JOIN detalle_pedido b ON a.id = b.id_pedido 
+                LEFT JOIN personal c ON a.usuario = c.IDPERSONAL 
+                LEFT JOIN product_service d ON b.id_productservice = d.id 
+                left join categoria x on x.id = d.categoria
+                left join cliente e on e.id=a.cliente
+                where date(a.fecha) between :fecha_inicio AND :fecha_fin
+                and d.id_sucursal=5
+                ORDER BY a.id DESC
             ";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':fecha_inicio', $fecha_inicio);
@@ -284,13 +284,13 @@ class Ticket {
     }
 
     public function obtenerPorHash(string $hash): ?array {
-        $sql = "SELECT A.id,cliente,A.usuario,user_registro,fecha,A.fecha_registro,dscto,tipo_dscto,pago,
+        $sql = "SELECT a.id,cliente,a.usuario,user_registro,fecha,a.fecha_registro,dscto,tipo_dscto,pago,
                 concat(E.nombres,' ',E.apellidos)  as cliente_nombre,
-                upper(C.USUARIO) as user
-                from pedido A
-                LEFT JOIN personal C ON A.usuario = C.IDPERSONAL 
-                LEFT JOIN cliente E on E.id=A.cliente 
-                where md5(A.id) = :hash
+                upper(c.USUARIO) as user
+                from pedido a
+                LEFT JOIN personal C ON a.usuario = c.IDPERSONAL 
+                LEFT JOIN cliente e on e.id=a.cliente 
+                where md5(a.id) = :hash
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
@@ -325,15 +325,15 @@ class Ticket {
     public function obtenerTotalMensual(): ?array {
         $sql = "SELECT 
                     IFNULL(SUM(b.subtotal), 0) AS total,
-                    DATE_FORMAT(A.fecha, '%Y-%m') AS mes
+                    DATE_FORMAT(a.fecha, '%Y-%m') AS mes
                 FROM pedido A
-                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
-                LEFT JOIN product_service D ON b.id_productservice = D.id
+                LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
+                LEFT JOIN product_service D ON b.id_productservice = d.id
                 WHERE 
-                    D.id_sucursal = 5
-                    AND A.cliente > 0
-                    AND A.fecha >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
-                GROUP BY DATE_FORMAT(A.fecha, '%Y-%m')
+                    d.id_sucursal = 5
+                    AND a.cliente > 0
+                    AND a.fecha >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+                GROUP BY DATE_FORMAT(a.fecha, '%Y-%m')
                 ORDER BY mes desc";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
@@ -344,14 +344,14 @@ class Ticket {
     public function obtenerTotalDiario(): ?array {
         $sql = "SELECT 
                     IFNULL(SUM(b.subtotal), 0) AS total,
-                    DATE_FORMAT(A.fecha, '%Y-%m-%d') AS dia
-                FROM pedido A
-                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
-                LEFT JOIN product_service D ON b.id_productservice = D.id
+                    DATE_FORMAT(a.fecha, '%Y-%m-%d') AS dia
+                FROM pedido a
+                LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
+                LEFT JOIN product_service d ON b.id_productservice = d.id
                 WHERE 
-                    D.id_sucursal = 5
-                    AND A.cliente > 0
-                GROUP BY DATE_FORMAT(A.fecha, '%Y-%m-%d')
+                    d.id_sucursal = 5
+                    AND a.cliente > 0
+                GROUP BY DATE_FORMAT(a.fecha, '%Y-%m-%d')
                 ORDER BY dia DESC
                 LIMIT 7";
         $stmt = $this->conn->prepare($sql);
@@ -362,16 +362,16 @@ class Ticket {
 
     public function obtenerTotalCliente(): ?array {
         $sql = "SELECT 
-                    count(distinct A.cliente) as cliente,
-                    count(distinct A.usuario) as usuario,
-                    DATE_FORMAT(A.fecha, '%Y-%m') AS mes
-                FROM pedido A
-                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
-                LEFT JOIN product_service D ON b.id_productservice = D.id
+                    count(distinct a.cliente) as cliente,
+                    count(distinct a.usuario) as usuario,
+                    DATE_FORMAT(a.fecha, '%Y-%m') AS mes
+                FROM pedido a
+                LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
+                LEFT JOIN product_service d ON b.id_productservice = d.id
                 WHERE 
-                    D.id_sucursal = 5
-                    AND A.cliente > 0
-                GROUP BY DATE_FORMAT(A.fecha, '%Y-%m')
+                    d.id_sucursal = 5
+                    AND a.cliente > 0
+                GROUP BY DATE_FORMAT(a.fecha, '%Y-%m')
                 ORDER BY mes DESC
                 LIMIT 7";
         $stmt = $this->conn->prepare($sql);
@@ -386,14 +386,14 @@ class Ticket {
                 sum(subtotal) as total,
                 sum(cantidad) as items,
                 c.usuario as usuario
-                FROM pedido A
-                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
-                LEFT JOIN product_service D ON b.id_productservice = D.id
-                LEFT JOIN personal C ON A.usuario = C.IDPERSONAL 
+                FROM pedido a
+                LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
+                LEFT JOIN product_service d ON b.id_productservice = d.id
+                LEFT JOIN personal c ON a.usuario = c.IDPERSONAL 
                 WHERE 
-                D.id_sucursal = 5
-                AND A.cliente > 0
-                and A.fecha>= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                d.id_sucursal = 5
+                AND a.cliente > 0
+                and a.fecha>= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
                 GROUP BY c.usuario
                 ORDER BY c.usuario ASC
                 ";
@@ -406,16 +406,16 @@ class Ticket {
     public function obtenerTotalItem(): ?array {
         $sql = "SELECT 
                 sum(subtotal) as total,
-                D.nombre as item
-                FROM pedido A
-                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
-                LEFT JOIN product_service D ON b.id_productservice = D.id
+                d.nombre as item
+                FROM pedido a
+                LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
+                LEFT JOIN product_service d ON b.id_productservice = d.id
                 WHERE 
-                D.id_sucursal = 5
-                AND A.cliente > 0
-                and A.fecha>= DATE_SUB(CURDATE(), INTERVAL 15 DAY)
-                GROUP BY D.nombre
-                ORDER BY D.nombre ASC
+                d.id_sucursal = 5
+                AND a.cliente > 0
+                and a.fecha>= DATE_SUB(CURDATE(), INTERVAL 15 DAY)
+                GROUP BY d.nombre
+                ORDER BY d.nombre ASC
                 ";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();

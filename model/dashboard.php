@@ -53,16 +53,16 @@ class Dashboard {
                 IFNULL(SUM(b.subtotal), 0) AS total,
                 SUM(CASE WHEN c.tpo = 'PRODUCTO' THEN b.subtotal END) AS producto,
                 SUM(CASE WHEN c.tpo = 'SERVICIO' THEN b.subtotal END) AS servicio,
-                DATE_FORMAT(A.fecha, '%Y-%m') AS mes
-                FROM pedido A
-                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
-                LEFT JOIN product_service D ON b.id_productservice = D.id
-                LEFT JOIN categoria C ON D.categoria = C.id
+                DATE_FORMAT(a.fecha, '%Y-%m') AS mes
+                FROM pedido a
+                LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
+                LEFT JOIN product_service d ON b.id_productservice = d.id
+                LEFT JOIN categoria c ON Dd.categoria = c.id
                 WHERE 
-                D.id_sucursal = 5
-                AND A.cliente > 0
-                AND A.fecha >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
-                GROUP BY DATE_FORMAT(A.fecha, '%Y-%m')
+                d.id_sucursal = 5
+                AND a.cliente > 0
+                AND a.fecha >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
+                GROUP BY DATE_FORMAT(a.fecha, '%Y-%m')
                 ORDER BY mes desc
              ";
         $stmt = $this->conn->prepare($sql);
@@ -74,27 +74,27 @@ class Dashboard {
     public function obtenerGrafUser(): ?array {
         $sql = "SELECT 
                     c.usuario,
-                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(CURDATE()) 
-                            AND MONTH(A.fecha) = MONTH(CURDATE()) THEN 1 ELSE 0 END) AS tickets_actuales,
-                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(CURDATE()) 
-                            AND MONTH(A.fecha) = MONTH(CURDATE()) THEN b.subtotal ELSE 0 END) AS total_actual,
-                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(CURDATE()) 
-                            AND MONTH(A.fecha) = MONTH(CURDATE()) THEN b.cantidad ELSE 0 END) AS items_actuales,
+                    SUM(CASE WHEN YEAR(a.fecha) = YEAR(CURDATE()) 
+                            AND MONTH(a.fecha) = MONTH(CURDATE()) THEN 1 ELSE 0 END) AS tickets_actuales,
+                    SUM(CASE WHEN YEAR(a.fecha) = YEAR(CURDATE()) 
+                            AND MONTH(a.fecha) = MONTH(CURDATE()) THEN b.subtotal ELSE 0 END) AS total_actual,
+                    SUM(CASE WHEN YEAR(a.fecha) = YEAR(CURDATE()) 
+                            AND MONTH(a.fecha) = MONTH(CURDATE()) THEN b.cantidad ELSE 0 END) AS items_actuales,
 
-                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
-                            AND MONTH(A.fecha) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) THEN 1 ELSE 0 END) AS tickets_anteriores,
-                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
-                            AND MONTH(A.fecha) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) THEN b.subtotal ELSE 0 END) AS total_anteriores,
-                    SUM(CASE WHEN YEAR(A.fecha) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
-                            AND MONTH(A.fecha) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) THEN b.cantidad ELSE 0 END) AS items_anteriores
-                FROM pedido A
-                LEFT JOIN detalle_pedido b ON A.id = b.id_pedido
-                LEFT JOIN product_service D ON b.id_productservice = D.id
-                LEFT JOIN personal C ON A.usuario = C.IDPERSONAL
+                    SUM(CASE WHEN YEAR(a.fecha) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
+                            AND MONTH(a.fecha) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) THEN 1 ELSE 0 END) AS tickets_anteriores,
+                    SUM(CASE WHEN YEAR(a.fecha) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
+                            AND MONTH(a.fecha) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) THEN b.subtotal ELSE 0 END) AS total_anteriores,
+                    SUM(CASE WHEN YEAR(a.fecha) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) 
+                            AND MONTH(a.fecha) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH)) THEN b.cantidad ELSE 0 END) AS items_anteriores
+                FROM pedido a
+                LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
+                LEFT JOIN product_service d ON b.id_productservice = d.id
+                LEFT JOIN personal c ON a.usuario = c.IDPERSONAL
                 WHERE 
-                    D.id_sucursal = 5
-                    AND A.cliente > 0
-                    AND A.fecha >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
+                    d.id_sucursal = 5
+                    AND a.cliente > 0
+                    AND a.fecha >= DATE_SUB(CURDATE(), INTERVAL 2 MONTH)
                 GROUP BY c.usuario
                 ORDER BY c.usuario ASC
              ";
