@@ -57,7 +57,7 @@ class Dashboard {
                 FROM pedido a
                 LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
                 LEFT JOIN product_service d ON b.id_productservice = d.id
-                LEFT JOIN categoria c ON Dd.categoria = c.id
+                LEFT JOIN categoria c ON d.categoria = c.id
                 WHERE 
                 d.id_sucursal = 5
                 AND a.cliente > 0
