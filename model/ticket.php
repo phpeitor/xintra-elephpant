@@ -179,24 +179,24 @@ class Ticket {
             $fecha_inicio = date('Y-m-d', strtotime('-7 days', strtotime($fecha_fin)));
         }
 
-        $sql = "SELECT a.id, B.id_productservice as id_producto, date(a.fecha) as fecha_pedido, case when upper(c.USUARIO) is null then 'SALIDA INSUMOS' else upper(c.USUARIO) end as usuario,
-                case when E.apellidos is null then 'INVENTARIO' else concat(E.nombres,' ',E.apellidos) end as cliente, 
+        $sql = "SELECT a.id, b.id_productservice as id_producto, date(a.fecha) as fecha_pedido, case when upper(c.USUARIO) is null then 'SALIDA INSUMOS' else upper(c.USUARIO) end as usuario,
+                case when e.apellidos is null then 'INVENTARIO' else concat(e.nombres,' ',e.apellidos) end as cliente, 
                 GROUP_CONCAT('• ',d.nombre SEPARATOR ' </br> ') as productos, 
-                GROUP_CONCAT('S/.',B.precio,' x ',B.cantidad SEPARATOR ' </br> ') as precioxcant,
-                case when dscto > 0 and pago='EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><code>',tipo_dscto,
-                '</code>','<br/><i style=color:#f00>S/.',dscto,'</i><br/><b>S/.',(sum(B.subtotal)-dscto),'<b>') 
-                when pago not in ('EFECTIVO','YAPE','PLIN') and dscto=0 then concat('S/.',sum(B.subtotal),'<br/><code>',pago,'</code>',
-                '<br/><b>S/.',round((sum(B.subtotal)*1.05),2),'<b>')
-                when dscto > 0 and pago not in ('EFECTIVO','YAPE','PLIN') then concat('S/.',sum(B.subtotal),'<br/><code>',
+                GROUP_CONCAT('S/.',b.precio,' x ',b.cantidad SEPARATOR ' </br> ') as precioxcant,
+                case when dscto > 0 and pago='EFECTIVO' then concat('S/.',sum(b.subtotal),'<br/><code>',tipo_dscto,
+                '</code>','<br/><i style=color:#f00>S/.',dscto,'</i><br/><b>S/.',(sum(b.subtotal)-dscto),'<b>') 
+                when pago not in ('EFECTIVO','YAPE','PLIN') and dscto=0 then concat('S/.',sum(b.subtotal),'<br/><code>',pago,'</code>',
+                '<br/><b>S/.',round((sum(b.subtotal)*1.05),2),'<b>')
+                when dscto > 0 and pago not in ('EFECTIVO','YAPE','PLIN') then concat('S/.',sum(b.subtotal),'<br/><code>',
                 tipo_dscto,'</code><br/><i style=color:#f00>S/.',dscto,'</i><br/><code>',pago,
-                ' 5%</code><br/><b>S/.',round((sum(B.subtotal)*1.05)-dscto,2),'<b>') 
-                when pago ='EFECTIVO' then concat('S/.',sum(B.subtotal),'<br/><i class=ri-currency-line></i>')
-                else concat('S/.',sum(B.subtotal),'<br/><code>', pago,'</code>') end as total,
-                sum(B.cantidad) as cantidad
+                ' 5%</code><br/><b>S/.',round((sum(b.subtotal)*1.05)-dscto,2),'<b>') 
+                when pago ='EFECTIVO' then concat('S/.',sum(b.subtotal),'<br/><i class=ri-currency-line></i>')
+                else concat('S/.',sum(b.subtotal),'<br/><code>', pago,'</code>') end as total,
+                sum(b.cantidad) as cantidad
                     FROM pedido a 
                     LEFT JOIN detalle_pedido b ON a.id = b.id_pedido 
                     LEFT JOIN personal c ON a.usuario = c.IDPERSONAL 
-                    LEFT JOIN product_service d ON B.id_productservice = d.id 
+                    LEFT JOIN product_service d ON b.id_productservice = d.id 
                     LEFT JOIN cliente e on e.id = a.cliente 
                 WHERE DATE(a.fecha) BETWEEN :fecha_inicio AND :fecha_fin
                 AND d.id_sucursal = 5 
@@ -219,13 +219,13 @@ class Ticket {
         }
 
         $sql = "SELECT 
-                a.id, B.id_productservice as id_producto, date(a.fecha) as fecha_pedido, 
+                a.id, b.id_productservice as id_producto, date(a.fecha) as fecha_pedido, 
                 c.USUARIO as usuario,
                 concat(c.NOMBRES,' ',c.APELLIDOS) as personal,
                 c.DOC as dni_personal,
-                concat(E.nombres,' ',E.apellidos) as cliente,
+                concat(e.nombres,' ',e.apellidos) as cliente,
                 x.tpo as tipo, d.nombre as producto, 
-                B.precio, B.cantidad,
+                b.precio, b.cantidad,
                 case when  d.nombre like 'corte%' then 0.45
                 when d.nombre like 'caballero%' then 0.45
                 when d.nombre like 'DEPILACION.HILO%' then 0.45
@@ -285,10 +285,10 @@ class Ticket {
 
     public function obtenerPorHash(string $hash): ?array {
         $sql = "SELECT a.id,cliente,a.usuario,user_registro,fecha,a.fecha_registro,dscto,tipo_dscto,pago,
-                concat(E.nombres,' ',E.apellidos)  as cliente_nombre,
+                concat(e.nombres,' ',e.apellidos)  as cliente_nombre,
                 upper(c.USUARIO) as user
                 from pedido a
-                LEFT JOIN personal C ON a.usuario = c.IDPERSONAL 
+                LEFT JOIN personal c ON a.usuario = c.IDPERSONAL 
                 LEFT JOIN cliente e on e.id=a.cliente 
                 where md5(a.id) = :hash
                 LIMIT 1";
@@ -326,9 +326,9 @@ class Ticket {
         $sql = "SELECT 
                     IFNULL(SUM(b.subtotal), 0) AS total,
                     DATE_FORMAT(a.fecha, '%Y-%m') AS mes
-                FROM pedido A
+                FROM pedido a
                 LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
-                LEFT JOIN product_service D ON b.id_productservice = d.id
+                LEFT JOIN product_service d ON b.id_productservice = d.id
                 WHERE 
                     d.id_sucursal = 5
                     AND a.cliente > 0
@@ -382,7 +382,7 @@ class Ticket {
 
     public function obtenerTotalUsuario(): ?array {
         $sql = "SELECT 
-                count( B.id_productservice) as tickets,
+                count( b.id_productservice) as tickets,
                 sum(subtotal) as total,
                 sum(cantidad) as items,
                 c.usuario as usuario
