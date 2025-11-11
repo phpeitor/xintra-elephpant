@@ -1,3 +1,10 @@
+<?php
+require_once __DIR__ . "/model/notify.php";
+
+$obj = new Notify();
+$notificaciones = $obj->obtenerNotificacion();
+?>
+
 <ul class="header-content-right">
     <li class="header-element md:!hidden block">
         <a aria-label="anchor" href="javascript:void(0);" class="header-link" data-bs-toggle="modal" data-hs-overlay="#header-responsive-search"><i class="bi bi-search header-link-icon"></i> 
@@ -94,61 +101,77 @@
         <span class="header-icon-pulse bg-primarytint2color rounded pulse pulse-secondary"></span> 
         </a>
         <div class="main-header-dropdown hs-dropdown-menu ti-dropdown-menu hidden" data-popper-placement="none" role="menu">
+        
         <div class="p-4">
             <div class="flex items-center justify-between">
                 <p class="mb-0 text-[15px] font-medium">Notifications</p>
-                <span class="badge bg-secondary text-white rounded-sm" id="notifiation-data">2 Unread</span> 
+                <span class="badge bg-secondary text-white rounded-sm" id="notification-data">
+                <?= count($notificaciones ?? []) ?>
+                </span> 
             </div>
         </div>
+
         <div class="dropdown-divider"></div>
+
         <ul class="list-none mb-0" id="header-notification-scroll" data-simplebar="init">
-            <div class="simplebar-wrapper" style="margin: 0px;">
-                <div class="simplebar-height-auto-observer-wrapper">
-                    <div class="simplebar-height-auto-observer"></div>
-                </div>
-                <div class="simplebar-mask">
-                    <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-                    <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: auto; overflow: hidden;">
-                        <div class="simplebar-content" style="padding: 0px;">
-                            <li class="ti-dropdown-item block">
-                                <div class="flex items-center">
-                                <div class="pe-2 leading-none"> <span class="avatar avatar-md bg-success avatar-rounded"> <img src="./assets/images/faces/11.jpg" alt="user1"> </span> </div>
-                                <div class="grow flex items-center justify-between">
-                                    <div>
-                                        <p class="mb-0 font-medium"><a href="#">Follow Request</a></p>
-                                        <div class="text-textmuted dark:text-textmuted/50 font-normal text-xs header-notification-text truncate"> <span class="text-info">Kelin Brown</span> has sent you the request.</div>
-                                        <div class="font-normal text-[10px] text-textmuted dark:text-textmuted/50 op-8"> 1 Day ago</div>
-                                    </div>
-                                    <div> <a aria-label="anchor" href="javascript:void(0);" class="min-w-fit-content dropdown-item-close1"> <i class="ri-close-line"></i> </a> </div>
-                                </div>
-                                </div>
-                            </li>
-                            <li class="ti-dropdown-item block">
-                                <div class="flex items-center">
-                                <div class="pe-2 leading-none"> <span class="avatar avatar-md bg-primarytint2color avatar-rounded"> <i class="ri-gift-line leading-none text-[1rem]"></i> </span> </div>
-                                <div class="grow flex items-center justify-between">
-                                    <div>
-                                        <p class="mb-0 font-medium"><a href="#">Exclusive Offers</a></p>
-                                        <div class="text-textmuted dark:text-textmuted/50 font-normal text-xs header-notification-text truncate"> Enjoy<span class="text-success">20% off</span> on your next purchase!</div>
-                                        <div class="font-normal text-[10px] text-textmuted dark:text-textmuted/50 op-8"> 5 hours ago</div>
-                                    </div>
-                                    <div> <a aria-label="anchor" href="javascript:void(0);" class="min-w-fit-content dropdown-item-close1"> <i class="ri-close-line"></i> </a> </div>
-                                </div>
-                                </div>
-                            </li>
+            <div class="simplebar-content" style="padding: 0px;">
+
+                <?php if (!empty($notificaciones)): ?>
+                <?php foreach ($notificaciones as $n): ?>
+                    <?php
+                    $img = ($n['sexo'] == 1)
+                        ? './assets/images/faces/11.jpg'
+                        : './assets/images/faces/1.jpg';
+
+                    if ($n['origen'] === 'login') {
+                        $titulo = 'Login Request';
+                        $texto = "<span class='text-info'>{$n['usuario']}</span> ha iniciado sesión.";
+                        $fecha = $n['fecha']; 
+                    } else {
+                        $titulo = 'Ticket Request';
+                        $colores = ['success', 'purplemain', 'primarytint3color', 'primarytint2color'];
+                        $color = $colores[array_rand($colores)];
+                        $texto = "<span class='text-{$color}'>{$n['usuario']}</span> realizó un pedido.";
+                        $fecha = substr($n['fecha'], 0, 10); 
+                    }
+                    ?>
+
+                    <li class="ti-dropdown-item block">
+                    <div class="flex items-center">
+                        <div class="pe-2 leading-none">
+                        <span class="avatar avatar-md bg-success avatar-rounded">
+                            <img src="<?= $img ?>" alt="user">
+                        </span>
+                        </div>
+
+                        <div class="grow flex items-center justify-between">
+                        <div>
+                            <p class="mb-0 font-medium"><a href="#"><?= $titulo ?></a></p>
+                            <div class="text-textmuted dark:text-textmuted/50 font-normal text-xs header-notification-text truncate">
+                            <?= $texto ?>
+                            </div>
+                            <div class="font-normal text-[10px] text-textmuted dark:text-textmuted/50 op-8">
+                            <?= $fecha ?>
+                            </div>
+                        </div>
+                        <div>
+                            <a aria-label="anchor" href="javascript:void(0);" class="min-w-fit-content dropdown-item-close1">
+                            <i class="ri-close-line"></i>
+                            </a>
+                        </div>
                         </div>
                     </div>
-                    </div>
-                </div>
-                <div class="simplebar-placeholder" style="width: 0px; height: 0px;"></div>
-            </div>
-            <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
-                <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
-            </div>
-            <div class="simplebar-track simplebar-vertical" style="visibility: hidden;">
-                <div class="simplebar-scrollbar" style="height: 0px; display: none;"></div>
+                    </li>
+                <?php endforeach; ?>
+                <?php else: ?>
+                <li class="text-center text-sm text-gray-500 p-3">
+                    No hay notificaciones disponibles.
+                </li>
+                <?php endif; ?>
+
             </div>
         </ul>
+        
         <div class="p-4 empty-header-item1 border-t">
             <div class="grid"> <a href="javascript:void(0);" class="ti-btn ti-btn-primary btn-wave waves-effect waves-light">View All</a> </div>
         </div>
