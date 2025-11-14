@@ -30,7 +30,19 @@ $logoBase64 = '';
 if (!$logoFs) {
     $logoPath = __DIR__ . '/../../assets/images/brand-logos/logo.png';
     if (is_file($logoPath)) {
-        $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
+
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => "file://" . $logoPath,
+            CURLOPT_RETURNTRANSFER => true,
+        ]);
+        $imageData = curl_exec($ch);
+
+        if (!curl_errno($ch) && $imageData !== false) {
+            $logoBase64 = 'data:image/png;base64,' . base64_encode($imageData);
+        }
+
+        curl_close($ch);
     }
 }
 $logoSrc = $logoFs ?: $logoBase64; 

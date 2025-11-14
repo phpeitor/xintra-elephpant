@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . '/../model/usuario.php';
+require_once __DIR__ . '/../config/bootstrap.php';
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -34,9 +35,30 @@ try {
         }
 
         if (!$ip) {
-            $ip = file_get_contents('https://api.ipify.org');
+            $apiUrl = $_ENV['IP_API_URL'];
+
+            $ch = curl_init();
+
+            curl_setopt_array($ch, [
+                CURLOPT_URL => $apiUrl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT => 5,
+                CURLOPT_CONNECTTIMEOUT => 3
+            ]);
+
+            $response = curl_exec($ch);
+
+            if (curl_errno($ch)) {
+                $ip = '0.0.0.0';
+            } else {
+                $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+                $ip = $httpCode === 200 ? trim($response) : '0.0.0.0';
+            }
+
+            curl_close($ch);
         }
 
+        // Guardar registro de la sesión
         $obj->guardar_session([
             'tipo' => 'IN',
             'id_user' => $data['IDPERSONAL'],

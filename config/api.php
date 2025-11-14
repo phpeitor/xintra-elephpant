@@ -23,13 +23,31 @@ $apiUrl = $_ENV['API_CLINIC_STATUS_URL']
     . "&document_number=" . urlencode($dni);
 
 try {
-    $response = file_get_contents($apiUrl);
+    $ch = curl_init();
 
-    if ($response === false) {
-        throw new Exception("No se pudo obtener respuesta del servidor externo.");
+    curl_setopt_array($ch, [
+        CURLOPT_URL => $apiUrl,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_TIMEOUT => 10,  
+        CURLOPT_CONNECTTIMEOUT => 5
+    ]);
+
+    $response = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        throw new Exception("Error en cURL: " . curl_error($ch));
     }
 
-    echo $response; 
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode !== 200) {
+        throw new Exception("El servidor externo devolvió código HTTP $httpCode");
+    }
+
+    echo $response;
+
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(["error" => $e->getMessage()]);
