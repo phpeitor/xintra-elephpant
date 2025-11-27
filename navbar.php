@@ -1,8 +1,7 @@
 <?php
-require_once __DIR__ . "/model/notify.php";
-
-$obj = new Notify();
-$notificaciones = $obj->obtenerNotificacion();
+    require_once __DIR__ . "/model/notify.php";
+    $obj = new Notify();
+    $notificaciones = $obj->obtenerNotificacion();
 ?>
 
 <ul class="header-content-right">
@@ -119,34 +118,34 @@ $notificaciones = $obj->obtenerNotificacion();
                 <?php if (!empty($notificaciones)): ?>
                 <?php foreach ($notificaciones as $n): ?>
                     <?php
-                    static $userFaces = [];
+                        static $userFaces = [];
 
-                    $faces = [
-                        1 => ['11.jpg', '12.jpg', '10.jpg', '14.jpg'],
-                        2 => ['1.jpg', '3.jpg', '6.jpg'],  
-                    ];
+                        $faces = [
+                            1 => ['11.jpg', '12.jpg', '10.jpg', '14.jpg'],
+                            2 => ['1.jpg', '3.jpg', '6.jpg'],  
+                        ];
 
-                    if (isset($userFaces[$n['usuario']])) {
-                        $img = $userFaces[$n['usuario']];
-                    } else {
-                        $sexo = (int)($n['sexo'] ?? 1);
-                        $imgs = $faces[$sexo] ?? $faces[1];
-                        $imgSeleccionada = './assets/images/faces/' . $imgs[array_rand($imgs)];
-                        $userFaces[$n['usuario']] = $imgSeleccionada;
-                        $img = $imgSeleccionada;
-                    }
+                        if (isset($userFaces[$n['usuario']])) {
+                            $img = $userFaces[$n['usuario']];
+                        } else {
+                            $sexo = (int)($n['sexo'] ?? 1);
+                            $imgs = $faces[$sexo] ?? $faces[1];
+                            $imgSeleccionada = './assets/images/faces/' . $imgs[array_rand($imgs)];
+                            $userFaces[$n['usuario']] = $imgSeleccionada;
+                            $img = $imgSeleccionada;
+                        }
 
-                    if ($n['origen'] === 'login') {
-                        $titulo = 'Login Request';
-                        $texto = "<span class='text-info'>{$n['usuario']}</span> ha iniciado sesión.";
-                        $fecha = $n['fecha']; 
-                    } else {
-                        $titulo = 'Ticket Request';
-                        $colores = ['success', 'purplemain', 'primarytint3color', 'primarytint2color'];
-                        $color = $colores[array_rand($colores)];
-                        $texto = "<span class='text-{$color}'>{$n['usuario']}</span> realizó un pedido.";
-                        $fecha = substr($n['fecha'], 0, 10); 
-                    }
+                        if ($n['origen'] === 'login') {
+                            $titulo = 'Login Request';
+                            $texto = "<span class='text-info'>{$n['usuario']}</span> ha iniciado sesión.";
+                            $fecha = $n['fecha']; 
+                        } else {
+                            $titulo = 'Ticket Request';
+                            $colores = ['success', 'purplemain', 'primarytint3color', 'primarytint2color'];
+                            $color = $colores[array_rand($colores)];
+                            $texto = "<span class='text-{$color}'>{$n['usuario']}</span> realizó un pedido.";
+                            $fecha = substr($n['fecha'], 0, 10); 
+                        }
                     ?>
 
                     <li class="ti-dropdown-item block">

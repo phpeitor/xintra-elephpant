@@ -399,16 +399,16 @@
     selector: "#header-search",
     data: {
       src: [
-        "What is the meaning of life?",
-        "How does gravity work?",
-        "Why is the sky blue?",
-        "What is the capital of France?",
-        "Who painted the Mona Lisa?",
-        "What is the speed of light?",
-        "Why do we dream?",
-        "How do birds fly?",
-        "What is the largest mammal?",
-        "Why do leaves change color in the fall?"
+        "¿Cuántos tickets se crean en promedio por día y por usuario?",
+        "¿Cuál agente ha resuelto más tickets este mes?",
+        "¿Cuánto se vendió en total este mes?",
+        "¿Qué clientes realizaron más compras durante el mes?",
+        "Black and White",
+        "Barbería & Salón",
+        "¿Qué productos tuvieron mayor margen de ganancia?",
+        "¿Qué categorías mostraron mayor crecimiento?",
+        "¿Qué promociones funcionaron mejor este mes?",
+        "¿Qué se proyecta para las ventas del próximo mes?"
       ],
       cache: true,
     },
