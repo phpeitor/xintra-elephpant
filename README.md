@@ -5,6 +5,11 @@ Sistema de gestión de tickets, clientes, usuarios e inventario con interfaz int
 [![forthebadge](http://forthebadge.com/badges/uses-css.svg)](https://www.linkedin.com/in/drphp/)
 [![forthebadge](http://forthebadge.com/badges/built-with-love.svg)](https://www.linkedin.com/in/drphp/)
 
+[![Video](https://img.youtube.com/vi/QzPLElgIzGA/0.jpg)](https://www.youtube.com/watch?v=QzPLElgIzGA)
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/drphp/)
+[![Video Demo](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=G7heyYn1CBk)
+
 ## 📋 Descripción
 
 **XINTRA Elephpant** es una aplicación web completa para la gestión integral de:
@@ -206,9 +211,6 @@ Este proyecto está bajo licencia MIT. Ver archivo LICENSE para más detalles.
 ## 👨‍💻 Desarrollador
 
 Creado con ❤️ por **PHPeitor**
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/drphp/)
-[![Video Demo](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=G7heyYn1CBk)
 
 ## 📞 Soporte
 
