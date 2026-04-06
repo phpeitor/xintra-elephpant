@@ -209,3 +209,13 @@ form .inputGroup2 #showPasswordToggle input:disabled ~ .indicator {
 form .inputGroup2 #showPasswordToggle input:disabled ~ .indicator:after {
   visibility: hidden;
 }
+
+/* Estilos para validación de inputs vacíos */
+form input.input-error {
+  border: solid 2px #d32f2f !important;
+  box-shadow: 0 0 8px rgba(211, 47, 47, 0.3);
+}
+form input.input-error:focus {
+  border: solid 2px #d32f2f !important;
+  box-shadow: 0 0 12px rgba(211, 47, 47, 0.5);
+}

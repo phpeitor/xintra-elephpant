@@ -320,11 +320,13 @@ function initLoginForm() {
 	email.addEventListener('focus', onEmailFocus);
 	email.addEventListener('blur', onEmailBlur);
 	email.addEventListener('input', onEmailInput);
+	email.addEventListener('input', () => email.classList.remove('input-error'));
 	emailLabel.addEventListener('click', onEmailLabelClick);
 	
 	// handle events for password input
 	password.addEventListener('focus', onPasswordFocus);
 	password.addEventListener('blur', onPasswordBlur);
+	password.addEventListener('input', () => password.classList.remove('input-error'));
 	//passwordLabel.addEventListener('click', onPasswordLabelClick);
 	
 	// handle events for password checkbox
@@ -372,7 +374,16 @@ document.getElementById('login').addEventListener('click', async (e) => {
   const password = document.getElementById('loginPassword').value.trim();
 
   if (!usuario || !password) {
-    alertify.warning("⚠️ Ingrese usuario y contraseña");
+    document.getElementById('loginEmail').classList.remove('input-error');
+    document.getElementById('loginPassword').classList.remove('input-error');
+    
+    if (!usuario) {
+      document.getElementById('loginEmail').classList.add('input-error');
+    }
+    if (!password) {
+      document.getElementById('loginPassword').classList.add('input-error');
+    }
+    
     btn.disabled = false;
     btn.classList.remove("opacity-50", "cursor-not-allowed");
     btn.textContent = "Ingresar";
