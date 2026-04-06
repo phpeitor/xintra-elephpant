@@ -307,6 +307,79 @@ function isMobileDevice() {
 	return check;
 };
 
+// Funciones para manejar intentos fallidos y bloqueos
+function getFailedAttempts() {
+	const data = localStorage.getItem('loginAttempts');
+	if (!data) return { count: 0, timestamp: null };
+	const parsed = JSON.parse(data);
+	// Si han pasado 5 minutos, resetear
+	if (Date.now() - parsed.timestamp > 5 * 60 * 1000) {
+		localStorage.removeItem('loginAttempts');
+		return { count: 0, timestamp: null };
+	}
+	return parsed;
+}
+
+function recordFailedAttempt() {
+	const data = getFailedAttempts();
+	data.count++;
+	data.timestamp = Date.now();
+	localStorage.setItem('loginAttempts', JSON.stringify(data));
+}
+
+function isLoginBlocked() {
+	const data = getFailedAttempts();
+	return data.count >= 3;
+}
+
+function getBlockedTimeRemaining() {
+	const data = getFailedAttempts();
+	if (data.count < 3) return 0;
+	const elapsed = Date.now() - data.timestamp;
+	const remaining = (5 * 60 * 1000) - elapsed;
+	return remaining > 0 ? Math.ceil(remaining / 1000) : 0;
+}
+
+function showBlockedLogin(btn) {
+	btn.disabled = true;
+	btn.classList.add("opacity-50", "cursor-not-allowed");
+	alertify.error("❌ Demasiados intentos. Intenta en 5 minutos.");
+	
+	const updateTimer = () => {
+		const remaining = getBlockedTimeRemaining();
+		if (remaining > 0) {
+			const minutes = Math.floor(remaining / 60);
+			const seconds = remaining % 60;
+			btn.textContent = `Bloqueado ${minutes}:${String(seconds).padStart(2, '0')}`;
+			setTimeout(updateTimer, 1000);
+		} else {
+			btn.disabled = false;
+			btn.classList.remove("opacity-50", "cursor-not-allowed");
+			btn.textContent = "Ingresar";
+			localStorage.removeItem('loginAttempts');
+		}
+	};
+	
+	updateTimer();
+}
+
+function showSuccessTimer(btn) {
+	let countdown = 3;
+	btn.disabled = true;
+	btn.classList.add("opacity-50", "cursor-not-allowed");
+	btn.textContent = `Redirigiendo en ${countdown}s...`;
+	
+	const timer = setInterval(() => {
+		countdown--;
+		if (countdown > 0) {
+			btn.textContent = `Redirigiendo en ${countdown}s...`;
+		} else {
+			clearInterval(timer);
+			window.location.href = "home.php";
+		}
+	}, 1000);
+}
+
 function initLoginForm() {
 	svgCoords = getPosition(mySVG);
 	emailCoords = getPosition(email);
@@ -356,6 +429,12 @@ function initLoginForm() {
 	}
 	
 	console.clear();
+	
+	// Verificar si el login está bloqueado al cargar la página
+	if (isLoginBlocked()) {
+		const btn = document.getElementById('login');
+		showBlockedLogin(btn);
+	}
 }
 
 initLoginForm();
@@ -363,7 +442,13 @@ initLoginForm();
 document.getElementById('login').addEventListener('click', async (e) => {
   e.preventDefault();
 
-  const btn = e.currentTarget; 
+  const btn = e.currentTarget;
+  
+  // Verificar si está bloqueado
+  if (isLoginBlocked()) {
+    showBlockedLogin(btn);
+    return;
+  }
 
   if (btn.disabled) return;
   btn.disabled = true;
@@ -404,13 +489,21 @@ document.getElementById('login').addEventListener('click', async (e) => {
 
     if (data.ok) {
       alertify.success("✅ Acceso correcto, redirigiendo...");
-      btn.textContent = "Ingresando...";
-      setTimeout(() => window.location.href = "home.php", 1000);
+      localStorage.removeItem('loginAttempts'); // Limpiar intentos fallidos
+      showSuccessTimer(btn);
     } else {
-      alertify.error(data.message || "❌ Usuario o contraseña incorrectos");
-      btn.disabled = false;
-      btn.classList.remove("opacity-50", "cursor-not-allowed");
-      btn.textContent = "Ingresar";
+      recordFailedAttempt(); // Registrar intento fallido
+      
+      // Verificar si debe bloquearse
+      if (isLoginBlocked()) {
+        showBlockedLogin(btn);
+      } else {
+        const remainingAttempts = 3 - getFailedAttempts().count;
+        alertify.error(data.message || `❌ Usuario o contraseña incorrectos. Intentos restantes: ${remainingAttempts}`);
+        btn.disabled = false;
+        btn.classList.remove("opacity-50", "cursor-not-allowed");
+        btn.textContent = "Ingresar";
+      }
     }
   } catch (error) {
     alertify.error("❌ Error al conectar con el servidor");
