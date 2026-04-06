@@ -1,4 +1,4 @@
-# XINTRA Elephpant 🐘🎟️
+# Xintra Elephpant 🐘🎟️
 
 Sistema de gestión de tickets, clientes, usuarios e inventario con interfaz interactiva y animada.
 
