@@ -2,6 +2,7 @@
 header('Content-Type: application/json; charset=utf-8');
 require_once __DIR__ . '/../../controller/check_session.php';
 require_once __DIR__ . '/../../model/ticket.php';
+require_once __DIR__ . '/../../config/bootstrap.php';
 
 try {
 
@@ -16,12 +17,19 @@ try {
     }
 
     $hash = $_POST['hash'];
+    $ticket = new Ticket();
+    $current = $ticket->obtenerPorHash($hash);
+    if (!$current) {
+        throw new Exception('Ticket no encontrado.');
+    }
+
     $data = [
         'cliente'    => trim($_POST['cliente'] ?? ''),
         'usuario'    => trim($_POST['personal'] ?? ''),
         'fecha'      => trim($_POST['date'] ?? ''),
-        'dscto'      => trim($_POST['descuento'] ?? '0'),
-        'tipo_dscto' => trim($_POST['promo-code'] ?? 'NO APLICA'),
+        // En edición se conserva el descuento/código original del ticket.
+        'dscto'      => (float)($current['dscto'] ?? 0),
+        'tipo_dscto' => (string)($current['tipo_dscto'] ?? 'NO APLICA'),
         'pago'       => trim($_POST['pago'] ?? ''),
     ];
 
@@ -29,7 +37,6 @@ try {
         throw new Exception('Faltan campos obligatorios.');
     }
 
-    $ticket = new Ticket();
     $ticket->beginTransaction();
     $ok = $ticket->actualizarPorHash($hash, $data);
     if (!$ok) {

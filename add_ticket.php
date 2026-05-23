@@ -418,6 +418,7 @@
                                  <input type="text" class="form-control form-control-sm !border-s" id="promo-code" name="promo-code" placeholder="Enter Promo Code" aria-label="Enter Promo Code" aria-describedby="coupons">
                                  <button class="ti-btn ti-btn-primary !m-0" type="button" id="coupons">Aplicar</button>
                               </div>
+                              <input type="hidden" id="descuentoInput" name="descuento" value="0">
                               <div class="text-[11px] text-textmuted dark:text-textmuted/50 mt-2 mb-3">
                                  Seleccione tipo de pago
                               </div>

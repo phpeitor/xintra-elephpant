@@ -255,6 +255,142 @@
 
   const cartBody = document.getElementById("cartBody");
   const btnAddToCart = document.getElementById("btnAddToCart");
+  const promoInput = document.getElementById("promo-code");
+  const promoButton = document.getElementById("coupons");
+  const descuentoEl = document.getElementById("descuento");
+  const descuentoHidden = document.getElementById("descuentoInput");
+  const totalEl = document.getElementById("total");
+
+  const promoState = {
+    code: "",
+    percent: 0,
+    applied: false,
+    locked: false,
+    fixedAmount: 0,
+    baseTotal: 0,
+  };
+
+  function parseMoney(el) {
+    if (!el) return 0;
+    return parseFloat((el.innerText || "").replace("S/.", "").trim()) || 0;
+  }
+
+  function setDiscountAmount(amount) {
+    const safeAmount = Math.max(0, Number(amount) || 0);
+    if (descuentoEl) {
+      descuentoEl.innerText = `S/. ${safeAmount.toFixed(2)}`;
+    }
+    if (descuentoHidden) {
+      descuentoHidden.value = safeAmount.toFixed(2);
+    }
+  }
+
+  function recalculatePromoDiscount() {
+    if (promoState.locked) {
+      setDiscountAmount(promoState.fixedAmount || 0);
+      return;
+    }
+
+    if (!promoState.applied || promoState.percent <= 0) {
+      setDiscountAmount(0);
+      return;
+    }
+
+    const amount = (promoState.baseTotal * promoState.percent) / 100;
+    setDiscountAmount(amount);
+  }
+
+  function clearPromoState() {
+    if (promoState.locked) {
+      return;
+    }
+
+    promoState.code = "";
+    promoState.percent = 0;
+    promoState.applied = false;
+    promoState.fixedAmount = 0;
+    setDiscountAmount(0);
+    if (promoInput) {
+      promoInput.value = "";
+    }
+    if (typeof actualizarResumen === "function") {
+      actualizarResumen();
+    }
+  }
+
+  async function applyPromoCode() {
+    if (!promoInput || !promoButton) return;
+    if (promoButton.disabled || promoState.locked) return;
+
+    const code = (promoInput.value || "").trim().toUpperCase();
+    if (!code) {
+      alertify.warning("Ingresa un código promocional.");
+      return;
+    }
+
+    const total = promoState.baseTotal || parseMoney(totalEl);
+    if (total <= 0) {
+      alertify.warning("Agrega items al carrito antes de aplicar un código.");
+      return;
+    }
+
+    try {
+      const res = await fetch(`controller/venta/validar_promocode.php?code=${encodeURIComponent(code)}&total=${encodeURIComponent(total)}`);
+      const data = await res.json();
+
+      if (!data.ok) {
+        promoState.code = "";
+        promoState.percent = 0;
+        promoState.applied = false;
+        promoState.fixedAmount = 0;
+        setDiscountAmount(0);
+        actualizarResumen();
+        alertify.error(data.message || "Código promocional inválido.");
+        return;
+      }
+
+      promoState.code = data.code;
+      promoState.percent = Number(data.percent) || 0;
+      promoState.applied = true;
+      promoState.locked = false;
+      promoState.fixedAmount = 0;
+
+      promoInput.value = promoState.code;
+      actualizarResumen();
+      alertify.success(`Código ${promoState.code} aplicado (${promoState.percent}%).`);
+    } catch (error) {
+      console.error("Error validando promo code:", error);
+      alertify.error("No se pudo validar el código promocional.");
+    }
+  }
+
+  promoButton?.addEventListener("click", applyPromoCode);
+
+  promoInput?.addEventListener("input", () => {
+    if (promoState.locked) return;
+    if ((promoInput.value || "").trim() === "") {
+      clearPromoState();
+    }
+  });
+
+  window.lockPromoForEdit = function (code, amount) {
+    promoState.code = (code || "").trim().toUpperCase();
+    promoState.percent = 0;
+    promoState.applied = false;
+    promoState.locked = true;
+    promoState.fixedAmount = Math.max(0, Number(amount) || 0);
+    setDiscountAmount(promoState.fixedAmount);
+
+    if (promoInput) {
+      promoInput.value = promoState.code;
+      promoInput.readOnly = true;
+    }
+
+    if (promoButton) {
+      promoButton.disabled = true;
+      promoButton.classList.add("opacity-50", "cursor-not-allowed");
+    }
+  };
 
   // --- Evento: agregar al carrito ---
   btnAddToCart.addEventListener("click", () => {
@@ -410,19 +546,29 @@
       }
     });
 
+    promoState.baseTotal = total;
+
     if (total === 0) {
       document.getElementById("subtotal").innerText = "S/. 0.00";
       document.getElementById("igv").innerText = "S/. 0.00";
       document.getElementById("total").innerText = "S/. 0.00";
+      setDiscountAmount(0);
       return;
     }
 
     const subtotal = total / 1.18; 
     const igv = total - subtotal;  
+    const descuentoActual = promoState.locked
+      ? promoState.fixedAmount || 0
+      : (promoState.applied && promoState.percent > 0)
+        ? (total * promoState.percent) / 100
+        : 0;
+    const totalFinal = Math.max(0, total - descuentoActual);
 
     document.getElementById("subtotal").innerText = `S/. ${subtotal.toFixed(2)}`;
     document.getElementById("igv").innerText = `S/. ${igv.toFixed(2)}`;
-    document.getElementById("total").innerText = `S/. ${total.toFixed(2)}`;
+    document.getElementById("total").innerText = `S/. ${totalFinal.toFixed(2)}`;
+    recalculatePromoDiscount();
   }
 
   function validarCarrito() {

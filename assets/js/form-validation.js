@@ -291,11 +291,32 @@
       if (fechaInput) fechaInput.value = u.fecha;
 
       const dsctoInput = document.querySelector("#descuento");
-      if (dsctoInput) dsctoInput.value = u.dscto;
+      if (dsctoInput) {
+        const dsctoNum = parseFloat(u.dscto || 0) || 0;
+        dsctoInput.textContent = `S/. ${dsctoNum.toFixed(2)}`;
+      }
+
+      const dsctoHidden = document.querySelector("#descuentoInput");
+      if (dsctoHidden) {
+        const dsctoNum = parseFloat(u.dscto || 0) || 0;
+        dsctoHidden.value = dsctoNum.toFixed(2);
+      }
 
       const tipoDsctoInput = document.querySelector("#promo-code");
+      const promoCode = (u.tipo_dscto === "NA" || u.tipo_dscto === "NO APLICA") ? "" : u.tipo_dscto;
       if (tipoDsctoInput) {
-        tipoDsctoInput.value = (u.tipo_dscto === "NA" || u.tipo_dscto === "NO APLICA") ? "" : u.tipo_dscto;
+        tipoDsctoInput.value = promoCode;
+        tipoDsctoInput.readOnly = true;
+      }
+
+      const promoBtn = document.querySelector("#coupons");
+      if (promoBtn) {
+        promoBtn.disabled = true;
+        promoBtn.classList.add("opacity-50", "cursor-not-allowed");
+      }
+
+      if (typeof window.lockPromoForEdit === "function") {
+        window.lockPromoForEdit(promoCode, parseFloat(u.dscto || 0) || 0);
       }
 
       const pagoSelect = document.querySelector("#pago");
