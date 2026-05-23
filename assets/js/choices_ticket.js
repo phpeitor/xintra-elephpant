@@ -258,6 +258,9 @@
   const promoInput = document.getElementById("promo-code");
   const promoButton = document.getElementById("coupons");
   const descuentoEl = document.getElementById("descuento");
+  const promoAppliedRow = document.getElementById("promoAppliedRow");
+  const promoAppliedCode = document.getElementById("promoAppliedCode");
+  const promoAppliedRemove = document.getElementById("promoAppliedRemove");
   const descuentoHidden = document.getElementById("descuentoInput");
   const totalEl = document.getElementById("total");
 
@@ -282,6 +285,29 @@
     }
     if (descuentoHidden) {
       descuentoHidden.value = safeAmount.toFixed(2);
+    }
+  }
+
+  function syncPromoBadge() {
+    if (!promoAppliedRow || !promoAppliedCode || !promoAppliedRemove) return;
+
+    const hasCode = Boolean((promoState.code || "").trim());
+    promoAppliedRow.classList.toggle("hidden", !hasCode);
+
+    if (!hasCode) {
+      promoAppliedCode.textContent = "-";
+      promoAppliedRemove.classList.remove("hidden");
+      promoAppliedRemove.disabled = false;
+      return;
+    }
+
+    promoAppliedCode.textContent = promoState.code;
+    if (promoState.locked) {
+      promoAppliedRemove.classList.add("hidden");
+      promoAppliedRemove.disabled = true;
+    } else {
+      promoAppliedRemove.classList.remove("hidden");
+      promoAppliedRemove.disabled = false;
     }
   }
 
@@ -310,6 +336,7 @@
     promoState.applied = false;
     promoState.fixedAmount = 0;
     setDiscountAmount(0);
+    syncPromoBadge();
     if (promoInput) {
       promoInput.value = "";
     }
@@ -344,6 +371,7 @@
         promoState.applied = false;
         promoState.fixedAmount = 0;
         setDiscountAmount(0);
+        syncPromoBadge();
         actualizarResumen();
         alertify.error(data.message || "Código promocional inválido.");
         return;
@@ -356,6 +384,7 @@
       promoState.fixedAmount = 0;
 
       promoInput.value = promoState.code;
+      syncPromoBadge();
       actualizarResumen();
       alertify.success(`Código ${promoState.code} aplicado (${promoState.percent}%).`);
     } catch (error) {
@@ -365,6 +394,10 @@
   }
 
   promoButton?.addEventListener("click", applyPromoCode);
+
+  promoAppliedRemove?.addEventListener("click", () => {
+    clearPromoState();
+  });
 
   promoInput?.addEventListener("input", () => {
     if (promoState.locked) return;
@@ -380,6 +413,7 @@
     promoState.locked = true;
     promoState.fixedAmount = Math.max(0, Number(amount) || 0);
     setDiscountAmount(promoState.fixedAmount);
+    syncPromoBadge();
 
     if (promoInput) {
       promoInput.value = promoState.code;
@@ -553,6 +587,7 @@
       document.getElementById("igv").innerText = "S/. 0.00";
       document.getElementById("total").innerText = "S/. 0.00";
       setDiscountAmount(0);
+      syncPromoBadge();
       return;
     }
 
@@ -569,6 +604,7 @@
     document.getElementById("igv").innerText = `S/. ${igv.toFixed(2)}`;
     document.getElementById("total").innerText = `S/. ${totalFinal.toFixed(2)}`;
     recalculatePromoDiscount();
+    syncPromoBadge();
   }
 
   function validarCarrito() {

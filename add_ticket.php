@@ -415,7 +415,7 @@
                                  Aplica tu código promocional para obtener un descuento instantáneo
                               </div>
                               <div class="input-group mb-0">
-                                 <input type="text" class="form-control form-control-sm !border-s" id="promo-code" name="promo-code" placeholder="Enter Promo Code" aria-label="Enter Promo Code" aria-describedby="coupons">
+                                 <input type="text" class="form-control form-control-sm !border-s" id="promo-code" name="promo-code" placeholder="Enter Promo Code" aria-label="Enter Promo Code" aria-describedby="coupons" maxlength="30">
                                  <button class="ti-btn ti-btn-primary !m-0" type="button" id="coupons">Aplicar</button>
                               </div>
                               <input type="hidden" id="descuentoInput" name="descuento" value="0">
@@ -441,6 +441,13 @@
                                     <div class="flex items-center justify-between mb-3">
                                        <div class="text-textmuted dark:text-textmuted/50">Descuento</div>
                                        <div id="descuento" class="font-medium text-[14px] text-success">S/. 0.00</div>
+                                    </div>
+                                    <div id="promoAppliedRow" class="hidden flex items-center justify-between mb-3 text-[12px]">
+                                       <div class="text-textmuted dark:text-textmuted/50">Promocode</div>
+                                       <div id="promoAppliedBadge" class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-2 py-1 font-medium text-primary">
+                                          <span id="promoAppliedCode">-</span>
+                                          <button type="button" id="promoAppliedRemove" class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-primary text-white leading-none" aria-label="Quitar promocode">×</button>
+                                       </div>
                                     </div>
                                  </div>
                                  <div class="flex items-center justify-between mb-3">
