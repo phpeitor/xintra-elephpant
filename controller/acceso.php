@@ -23,6 +23,14 @@ try {
     ]);
 
     if ($data) {
+        if ((int)($data['IDESTADO'] ?? 0) !== 1) {
+            echo json_encode([
+                'ok' => false,
+                'message' => 'El usuario ha sido desactivado por inactividad'
+            ]);
+            exit;
+        }
+
         $_SESSION['session_usuario'] = $data['USUARIO'];
         $_SESSION['session_id'] = $data['IDPERSONAL'];
         $_SESSION['session_nombre'] = $data['NOMBRES'];

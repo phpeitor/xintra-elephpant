@@ -492,7 +492,10 @@ document.getElementById('login').addEventListener('click', async (e) => {
       localStorage.removeItem('loginAttempts'); // Limpiar intentos fallidos
       showSuccessTimer(btn);
     } else {
-      recordFailedAttempt(); // Registrar intento fallido
+			const isInactiveUser = (data.message || "").toLowerCase().includes("desactivado por inactividad");
+			if (!isInactiveUser) {
+				recordFailedAttempt(); // Registrar intento fallido solo si no es baja por inactividad
+			}
       
       // Verificar si debe bloquearse
       if (isLoginBlocked()) {
