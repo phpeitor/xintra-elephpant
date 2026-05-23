@@ -501,10 +501,10 @@
                   if (!res.ok) throw new Error(`HTTP ${res.status}`);
                   const data = await res.json();
 
-                  const patient = data.found_patient;
-                  if (patient && (patient.name || patient.last_name)) {
-                    inputNombre.value = patient.name || "";
-                    inputApellido.value = patient.last_name || "";
+                  if (data && (data.NOMBRES || data.PATERNO || data.MATERNO)) {
+                    const apellidos = [data.PATERNO, data.MATERNO].filter(Boolean).join(" ");
+                    inputNombre.value = data.NOMBRES || "";
+                    inputApellido.value = apellidos;
                     alertify.success("Datos RENIEC completados automáticamente ✅");
                   } else {
                     alertify.warning("No se encontró información asociada al documento.");
