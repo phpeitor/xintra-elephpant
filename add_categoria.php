@@ -2,7 +2,7 @@
 require_once __DIR__ . "/controller/check_session.php";
 ?>
 <!doctype html>
-<html lang="es" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth">
+<html lang="es" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,6 @@ require_once __DIR__ . "/controller/check_session.php";
 </head>
 <body>
   <div id="loader" class="loader-disable"> <img src="./assets/images/media/loader.svg" alt=""> </div>
-  <input type="hidden" id="daterange" value="">
   <div class="page">
     <header class="app-header sticky sticky-pin" id="header">
       <div class="main-header-container container-fluid">
@@ -107,6 +106,8 @@ require_once __DIR__ . "/controller/check_session.php";
     </footer>
   </div>
 
+    <div class="scrollToTop" style="display: flex;"> <span class="arrow"><i class="ti ti-arrow-narrow-up text-xl"></i></span> </div>
+    <div id="responsive-overlay"></div>
   <script src="./assets/js/switch.js"></script>
   <script src="./assets/libs/@popperjs/core/umd/popper.min.js"></script>
   <script src="./assets/libs/preline/preline.js"></script>
