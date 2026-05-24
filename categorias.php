@@ -121,26 +121,26 @@ require_once __DIR__ . "/controller/check_session.php";
 
     <div class="scrollToTop" style="display: flex;"> <span class="arrow"><i class="ti ti-arrow-narrow-up text-xl"></i></span> </div>
     <div id="responsive-overlay"></div>
-  <script src="./assets/js/switch.js"></script>
-  <script src="./assets/libs/@popperjs/core/umd/popper.min.js"></script>
-  <script src="./assets/libs/preline/preline.js"></script>
-  <script src="./assets/js/defaultmenu.min.js"></script>
-  <script src="./assets/libs/node-waves/waves.min.js"></script>
-  <script src="./assets/js/sticky.js"></script>
-  <script src="./assets/libs/simplebar/simplebar.min.js"></script>
-  <script src="./assets/js/simplebar.js"></script>
+    <script src="./assets/js/switch.js"></script>
+    <script src="./assets/libs/@popperjs/core/umd/popper.min.js"></script>
+    <script src="./assets/libs/preline/preline.js"></script>
+    <script src="./assets/js/defaultmenu.min.js"></script>
+    <script src="./assets/libs/node-waves/waves.min.js"></script>
+    <script src="./assets/js/sticky.js"></script>
+    <script src="./assets/libs/simplebar/simplebar.min.js"></script>
+    <script src="./assets/js/simplebar.js"></script>
     <script src="./assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
     <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
-  <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
-  <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
+    <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
     <script src="./assets/libs/xlsx/xlsx.full.min.js"></script>
     <script src="./assets/libs/jspdf/jspdf.umd.min.js"></script>
     <script src="./assets/libs/jspdf-autotable/jspdf.plugin.autotable.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/datatables_categoria.js"></script>
-  <script src="./assets/js/custom.js"></script>
-  <div class="scrollToTop" style="display: flex;"> <span class="arrow"><i class="ti ti-arrow-narrow-up text-xl"></i></span> </div>
-  <div id="responsive-overlay"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+    <script src="./assets/js/datatables_categoria.js"></script>
+    <script src="./assets/js/custom.js"></script>
+    <div class="scrollToTop" style="display: flex;"> <span class="arrow"><i class="ti ti-arrow-narrow-up text-xl"></i></span> </div>
+    <div id="responsive-overlay"></div>
 </body>
 </html>
