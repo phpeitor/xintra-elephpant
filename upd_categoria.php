@@ -31,9 +31,29 @@ require_once __DIR__ . "/controller/check_session.php";
     </header>
 
     <aside class="app-sidebar sticky-pin" id="sidebar">
-      <div class="main-sidebar-header"><a href="index.php" class="header-logo"><img src="./assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo"></a></div>
+      <div class="main-sidebar-header"> <a href="index.php" class="header-logo"> <img src="./assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo"> <img src="./assets/images/brand-logos/toggle-dark.png" alt="logo" class="toggle-dark"> <img src="./assets/images/brand-logos/desktop-dark.png" alt="logo" class="desktop-dark"> <img src="./assets/images/brand-logos/toggle-logo.png" alt="logo" class="toggle-logo"> <img src="./assets/images/brand-logos/toggle-white.png" alt="logo" class="toggle-white"> <img src="./assets/images/brand-logos/desktop-white.png" alt="logo" class="desktop-white"> </a> </div>
       <div class="main-sidebar" id="sidebar-scroll" data-simplebar="init">
-        <div class="simplebar-wrapper" style="margin: -8px 0px -80px;"><div class="simplebar-mask"><div class="simplebar-offset" style="right: 0px; bottom: 0px;"><div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;"><div class="simplebar-content" style="padding: 8px 0px 80px;"><?php include __DIR__ . '/menu.php'; ?></div></div></div></div></div>
+        <div class="simplebar-wrapper" style="margin: -8px 0px -80px;">
+          <div class="simplebar-height-auto-observer-wrapper">
+            <div class="simplebar-height-auto-observer"></div>
+          </div>
+          <div class="simplebar-mask">
+            <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
+              <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
+                <div class="simplebar-content" style="padding: 8px 0px 80px;">
+                  <?php include __DIR__ . '/menu.php'; ?>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="simplebar-placeholder" style="width: auto; height: 1210px;"></div>
+        </div>
+        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+          <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+        </div>
+        <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+          <div class="simplebar-scrollbar" style="height: 42px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+        </div>
       </div>
     </aside>
 

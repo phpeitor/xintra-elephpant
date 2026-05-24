@@ -83,14 +83,6 @@
     ],
   });
 
-  document.getElementById("download-csv")?.addEventListener("click", function () {
-    table.download("csv", "categorias.csv");
-  });
-
-  document.getElementById("download-json")?.addEventListener("click", function () {
-    table.download("json", "categorias.json");
-  });
-
   document.getElementById("download-xlsx")?.addEventListener("click", function () {
     table.download("xlsx", "categorias.xlsx", { sheetName: "Categorias" });
   });
@@ -100,9 +92,5 @@
       orientation: "portrait",
       title: "Reporte de Categorías",
     });
-  });
-
-  document.getElementById("download-html")?.addEventListener("click", function () {
-    table.download("html", "categorias.html", { style: true });
   });
 })();

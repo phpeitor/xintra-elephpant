@@ -90,11 +90,8 @@ require_once __DIR__ . "/controller/check_session.php";
               <div class="box-header"><h5 class="box-title">Download DataTable</h5></div>
               <div class="box-body space-y-3">
                 <div class="download-data">
-                  <button type="button" class="ti-btn ti-btn-primary" id="download-csv">Download CSV</button>
-                  <button type="button" class="ti-btn ti-btn-primary" id="download-json">Download JSON</button>
                   <button type="button" class="ti-btn ti-btn-primary" id="download-xlsx">Download XLSX</button>
                   <button type="button" class="ti-btn ti-btn-primary" id="download-pdf">Download PDF</button>
-                  <button type="button" class="ti-btn ti-btn-primary" id="download-html">Download HTML</button>
                 </div>
                 <div class="overflow-hidden table-bordered">
                   <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns"></div>
