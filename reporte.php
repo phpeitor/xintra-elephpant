@@ -282,7 +282,7 @@
                <div class="xxl:col-span-4 col-span-12">
                   <div class="box">
                      <div class="box-header justify-between">
-                        <h5 class="box-title">Top Productos <code>(Últimos 15 días)</code></h5>
+                        <h5 class="box-title">Top Items <code>(Últimos 15 días)</code></h5>
                         <a href="javascript:void(0);" class="ti-btn ti-btn-light btn-wave text-textmuted dark:text-textmuted/50 ti-btn-sm waves-effect waves-light">View All</a>
                      </div>
                      <div class="box-body bar-graf">

@@ -338,12 +338,18 @@
 
                <div class="grid grid-cols-12 gap-x-6">
                   <div class="xl:col-span-9 col-span-12">
-                     <div class="box" id="cart-container-delete">
+                     <div class="box relative" id="cart-container-delete">
                         <div class="box-header">
                            <div class="box-title"> Tabla Items </div>
                         </div>
+                        <div id="ticket-items-loader" class="absolute inset-0 z-30 hidden items-center justify-center bg-white dark:bg-bodybg rounded-[0.5rem]">
+                           <div class="flex items-center gap-3 rounded-full bg-white dark:bg-bodybg px-4 py-3 shadow-sm border border-defaultborder dark:border-defaultborder/10">
+                              <div class="ti-spinner" role="status"> <span class="sr-only">Cargando...</span> </div>
+                              <span class="font-medium text-textmuted dark:text-textmuted/50">Cargando items del ticket...</span>
+                           </div>
+                        </div>
                         <div class="box-body">
-                           <div class="table-responsive">
+                           <div class="table-responsive" id="ticket-items-table-wrap">
                               <table class="table table-bordered whitespace-nowrap min-w-full">
                                  <thead>
                                     <tr class="border border-solid dark:!border-defaultborder/10 !border-defaultborder">

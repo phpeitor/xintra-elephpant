@@ -298,9 +298,21 @@
   }
 
   async function cargarTicket(hash) {
+    const itemsLoader = document.getElementById("ticket-items-loader");
+    const cartBody = document.querySelector("#cartBody");
+    const tableWrap = document.getElementById("ticket-items-table-wrap");
+    const setItemsLoader = (visible) => {
+      if (!itemsLoader) return;
+      itemsLoader.classList.toggle("hidden", !visible);
+      itemsLoader.classList.toggle("flex", visible);
+      if (tableWrap) {
+        tableWrap.classList.toggle("invisible", visible);
+      }
+    };
+    const loaderStartedAt = Date.now();
+    const minLoaderVisibleMs = 900;
 
-    const cargandoDiv = document.querySelector('.cargando');
-    cargandoDiv?.classList.remove('!hidden');
+    setItemsLoader(true);
 
     try {
       const res = await fetch(`controller/venta/get_ticket.php?hash=${hash}`);
@@ -359,7 +371,6 @@
         pagoSelect.value = u.pago || "EFECTIVO"; 
       }
 
-      const cartBody = document.querySelector("#cartBody");
       if (!cartBody) return;
       cartBody.innerHTML = ""; 
 
@@ -444,8 +455,10 @@
 
     } catch (err) {
       console.error("❌ Error al cargar ticket:", err);
-    }finally {
-      cargandoDiv?.classList.add('!hidden');
+    } finally {
+      const elapsed = Date.now() - loaderStartedAt;
+      const remaining = Math.max(0, minLoaderVisibleMs - elapsed);
+      window.setTimeout(() => setItemsLoader(false), remaining);
     }
   }
 
