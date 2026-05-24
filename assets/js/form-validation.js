@@ -239,6 +239,41 @@
     }
   }
 
+  async function cargarCategoria(hash) {
+    try {
+      const res = await fetch(`controller/get_categoria_hash.php?hash=${hash}`);
+      const json = await res.json();
+
+      if (!json.ok) {
+        alertify.error(json.message || "Categoría no encontrada");
+        return;
+      }
+
+      const c = json.data;
+
+      const tipoInput = document.querySelector("#grupo");
+      const nombreInput = document.querySelector("#nombre");
+      if (tipoInput) tipoInput.value = c.tpo || "";
+      if (nombreInput) nombreInput.value = c.nombre || "";
+
+      const toggle = document.querySelector("#estadoToggle");
+      const estadoInput = document.querySelector("#estadoInput");
+      if (toggle && estadoInput) {
+        if (parseInt(c.estado) === 1) {
+          toggle.classList.add("on");
+          estadoInput.value = "1";
+        } else {
+          toggle.classList.remove("on");
+          estadoInput.value = "0";
+        }
+      }
+
+      inicializarToggle();
+    } catch (err) {
+      console.error("❌ Error al cargar categoría:", err);
+    }
+  }
+
   async function cargarStock(hash) {
     try {
       const res = await fetch(`controller/get_item.php?hash=${hash}`);
@@ -489,7 +524,7 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
-      const form = document.querySelector("form.ti-custom-validation, form.ti-custom-validation-user, form.ti-custom-validation-item, form.ti-custom-validation-ticket");
+      const form = document.querySelector("form.ti-custom-validation, form.ti-custom-validation-user, form.ti-custom-validation-item, form.ti-custom-validation-ticket, form.ti-custom-validation-category");
 
       const params = new URLSearchParams(window.location.search);
       const hash = params.get("hash");
@@ -497,6 +532,7 @@
       // --- FORMULARIOS (si existe alguno) ---
       if (form) {
         attachToForm(form);
+        inicializarToggle();
 
         if (hash && form.classList.contains("ti-custom-validation-user")) {
           cargarUsuario(hash);
@@ -551,6 +587,11 @@
 
         if (hash && form.classList.contains("ti-custom-validation-item")) {
           cargarItem(hash);
+          prepararFormularioEdicion(form, hash);
+        }
+
+        if (hash && form.classList.contains("ti-custom-validation-category")) {
+          cargarCategoria(hash);
           prepararFormularioEdicion(form, hash);
         }
 
@@ -625,6 +666,12 @@
               ? "controller/upd_item.php"
               : "controller/add_item.php";
             redirectUrl = "items.php";
+          } else if (form.classList.contains("ti-custom-validation-category")) {
+            const isUpdate = form.dataset.mode === "update";
+            actionUrl = isUpdate
+              ? "controller/upd_categoria.php"
+              : "controller/add_categoria.php";
+            redirectUrl = "categorias.php";
           }else if (form.classList.contains("ti-custom-validation-ticket")) {
             const isUpdate = form.dataset.mode === "update";
             actionUrl = isUpdate
