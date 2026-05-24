@@ -84,47 +84,54 @@
                 headerSort: false,
                 width: 160,
                 formatter: (cell) => {
-                    const id = cell.getRow().getData().IDPERSONAL;
                     const row = cell.getRow().getData();
+                    const id = row.IDPERSONAL;
+                    const estado = String(row.IDESTADO ?? "").trim();
+                    const puedeEliminar = estado !== "0" && estado !== "SUSPENDED";
                     const idHash = md5(row.IDPERSONAL.toString()); 
                     return `
                     <div style="display:flex;gap:.5rem;justify-content:center;">
                         <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
                             <i class="ri-edit-2-line"></i>
                         </button>
-                        <button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave me-5 waves-effect waves-light" data-id="${id}">
-                            <i class="ri-delete-bin-line"></i>
-                        </button>
+                        ${puedeEliminar ? `<button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave me-5 waves-effect waves-light" data-id="${id}"><i class="ri-delete-bin-line"></i></button>` : ""}
                     </div>`;
                 },
                 cellClick: function (e, cell) {
-                    const id = cell.getRow().getData().IDPERSONAL;
+                    const row = cell.getRow().getData();
+                    const id = row.IDPERSONAL;
                     if (e.target.closest(".btn-edit")) {
                         console.log("Actualizar ID:", id);
                         const idHash = e.target.closest(".btn-edit").dataset.id;
                         window.location.href = "upd_usuario.php?hash=" + idHash;
                     } else if (e.target.closest(".btn-delete")) {
-
-                        if (confirm("¿Seguro que deseas eliminar el registro " + id + "?")) {
-                            fetch("controller/delete_usuario.php", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                                body: "id=" + encodeURIComponent(id),
-                            })
-                            .then((res) => res.json())
-                            .then((json) => {
-                                if (json.ok) {
-                                    alertify.success("✅ Registro suspendido correctamente");
-                                    table.replaceData();
-                                } else {
-                                    alertify.error("❌ Error al suspender: " + json.message);
-                                }
-                            })
-                            .catch((err) => {
-                                console.error(err);
-                                alertify.error("❌ Error de red al suspender");
-                            });
-                        }
+                        alertify.confirm(
+                            "Eliminar usuario",
+                            "¿Seguro que deseas eliminar el registro " + id + "?",
+                            function () {
+                                fetch("controller/delete_usuario.php", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                                    body: "id=" + encodeURIComponent(id),
+                                })
+                                .then((res) => res.json())
+                                .then((json) => {
+                                    if (json.ok) {
+                                        alertify.success("✅ Registro suspendido correctamente");
+                                        table.replaceData();
+                                    } else {
+                                        alertify.error("❌ Error al suspender: " + json.message);
+                                    }
+                                })
+                                .catch((err) => {
+                                    console.error(err);
+                                    alertify.error("❌ Error de red al suspender");
+                                });
+                            },
+                            function () {
+                                alertify.message("Acción cancelada");
+                            }
+                        ).set("labels", { ok: "Aceptar", cancel: "Cancelar" });
                     }
                 },
             },
