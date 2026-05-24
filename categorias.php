@@ -2,7 +2,7 @@
 require_once __DIR__ . "/controller/check_session.php";
 ?>
 <!doctype html>
-<html lang="es" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth">
+<html lang="es" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +19,6 @@ require_once __DIR__ . "/controller/check_session.php";
 </head>
 <body>
   <div id="loader" class="loader-disable"> <img src="./assets/images/media/loader.svg" alt=""> </div>
-  <input type="hidden" id="daterange" value="">
   <div class="page">
     <header class="app-header sticky sticky-pin" id="header">
       <div class="main-header-container container-fluid">
@@ -37,10 +36,20 @@ require_once __DIR__ . "/controller/check_session.php";
 
     <aside class="app-sidebar sticky-pin" id="sidebar">
       <div class="main-sidebar-header">
-        <a href="index.php" class="header-logo"><img src="./assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo"></a>
+        <a href="index.php" class="header-logo">
+          <img src="./assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo">
+          <img src="./assets/images/brand-logos/toggle-dark.png" alt="logo" class="toggle-dark">
+          <img src="./assets/images/brand-logos/desktop-dark.png" alt="logo" class="desktop-dark">
+          <img src="./assets/images/brand-logos/toggle-logo.png" alt="logo" class="toggle-logo">
+          <img src="./assets/images/brand-logos/toggle-white.png" alt="logo" class="toggle-white">
+          <img src="./assets/images/brand-logos/desktop-white.png" alt="logo" class="desktop-white">
+        </a>
       </div>
       <div class="main-sidebar" id="sidebar-scroll" data-simplebar="init">
         <div class="simplebar-wrapper" style="margin: -8px 0px -80px;">
+          <div class="simplebar-height-auto-observer-wrapper">
+            <div class="simplebar-height-auto-observer"></div>
+          </div>
           <div class="simplebar-mask">
             <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
               <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
@@ -50,6 +59,13 @@ require_once __DIR__ . "/controller/check_session.php";
               </div>
             </div>
           </div>
+          <div class="simplebar-placeholder" style="width: auto; height: 1210px;"></div>
+        </div>
+        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+          <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+        </div>
+        <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+          <div class="simplebar-scrollbar" style="height: 42px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
         </div>
       </div>
     </aside>
@@ -90,11 +106,24 @@ require_once __DIR__ . "/controller/check_session.php";
       </div>
     </div>
 
-    <footer class="mt-auto py-4 bg-white dark:bg-bodybg text-center border-t border-defaultborder dark:border-defaultborder/10">
-      <div class="container"><span class="text-textmuted dark:text-textmuted/50">Copyright © <span id="year">2026</span> Xintra.</span></div>
-    </footer>
+      <footer class="mt-auto py-4 bg-white dark:bg-bodybg text-center border-t border-defaultborder dark:border-defaultborder/10">
+        <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2026</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.instagram.com/amvsoft.tech/" target="_blank"> <span class="font-medium text-primary">AMV</span> </a> All rights reserved </span> </div>
+      </footer>
+      <div class="hs-overlay ti-modal hidden" id="header-responsive-search" tabindex="-1" aria-labelledby="header-responsive-search">
+        <div class="ti-modal-box">
+          <div class="ti-modal-dialog">
+            <div class="ti-modal-content">
+              <div class="ti-modal-body">
+                <div class="input-group"> <input type="text" class="form-control border-end-0 !border-s" placeholder="Search Anything ..." aria-label="Search Anything ..." aria-describedby="button-addon2"> <button aria-label="button" class="ti-btn ti-btn-primary !m-0" type="button" id="button-addon2"><i class="bi bi-search"></i></button> </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
   </div>
 
+    <div class="scrollToTop" style="display: flex;"> <span class="arrow"><i class="ti ti-arrow-narrow-up text-xl"></i></span> </div>
+    <div id="responsive-overlay"></div>
   <script src="./assets/js/switch.js"></script>
   <script src="./assets/libs/@popperjs/core/umd/popper.min.js"></script>
   <script src="./assets/libs/preline/preline.js"></script>
@@ -103,11 +132,18 @@ require_once __DIR__ . "/controller/check_session.php";
   <script src="./assets/js/sticky.js"></script>
   <script src="./assets/libs/simplebar/simplebar.min.js"></script>
   <script src="./assets/js/simplebar.js"></script>
-  <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="./assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
+    <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
   <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
+  <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
+    <script src="./assets/libs/xlsx/xlsx.full.min.js"></script>
+    <script src="./assets/libs/jspdf/jspdf.umd.min.js"></script>
+    <script src="./assets/libs/jspdf-autotable/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
   <script src="./assets/js/datatables_categoria.js"></script>
   <script src="./assets/js/custom.js"></script>
+  <div class="scrollToTop" style="display: flex;"> <span class="arrow"><i class="ti ti-arrow-narrow-up text-xl"></i></span> </div>
+  <div id="responsive-overlay"></div>
 </body>
 </html>

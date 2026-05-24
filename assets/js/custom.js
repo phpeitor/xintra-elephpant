@@ -22,12 +22,14 @@
   const hace7dias = new Date();
   hace7dias.setDate(hoy.getDate() - 7);
   const formatDate = (d) => d.toISOString().split("T")[0];
-
-  flatpickr("#daterange", {
-    mode: "range",
-    dateFormat: "Y-m-d",
-    defaultDate: [formatDate(hace7dias), formatDate(hoy)]
-  });
+  const dateRangeInput = document.querySelector("#daterange");
+  if (dateRangeInput) {
+    flatpickr(dateRangeInput, {
+      mode: "range",
+      dateFormat: "Y-m-d",
+      defaultDate: [formatDate(hace7dias), formatDate(hoy)]
+    });
+  }
   
   function validarPedidoTotal() {
     fetch("controller/venta/apx_valida.php")
@@ -376,54 +378,60 @@
   window.onscroll = () => {
     const scrollTop = window.scrollY || window.pageYOffset;
     const clientHt = $rootElement.scrollHeight - $rootElement.clientHeight;
-    if (window.scrollY > 100) {
-      scrollToTop.style.display = "flex";
-    } else {
-      scrollToTop.style.display = "none";
+    if (scrollToTop) {
+      if (window.scrollY > 100) {
+        scrollToTop.style.display = "flex";
+      } else {
+        scrollToTop.style.display = "none";
+      }
     }
   };
-  scrollToTop.onclick = () => {
-    window.scrollTo(0, 0);
-  };
+  if (scrollToTop) {
+    scrollToTop.onclick = () => {
+      window.scrollTo(0, 0);
+    };
+  }
   /* back to top */
 
   /* header dropdowns scroll */
   var myHeadernotification = document.getElementById("header-notification-scroll");
-  new SimpleBar(myHeadernotification, { autoHide: true });
+  if (myHeadernotification) new SimpleBar(myHeadernotification, { autoHide: true });
 
   var myHeaderCart = document.getElementById("header-cart-items-scroll");
-  new SimpleBar(myHeaderCart, { autoHide: true });
+  if (myHeaderCart) new SimpleBar(myHeaderCart, { autoHide: true });
   /* header dropdowns scroll */
 
-  const autoCompleteJS = new autoComplete({
-    selector: "#header-search",
-    data: {
-      src: [
-        "¿Cuántos tickets se crean en promedio por día y por usuario?",
-        "¿Cuál agente ha resuelto más tickets este mes?",
-        "¿Cuánto se vendió en total este mes?",
-        "¿Qué clientes realizaron más compras durante el mes?",
-        "Black and White",
-        "Barbería & Salón",
-        "¿Qué productos tuvieron mayor margen de ganancia?",
-        "¿Qué categorías mostraron mayor crecimiento?",
-        "¿Qué promociones funcionaron mejor este mes?",
-        "¿Qué se proyecta para las ventas del próximo mes?"
-      ],
-      cache: true,
-    },
-    resultItem: {
-      highlight: true
-    },
-    events: {
-      input: {
-        selection: (event) => {
-          const selection = event.detail.selection.value;
-          autoCompleteJS.input.value = selection;
+  if (document.querySelector("#header-search")) {
+    const autoCompleteJS = new autoComplete({
+      selector: "#header-search",
+      data: {
+        src: [
+          "¿Cuántos tickets se crean en promedio por día y por usuario?",
+          "¿Cuál agente ha resuelto más tickets este mes?",
+          "¿Cuánto se vendió en total este mes?",
+          "¿Qué clientes realizaron más compras durante el mes?",
+          "Black and White",
+          "Barbería & Salón",
+          "¿Qué productos tuvieron mayor margen de ganancia?",
+          "¿Qué categorías mostraron mayor crecimiento?",
+          "¿Qué promociones funcionaron mejor este mes?",
+          "¿Qué se proyecta para las ventas del próximo mes?"
+        ],
+        cache: true,
+      },
+      resultItem: {
+        highlight: true
+      },
+      events: {
+        input: {
+          selection: (event) => {
+            const selection = event.detail.selection.value;
+            autoCompleteJS.input.value = selection;
+          }
         }
       }
-    }
-  });
+    });
+  }
 })();
 
 /* full screen */
