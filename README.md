@@ -1,6 +1,6 @@
-# Xintra Elephpant 🐘
+## Xintra Elephpant 🐘
 
-Sistema de gestión de tickets, clientes, usuarios e inventario con interfaz interactiva y animada.
+Sistema de gestión de tickets, clientes, usuarios e inventario.
 
 [![forthebadge](http://forthebadge.com/badges/uses-css.svg)](https://www.linkedin.com/in/drphp/)
 [![forthebadge](http://forthebadge.com/badges/built-with-love.svg)](https://www.linkedin.com/in/drphp/)
@@ -9,208 +9,128 @@ Sistema de gestión de tickets, clientes, usuarios e inventario con interfaz int
 
 [![Video Demo](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=G7heyYn1CBk)
 
-## 📋 Descripción
 
-**XINTRA Elephpant** es una aplicación web completa para la gestión integral de:
-- 🎫 **Tickets/Venta**: Control de ventas con detalles de cliente, items y fechas
-- 👥 **Usuarios**: Gestión de usuarios del sistema con roles y permisos
-- 🛒 **Clientes**: Base de datos de clientes con información de contacto
-- 📦 **Inventario**: Control de items y stock disponible
-- 📊 **Reportes**: Dashboards y análisis de datos con gráficos (ApexCharts)
+## 📋 Resumen
 
-## ✨ Características
+Aplicación web para gestión de ventas, clientes, usuarios e inventario con dashboards y exportación. Esta rama del proyecto usa un patrón de entrada única: solo `index.php` queda en la raíz; todas las vistas están en `views/`.
 
-- ✅ **Autenticación segura** con validación de intentos fallidos
-- ✅ **Sistema de bloqueo**: 3 intentos fallidos = bloqueo de 5 minutos
-- ✅ **Interfaz interactiva**: Avatar animado que reacciona a las interacciones
-- ✅ **Validación en tiempo real**: Bordes rojos en campos vacíos
-- ✅ **Timer de sesión**: Redirección automática después de login exitoso
-- ✅ **Gestión CRUD completa**: Crear, leer, actualizar y eliminar registros
-- ✅ **Tablas dinámicas**: DataTables con búsqueda y paginación
-- ✅ **Exportación de datos**: Excel y PDF
-- ✅ **Dashboards visuales**: Gráficos interactivos con ApexCharts
-- ✅ **Diseño responsivo**: Compatible con dispositivos móviles
+## 🛠️ Requisitos mínimos
 
-## 🛠️ Requisitos Previos
+- PHP 7.4+
+- Apache 2.4+ con `mod_rewrite` habilitado
+- MySQL/MariaDB 5.7+
+- Composer
+- Navegador moderno (Chrome, Firefox, Edge)
 
-- **PHP 7.4+**
-- **Apache 2.4+** (con mod_rewrite habilitado)
-- **MySQL/MariaDB 5.7+**
-- **Composer** (para gestión de dependencias)
-- **Navegador moderno** (Chrome, Firefox, Safari, Edge)
+## Instalación rápida
 
-## 📦 Instalación
-
-### 1. Clonar repositorio
 ```bash
-git clone https://github.com/phpeitor/xintra-elephpant.git
+git clone <repo>
 cd xintra-elephpant
-```
-
-### 2. Instalar dependencias
-```bash
 composer install
 ```
 
-### 3. Configurar conexión a base de datos
-Edita `config/api.php` con tus credenciales:
+Configura la conexión en `config/api.php` o usando `.env` si lo prefieres.
+
+## Nota importante: nueva estructura y patrón de entrada
+
+En esta versión hemos adoptado el patrón "single-entry" similar al proyecto Cotix:
+
+- Solo `index.php` debe permanecer en la raíz del proyecto.
+- Todas las páginas están en `views/` (por ejemplo `views/home.php`, `views/usuarios.php`).
+- La inicialización central está en `config/bootstrap.php` que define la constante `ROOT` y se encarga de iniciar la sesión cuando hace falta.
+
+Ejemplo de uso en una vista (arriba del archivo):
+
 ```php
-define('DB_HOST', 'localhost');
-define('DB_USER', 'tu_usuario');
-define('DB_PASS', 'tu_contraseña');
-define('DB_NAME', 'xintra_db');
+require_once __DIR__ . '/../config/bootstrap.php';
+require_once ROOT . '/controller/check_session.php';
 ```
 
-### 4. Crear base de datos
-Importa el archivo de migración o ejecuta los scripts SQL en `database/`
+No crear archivos `*.php` de páginas en la raíz (excepto `index.php`).
 
-### 5. Verificar permisos
-Asegúrate que Apache tenga permisos de lectura/escritura en carpetas necesarias
-
-### 6. Iniciar sesión
-- Accede a `http://localhost/xintra-elephpant/`
-- Usuario predefinido: `admin` / `password`
-
-## 📂 Estructura del Proyecto
+## Estructura del proyecto (actualizada)
 
 ```
 xintra-elephpant/
-├── assets/
-│   ├── css/          # Estilos (loginstyle.css, styles.css)
-│   ├── js/           # Scripts (loginscript.js, datatables, gráficos)
-│   ├── icon-fonts/   # Fuentes de iconos (Bootstrap, Tabler, etc)
-│   ├── images/       # Imágenes y recursos
-│   └── libs/         # Librerías externas (ApexCharts, DataTables, etc)
+├── assets/           # css, js, imágenes, libs
 ├── config/
-│   ├── api.php       # Configuración de base de datos
-│   └── bootstrap.php # Inicialización
-├── controller/       # Controladores de lógica de negocio
-│   ├── acceso.php    # Autenticación
-│   ├── add_*.php     # Crear registros
-│   ├── upd_*.php     # Actualizar registros
-│   ├── delete_*.php  # Eliminar registros
-│   ├── get_*.php     # Obtener datos
-│   ├── table_*.php   # Tablas dinámicas
-│   └── venta/        # Módulo de ventas/tickets
-├── database/
-│   └── conexion.php  # Conexión a BD
-├── model/            # Modelos y clases
-│   ├── usuario.php
-│   ├── cliente.php
-│   ├── item.php
-│   ├── ticket.php
-│   ├── dashboard.php
-│   └── notify.php
-├── vendor/           # Dependencias Composer (DOMPDF, etc)
-├── index.php         # Página de login
-├── home.php          # Panel principal
-├── *.php             # Páginas principales (usuarios, clientes, items, tickets)
-└── README.md         # Este archivo
+│   ├── api.php       # configuración DB
+│   └── bootstrap.php # define ROOT, autoload, inicia sesión
+├── controller/       # endpoints (controller/*.php)
+├── database/         # scripts y conexión
+├── model/            # modelos y lógica de datos
+├── views/            # todas las vistas (.php)
+├── vendor/           # dependencias Composer
+├── index.php         # único entrypoint público
+└── README.md
 ```
 
-## 🔐 Seguridad Implementada
+## .htaccess y despliegue
 
-### Sistema de Autenticación
-- ✅ Validación de sesiones
-- ✅ Control de intentos fallidos (máximo 3 intentos)
-- ✅ Bloqueo temporal de 5 minutos tras fallos
-- ✅ Timer de redirección automática tras login exitoso
+- El proyecto usa reglas de `mod_rewrite` para enrutar correctamente. Si actualizas `.htaccess`, reinicia o recarga Apache.
+- Asegúrate de que `AllowOverride` esté habilitado para el directorio del proyecto.
 
-### Validaciones Frontend
-- ✅ Verificación de campos vacíos con retroalimentación visual (borde rojo)
-- ✅ Máxima longitud de caracteres en inputs
-- ✅ Validación de datos antes de envíos
+Ejemplo mínimo (ya incluido en el repo):
 
-### Validaciones Backend
-- ✅ Check de sesión activa
-- ✅ Validación de entrada de datos
-- ✅ Prepared statements para prevenir SQL injection
-
-## 💾 Base de Datos
-
-### Tablas principales
-- `usuarios` - Gestión de usuarios del sistema
-- `clientes` - Información de clientes
-- `items` - Catálogo de productos
-- `tickets` - Registro de ventas/transacciones
-- `stock_items` - Control de inventario
-
-## 🎯 Uso del Sistema
-
-### Panel de Control
-- Acceso al dashboard con resumen de datos
-- Gráficos de ventas diarias, mensuales
-- Contador de clientes, items, usuarios
-
-### Gestión de Usuarios
 ```
-Usuarios → [Ver tabla] → [Agregar] [Editar] [Eliminar]
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L,QSA]
 ```
 
-### Gestión de Clientes
-```
-Clientes → [Ver tabla] → [Agregar] [Editar] [Eliminar]
-```
+## Bootstrap y manejo de sesiones
 
-### Gestión de Inventario
-```
-Items → [Ver tabla] → [Agregar] [Editar] [Eliminar] [Ver Stock]
-```
+- `config/bootstrap.php` define la constante `ROOT` (ruta absoluta del proyecto) y llama a `session_start()` solo si no hay una sesión activa.
+- Evita llamar a `session_start()` en otros archivos; usa `require_once ROOT . '/controller/check_session.php'` para validar sesiones en las vistas.
 
-### Registro de Ventas
-```
-Tickets → [Ver tabla] → [Nueva venta] [Editar] [Ver PDF] [Exportar Excel]
-```
+## Desarrollo: añadir vistas y controladores
 
-## 📊 Reportes y Exportación
+- Para añadir una página:
+	- Crea `views/nueva_vista.php` e incluye `config/bootstrap.php` al inicio.
+	- Implementa la UI y los formularios que hagan `fetch()` a los controladores.
 
-- **Excel**: Exportar tablas en formato `.xlsx`
-- **PDF**: Generar recibos y reportes en PDF
-- **Dashboards**: Análisis visuales con ApexCharts
+- Para añadir un endpoint (controlador):
+	- Crea `controller/add_algo.php` o `controller/get_algo.php`.
+	- Los controladores deben devolver JSON para las peticiones `fetch()` del frontend. Ejemplo:
 
-## 🔧 Configuración Adicional
-
-### Variables de entorno (opcional)
-Crea un archivo `.env` para valores sensibles:
-```
-DB_HOST=localhost
-DB_USER=root
-DB_PASS=password
-DB_NAME=xintra_db
+```php
+header('Content-Type: application/json');
+echo json_encode(['ok' => true, 'msg' => 'Creado']);
 ```
 
-### Tabla de colores principales
-- **Primario**: `#217093` (Azul oscuro)
-- **Secundario**: `#4eb8dd` (Azul claro)
-- **Error**: `#d32f2f` (Rojo)
-- **Éxito**: `#4caf50` (Verde)
+## JavaScript y endpoints
 
-## 📱 Compatibilidad
+- Los scripts en `assets/js/` usan `fetch` y esperan respuestas JSON de `controller/*.php`.
+- Si un `fetch` recibe HTML (por ejemplo una página de login), suele ser porque la sesión expiró y `check_session` redirigió; valida sesión antes de las operaciones críticas.
 
-| Navegador | Versión Mínima |
-|-----------|----------------|
-| Chrome    | 90+            |
-| Firefox   | 88+            |
-| Safari    | 14+            |
-| Edge      | 90+            |
+## Pruebas y verificación rápida
 
-## 🚀 Mejoras Futuras
+- Sintaxis PHP:
 
-- [ ] Sistema de roles y permisos granular
-- [ ] Autenticación con 2FA
-- [ ] API REST completa
-- [ ] Aplicación móvil nativa
-- [ ] Sistema de notificaciones en tiempo real
-- [ ] Backup automático de base de datos
+```bash
+php -l <archivo.php>
+```
 
-## 📝 Licencia
+- Verifica JS (básico):
 
-Este proyecto está bajo licencia MIT. Ver archivo LICENSE para más detalles.
+```bash
+node --check assets/js/archivo.js
+```
 
-## 👨‍💻 Desarrollador
+## Notas de despliegue
 
-Creado con ❤️ por **PHPeitor**
+- Tras cambios en `.htaccess` o configuración de Apache, recarga el servicio:
 
-## 📞 Soporte
+```powershell
+Restart-Service -Name 'apache2.4' # o el servicio que uses
+```
 
-Para problemas o sugerencias, abre un **Issue** en el repositorio.
+- Asegura permisos adecuados en `assets/` y `database/` si el servidor escribe en disco.
+
+## Contacto y soporte
+
+Si encuentras problemas, crea un issue en el repositorio con pasos para reproducir y capturas de errores.
+
+---
