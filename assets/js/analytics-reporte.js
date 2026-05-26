@@ -12,34 +12,71 @@ async function cargarUsuarios() {
         maximumFractionDigits: 2,
       });
 
-    // === Calcular el máximo y mínimo total con precisión numérica ===
-    const totals = data.map((d) => parseFloat(d.total));
-    const maxTotal = Math.max(...totals);
-    const minTotal = Math.min(...totals);
+    const formatMonth = (value) => {
+      if (!value) return "-";
+      const parts = String(value).split("-");
+      if (parts.length !== 2) return String(value);
+
+      const [yy, mm] = parts;
+      const dateObj = new Date(Number(yy), Number(mm) - 1, 1);
+      const formatted = new Intl.DateTimeFormat("es-PE", {
+        month: "short",
+        year: "numeric",
+      }).format(dateObj);
+
+      return formatted.replace(/\./g, "").replace(/^./, (s) => s.toUpperCase());
+    };
+
+    const currentTotals = data.map((u) => parseFloat(u.total_actual || 0));
+    const maxTotal = Math.max(...currentTotals);
+    const minTotal = Math.min(...currentTotals);
 
     // === Llenar tabla ===
     const tbody = document.querySelector(".ti-custom-table tbody");
     tbody.innerHTML = "";
 
     data.forEach((u) => {
-      const total = parseFloat(u.total);
+      const totalActual = parseFloat(u.total_actual || 0);
+      const totalAnterior = parseFloat(u.total_anteriores || 0);
+      const ticketsActuales = parseFloat(u.tickets_actuales || 0);
+      const ticketsAnteriores = parseFloat(u.tickets_anteriores || 0);
+      const itemsActuales = parseFloat(u.items_actuales || 0);
+      const itemsAnteriores = parseFloat(u.items_anteriores || 0);
+
       let totalClass = "";
-      if (total === maxTotal) totalClass = "font-semibold text-success";
-      else if (total === minTotal) totalClass = "text-danger font-semibold";
+      if (totalActual === maxTotal) totalClass = "font-semibold text-success";
+      else if (totalActual === minTotal) totalClass = "text-danger font-semibold";
+
+      let variation = 0;
+      if (totalAnterior === 0 && totalActual > 0) {
+        variation = 100;
+      } else if (totalAnterior > 0) {
+        variation = ((totalActual - totalAnterior) / totalAnterior) * 100;
+      }
+
+      const tendenciaUp = variation >= 0;
+      const badgeClass = tendenciaUp ? "bg-success" : "bg-danger";
+      const iconClass = tendenciaUp ? "ti ti-arrow-narrow-up" : "ti ti-arrow-narrow-down";
 
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${u.usuario}</td>
-        <td class="${totalClass}">${formatCurrency(total)}</td>
-        <td>${u.tickets}</td>
-        <td>${u.items}</td>
+        <td>${formatMonth(u.mes_actual)}</td>
+        <td>${formatMonth(u.mes_anterior)}</td>
+        <td class="${totalClass}">${formatCurrency(totalActual)}</td>
+        <td>${formatCurrency(totalAnterior)}</td>
+        <td>${ticketsActuales}</td>
+        <td>${ticketsAnteriores}</td>
+        <td>${itemsActuales}</td>
+        <td>${itemsAnteriores}</td>
+        <td><span class="badge ${badgeClass}">${variation.toFixed(1)}% <i class="${iconClass}"></i></span></td>
       `;
       tbody.appendChild(tr);
     });
 
     // === Configurar gráfico DONUT ===
     const options = {
-      series: data.map((u) => parseFloat(u.total)),
+      series: data.map((u) => parseFloat(u.total_actual || 0)),
       chart: {
         height: 290,
         type: "donut",

@@ -257,7 +257,7 @@ require_once ROOT . '/controller/check_session.php';
                   <div class="xxl:col-span-5 col-span-12">
                      <div class="box">
                         <div class="box-header justify-between">
-                           <div class="box-title"> Tickets Usuario <code>(Últimos 30 días)</code></div>
+                           <div class="box-title"> Tickets Usuario <code>(Comparación por usuario)</code></div>
                            <a href="javascript:void(0);" class="ti-btn ti-btn-light btn-wave text-textmuted dark:text-textmuted/50 waves-effect ti-btn-sm waves-light">View All</a>
                         </div>
                         <div class="box-body sm:flex items-center">
@@ -267,9 +267,15 @@ require_once ROOT . '/controller/check_session.php';
                               <table class="ti-custom-table text-nowrap">
                                  <thead><tr>
                                     <th class="border-b border-defaultborder dark:border-defaultborder/10">Usuario</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Total</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Tickets</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Items</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Mes actual</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Mes anterior</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Total actual</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Total anterior</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Tickets act.</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Tickets ant.</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Items act.</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Items ant.</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Variación</th>
                                  </tr></thead>
                                  <tbody>
                                  </tbody>

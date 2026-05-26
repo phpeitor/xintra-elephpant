@@ -381,26 +381,90 @@ class Ticket {
     }
 
     public function obtenerTotalUsuario(): ?array {
-        $sql = "SELECT 
-                count( b.id_productservice) as tickets,
-                sum(subtotal) as total,
-                sum(cantidad) as items,
-                c.usuario as usuario
+        $sql = "SELECT
+                    c.usuario,
+                    DATE_FORMAT(a.fecha, '%Y-%m') AS mes,
+                    COUNT(b.id_productservice) AS tickets,
+                    COALESCE(SUM(b.subtotal), 0) AS total,
+                    COALESCE(SUM(b.cantidad), 0) AS items
                 FROM pedido a
                 LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
                 LEFT JOIN product_service d ON b.id_productservice = d.id
-                LEFT JOIN personal c ON a.usuario = c.IDPERSONAL 
-                WHERE 
-                d.id_sucursal = 5
-                AND a.cliente > 0
-                and a.fecha>= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-                GROUP BY c.usuario
-                ORDER BY c.usuario ASC
-                ";
+                LEFT JOIN personal c ON a.usuario = c.IDPERSONAL
+                WHERE
+                    d.id_sucursal = 5
+                    AND a.cliente > 0
+                    AND a.fecha >= DATE_SUB(CURDATE(), INTERVAL 24 MONTH)
+                GROUP BY c.usuario, DATE_FORMAT(a.fecha, '%Y-%m')
+                ORDER BY c.usuario ASC, mes ASC";
+
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $data ?: null;
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if (!$rows) {
+            return null;
+        }
+
+        $porUsuario = [];
+
+        foreach ($rows as $row) {
+            $usuario = (string)($row['usuario'] ?? '');
+            if ($usuario === '') {
+                continue;
+            }
+
+            $porUsuario[$usuario][] = [
+                'mes' => (string)($row['mes'] ?? ''),
+                'tickets' => (int)($row['tickets'] ?? 0),
+                'total' => (float)($row['total'] ?? 0),
+                'items' => (float)($row['items'] ?? 0),
+            ];
+        }
+
+        $resultado = [];
+
+        foreach ($porUsuario as $usuario => $mensual) {
+            if (empty($mensual)) {
+                continue;
+            }
+
+            $ultimo = null;
+            $anterior = null;
+
+            foreach ($mensual as $registro) {
+                if ((float)$registro['items'] <= 0 && (float)$registro['total'] <= 0 && (int)$registro['tickets'] <= 0) {
+                    continue;
+                }
+
+                $anterior = $ultimo;
+                $ultimo = $registro;
+            }
+
+            if ($ultimo === null) {
+                continue;
+            }
+
+            $resultado[] = [
+                'usuario' => $usuario,
+                'mes_actual' => $ultimo['mes'],
+                'mes_anterior' => $anterior['mes'] ?? null,
+                'tickets_actuales' => $ultimo['tickets'],
+                'tickets_anteriores' => $anterior['tickets'] ?? 0,
+                'total_actual' => $ultimo['total'],
+                'total_anteriores' => $anterior['total'] ?? 0,
+                'items_actuales' => $ultimo['items'],
+                'items_anteriores' => $anterior['items'] ?? 0,
+            ];
+        }
+
+        usort($resultado, static function (array $left, array $right): int {
+            return $right['items_actuales'] <=> $left['items_actuales']
+                ?: $right['total_actual'] <=> $left['total_actual']
+                ?: strcmp($left['usuario'], $right['usuario']);
+        });
+
+        return $resultado ?: null;
     }
 
     public function obtenerTotalItem(): ?array {
