@@ -1,7 +1,8 @@
 fetch("controller/venta/apx_mensual.php")
   .then(response => response.json())
   .then(data => {
-    if (!data || data.length < 2) return;
+    if (!Array.isArray(data) || data.length === 0) return;
+
     data.reverse();
 
     const seriesData = data.map(item => parseFloat(item.total));
@@ -19,21 +20,22 @@ fetch("controller/venta/apx_mensual.php")
     }
 
     // Comparación mes actual vs anterior
-    const prev = data[data.length - 2];
     const lastTotal = parseFloat(last.total);
-    const prevTotal = parseFloat(prev.total);
-    const diff = lastTotal - prevTotal;
-    const pctChange = prevTotal !== 0 ? (diff / prevTotal) * 100 : 0;
+    const hasPrevious = data.length > 1;
+    const prev = hasPrevious ? data[data.length - 2] : null;
+    const prevTotal = prev ? parseFloat(prev.total) : 0;
+    const diff = hasPrevious ? lastTotal - prevTotal : 0;
+    const pctChange = hasPrevious && prevTotal !== 0 ? (diff / prevTotal) * 100 : 0;
 
     // Actualizar etiquetas
     const totalEl = document.querySelector("#total_22");
     const incEl = document.querySelector("#inc_22");
     const pctEl = document.querySelector("#pct_22");
 
-    const isIncrease = diff >= 0;
-    const icon = isIncrease ? "ti ti-arrow-narrow-up" : "ti ti-arrow-narrow-down";
-    const colorClass = isIncrease ? "text-success" : "text-danger";
-    const textChange = isIncrease ? "Increased By" : "Decreased By";
+    const isIncrease = hasPrevious ? diff >= 0 : null;
+    const icon = isIncrease === null ? "ti ti-minus" : (isIncrease ? "ti ti-arrow-narrow-up" : "ti ti-arrow-narrow-down");
+    const colorClass = isIncrease === null ? "text-muted" : (isIncrease ? "text-success" : "text-danger");
+    const textChange = hasPrevious ? (isIncrease ? "Increased By" : "Decreased By") : "Sin comparación";
 
     totalEl.textContent = lastTotal.toLocaleString("es-PE", {
       minimumFractionDigits: 2,
@@ -44,10 +46,9 @@ fetch("controller/venta/apx_mensual.php")
 
     incEl.textContent = textChange;
 
-    pctEl.innerHTML = `
-      ${Math.abs(pctChange).toFixed(2)}% 
-      <i class="${icon} text-[16px]"></i>
-    `;
+    pctEl.innerHTML = hasPrevious
+      ? `${Math.abs(pctChange).toFixed(2)}% <i class="${icon} text-[16px]"></i>`
+      : `0.00% <i class="${icon} text-[16px]"></i>`;
     pctEl.className = colorClass;
 
     // --- Configurar gráfico mensual ---
@@ -206,36 +207,37 @@ fetch("controller/venta/apx_cliente.php")
   .then(response => response.json())
   .then(data => {
 
-    const clientes = data.cliente;
+    const clientes = Array.isArray(data?.cliente) ? data.cliente : [];
 
-    if (!Array.isArray(clientes) || clientes.length < 2) return;
+    if (clientes.length === 0) return;
+
     clientes.reverse();
 
     const seriesData = clientes.map(item => parseFloat(item.cliente));
     const categories = clientes.map(item => item.mes);
     const last = clientes[clientes.length - 1];
-    const prev = clientes[clientes.length - 2];
     const lastTotal = parseFloat(last.cliente);
-    const prevTotal = parseFloat(prev.cliente);
-    const diff = lastTotal - prevTotal;
-    const pctChange = prevTotal !== 0 ? (diff / prevTotal) * 100 : 0;
+    const hasPrevious = clientes.length > 1;
+    const prev = hasPrevious ? clientes[clientes.length - 2] : null;
+    const prevTotal = prev ? parseFloat(prev.cliente) : 0;
+    const diff = hasPrevious ? lastTotal - prevTotal : 0;
+    const pctChange = hasPrevious && prevTotal !== 0 ? (diff / prevTotal) * 100 : 0;
 
     // === Actualizar HTML ===
     const totalEl = document.querySelector("#total_21");
     const incEl = document.querySelector("#inc_21");
     const pctEl = document.querySelector("#pct_21");
 
-    const isIncrease = diff >= 0;
-    const icon = isIncrease ? "ti ti-arrow-narrow-up" : "ti ti-arrow-narrow-down";
-    const colorClass = isIncrease ? "text-success" : "text-danger";
-    const textChange = isIncrease ? "Increased By" : "Decreased By";
+    const isIncrease = hasPrevious ? diff >= 0 : null;
+    const icon = isIncrease === null ? "ti ti-minus" : (isIncrease ? "ti ti-arrow-narrow-up" : "ti ti-arrow-narrow-down");
+    const colorClass = isIncrease === null ? "text-muted" : (isIncrease ? "text-success" : "text-danger");
+    const textChange = hasPrevious ? (isIncrease ? "Increased By" : "Decreased By") : "Sin comparación";
 
     totalEl.textContent = lastTotal.toLocaleString("es-PE");
     incEl.textContent = textChange;
-    pctEl.innerHTML = `
-      ${Math.abs(pctChange).toFixed(2)}% 
-      <i class="${icon} text-[16px]"></i>
-    `;
+    pctEl.innerHTML = hasPrevious
+      ? `${Math.abs(pctChange).toFixed(2)}% <i class="${icon} text-[16px]"></i>`
+      : `0.00% <i class="${icon} text-[16px]"></i>`;
     pctEl.className = colorClass;
 
     // === Gráfico ===
