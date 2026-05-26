@@ -260,23 +260,28 @@ require_once ROOT . '/controller/check_session.php';
                            <div class="box-title"> Tickets Usuario <code>(Comparación por usuario)</code></div>
                            <a href="javascript:void(0);" class="ti-btn ti-btn-light btn-wave text-textmuted dark:text-textmuted/50 waves-effect ti-btn-sm waves-light">View All</a>
                         </div>
-                        <div class="box-body sm:flex items-center">
+                        <div class="box-body sm:block items-center">
                            <div id="referrals-chart" class="p-4 flex-shrink-0 px-0" style="min-height: 248.7px;"></div>
 
                            <div class="table-responsive overflow-auto table-bordered-default">
-                              <table class="ti-custom-table text-nowrap">
-                                 <thead><tr>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Usuario</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Mes actual</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Mes anterior</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Total actual</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Total anterior</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Tickets act.</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Tickets ant.</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Items act.</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Items ant.</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Variación</th>
-                                 </tr></thead>
+                              <table class="ti-custom-table text-nowrap min-w-full">
+                                 <thead>
+                                    <tr>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10" rowspan="2">Usuario</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Total</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Tickets</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Items</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10" rowspan="2">Variación</th>
+                                    </tr>
+                                    <tr>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Actual</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Actual</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Actual</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
+                                    </tr>
+                                 </thead>
                                  <tbody>
                                  </tbody>
                               </table>

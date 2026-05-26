@@ -19,9 +19,9 @@ async function cargarUsuarios() {
 
       const [yy, mm] = parts;
       const dateObj = new Date(Number(yy), Number(mm) - 1, 1);
-      const formatted = new Intl.DateTimeFormat("es-PE", {
+      const formatted = new Intl.DateTimeFormat("en-US", {
         month: "short",
-        year: "numeric",
+        year: "2-digit",
       }).format(dateObj);
 
       return formatted.replace(/\./g, "").replace(/^./, (s) => s.toUpperCase());
@@ -60,9 +60,12 @@ async function cargarUsuarios() {
 
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${u.usuario}</td>
-        <td>${formatMonth(u.mes_actual)}</td>
-        <td>${formatMonth(u.mes_anterior)}</td>
+        <td>
+          <div class="font-medium">${u.usuario}</div>
+          <div class="text-[11px] text-textmuted dark:text-textmuted/50">
+            ${formatMonth(u.mes_actual)} vs ${formatMonth(u.mes_anterior)}
+          </div>
+        </td>
         <td class="${totalClass}">${formatCurrency(totalActual)}</td>
         <td>${formatCurrency(totalAnterior)}</td>
         <td>${ticketsActuales}</td>
