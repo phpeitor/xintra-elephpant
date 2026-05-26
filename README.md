@@ -132,5 +132,3 @@ Restart-Service -Name 'apache2.4' # o el servicio que uses
 ## Contacto y soporte
 
 Si encuentras problemas, crea un issue en el repositorio con pasos para reproducir y capturas de errores.
-
----
