@@ -49,5 +49,5 @@ session_unset();
 $_SESSION = [];
 session_destroy();
 
-header("Location: /xintra-elephpant/index.php");
+header("Location: ../index.php");
 exit;

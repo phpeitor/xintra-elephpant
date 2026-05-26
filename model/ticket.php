@@ -381,7 +381,9 @@ class Ticket {
     }
 
     public function obtenerTotalUsuario(): ?array {
-        $sql = "SELECT
+        $sql = "
+            WITH ventas AS (
+                SELECT
                     c.usuario,
                     DATE_FORMAT(a.fecha, '%Y-%m') AS mes,
                     COUNT(b.id_productservice) AS tickets,
@@ -396,7 +398,37 @@ class Ticket {
                     AND a.cliente > 0
                     AND a.fecha >= DATE_SUB(CURDATE(), INTERVAL 24 MONTH)
                 GROUP BY c.usuario, DATE_FORMAT(a.fecha, '%Y-%m')
-                ORDER BY c.usuario ASC, mes ASC";
+            ),
+            
+            ultimos AS (
+                SELECT
+                    *,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY usuario
+                        ORDER BY mes DESC
+                    ) AS rn
+                FROM ventas
+            ),
+            
+            usuarios_mes_actual AS (
+                SELECT usuario
+                FROM ultimos
+                WHERE rn = 1
+                AND mes = DATE_FORMAT(CURDATE(), '%Y-%m')
+            )
+            
+            SELECT
+                u.usuario,
+                u.mes,
+                u.tickets,
+                u.total,
+                u.items
+            FROM ultimos u
+            INNER JOIN usuarios_mes_actual m
+                ON u.usuario = m.usuario
+            WHERE u.rn <= 2
+            ORDER BY u.usuario, u.mes DESC
+        ";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
