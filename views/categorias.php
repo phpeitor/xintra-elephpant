@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . "/controller/check_session.php";
+require_once __DIR__ . '/../config/bootstrap.php';
+require_once ROOT . '/controller/check_session.php';
 ?>
 <!doctype html>
 <html lang="es" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
@@ -7,7 +8,7 @@ require_once __DIR__ . "/controller/check_session.php";
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🐘</text></svg>" />
-  <title>Xintra Elephant - Categorías</title>
+  <title>Xintra Elephant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
@@ -30,7 +31,7 @@ require_once __DIR__ . "/controller/check_session.php";
             <a aria-label="Hide Sidebar" class="sidemenu-toggle header-link animated-arrow hor-toggle horizontal-navtoggle" data-bs-toggle="sidebar" href="javascript:void(0);"><span></span></a>
           </div>
         </div>
-        <?php include __DIR__ . '/navbar.php'; ?>
+        <?php include ROOT . '/layout/navbar.php'; ?>
       </div>
     </header>
 
@@ -54,7 +55,7 @@ require_once __DIR__ . "/controller/check_session.php";
             <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
               <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
                 <div class="simplebar-content" style="padding: 8px 0px 80px;">
-                  <?php include __DIR__ . '/menu.php'; ?>
+                  <?php include ROOT . '/layout/menu.php'; ?>
                 </div>
               </div>
             </div>

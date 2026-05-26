@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . "/controller/check_session.php";
+require_once __DIR__ . '/../config/bootstrap.php';
+require_once ROOT . '/controller/check_session.php';
 ?>
 <!doctype html>
 <html lang="es" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
@@ -7,7 +8,7 @@ require_once __DIR__ . "/controller/check_session.php";
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🐘</text></svg>" />
-  <title>Xintra Elephant - Editar Categoría</title>
+  <title>Xintra Elephant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
@@ -25,7 +26,7 @@ require_once __DIR__ . "/controller/check_session.php";
           <div class="header-element"><div class="horizontal-logo"><a href="index.php" class="header-logo"><img src="./assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo"></a></div></div>
           <div class="header-element mx-lg-0"><a aria-label="Hide Sidebar" class="sidemenu-toggle header-link animated-arrow hor-toggle horizontal-navtoggle" data-bs-toggle="sidebar" href="javascript:void(0);"><span></span></a></div>
         </div>
-        <?php include __DIR__ . '/navbar.php'; ?>
+        <?php include ROOT . '/layout/navbar.php'; ?>
       </div>
     </header>
 
@@ -40,7 +41,7 @@ require_once __DIR__ . "/controller/check_session.php";
             <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
               <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
                 <div class="simplebar-content" style="padding: 8px 0px 80px;">
-                  <?php include __DIR__ . '/menu.php'; ?>
+                  <?php include ROOT . '/layout/menu.php'; ?>
                 </div>
               </div>
             </div>
@@ -60,8 +61,8 @@ require_once __DIR__ . "/controller/check_session.php";
       <div class="container-fluid">
         <div class="flex items-center justify-between page-header-breadcrumb flex-wrap gap-2">
           <div>
-            <nav aria-label="nav"><ol class="breadcrumb mb-1"><li class="breadcrumb-item">Catálogo</li><li class="breadcrumb-item active" aria-current="page">Actualizar</li></ol></nav>
-            <h1 class="page-title font-medium text-lg mb-0">Editar Categoría</h1>
+            <nav aria-label="nav"><ol class="breadcrumb mb-1"><li class="breadcrumb-item">Catálogo</li><li class="breadcrumb-item active" aria-current="page">Registrar</li></ol></nav>
+            <h1 class="page-title font-medium text-lg mb-0">Nueva Categoría</h1>
           </div>
           <div class="btn-list"><button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light" onclick="window.location.href='categorias.php'"><i class="ri-reply-line"></i></button></div>
         </div>
@@ -70,8 +71,8 @@ require_once __DIR__ . "/controller/check_session.php";
           <div class="box">
             <div class="box-header">
               <h5 class="box-title">Data Validation</h5>
-              <div id="estadoToggle" class="toggle toggle-sm mb-0"><span></span></div>
-              <input type="hidden" name="estado" id="estadoInput" value="0">
+              <div id="estadoToggle" class="toggle toggle-sm on mb-0"><span></span></div>
+              <input type="hidden" name="estado" id="estadoInput" value="1">
             </div>
             <div class="box-body">
               <form class="ti-custom-validation-category" novalidate>

@@ -1,5 +1,6 @@
 <?php
-  require_once __DIR__ . "/controller/check_session.php";
+require_once __DIR__ . '/../config/bootstrap.php';
+require_once ROOT . '/controller/check_session.php';
 ?>
 
 <html bg-img="bgimg5" class="light" data-header-styles="light" data-menu-styles="dark" data-nav-layout="vertical" data-vertical-style="overlay" data-width="fullwidth" dir="ltr" lang="en" loader="disable">
@@ -508,7 +509,7 @@
        </a>
       </div>
      </div>
-     <?php include __DIR__ . '/navbar.php'; ?>
+    <?php include ROOT . '/layout/navbar.php'; ?>
     </div>
    </header>
    <aside class="app-sidebar" id="sidebar">
@@ -532,7 +533,7 @@
        <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
         <div aria-label="scrollable content" class="simplebar-content-wrapper" role="region" style="height: 100%; overflow: hidden scroll;" tabindex="0">
          <div class="simplebar-content" style="padding: 8px 0px 80px;">
-            <?php include __DIR__ . '/menu.php'; ?>
+            <?php include ROOT . '/layout/menu.php'; ?>
          </div>
         </div>
        </div>

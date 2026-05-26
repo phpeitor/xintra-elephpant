@@ -1,5 +1,5 @@
 <?php
-    require_once __DIR__ . "/model/notify.php";
+    require_once ROOT . '/model/notify.php';
     $obj = new Notify();
     $notificaciones = $obj->obtenerNotificacion();
 ?>

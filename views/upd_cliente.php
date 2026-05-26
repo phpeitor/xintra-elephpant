@@ -1,6 +1,8 @@
 <?php
-  require_once __DIR__ . "/controller/check_session.php";
+require_once __DIR__ . '/../config/bootstrap.php';
+require_once ROOT . '/controller/check_session.php';
 ?>
+
 <html lang="en" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
    <head>
       <meta charset="UTF-8">
@@ -215,7 +217,7 @@
                   </div>
                   <!-- End::header-element --> 
                </div>
-               <?php include __DIR__ . '/navbar.php'; ?>
+               <?php include ROOT . '/layout/navbar.php'; ?>
             </div>
             <!-- End::main-header-container --> 
          </header>
@@ -233,7 +235,7 @@
                      <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
                         <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
                            <div class="simplebar-content" style="padding: 8px 0px 80px;">
-                              <?php include __DIR__ . '/menu.php'; ?>                              
+                              <?php include ROOT . '/layout/menu.php'; ?>
                            </div>
                         </div>
                      </div>
@@ -255,13 +257,13 @@
                   <div>
                      <nav aria-label="nav">
                         <ol class="breadcrumb mb-1">
-                           <li class="breadcrumb-item"><a href="javascript:void(0);">Usuarios</a></li>
-                           <li class="breadcrumb-item active" aria-current="page">Registrar</li>
+                           <li class="breadcrumb-item"><a href="javascript:void(0);">Clientes</a></li>
+                           <li class="breadcrumb-item active" aria-current="page">Actualizar</li>
                         </ol>
                      </nav>
-                     <h1 class="page-title font-medium text-lg mb-0">Nuevo Usuario</h1>
+                     <h1 class="page-title font-medium text-lg mb-0">Editar Cliente</h1>
                   </div>
-                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='usuarios.php'"> <i class="ri-reply-line"></i> </button> </div>
+                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='clientes.php'"> <i class="ri-reply-line"></i> </button> </div>
                </div>
             
                <div class="col-span-12">
@@ -270,16 +272,8 @@
                         <h5 class="box-title">Data Validation</h5>
                      </div>
                      <div class="box-body">
-                        <form class="ti-custom-validation-user" novalidate>
+                        <form class="ti-custom-validation" novalidate>
                            <div class="grid lg:grid-cols-2 gap-6">
-
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Documento</label>
-                                 <input id="documento" name="documento" type="text" inputmode="numeric" class="ti-form-input rounded-sm"
-                                       placeholder="12345678" data-rules="required|numeric|min:8|max:11">
-                                 <span class="text-red-500 text-xs hidden" data-error-for="documento"></span>
-                              </div>
-
                               <div class="space-y-2">
                                  <label class="ti-form-label">Nombres</label>
                                  <input id="firstName" name="nombres" type="text" class="ti-form-input rounded-sm"
@@ -292,6 +286,13 @@
                                  <input id="lastName" name="apellidos" type="text" class="ti-form-input rounded-sm"
                                        placeholder="Lastname" data-rules="required|min:2|max:50">
                                  <span class="text-red-500 text-xs hidden" data-error-for="lastName"></span>
+                              </div>
+
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Documento</label>
+                                 <input id="documento" name="documento" type="text" inputmode="numeric" class="ti-form-input rounded-sm"
+                                       placeholder="12345678" data-rules="required|numeric|min:8|max:11">
+                                 <span class="text-red-500 text-xs hidden" data-error-for="documento"></span>
                               </div>
 
                               <div class="space-y-2">
@@ -338,12 +339,6 @@
                                  </ul>
                                  <span class="text-red-500 text-xs hidden" data-error-for="sexo"></span>
                               </div>
-                           </div>
-
-                           <div class="my-5">
-                              <input id="terms" name="terms" type="checkbox" class="ti-form-checkbox mt-0.5" data-rules="required">
-                              <label for="terms" class="text-sm inline">Acepto los términos y condiciones</label>
-                              <span class="text-red-500 text-xs hidden" data-error-for="terms"></span>
                            </div>
 
                            <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>

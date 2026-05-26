@@ -1,6 +1,8 @@
 <?php
-  require_once __DIR__ . "/controller/check_session.php";
+require_once __DIR__ . '/../config/bootstrap.php';
+require_once ROOT . '/controller/check_session.php';
 ?>
+
 <html lang="en" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
    <head>
       <meta charset="UTF-8">
@@ -21,6 +23,7 @@
       <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
       <link rel="stylesheet" href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css">
       <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
+      <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
       <meta http-equiv="imagetoolbar" content="no">
@@ -186,7 +189,7 @@
                </div>
             </div>
          </div>
-         <div class="ti-offcanvas-footer sm:flex justify-between"><a href="javascript:void(0);" id="reset-all" class="ti-btn ti-btn-danger m-1">Reset</a> </div>
+         <div class="ti-offcanvas-footer sm:flex justify-between"> <a href="javascript:void(0);" id="reset-all" class="ti-btn ti-btn-danger m-1">Reset</a> </div>
       </div>
       <!-- ========== END Switcher  ========== --> <!-- Loader --> 
       <div id="loader" class="loader-disable"> <img src="./assets/images/media/loader.svg" alt=""> </div>
@@ -215,8 +218,7 @@
                   </div>
                   <!-- End::header-element --> 
                </div>
-               <!-- End::header-content-left --> <!-- Start::header-content-right --> 
-               <?php include __DIR__ . '/navbar.php'; ?>
+               <?php include ROOT . '/layout/navbar.php'; ?>
             </div>
             <!-- End::main-header-container --> 
          </header>
@@ -234,7 +236,7 @@
                      <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
                         <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
                            <div class="simplebar-content" style="padding: 8px 0px 80px;">
-                              <?php include __DIR__ . '/menu.php'; ?>
+                              <?php include ROOT . '/layout/menu.php'; ?>
                            </div>
                         </div>
                      </div>
@@ -257,89 +259,46 @@
                      <nav aria-label="nav">
                         <ol class="breadcrumb mb-1">
                            <li class="breadcrumb-item"><a href="javascript:void(0);">Items</a></li>
-                           <li class="breadcrumb-item active" aria-current="page">Registrar</li>
+                           <li class="breadcrumb-item active" aria-current="page">Data Items</li>
                         </ol>
                      </nav>
-                     <h1 class="page-title font-medium text-lg mb-0">Nuevo Item</h1>
+                     <h1 class="page-title font-medium text-lg mb-0">Data Items</h1>
                   </div>
-                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='items.php'"> <i class="ri-reply-line"></i> </button> </div>
+                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> 
+                     <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"
+                        onclick="window.location.href='add_item.php'"> <i class="ri-share-forward-line me-1"></i> 
+                        Registrar </button> 
+                  </div>
                </div>
             
-               <div class="col-span-12">
-                  <div class="box">
-                     <div class="box-header">
-                        <h5 class="box-title">Data Validation</h5>
-                     </div>
-                     <div class="box-body">
-                        <form class="ti-custom-validation-item" novalidate>
-                           <div class="grid lg:grid-cols-3 gap-6">
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Grupo</label>
-                                 <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
-                                    <option value="">Seleccione</option>
-                                    <option value="PRODUCTO">Producto</option>
-                                    <option value="SERVICIO">Servicio</option>
+               <div class="grid grid-cols-12 gap-6">
+                  <div class="col-span-12">
+                     <div class="box">
+                        <div class="box-header">
+                           <h5 class="box-title">Download DataTable</h5>
+                        </div>
+                        <div class="box-body space-y-3">
+                           <div class="sm:grid grid-cols-12 gap-6 space-y-2 sm:space-y-0"> 
+                               <div class="col-span-12 lg:!col-span-2 sm:col-span-3">
+                                 <select id="filtroTipo" class="form-select">
+                                    <option value="PRODUCTO" selected>Productos</option>
+                                    <option value="SERVICIO">Servicios</option>
                                  </select>
-                                 <span class="text-red-500 text-xs hidden" data-error-for="grupo"></span>
-                              </div>
-
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Categoria</label>
-                                 <select id="categoria" name="categoria" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
-                                    <option value="">Seleccione</option>
-                                 </select>
-                                 <span class="text-red-500 text-xs hidden" data-error-for="categoria"></span>
+                               </div>
+                              
+                              <div class="col-span-12 lg:!col-span-2 sm:col-span-3">
+                                 <button type="button" class="ti-btn ti-btn-primary" id="download-csv">Download CSV</button>
                               </div>
                            </div>
-
-                           <div class="grid lg:grid-cols-3 gap-6">   
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Nombre</label>
-                                 <input id="nombre" name="nombre" type="text" class="ti-form-input rounded-sm"
-                                       placeholder="Igora 100ml" data-rules="required|min:2|max:50">
-                                 <span class="text-red-500 text-xs hidden" data-error-for="nombre"></span>
+                           
+                           <div class="overflow-hidden table-bordered">
+                              <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
                               </div>
-
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Precio</label>
-                                 <input
-                                    id="precio"
-                                    name="precio"
-                                    type="number"
-                                    step="0.01"
-                                    min="0.01"
-                                    class="ti-form-input rounded-sm"
-                                    placeholder="25.00"
-                                    data-rules="required|numeric|min_value:0.01"
-                                 />
-                                 <span class="text-red-500 text-xs hidden" data-error-for="precio"></span>
-                              </div>
-
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Stock</label>
-                                 <input
-                                    id="stock"
-                                    name="stock"
-                                    type="number"
-                                    step="1"
-                                    min="1"
-                                    max="500"
-                                    class="ti-form-input rounded-sm"
-                                    placeholder="100"
-                                    data-rules="required|numeric|min_value:1|max_value:500"
-                                 />
-                                 <span class="text-red-500 text-xs hidden" data-error-for="stock"></span>
-                              </div>
-
                            </div>
-
-                           <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
-                        </form>
-
+                        </div>
                      </div>
                   </div>
                </div>
-               
             </div>
          </div>
          <!-- END MAINCONTENT --> 
@@ -371,12 +330,14 @@
       <script src="./assets/js/simplebar.js"></script>
       <script src="./assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
       <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
-      <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
-      <script src="./assets/js/choices.js"></script>
       <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
       <script src="./assets/js/custom-switcher.min.js"></script>
       <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
-      <script src="./assets/js/form-validation.js"></script>
+      <script src="./assets/libs/xlsx/xlsx.full.min.js"></script>
+      <script src="./assets/libs/jspdf/jspdf.umd.min.js"></script>
+      <script src="./assets/libs/jspdf-autotable/jspdf.plugin.autotable.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+      <script src="./assets/js/datatables_item.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
       <script src="./assets/js/custom.js"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">

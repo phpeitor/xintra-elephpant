@@ -1,7 +1,7 @@
 <?php
-  require_once __DIR__ . "/controller/check_session.php";
+require_once __DIR__ . '/../config/bootstrap.php';
+require_once ROOT . '/controller/check_session.php';
 ?>
-
 <html lang="en" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
    <head>
       <meta charset="UTF-8">
@@ -216,7 +216,7 @@
                   </div>
                   <!-- End::header-element --> 
                </div>
-               <?php include __DIR__ . '/navbar.php'; ?>
+               <?php include ROOT . '/layout/navbar.php'; ?>
             </div>
             <!-- End::main-header-container --> 
          </header>
@@ -234,7 +234,7 @@
                      <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
                         <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
                            <div class="simplebar-content" style="padding: 8px 0px 80px;">
-                              <?php include __DIR__ . '/menu.php'; ?>
+                              <?php include ROOT . '/layout/menu.php'; ?>
                            </div>
                         </div>
                      </div>
@@ -252,151 +252,102 @@
          <!-- START MAINCONTENT --> 
          <div class="main-content app-content">
             <div class="container-fluid">
-
-               <div class="xxl:col-span-4 col-span-12 div_upgrade !hidden">
-                  <div class="box main-dashboard-banner main-dashboard-banner2 overflow-hidden">
-                     <div class="box-body p-6">
-                        <div class="grid grid-cols-12 sm:gap-x-6 justify-between">
-                        <div class="xxl:col-span-8 xl:col-span-4 lg:col-span-5 md:col-span-5 sm:col-span-5 col-span-12">
-                           <h4 class="mb-3 font-medium text-white">¡Actualiza tu plan para obtener más!</h4>
-                           <p class="mb-3 text-white text-[11px]">Obtener acceso Premium y desbloquear funciones exclusivas</p>
-                           <a href="javascript:void(0);" class="font-medium text-white underline">Actualizar <i class="ti ti-arrow-narrow-right"></i>
-                           </a>
-                        </div>
-                        <div class="xxl:col-span-4 xl:col-span-7 lg:col-span-7 md:col-span-7 sm:col-span-7 col-span-12 sm:block hidden text-end my-auto">
-                           <img src="./assets/images/media/media-91.png" alt="" class="img-fluid">
-                        </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-
-               <div class="xxl:col-span-8 col-span-12">
-                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                     <!-- Bloque 1 -->
-                     <div class="box overflow-hidden">
-                        <div class="box-body pb-0 pe-0">
-                        <div class="mb-4">
-                           <div class="flex justify-between flex-wrap">
-                              <span class="avatar avatar-rounded bg-primary svg-white">
-                              <i class="bx bx-group text-[22px]"></i>
-                              </span>
-                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Total Clientes</span>
-                           </div>
-                        </div>
-                        <div class="flex items-end justify-between">
-                           <div class="pb-3">
-                              <span class="text-[20px] font-medium flex items-center" id="total_21">0</span>
-                              <div class="text-textmuted dark:text-textmuted/50 text-[13px]" id="inc_21">Increased By</div>
-                              <span class="text-success" id="pct_21">0% <i class="ti ti-arrow-narrow-up text-[16px]"></i></span>
-                           </div>
-                           <div id="chart-21" style="min-height:85px;"></div>
-                        </div>
-                        </div>
-                     </div>
-
-                     <!-- Bloque 2 -->
-                     <div class="box overflow-hidden">
-                        <div class="box-body pb-0 pe-0">
-                        <div class="mb-4">
-                           <div class="flex justify-between">
-                              <span class="avatar avatar-rounded bg-primarytint1color svg-white">
-                              <i class="bx bx-trending-up text-[22px]"></i>
-                              </span>
-                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Total Mensual <code id="mes_22">?</code></span>
-                           </div>
-                        </div>
-                        <div class="flex items-end justify-between">
-                           <div class="pb-3">
-                              <span class="text-[20px] font-medium flex items-center" id="total_22">0</span>
-                              <div class="text-textmuted dark:text-textmuted/50 text-[13px]" id="inc_22">Increased By</div>
-                              <span class="text-success" id="pct_22">0% <i class="ti ti-arrow-narrow-up text-[16px]"></i></span>
-                           </div>
-                           <div id="chart-22" style="min-height:85px;"></div>
-                        </div>
-                        </div>
-                     </div>
-
-                     <!-- Bloque 3 -->
-                     <div class="box overflow-hidden">
-                        <div class="box-body pb-0 pe-0">
-                        <div class="mb-4">
-                           <div class="flex justify-between">
-                              <span class="avatar avatar-rounded bg-primarytint2color svg-white">
-                              <i class="bx bx-dollar text-[22px]"></i>
-                              </span>
-                              <span class="font-medium text-[13px] text-textmuted dark:text-textmuted/50">Total Diario <code id="mes_23">?</code></span>
-                           </div>
-                        </div>
-                        <div class="flex items-end justify-between">
-                           <div class="pb-3">
-                              <span class="text-[20px] font-medium flex items-center" id="total_23">0</span>
-                              <div class="text-textmuted dark:text-textmuted/50 text-[13px]" id="inc_23">Decreased By</div>
-                              <span class="text-danger" id="pct_23">0% <i class="ti ti-arrow-narrow-down text-[16px]"></i></span>
-                           </div>
-                           <div id="chart-23" style="min-height:85px;"></div>
-                        </div>
-                        </div>
-                     </div>
-
-                  </div>
-               </div>
-               <!-- Start::page-header -->
                <div class="flex items-center justify-between page-header-breadcrumb flex-wrap gap-2">
                   <div>
                      <nav aria-label="nav">
                         <ol class="breadcrumb mb-1">
-                           <li class="breadcrumb-item"><a href="javascript:void(0);">Tickets</a></li>
-                           <li class="breadcrumb-item active" aria-current="page">Data Tickets</li>
+                           <li class="breadcrumb-item"><a href="javascript:void(0);">Items</a></li>
+                           <li class="breadcrumb-item active" aria-current="page">Actualizar</li>
                         </ol>
                      </nav>
-                     <h1 class="page-title font-medium text-lg mb-0">Data Tickets</h1>
+                     <h1 class="page-title font-medium text-lg mb-0">Editar Item</h1>
                   </div>
-                  <div class="flex gap-2 flex-wrap">
-                     <div class="form-group">
-                        <div class="input-group">
-                           <div class="input-group-text bg-white dark:bg-bodybg border">
-                              <i class="ri-calendar-line"></i>
-                           </div>
-                           <input class="form-control breadcrumb-input flatpickr-input" id="daterange" placeholder="Search By Date Range" readonly="readonly" type="text"/>
-                           <button type="button" class="ti-btn ti-btn-icon ti-btn-outline-secondary !rounded-full btn-wave  waves-effect waves-light">   
-                              <i class="ri-search-line me-1"></i> 
-                           </button>   
-                        </div>
-                     </div>
-
-                     <div class="btn-list"> 
-                        <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> 
-                        <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light btn-registrar" onclick="window.location.href='add_ticket.php'"> <i class="ri-share-forward-line me-1"></i> Registrar 
-                        </button> 
-                     </div>
-                  </div>
+                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='items.php'"> <i class="ri-reply-line"></i> </button> </div>
                </div>
             
-               <div class="grid grid-cols-12 gap-6">
-                  <div class="col-span-12">
-                     <div class="box">
+               <div class="col-span-12">
+                  <div class="box">
+                  <form class="ti-custom-validation-item" novalidate>
+                     <div class="box-header">
+                        <h5 class="box-title">Data Validation</h5>
+                        <div id="estadoToggle" class="toggle toggle-sm mb-0"><span></span></div>
+                        <input type="hidden" name="estado" id="estadoInput" value="0">
+                     </div>
+                     <div class="box-body">
+                           <div class="grid lg:grid-cols-3 gap-6">
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Grupo</label>
+                                 <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required" disabled>
+                                    <option value="">Seleccione</option>
+                                    <option value="PRODUCTO">Producto</option>
+                                    <option value="SERVICIO">Servicio</option>
+                                 </select>
+                                 <span class="text-red-500 text-xs hidden" data-error-for="grupo"></span>
+                              </div>
 
-                        <div class="box-body space-y-3">
-
-                           <div class="download-data"> 
-                              <button type="button" class="ti-btn ti-btn-primary" id="download-csv">Download CSV</button> 
-                              <button type="button" class="ti-btn ti-btn-primary" id="download-json">Download JSON</button> <button type="button" class="ti-btn ti-btn-primary" id="download-xlsx">Download XLSX</button>
-                           </div>
-
-                           <div class="overflow-hidden table-bordered">
-                              <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Categoria</label>
+                                 <select id="categoria" name="categoria" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
+                                    <option value="">Seleccione</option>
+                                 </select>
+                                 <span class="text-red-500 text-xs hidden" data-error-for="categoria"></span>
                               </div>
                            </div>
-                        </div>
+
+                           <div class="grid lg:grid-cols-3 gap-6">   
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Nombre</label>
+                                 <input id="nombre" name="nombre" type="text" class="ti-form-input rounded-sm"
+                                       placeholder="Igora 100ml" data-rules="required|min:2|max:50">
+                                 <span class="text-red-500 text-xs hidden" data-error-for="nombre"></span>
+                              </div>
+
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Precio</label>
+                                 <input
+                                    id="precio"
+                                    name="precio"
+                                    type="number"
+                                    step="0.01"
+                                    min="0.01"
+                                    class="ti-form-input rounded-sm"
+                                    placeholder="25.00"
+                                    data-rules="required|numeric|min_value:0.01"
+                                 />
+                                 <span class="text-red-500 text-xs hidden" data-error-for="precio"></span>
+                              </div>
+
+                              <div class="space-y-2">
+                                 <label class="ti-form-label">Stock</label>
+                                 <input
+                                    id="stock"
+                                    name="stock"
+                                    type="number"
+                                    step="1"
+                                    min="1"
+                                    max="500"
+                                    class="ti-form-input rounded-sm !bg-light !opacity-100"
+                                    placeholder="100"
+                                    data-rules="required|numeric|min_value:1|max_value:500"
+                                    disabled
+                                 />
+                                 <span class="text-red-500 text-xs hidden" data-error-for="stock"></span>
+                              </div>
+
+                           </div>
+
+                           <button type="submit" class="ti-btn ti-btn-primary ti-custom-validate-btn">Enviar</button>
+                        </form>
+
                      </div>
                   </div>
                </div>
+               
             </div>
          </div>
          <!-- END MAINCONTENT --> 
          <footer class="mt-auto py-4 bg-white dark:bg-bodybg text-center border-t border-defaultborder dark:border-defaultborder/10">
-            <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2025</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra Elephpant</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.instagram.com/amvsoft.tech/" target="_blank"> <span class="font-medium text-primary">AMV</span> </a> All rights reserved </span> </div>
+            <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2025</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.instagram.com/amvsoft.tech/" target="_blank"> <span class="font-medium text-primary">AMV</span> </a> All rights reserved </span> </div>
          </footer>
          <div class="hs-overlay ti-modal hidden" id="header-responsive-search" tabindex="-1" aria-labelledby="header-responsive-search">
             <div class="ti-modal-box">
@@ -423,18 +374,14 @@
       <script src="./assets/js/simplebar.js"></script>
       <script src="./assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
       <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
+      <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+      <script src="./assets/js/choices.js"></script>
       <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
       <script src="./assets/js/custom-switcher.min.js"></script>
       <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
-      <script src="./assets/libs/xlsx/xlsx.full.min.js"></script>
-      <script src="./assets/libs/jspdf/jspdf.umd.min.js"></script>
-      <script src="./assets/libs/jspdf-autotable/jspdf.plugin.autotable.min.js"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-      <script src="./assets/js/datatables_ticket.js?v=1"></script>
+      <script src="./assets/js/form-validation.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
       <script src="./assets/js/custom.js"></script>
-      <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
-      <script src="./assets/js/analytics-dashboard.js?v=1.0"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
          <div class="pcr-selection">
             <div class="pcr-color-preview">

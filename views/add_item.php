@@ -1,5 +1,6 @@
 <?php
-  require_once __DIR__ . "/controller/check_session.php";
+require_once __DIR__ . '/../config/bootstrap.php';
+require_once ROOT . '/controller/check_session.php';
 ?>
 <html lang="en" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
    <head>
@@ -186,7 +187,7 @@
                </div>
             </div>
          </div>
-         <div class="ti-offcanvas-footer sm:flex justify-between"> <a href="javascript:void(0);" id="reset-all" class="ti-btn ti-btn-danger m-1">Reset</a> </div>
+         <div class="ti-offcanvas-footer sm:flex justify-between"><a href="javascript:void(0);" id="reset-all" class="ti-btn ti-btn-danger m-1">Reset</a> </div>
       </div>
       <!-- ========== END Switcher  ========== --> <!-- Loader --> 
       <div id="loader" class="loader-disable"> <img src="./assets/images/media/loader.svg" alt=""> </div>
@@ -215,7 +216,8 @@
                   </div>
                   <!-- End::header-element --> 
                </div>
-               <?php include __DIR__ . '/navbar.php'; ?>
+               <!-- End::header-content-left --> <!-- Start::header-content-right --> 
+               <?php include ROOT . '/layout/navbar.php'; ?>
             </div>
             <!-- End::main-header-container --> 
          </header>
@@ -233,7 +235,7 @@
                      <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
                         <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
                            <div class="simplebar-content" style="padding: 8px 0px 80px;">
-                              <?php include __DIR__ . '/menu.php'; ?>
+                              <?php include ROOT . '/layout/menu.php'; ?>
                            </div>
                         </div>
                      </div>
@@ -256,27 +258,25 @@
                      <nav aria-label="nav">
                         <ol class="breadcrumb mb-1">
                            <li class="breadcrumb-item"><a href="javascript:void(0);">Items</a></li>
-                           <li class="breadcrumb-item active" aria-current="page">Actualizar</li>
+                           <li class="breadcrumb-item active" aria-current="page">Registrar</li>
                         </ol>
                      </nav>
-                     <h1 class="page-title font-medium text-lg mb-0">Editar Item</h1>
+                     <h1 class="page-title font-medium text-lg mb-0">Nuevo Item</h1>
                   </div>
                   <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='items.php'"> <i class="ri-reply-line"></i> </button> </div>
                </div>
             
                <div class="col-span-12">
                   <div class="box">
-                  <form class="ti-custom-validation-item" novalidate>
                      <div class="box-header">
                         <h5 class="box-title">Data Validation</h5>
-                        <div id="estadoToggle" class="toggle toggle-sm mb-0"><span></span></div>
-                        <input type="hidden" name="estado" id="estadoInput" value="0">
                      </div>
                      <div class="box-body">
+                        <form class="ti-custom-validation-item" novalidate>
                            <div class="grid lg:grid-cols-3 gap-6">
                               <div class="space-y-2">
                                  <label class="ti-form-label">Grupo</label>
-                                 <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required" disabled>
+                                 <select id="grupo" name="grupo" class="ti-form-select rounded-sm !py-2 !px-3" data-rules="required">
                                     <option value="">Seleccione</option>
                                     <option value="PRODUCTO">Producto</option>
                                     <option value="SERVICIO">Servicio</option>
@@ -325,10 +325,9 @@
                                     step="1"
                                     min="1"
                                     max="500"
-                                    class="ti-form-input rounded-sm !bg-light !opacity-100"
+                                    class="ti-form-input rounded-sm"
                                     placeholder="100"
                                     data-rules="required|numeric|min_value:1|max_value:500"
-                                    disabled
                                  />
                                  <span class="text-red-500 text-xs hidden" data-error-for="stock"></span>
                               </div>
