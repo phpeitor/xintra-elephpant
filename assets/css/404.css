@@ -44,6 +44,21 @@ html {
   fill: #ddf1fa;
 }
 
+/* stroke utility classes for SVG outlines */
+.outline-stroke,
+.small-stroke,
+.lettersFront,
+.lettersSide {
+  stroke: #265D85;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+
+.small-stroke {
+  stroke-width: 1.8;
+}
+
 .content {
   padding: 5rem 3rem 0 25rem;
   position: relative;
@@ -68,4 +83,26 @@ html {
 
 .content p span {
   text-decoration: line-through;
+}
+
+/* Button for returning to index */
+.content .btn-list {
+  margin-top: 1.5rem;
+}
+
+.btn-404 {
+  background-color: #67B1E0;
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.125rem;
+  padding: 0.9rem 1.4rem;
+  border-radius: 0.6rem;
+  border: none;
+  box-shadow: 0 8px 22px rgba(103,177,224,0.18);
+  transition: transform .12s ease, box-shadow .12s ease, filter .12s ease;
+}
+
+.btn-404:hover {
+  transform: translateY(-2px);
+  filter: brightness(0.98);
 }
