@@ -36,6 +36,14 @@ html {
   visibility: hidden;
 }
 
+.hlFur {
+  fill: #fff;
+}
+
+.hlSkin {
+  fill: #ddf1fa;
+}
+
 .content {
   padding: 5rem 3rem 0 25rem;
   position: relative;
