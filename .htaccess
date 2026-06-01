@@ -4,7 +4,7 @@
 
     # Documento 404 personalizado
     ErrorDocument 404 /404.html
-    ErrorDocument 403 /404.html
+    ErrorDocument 403 /403.html
 
     # Sirve archivos y directorios reales sin tocar.
     RewriteCond %{REQUEST_FILENAME} -f [OR]

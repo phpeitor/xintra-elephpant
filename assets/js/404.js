@@ -71,7 +71,7 @@ function goDark() {
   gsap.set('#light', { visibility: "hidden" });
   gsap.set('.lettersSide', { fill: lettersSideDark, stroke: lettersStrokeDark });
   gsap.set('.lettersFront', { fill: lettersFrontDark, stroke: lettersStrokeDark });
-  gsap.set('#lettersShadow', { opacity: 0.05 });
+  gsap.set(['#lettersShadow', '#lastDigit3Shadow'], { opacity: 0.05 });
   gsap.set('.hlFur', { fill: furDarkColor });
   gsap.set('.hlSkin', { fill: skinDarkColor });
 }
@@ -80,7 +80,7 @@ function goLight() {
   gsap.set('#light', { visibility: "visible" });
   gsap.set('.lettersSide', { fill: lettersSideLight, stroke: lettersStrokeLight });
   gsap.set('.lettersFront', { fill: lettersFrontLight, stroke: lettersStrokeLight });
-  gsap.set('#lettersShadow', { opacity: 0.2 });
+  gsap.set(['#lettersShadow', '#lastDigit3Shadow'], { opacity: 0.2 });
   gsap.set('.hlFur', { fill: furLightColor });
   gsap.set('.hlSkin', { fill: skinLightColor });
 }
