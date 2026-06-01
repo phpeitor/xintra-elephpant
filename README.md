@@ -1,7 +1,5 @@
 ## Xintra Elephpant 🐘
 
-Sistema de gestión de tickets, clientes, usuarios e inventario.
-
 [![forthebadge](http://forthebadge.com/badges/uses-css.svg)](https://www.linkedin.com/in/drphp/)
 [![forthebadge](http://forthebadge.com/badges/built-with-love.svg)](https://www.linkedin.com/in/drphp/)
 
@@ -9,6 +7,7 @@ Sistema de gestión de tickets, clientes, usuarios e inventario.
 
 [![Video Demo](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=G7heyYn1CBk)
 
+Sistema de gestión de tickets, clientes, usuarios e inventario.
 
 ## 📋 Resumen
 
