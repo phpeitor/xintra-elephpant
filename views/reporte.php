@@ -274,11 +274,11 @@ require_once ROOT . '/controller/check_session.php';
                                        <th class="border-b border-defaultborder dark:border-defaultborder/10" rowspan="2">Variación</th>
                                     </tr>
                                     <tr>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Actual</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Ultimo</th>
                                        <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Actual</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Ultimo</th>
                                        <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Actual</th>
+                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Ultimo</th>
                                        <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
                                     </tr>
                                  </thead>

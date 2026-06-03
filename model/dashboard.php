@@ -72,8 +72,7 @@ class Dashboard {
     }
 
     public function obtenerGrafUser(): ?array {
-                $sql = "
-                        WITH ventas AS (
+                $sql = "WITH ventas AS (
                             SELECT
                                 c.usuario,
                                 DATE_FORMAT(a.fecha, '%Y-%m') AS mes,
@@ -81,11 +80,11 @@ class Dashboard {
                                 COALESCE(SUM(b.subtotal), 0) AS total,
                                 COALESCE(SUM(b.cantidad), 0) AS items
                             FROM pedido a
-                            LEFT JOIN detalle_pedido b 
+                            LEFT JOIN detalle_pedido b
                                 ON a.id = b.id_pedido
-                            LEFT JOIN product_service d 
+                            LEFT JOIN product_service d
                                 ON b.id_productservice = d.id
-                            LEFT JOIN personal c 
+                            LEFT JOIN personal c
                                 ON a.usuario = c.IDPERSONAL
                             WHERE
                                 d.id_sucursal = 5
@@ -95,24 +94,29 @@ class Dashboard {
                                 c.usuario,
                                 DATE_FORMAT(a.fecha, '%Y-%m')
                         ),
-                        
+
+                        ultimo_mes AS (
+                            SELECT MAX(mes) AS mes
+                            FROM ventas
+                        ),
+
                         ultimos AS (
                             SELECT
-                                *,
+                                v.*,
                                 ROW_NUMBER() OVER (
                                     PARTITION BY usuario
                                     ORDER BY mes DESC
                                 ) AS rn
-                            FROM ventas
+                            FROM ventas v
                         ),
-                        
-                        usuarios_mes_actual AS (
-                            SELECT usuario
-                            FROM ultimos
-                            WHERE rn = 1
-                            AND mes = DATE_FORMAT(CURDATE(), '%Y-%m')
+
+                        usuarios_ultimo_mes AS (
+                            SELECT u.usuario
+                            FROM ultimos u
+                            INNER JOIN ultimo_mes m
+                                ON u.mes = m.mes
                         )
-                        
+
                         SELECT
                             u.usuario,
                             u.mes,
@@ -120,11 +124,10 @@ class Dashboard {
                             u.total,
                             u.items
                         FROM ultimos u
-                        INNER JOIN usuarios_mes_actual m
+                        INNER JOIN usuarios_ultimo_mes m
                             ON u.usuario = m.usuario
                         WHERE u.rn <= 2
-                        ORDER BY u.usuario ASC, u.mes DESC
-                ";
+                        ORDER BY u.usuario, u.mes DESC";
 
                 $stmt = $this->conn->prepare($sql);
                 $stmt->execute();
