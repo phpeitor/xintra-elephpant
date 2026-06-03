@@ -761,7 +761,7 @@ require_once ROOT . '/controller/check_session.php';
             <div class="xl:col-span12 col-span-12">
               <div class="box overflow-hidden">
                 <div class="box-header justify-between pb-1">
-                  <div class="box-title"> Top Selling Usuarios </div>
+                  <div class="box-title"> Top Selling </div>
                   <div class="ti-dropdown hs-dropdown">
                     <a href="javascript:void(0);" class="ti-btn ti-btn-light text-textmuted dark:text-textmuted/50 ti-dropdown-toggle hs-dropdown-toggle ti-btn-sm gap-0" data-bs-toggle="dropdown" aria-expanded="false"> Sort By <i class="ri-arrow-down-s-line align-middle ms-1 inline-block"></i>
                     </a>
@@ -797,6 +797,13 @@ require_once ROOT . '/controller/check_session.php';
                   </div>
                   <div class="table-responsive top-categories">
                     <table class="table text-nowrap">
+                      <thead>
+                        <tr>
+                          <th class="border-top-0">Usuario</th>
+                          <th class="border-top-0">Ultimo</th>
+                          <th class="border-top 0">Anterior</th>
+                        </tr> 
+                      </thead>  
                       <tbody>
                         
                       </tbody>
@@ -808,23 +815,7 @@ require_once ROOT . '/controller/check_session.php';
           </div>
         </div>
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     
+      
     </div>
    </div>
 
@@ -891,7 +882,8 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
   <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
   <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
-  <script src="./assets/js/sales-dashboard.js?v=1.9"></script>
+  <script src="./assets/js/xintra-tooltip.js?v=1.3"></script>
+  <script src="./assets/js/sales-dashboard.js?v=2.2"></script>
   <svg height="0" id="SvgjsSvg1006" style="overflow: hidden; top: -100%; left: -100%; position: absolute; opacity: 0;" version="1.1" width="2" xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.dev" xmlns:xlink="http://www.w3.org/1999/xlink">
    <defs id="SvgjsDefs1007">
    </defs>

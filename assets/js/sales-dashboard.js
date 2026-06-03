@@ -246,6 +246,15 @@ fetch('controller/dashboard/apx_contadores.php')
         maximumFractionDigits: 2
       })}`;
 
+    const formatMonth = window.XintraTooltip.formatMonth;
+    const userColors = [
+      "rgb(var(--primary))",
+      "rgb(var(--primary-tint1-rgb))",
+      "rgb(var(--primary-tint2-rgb))",
+      "rgb(var(--primary-tint3-rgb))",
+      "rgb(var(--warning))",
+    ];
+
     // Actualizar spans
     document.getElementById("total_actual").textContent = formatCurrency(totalActual);
 
@@ -274,16 +283,17 @@ fetch('controller/dashboard/apx_contadores.php')
 
       // Asignar clase de color rotativa
       const colorClass = colorClasses[i % colorClasses.length];
+      const userColor = userColors[i % userColors.length];
 
       const fila = `
         <tr class="border-b border-defaultborder dark:border-defaultborder/10">
           <td>
             <span class="font-medium top-category-name ${colorClass}">${usuario}</span>
           </td>
-          <td>
+          <td ${window.XintraTooltip.attr(formatMonth(v.mes_actual), userColor)}>
             <span class="font-medium">${actuales}</span>
           </td>
-          <td class="text-center">
+          <td class="text-center" ${window.XintraTooltip.attr(formatMonth(v.mes_anterior), userColor)}>
             <span class="text-textmuted dark:text-textmuted/50 text-xs">${anteriores}</span>
           </td>
           <td class="!text-end">
@@ -296,6 +306,8 @@ fetch('controller/dashboard/apx_contadores.php')
 
       tbody.insertAdjacentHTML("beforeend", fila);
     });
+
+    window.XintraTooltip.init(tbody);
 
 
   })

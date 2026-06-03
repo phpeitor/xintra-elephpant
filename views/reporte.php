@@ -253,45 +253,43 @@ require_once ROOT . '/controller/check_session.php';
          <!-- START MAINCONTENT --> 
          <div class="main-content app-content">
             <div class="container-fluid">
-               <div class="grid grid-cols-12 gap-x-6">
-                  <div class="xxl:col-span-5 col-span-12">
-                     <div class="box">
-                        <div class="box-header justify-between">
-                           <div class="box-title"> Tickets Usuario <code>(Comparación por usuario)</code></div>
-                           <a href="javascript:void(0);" class="ti-btn ti-btn-light btn-wave text-textmuted dark:text-textmuted/50 waves-effect ti-btn-sm waves-light">View All</a>
-                        </div>
-                        <div class="box-body sm:block items-center">
-                           <div id="referrals-chart" class="p-4 flex-shrink-0 px-0" style="min-height: 248.7px;"></div>
+               <div class="xxl:col-span-4 xl:col-span-6 col-span-12">
+                  <div class="box">
+                     <div class="box-header justify-between">
+                        <div class="box-title"> Tickets Usuario <code>(Comparación por usuario)</code></div>
+                        <a href="javascript:void(0);" class="ti-btn ti-btn-light btn-wave text-textmuted dark:text-textmuted/50 waves-effect ti-btn-sm waves-light">View All</a>
+                     </div>
+                     <div class="box-body sm:block items-center">
+                        <div id="referrals-chart" class="p-4 flex-shrink-0 px-0" style="min-height: 248.7px;"></div>
 
-                           <div class="table-responsive overflow-auto table-bordered-default">
-                              <table class="ti-custom-table text-nowrap min-w-full">
-                                 <thead>
-                                    <tr>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10" rowspan="2">Usuario</th>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Total</th>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Tickets</th>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Items</th>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10" rowspan="2">Variación</th>
-                                    </tr>
-                                    <tr>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Ultimo</th>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Ultimo</th>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Ultimo</th>
-                                       <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
-                                    </tr>
-                                 </thead>
-                                 <tbody>
-                                 </tbody>
-                              </table>
-                           </div>
+                        <div class="table-responsive overflow-x-auto overflow-y-visible table-bordered-default">
+                           <table class="ti-custom-table text-nowrap min-w-full">
+                              <thead>
+                                 <tr>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10" rowspan="2">Usuario</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Total</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Tickets</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Items</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10" rowspan="2">Variación</th>
+                                 </tr>
+                                 <tr>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Ultimo</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Ultimo</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Ultimo</th>
+                                    <th class="border-b border-defaultborder dark:border-defaultborder/10">Anterior</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              </tbody>
+                           </table>
                         </div>
                      </div>
                   </div>
                </div>
 
-               <div class="xxl:col-span-4 col-span-12">
+               <div class="xxl:col-span-4 xl:col-span-6 col-span-12">
                   <div class="box">
                      <div class="box-header justify-between">
                         <h5 class="box-title">Top Items <code>(Últimos 15 días)</code></h5>
@@ -344,7 +342,8 @@ require_once ROOT . '/controller/check_session.php';
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
       <script src="./assets/js/custom.js"></script>
       <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
-      <script src="./assets/js/analytics-reporte.js?v=1.0"></script>
+      <script src="./assets/js/xintra-tooltip.js?v=1.3"></script>
+      <script src="./assets/js/analytics-reporte.js?v=1.3"></script>
       <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
          <div class="pcr-selection">
             <div class="pcr-color-preview">

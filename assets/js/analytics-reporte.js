@@ -12,20 +12,23 @@ async function cargarUsuarios() {
         maximumFractionDigits: 2,
       });
 
-    const formatMonth = (value) => {
-      if (!value) return "-";
-      const parts = String(value).split("-");
-      if (parts.length !== 2) return String(value);
+    const formatMonth = window.XintraTooltip.formatMonth;
 
-      const [yy, mm] = parts;
-      const dateObj = new Date(Number(yy), Number(mm) - 1, 1);
-      const formatted = new Intl.DateTimeFormat("en-US", {
-        month: "short",
-        year: "2-digit",
-      }).format(dateObj);
-
-      return formatted.replace(/\./g, "").replace(/^./, (s) => s.toUpperCase());
+    const tooltipCell = (content, month, color, className = "") => {
+      const cellClass = className ? ` class="${className}"` : "";
+      return `<td${cellClass} ${window.XintraTooltip.attr(formatMonth(month), color)}>${content}</td>`;
     };
+
+    const userColors = [
+      "rgb(227, 84, 212)",
+      "rgba(var(--primary-rgb))",
+      "rgb(255, 93, 159)",
+      "rgb(255, 142, 111)",
+      "rgb(158, 92, 247)",
+      "rgb(102, 204, 153)",
+      "rgb(255, 193, 7)",
+      "rgb(99, 102, 241)",
+    ];
 
     const currentTotals = data.map((u) => parseFloat(u.total_actual || 0));
     const maxTotal = Math.max(...currentTotals);
@@ -35,7 +38,8 @@ async function cargarUsuarios() {
     const tbody = document.querySelector(".ti-custom-table tbody");
     tbody.innerHTML = "";
 
-    data.forEach((u) => {
+    data.forEach((u, i) => {
+      const userColor = userColors[i % userColors.length];
       const totalActual = parseFloat(u.total_actual || 0);
       const totalAnterior = parseFloat(u.total_anteriores || 0);
       const ticketsActuales = parseFloat(u.tickets_actuales || 0);
@@ -66,16 +70,18 @@ async function cargarUsuarios() {
             ${formatMonth(u.mes_actual)} vs ${formatMonth(u.mes_anterior)}
           </div>
         </td>
-        <td class="${totalClass}">${formatCurrency(totalActual)}</td>
-        <td>${formatCurrency(totalAnterior)}</td>
-        <td>${ticketsActuales}</td>
-        <td>${ticketsAnteriores}</td>
-        <td>${itemsActuales}</td>
-        <td>${itemsAnteriores}</td>
+        ${tooltipCell(formatCurrency(totalActual), u.mes_actual, userColor, totalClass)}
+        ${tooltipCell(formatCurrency(totalAnterior), u.mes_anterior, userColor)}
+        ${tooltipCell(ticketsActuales, u.mes_actual, userColor)}
+        ${tooltipCell(ticketsAnteriores, u.mes_anterior, userColor)}
+        ${tooltipCell(itemsActuales, u.mes_actual, userColor)}
+        ${tooltipCell(itemsAnteriores, u.mes_anterior, userColor)}
         <td><span class="badge ${badgeClass}">${variation.toFixed(1)}% <i class="${iconClass}"></i></span></td>
       `;
       tbody.appendChild(tr);
     });
+
+    window.XintraTooltip.init(tbody);
 
     // === Configurar gráfico DONUT ===
     const options = {
@@ -91,16 +97,7 @@ async function cargarUsuarios() {
       legend: {
         show: false,
       },
-      colors: [
-        "rgb(227, 84, 212)",
-        "rgba(var(--primary-rgb))",
-        "rgb(255, 93, 159)",
-        "rgb(255, 142, 111)",
-        "rgb(158, 92, 247)",
-        "rgb(102, 204, 153)",
-        "rgb(255, 193, 7)",
-        "rgb(99, 102, 241)",
-      ],
+      colors: userColors,
       tooltip: {
         y: {
           formatter: (val) => formatCurrency(val),
