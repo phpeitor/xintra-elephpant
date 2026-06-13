@@ -801,7 +801,8 @@ require_once ROOT . '/controller/check_session.php';
                         <tr>
                           <th class="border-top-0">Usuario</th>
                           <th class="border-top-0">Ultimo</th>
-                          <th class="border-top 0">Anterior</th>
+                          <th class="border-top-0">Anterior</th>
+                          <th class="border-top-0 !text-end">%</th>
                         </tr> 
                       </thead>  
                       <tbody>

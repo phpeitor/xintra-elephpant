@@ -76,7 +76,7 @@ class Dashboard {
                             SELECT
                                 c.usuario,
                                 DATE_FORMAT(a.fecha, '%Y-%m') AS mes,
-                                COUNT(b.id_productservice) AS tickets,
+                                COUNT(distinct a.id) AS tickets,
                                 COALESCE(SUM(b.subtotal), 0) AS total,
                                 COALESCE(SUM(b.cantidad), 0) AS items
                             FROM pedido a
@@ -168,8 +168,13 @@ class Dashboard {
                                         continue;
                                 }
 
-                                $anterior = $ultimo;
-                                $ultimo = $registro;
+                                if ($ultimo === null) {
+                                        $ultimo = $registro;
+                                        continue;
+                                }
+
+                                $anterior = $registro;
+                                break;
                         }
 
                         if ($ultimo === null) {

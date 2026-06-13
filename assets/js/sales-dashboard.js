@@ -264,8 +264,8 @@ fetch('controller/dashboard/apx_contadores.php')
 
     data.versus.forEach((v, i) => {
       const usuario = v.usuario;
-      const actuales = parseFloat(v.items_actuales || 0);
-      const anteriores = parseFloat(v.items_anteriores || 0);
+      const actuales = parseFloat(v.total_actual || 0);
+      const anteriores = parseFloat(v.total_anteriores || 0);
 
       // Calcular porcentaje de variación
       let porcentaje = 0;
@@ -291,10 +291,10 @@ fetch('controller/dashboard/apx_contadores.php')
             <span class="font-medium top-category-name ${colorClass}">${usuario}</span>
           </td>
           <td ${window.XintraTooltip.attr(formatMonth(v.mes_actual), userColor)}>
-            <span class="font-medium">${actuales}</span>
+            <span class="font-medium">${formatCurrency(actuales)}</span>
           </td>
           <td class="text-center" ${window.XintraTooltip.attr(formatMonth(v.mes_anterior), userColor)}>
-            <span class="text-textmuted dark:text-textmuted/50 text-xs">${anteriores}</span>
+            <span class="text-textmuted dark:text-textmuted/50 text-xs">${formatCurrency(anteriores)}</span>
           </td>
           <td class="!text-end">
             <span class="badge ${claseColor}">
