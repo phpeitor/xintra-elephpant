@@ -180,23 +180,101 @@ async function cargarUsuarios() {
       })
     ).render();
 
-    new ApexCharts(
-      document.querySelector("#tickets-chart"),
-      createDonutOptions({
-        series: data.map((u) => parseFloat(u.tickets_actuales || 0)),
-        title: "Tickets",
-        formatter: numberFormatter,
-      })
-    ).render();
+    new ApexCharts(document.querySelector("#tickets-chart"), {
+      series: [
+        {
+          name: "Ultimo",
+          data: data.map((u) => parseFloat(u.tickets_actuales || 0)),
+        },
+        {
+          name: "Anterior",
+          data: data.map((u) => parseFloat(u.tickets_anteriores || 0)),
+        },
+      ],
+      chart: {
+        height: 290,
+        type: "bar",
+        toolbar: { show: false },
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          columnWidth: "48%",
+        },
+      },
+      title: {
+        text: "Tickets",
+        align: "center",
+        style: { fontSize: "14px", fontWeight: 600 },
+      },
+      colors: ["rgba(var(--primary-rgb))", "rgb(227, 84, 212)"],
+      dataLabels: { enabled: false },
+      grid: { borderColor: "#f1f1f1", strokeDashArray: 3 },
+      xaxis: {
+        categories: data.map((u) => u.usuario),
+        labels: { rotate: -45, style: { fontSize: "10px" } },
+      },
+      yaxis: {
+        labels: { formatter: numberFormatter },
+      },
+      tooltip: {
+        y: { formatter: numberFormatter },
+      },
+      legend: {
+        position: "bottom",
+        fontSize: "11px",
+      },
+    }).render();
 
-    new ApexCharts(
-      document.querySelector("#items-chart"),
-      createDonutOptions({
-        series: data.map((u) => parseFloat(u.items_actuales || 0)),
-        title: "Items",
-        formatter: numberFormatter,
-      })
-    ).render();
+    new ApexCharts(document.querySelector("#items-chart"), {
+      series: [
+        {
+          name: "Items",
+          data: data.map((u) => ({
+            x: parseFloat(u.items_anteriores || 0),
+            y: parseFloat(u.items_actuales || 0),
+            usuario: u.usuario,
+          })),
+        },
+      ],
+      chart: {
+        height: 290,
+        type: "scatter",
+        zoom: { enabled: false },
+        toolbar: { show: false },
+      },
+      title: {
+        text: "Items: Anterior vs Ultimo",
+        align: "center",
+        style: { fontSize: "14px", fontWeight: 600 },
+      },
+      colors: ["rgb(255, 93, 159)"],
+      markers: {
+        size: 7,
+        strokeWidth: 3,
+        strokeColors: "#fff",
+        hover: { size: 10 },
+      },
+      grid: { borderColor: "#f1f1f1", strokeDashArray: 3 },
+      xaxis: {
+        title: { text: "Anterior" },
+        labels: { formatter: numberFormatter },
+      },
+      yaxis: {
+        title: { text: "Ultimo" },
+        labels: { formatter: numberFormatter },
+      },
+      tooltip: {
+        custom: function ({ seriesIndex, dataPointIndex, w }) {
+          const point = w.config.series[seriesIndex].data[dataPointIndex];
+          return `<div class="p-2 text-xs">
+            <div class="font-semibold mb-1">${point.usuario}</div>
+            <div>Anterior: ${numberFormatter(point.x)}</div>
+            <div>Ultimo: ${numberFormatter(point.y)}</div>
+          </div>`;
+        },
+      },
+    }).render();
   } catch (err) {
     console.error("Error al cargar usuarios:", err);
   }

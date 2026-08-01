@@ -120,6 +120,6 @@ require_once ROOT . '/controller/check_session.php';
       <script src="./assets/js/custom.js?v=2"></script>
       <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
       <script src="./assets/js/xintra-tooltip.js?v=1.3"></script>
-      <script src="./assets/js/analytics-reporte.js?v=1.4"></script>
+      <script src="./assets/js/analytics-reporte.js?v=1.5"></script>
    </body>
 </html>
