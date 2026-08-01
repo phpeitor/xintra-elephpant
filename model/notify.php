@@ -16,8 +16,10 @@ class Notify {
         $limit = rand(2, 5);
         $fechaHoy = substr($this->nowLima, 0, 10); 
 
-        $sql = "SELECT 
+                $sql = "SELECT 
                     'login' AS origen,
+                    NULL AS id_ticket,
+                    NULL AS hash_ticket,
                     b.usuario,
                     b.sexo,
                     a.fecha
@@ -29,12 +31,14 @@ class Notify {
                     WHERE tipo = 'IN'
                     GROUP BY id_user
                 ) ult ON a.id_user = ult.id_user AND a.fecha = ult.ultima_fecha
-                WHERE DATE(a.fecha) = :fechaHoy
+                WHERE DATE(a.fecha) = :fechaHoy and a.id_user <> 1
 
                 UNION ALL
 
                 SELECT distinct
                     'pedido' AS origen,
+                    a.id AS id_ticket,
+                    MD5(a.id) AS hash_ticket,
                     b.usuario,
                     b.sexo,
                 CAST(CONCAT(a.fecha, ' 00:00:00') AS DATETIME) AS fecha

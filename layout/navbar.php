@@ -174,14 +174,16 @@
 
                         if ($n['origen'] === 'login') {
                             $titulo = 'Login Request';
-                            $texto = "<span class='text-info'>{$n['usuario']}</span> ha iniciado sesión.";
+                            $texto = "<span class='text-info'>{$n['usuario']}</span> ha iniciado sesión";
                             $fecha = $n['fecha']; 
+                            $url = '#';
                         } else {
                             $titulo = 'Ticket Request';
                             $colores = ['success', 'purplemain', 'primarytint3color', 'primarytint2color'];
                             $color = $colores[array_rand($colores)];
-                            $texto = "<span class='text-{$color}'>{$n['usuario']}</span> realizó un pedido.";
+                            $texto = "<span class='text-{$color}'>{$n['usuario']}</span> tiene un ticket #{$n['id_ticket']}";
                             $fecha = substr($n['fecha'], 0, 10); 
+                            $url = 'upd_ticket.php?hash=' . $n['hash_ticket'];
                         }
                     ?>
 
@@ -195,7 +197,7 @@
 
                             <div class="grow flex items-center justify-between">
                                 <div>
-                                    <p class="mb-0 font-medium"><a href="#"><?= $titulo ?></a></p>
+                                    <p class="mb-0 font-medium"><a href="<?= $url ?>"><?= $titulo ?></a></p>
                                     <div
                                         class="text-textmuted dark:text-textmuted/50 font-normal text-xs header-notification-text truncate">
                                         <?= $texto ?>
