@@ -19,7 +19,6 @@ require_once ROOT . '/controller/check_session.php';
       <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
       <link rel="stylesheet" href="./assets/libs/@simonwep/pickr/themes/nano.min.css">
       <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
-      <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
       <link rel="stylesheet" href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css">
       <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
@@ -140,7 +139,7 @@ require_once ROOT . '/controller/check_session.php';
       </div>
 
       <?php include ROOT . '/layout/scroll.php'; ?>
-      
+
       <script src="./assets/js/switch.js"></script>
       <script src="./assets/libs/@popperjs/core/umd/popper.min.js"></script>
       <script src="./assets/libs/preline/preline.js"></script>

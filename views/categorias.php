@@ -21,7 +21,6 @@ require_once ROOT . '/controller/check_session.php';
   <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
   <link rel="stylesheet" href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css">
   <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
-  <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
   <meta http-equiv="imagetoolbar" content="no">
