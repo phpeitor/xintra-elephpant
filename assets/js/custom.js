@@ -524,10 +524,19 @@ headerbtn1.forEach((button) => {
   button.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
-    button.parentNode.parentNode.parentNode.parentNode.remove();
-    document.getElementById("notifiation-data").innerText = `${document.querySelectorAll(".dropdown-item-close1").length
-      } Unread`;
-    if (document.querySelectorAll(".dropdown-item-close1").length == 0) {
+    button.closest("li").remove();
+
+    const totalNotifications = document.querySelectorAll(".dropdown-item-close1").length;
+    const dropdownBadge = document.getElementById("notification-data");
+    const iconBadge = document.getElementById("notification-icon-badge");
+
+    if (dropdownBadge) dropdownBadge.innerText = totalNotifications;
+    if (iconBadge) {
+      iconBadge.innerText = totalNotifications;
+      iconBadge.classList.toggle("hidden", totalNotifications === 0);
+    }
+
+    if (totalNotifications == 0) {
       let elementHide1 = document.querySelector(".empty-header-item1");
       let elementShow1 = document.querySelector(".empty-item1");
       elementHide1.classList.add("hidden");

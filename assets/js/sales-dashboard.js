@@ -262,18 +262,41 @@ fetch('controller/dashboard/apx_contadores.php')
     porcentajeSpan.innerHTML = `${porcentajeActual.toFixed(1)}% <i class="${icono}"></i>`;
     porcentajeSpan.className = `${color} me-2 text-[11px]`;
 
+    const getPercentage = (v) => {
+      const actuales = parseFloat(v.total_actual || 0);
+      const anteriores = parseFloat(v.total_anteriores || 0);
+
+      if (anteriores === 0 && actuales > 0) return 100;
+      if (anteriores > 0) return ((actuales - anteriores) / anteriores) * 100;
+      return 0;
+    };
+
+    const emojiByUser = new Map(
+      [...data.versus]
+        .sort((a, b) => getPercentage(b) - getPercentage(a))
+        .map((v, rank, list) => {
+          let emoji = "😐";
+
+          if (rank === 0) {
+            emoji = "👑";
+          } else if (rank === list.length - 1) {
+            emoji = "😢";
+          } else {
+            const emojis = ["😊", "😐", "😡"];
+            const step = Math.min(rank - 1, emojis.length - 1);
+            emoji = emojis[step];
+          }
+
+          return [v.usuario, emoji];
+        })
+    );
+
     data.versus.forEach((v, i) => {
       const usuario = v.usuario;
       const actuales = parseFloat(v.total_actual || 0);
       const anteriores = parseFloat(v.total_anteriores || 0);
 
-      // Calcular porcentaje de variación
-      let porcentaje = 0;
-      if (anteriores === 0 && actuales > 0) {
-        porcentaje = 100;
-      } else if (anteriores > 0) {
-        porcentaje = ((actuales - anteriores) / anteriores) * 100;
-      }
+      const porcentaje = getPercentage(v);
 
       const tendenciaUp = porcentaje >= 0;
       const icono = tendenciaUp ? "ti ti-trending-up" : "ti ti-trending-down";
@@ -290,6 +313,7 @@ fetch('controller/dashboard/apx_contadores.php')
           <td>
             <span class="font-medium top-category-name ${colorClass}">${usuario}</span>
           </td>
+          <td class="text-center text-lg leading-none">${emojiByUser.get(usuario) || "😐"}</td>
           <td ${window.XintraTooltip.attr(formatMonth(v.mes_actual), userColor)}>
             <span class="font-medium">${formatCurrency(actuales)}</span>
           </td>

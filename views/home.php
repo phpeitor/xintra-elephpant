@@ -327,6 +327,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th class="border-top-0">Usuario</th>
+                                                        <th class="border-top-0"></th>
                                                         <th class="border-top-0">Ultimo</th>
                                                         <th class="border-top-0">Anterior</th>
                                                         <th class="border-top-0 !text-end">%</th>
@@ -364,9 +365,9 @@
     <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
     <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
     <script src="./assets/js/xintra-tooltip.js?v=1.3"></script>
-    <script src="./assets/js/sales-dashboard.js?v=2.2"></script>
+    <script src="./assets/js/sales-dashboard.js?v=2.3"></script>
     <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-    <script src="./assets/js/custom.js?v=1"></script>
+    <script src="./assets/js/custom.js?v=2"></script>
     <script src="./assets/js/custom-switcher.min.js"></script>
 </body>
 
