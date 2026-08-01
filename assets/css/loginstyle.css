@@ -209,6 +209,16 @@ form .inputGroup2 #showPasswordToggle input:disabled ~ .indicator:after {
   visibility: hidden;
 }
 
+form .inputGroupTurnstile {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.25em;
+}
+
+form .inputGroupTurnstile .cf-turnstile {
+  min-height: 65px;
+}
+
 /* Estilos para validación de inputs vacíos */
 form input.input-error {
   border: solid 2px #d32f2f !important;

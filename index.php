@@ -1,9 +1,12 @@
 <?php
-session_start();
+require_once __DIR__ . '/config/bootstrap.php';
+
 if (isset($_SESSION['session_usuario'])) {
     header("Location: home.php");
     exit();
 }
+
+$turnstileSiteKey = $_ENV['TURNSTILE_SITE_KEY'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -18,6 +21,7 @@ if (isset($_SESSION['session_usuario'])) {
   <link rel="stylesheet" href="./assets/css/loginstyle.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 <video autoplay loop muted playsinline id="background-video">
@@ -140,6 +144,11 @@ if (isset($_SESSION['session_usuario'])) {
 			<div class="indicator"></div>
 		</label>
 	</div>
+	<?php if ($turnstileSiteKey !== ''): ?>
+	<div class="inputGroup inputGroupTurnstile">
+		<div class="cf-turnstile" data-sitekey="<?= htmlspecialchars($turnstileSiteKey, ENT_QUOTES, 'UTF-8') ?>" data-theme="light"></div>
+	</div>
+	<?php endif; ?>
 	<div class="inputGroup inputGroup3">
 		<button id="login">Log in</button>
 	</div>	

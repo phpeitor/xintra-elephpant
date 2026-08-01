@@ -457,6 +457,7 @@ document.getElementById('login').addEventListener('click', async (e) => {
 
   const usuario = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value.trim();
+  const turnstileToken = document.querySelector('[name="cf-turnstile-response"]')?.value || '';
 
   if (!usuario || !password) {
     document.getElementById('loginEmail').classList.remove('input-error');
@@ -475,9 +476,18 @@ document.getElementById('login').addEventListener('click', async (e) => {
     return;
   }
 
+  if (document.querySelector('.cf-turnstile') && !turnstileToken) {
+    alertify.error("❌ Completa la verificación de seguridad");
+    btn.disabled = false;
+    btn.classList.remove("opacity-50", "cursor-not-allowed");
+    btn.textContent = "Ingresar";
+    return;
+  }
+
   const formData = new FormData();
   formData.append('usuario', usuario);
   formData.append('password', password);
+  formData.append('cf-turnstile-response', turnstileToken);
 
   try {
     const res = await fetch('controller/acceso.php', {
@@ -503,6 +513,7 @@ document.getElementById('login').addEventListener('click', async (e) => {
       } else {
         const remainingAttempts = 3 - getFailedAttempts().count;
         alertify.error(data.message || `❌ Usuario o contraseña incorrectos. Intentos restantes: ${remainingAttempts}`);
+        if (window.turnstile) turnstile.reset();
         btn.disabled = false;
         btn.classList.remove("opacity-50", "cursor-not-allowed");
         btn.textContent = "Ingresar";
@@ -511,6 +522,7 @@ document.getElementById('login').addEventListener('click', async (e) => {
   } catch (error) {
     alertify.error("❌ Error al conectar con el servidor");
     console.error(error);
+    if (window.turnstile) turnstile.reset();
     btn.disabled = false;
     btn.classList.remove("opacity-50", "cursor-not-allowed");
     btn.textContent = "Ingresar";

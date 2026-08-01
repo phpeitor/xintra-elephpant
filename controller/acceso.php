@@ -10,9 +10,55 @@ try {
 
     $usuario = trim($_POST['usuario'] ?? '');
     $password = trim($_POST['password'] ?? '');
+    $turnstileToken = trim($_POST['cf-turnstile-response'] ?? '');
 
     if ($usuario === '' || $password === '') {
         throw new Exception('Debe ingresar usuario y contraseña.');
+    }
+
+    $turnstileSecret = $_ENV['TURNSTILE_SECRET_KEY'] ?? '';
+    if ($turnstileSecret !== '') {
+        if ($turnstileToken === '') {
+            throw new Exception('Debe completar la verificación de seguridad.');
+        }
+
+        $ch = curl_init('https://challenges.cloudflare.com/turnstile/v0/siteverify');
+        $caBundle = ROOT . '/config/cacert.pem';
+
+        $curlOptions = [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => http_build_query([
+                'secret' => $turnstileSecret,
+                'response' => $turnstileToken,
+                'remoteip' => $_SERVER['REMOTE_ADDR'] ?? null,
+            ]),
+            CURLOPT_TIMEOUT => 8,
+            CURLOPT_CONNECTTIMEOUT => 4,
+        ];
+
+        if (is_file($caBundle)) {
+            $curlOptions[CURLOPT_CAINFO] = $caBundle;
+        }
+
+        curl_setopt_array($ch, $curlOptions);
+
+        $turnstileResponse = curl_exec($ch);
+        $turnstileError = curl_errno($ch);
+        $turnstileErrorMessage = curl_error($ch);
+        curl_close($ch);
+
+        if ($turnstileError || !$turnstileResponse) {
+            throw new Exception('No se pudo validar la verificación de seguridad: ' . $turnstileErrorMessage);
+        }
+
+        $turnstileData = json_decode($turnstileResponse, true);
+        $expectedHostname = $_ENV['TURNSTILE_HOSTNAME'] ?? '';
+        $hostname = $turnstileData['hostname'] ?? '';
+
+        if (empty($turnstileData['success']) || ($expectedHostname !== '' && $hostname !== $expectedHostname)) {
+            throw new Exception('Verificación de seguridad inválida.');
+        }
     }
 
     $password = md5($password);
