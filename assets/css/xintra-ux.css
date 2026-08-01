@@ -1,0 +1,34 @@
+.performance-emoji {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75rem;
+  min-height: 1.75rem;
+  border-radius: 9999px;
+  background: rgba(var(--primary-rgb), 0.08);
+  animation: performance-float 1.9s ease-in-out infinite;
+  filter: drop-shadow(0 6px 10px rgba(15, 23, 42, 0.12));
+}
+
+.performance-emoji[data-rank="1"] {
+  background: linear-gradient(135deg, rgba(255, 199, 111, 0.28), rgba(255, 93, 159, 0.18));
+  animation-name: performance-crown;
+}
+
+@keyframes performance-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.08);
+  }
+}
+
+@keyframes performance-crown {
+  0%, 100% {
+    transform: translateY(0) rotate(-4deg) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) rotate(5deg) scale(1.12);
+  }
+}

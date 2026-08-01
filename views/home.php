@@ -28,6 +28,7 @@
     <link href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css" />
+    <link href="./assets/css/xintra-ux.css" rel="stylesheet" />
     <meta content="no" http-equiv="imagetoolbar" />
 </head>
 

@@ -24,6 +24,7 @@ require_once ROOT . '/controller/check_session.php';
       <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
+      <link href="./assets/css/xintra-ux.css" rel="stylesheet">
       <meta http-equiv="imagetoolbar" content="no">
    </head>
    <body>
@@ -41,14 +42,25 @@ require_once ROOT . '/controller/check_session.php';
                         <a href="javascript:void(0);" class="ti-btn ti-btn-light btn-wave text-textmuted dark:text-textmuted/50 waves-effect ti-btn-sm waves-light">View All</a>
                      </div>
                      <div class="box-body sm:block items-center">
-                        <div id="referrals-chart" class="p-4 flex-shrink-0 px-0" style="min-height: 248.7px;"></div>
+                         <div class="grid grid-cols-12 gap-6 items-center mb-4">
+                            <div class="xl:col-span-4 md:col-span-4 col-span-12">
+                               <div id="referrals-chart" class="p-4 flex-shrink-0 px-0" style="min-height: 248.7px;"></div>
+                            </div>
+                            <div class="xl:col-span-4 md:col-span-4 col-span-12">
+                               <div id="tickets-chart" class="p-4 flex-shrink-0 px-0" style="min-height: 248.7px;"></div>
+                            </div>
+                            <div class="xl:col-span-4 md:col-span-4 col-span-12">
+                               <div id="items-chart" class="p-4 flex-shrink-0 px-0" style="min-height: 248.7px;"></div>
+                            </div>
+                         </div>
 
                         <div class="table-responsive overflow-x-auto overflow-y-visible table-bordered-default">
                            <table class="ti-custom-table text-nowrap min-w-full">
                               <thead>
                                  <tr>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10" rowspan="2">Usuario</th>
-                                    <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Total</th>
+                                     <th class="border-b border-defaultborder dark:border-defaultborder/10" rowspan="2">Usuario</th>
+                                     <th class="border-b border-defaultborder dark:border-defaultborder/10" rowspan="2"></th>
+                                     <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Total</th>
                                     <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Tickets</th>
                                     <th class="border-b border-defaultborder dark:border-defaultborder/10 text-center" colspan="2">Items</th>
                                     <th class="border-b border-defaultborder dark:border-defaultborder/10" rowspan="2">Variación</th>
@@ -105,9 +117,9 @@ require_once ROOT . '/controller/check_session.php';
       <script src="./assets/libs/jspdf-autotable/jspdf.plugin.autotable.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-      <script src="./assets/js/custom.js"></script>
+      <script src="./assets/js/custom.js?v=2"></script>
       <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
       <script src="./assets/js/xintra-tooltip.js?v=1.3"></script>
-      <script src="./assets/js/analytics-reporte.js?v=1.3"></script>
+      <script src="./assets/js/analytics-reporte.js?v=1.4"></script>
    </body>
 </html>

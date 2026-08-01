@@ -34,6 +34,34 @@ async function cargarUsuarios() {
     const maxTotal = Math.max(...currentTotals);
     const minTotal = Math.min(...currentTotals);
 
+    const getVariation = (u) => {
+      const totalActual = parseFloat(u.total_actual || 0);
+      const totalAnterior = parseFloat(u.total_anteriores || 0);
+
+      if (totalAnterior === 0 && totalActual > 0) return 100;
+      if (totalAnterior > 0) return ((totalActual - totalAnterior) / totalAnterior) * 100;
+      return 0;
+    };
+
+    const emojiByUser = new Map(
+      [...data]
+        .sort((a, b) => getVariation(b) - getVariation(a))
+        .map((u, rank, list) => {
+          let emoji = "😐";
+
+          if (rank === 0) {
+            emoji = "👑";
+          } else if (rank === list.length - 1) {
+            emoji = "😢";
+          } else {
+            const emojis = ["😊", "😐", "😡"];
+            emoji = emojis[Math.min(rank - 1, emojis.length - 1)];
+          }
+
+          return [u.usuario, { emoji, rank: rank + 1 }];
+        })
+    );
+
     // === Llenar tabla ===
     const tbody = document.querySelector(".ti-custom-table tbody");
     tbody.innerHTML = "";
@@ -51,12 +79,8 @@ async function cargarUsuarios() {
       if (totalActual === maxTotal) totalClass = "font-semibold text-success";
       else if (totalActual === minTotal) totalClass = "text-danger font-semibold";
 
-      let variation = 0;
-      if (totalAnterior === 0 && totalActual > 0) {
-        variation = 100;
-      } else if (totalAnterior > 0) {
-        variation = ((totalActual - totalAnterior) / totalAnterior) * 100;
-      }
+      const variation = getVariation(u);
+      const userEmoji = emojiByUser.get(u.usuario) || { emoji: "😐", rank: i + 1 };
 
       const tendenciaUp = variation >= 0;
       const badgeClass = tendenciaUp ? "bg-success" : "bg-danger";
@@ -69,6 +93,9 @@ async function cargarUsuarios() {
           <div class="text-[11px] text-textmuted dark:text-textmuted/50">
             ${formatMonth(u.mes_actual)} vs ${formatMonth(u.mes_anterior)}
           </div>
+        </td>
+        <td class="text-center text-lg leading-none">
+          <span class="performance-emoji" data-rank="${userEmoji.rank}">${userEmoji.emoji}</span>
         </td>
         ${tooltipCell(formatCurrency(totalActual), u.mes_actual, userColor, totalClass)}
         ${tooltipCell(formatCurrency(totalAnterior), u.mes_anterior, userColor)}
@@ -83,9 +110,9 @@ async function cargarUsuarios() {
 
     window.XintraTooltip.init(tbody);
 
-    // === Configurar gráfico DONUT ===
-    const options = {
-      series: data.map((u) => parseFloat(u.total_actual || 0)),
+    // === Configurar gráficos DONUT ===
+    const createDonutOptions = ({ series, title, formatter }) => ({
+      series,
       chart: {
         height: 290,
         type: "donut",
@@ -100,7 +127,7 @@ async function cargarUsuarios() {
       colors: userColors,
       tooltip: {
         y: {
-          formatter: (val) => formatCurrency(val),
+          formatter,
         },
       },
       plotOptions: {
@@ -116,35 +143,60 @@ async function cargarUsuarios() {
                 color: "#495057",
                 offsetY: -4,
               },
-              value: {
-                show: true,
-                fontSize: "16px",
-                offsetY: 8,
-                formatter: (val) => formatCurrency(val),
-              },
-              total: {
-                show: true,
-                showAlways: true,
-                label: "Total",
-                fontSize: "22px",
-                fontWeight: 600,
-                color: "#495057",
-                formatter: function (w) {
-                  const sum = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                  return formatCurrency(sum);
+                value: {
+                  show: true,
+                  fontSize: "16px",
+                  offsetY: 8,
+                  formatter,
                 },
-              },
+                total: {
+                  show: true,
+                  showAlways: true,
+                  label: title,
+                  fontSize: "22px",
+                  fontWeight: 600,
+                  color: "#495057",
+                  formatter: function (w) {
+                    const sum = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
+                    return formatter(sum);
+                  },
+                },
             },
           },
         },
       },
-    };
+    });
 
-    const chart = new ApexCharts(
+    const numberFormatter = (n) => Number(n).toLocaleString("es-PE", {
+      maximumFractionDigits: 0,
+    });
+
+    new ApexCharts(
       document.querySelector("#referrals-chart"),
-      options
-    );
-    chart.render();
+      createDonutOptions({
+        series: data.map((u) => parseFloat(u.total_actual || 0)),
+        title: "Total",
+        formatter: formatCurrency,
+      })
+    ).render();
+
+    new ApexCharts(
+      document.querySelector("#tickets-chart"),
+      createDonutOptions({
+        series: data.map((u) => parseFloat(u.tickets_actuales || 0)),
+        title: "Tickets",
+        formatter: numberFormatter,
+      })
+    ).render();
+
+    new ApexCharts(
+      document.querySelector("#items-chart"),
+      createDonutOptions({
+        series: data.map((u) => parseFloat(u.items_actuales || 0)),
+        title: "Items",
+        formatter: numberFormatter,
+      })
+    ).render();
   } catch (err) {
     console.error("Error al cargar usuarios:", err);
   }

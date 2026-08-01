@@ -313,7 +313,9 @@ fetch('controller/dashboard/apx_contadores.php')
           <td>
             <span class="font-medium top-category-name ${colorClass}">${usuario}</span>
           </td>
-          <td class="text-center text-lg leading-none">${emojiByUser.get(usuario) || "😐"}</td>
+          <td class="text-center text-lg leading-none">
+            <span class="performance-emoji" data-rank="${emojiByUser.get(usuario) === "👑" ? 1 : i + 1}">${emojiByUser.get(usuario) || "😐"}</span>
+          </td>
           <td ${window.XintraTooltip.attr(formatMonth(v.mes_actual), userColor)}>
             <span class="font-medium">${formatCurrency(actuales)}</span>
           </td>
