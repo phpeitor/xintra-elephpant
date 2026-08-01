@@ -258,7 +258,15 @@ async function cargarUsuarios() {
       grid: { borderColor: "#f1f1f1", strokeDashArray: 3 },
       xaxis: {
         title: { text: "Anterior" },
-        labels: { formatter: numberFormatter },
+        tickAmount: Math.min(6, Math.max(...data.map((u) => parseFloat(u.items_anteriores || 0)))),
+        decimalsInFloat: 0,
+        labels: {
+          rotate: 0,
+          hideOverlappingLabels: true,
+          trim: true,
+          formatter: numberFormatter,
+          style: { fontSize: "11px" },
+        },
       },
       yaxis: {
         title: { text: "Ultimo" },
