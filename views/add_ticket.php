@@ -10,7 +10,7 @@ require_once ROOT . '/controller/check_session.php';
       <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🐘</text></svg>" />
       <title>Xintra Elephant</title>
       <meta name="Description" content="Tailwind Responsive Admin Web Dashboard HTML5 Template">
-      <meta name="Author" content="Spruko Technologies Private Limited">
+      <meta name="Author" content="amvsoft.tech Technologies Private Limited">
       <meta name="keywords" content="tailwind template,tailwind dashboard,tailwind,tailwind admin template,dashboard,tailwind css templates,html dashboard template,tailwind dashboard template,dashboard tailwind,admin,html css templates,html dashboard,html css javascript templates,dashboard tailwind template,tailwind css dashboard">
       <script src="./assets/js/main.js"></script> 
       <link href="./assets/css/styles.css" rel="stylesheet">
@@ -263,7 +263,7 @@ require_once ROOT . '/controller/check_session.php';
       </div>
 
       <?php include ROOT . '/layout/scroll.php'; ?>
-      
+
       <script src="./assets/js/switch.js"></script>
       <script src="./assets/libs/@popperjs/core/umd/popper.min.js"></script>
       <script src="./assets/libs/preline/preline.js"></script>
