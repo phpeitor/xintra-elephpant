@@ -17,7 +17,7 @@ function parsePromoCodes(string $raw): array {
                 if (is_string($entry)) {
                     $code = strtoupper(trim($entry));
                     if ($code !== '') {
-                        $result[$code] = 10.0;
+                        $result[$code] = promoValueFromCode($code, 10.0);
                     }
                     continue;
                 }
@@ -27,7 +27,7 @@ function parsePromoCodes(string $raw): array {
                     if ($code === '') {
                         continue;
                     }
-                    $percent = (float)($entry['percent'] ?? $entry['porcentaje'] ?? 10);
+                    $percent = (float)($entry['percent'] ?? $entry['porcentaje'] ?? promoValueFromCode($code, 10.0));
                     if ($percent <= 0) {
                         $percent = 10.0;
                     }
@@ -41,7 +41,7 @@ function parsePromoCodes(string $raw): array {
     $parts = array_filter(array_map('trim', explode(',', $raw)));
     foreach ($parts as $part) {
         $code = $part;
-        $percent = 10.0;
+        $percent = promoValueFromCode($part, 10.0);
 
         if (str_contains($part, ':')) {
             [$rawCode, $rawPercent] = array_map('trim', explode(':', $part, 2));
@@ -59,6 +59,12 @@ function parsePromoCodes(string $raw): array {
     }
 
     return $result;
+}
+
+function promoValueFromCode(string $code, float $default): float {
+    return preg_match('/(\d+(?:\.\d+)?)$/', strtoupper(trim($code)), $match)
+        ? (float)$match[1]
+        : $default;
 }
 
 try {
@@ -84,13 +90,18 @@ try {
         exit;
     }
 
-    $percent = (float)$promoMap[$code];
-    $discount = round(max(0, $total) * ($percent / 100), 2);
+    $value = (float)$promoMap[$code];
+    $type = str_starts_with($code, 'DSCTO') ? 'fixed' : 'percent';
+    $discount = $type === 'fixed'
+        ? min(round($value, 2), max(0, $total))
+        : round(max(0, $total) * ($value / 100), 2);
 
     echo json_encode([
         'ok' => true,
         'code' => $code,
-        'percent' => $percent,
+        'type' => $type,
+        'value' => $value,
+        'percent' => $type === 'percent' ? $value : 0,
         'discount' => $discount,
     ]);
 } catch (Throwable $e) {

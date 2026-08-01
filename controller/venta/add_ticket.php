@@ -18,7 +18,7 @@ function parsePromoCodes(string $raw): array {
                 if (is_string($entry)) {
                     $code = strtoupper(trim($entry));
                     if ($code !== '') {
-                        $result[$code] = 10.0;
+                        $result[$code] = promoValueFromCode($code, 10.0);
                     }
                     continue;
                 }
@@ -28,7 +28,7 @@ function parsePromoCodes(string $raw): array {
                     if ($code === '') {
                         continue;
                     }
-                    $percent = (float)($entry['percent'] ?? $entry['porcentaje'] ?? 10);
+                    $percent = (float)($entry['percent'] ?? $entry['porcentaje'] ?? promoValueFromCode($code, 10.0));
                     if ($percent <= 0) {
                         $percent = 10.0;
                     }
@@ -42,7 +42,7 @@ function parsePromoCodes(string $raw): array {
     $parts = array_filter(array_map('trim', explode(',', $raw)));
     foreach ($parts as $part) {
         $code = $part;
-        $percent = 10.0;
+        $percent = promoValueFromCode($part, 10.0);
 
         if (str_contains($part, ':')) {
             [$rawCode, $rawPercent] = array_map('trim', explode(':', $part, 2));
@@ -60,6 +60,12 @@ function parsePromoCodes(string $raw): array {
     }
 
     return $result;
+}
+
+function promoValueFromCode(string $code, float $default): float {
+    return preg_match('/(\d+(?:\.\d+)?)$/', strtoupper(trim($code)), $match)
+        ? (float)$match[1]
+        : $default;
 }
 
 try {
@@ -91,8 +97,10 @@ try {
             throw new Exception('Código promocional no válido.');
         }
 
-        $percent = (float)$promoMap[$promoCode];
-        $dscto = round($totalItems * ($percent / 100), 2);
+        $value = (float)$promoMap[$promoCode];
+        $dscto = str_starts_with($promoCode, 'DSCTO')
+            ? min(round($value, 2), max(0, $totalItems))
+            : round($totalItems * ($value / 100), 2);
         $tipo_dscto = $promoCode;
     }
 

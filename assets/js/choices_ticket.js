@@ -266,6 +266,7 @@
 
   const promoState = {
     code: "",
+    type: "percent",
     percent: 0,
     applied: false,
     locked: false,
@@ -317,12 +318,14 @@
       return;
     }
 
-    if (!promoState.applied || promoState.percent <= 0) {
+    if (!promoState.applied) {
       setDiscountAmount(0);
       return;
     }
 
-    const amount = (promoState.baseTotal * promoState.percent) / 100;
+    const amount = promoState.type === "fixed"
+      ? Math.min(promoState.fixedAmount || 0, promoState.baseTotal || 0)
+      : (promoState.baseTotal * promoState.percent) / 100;
     setDiscountAmount(amount);
   }
 
@@ -332,6 +335,7 @@
     }
 
     promoState.code = "";
+    promoState.type = "percent";
     promoState.percent = 0;
     promoState.applied = false;
     promoState.fixedAmount = 0;
@@ -367,6 +371,7 @@
 
       if (!data.ok) {
         promoState.code = "";
+        promoState.type = "percent";
         promoState.percent = 0;
         promoState.applied = false;
         promoState.fixedAmount = 0;
@@ -378,15 +383,19 @@
       }
 
       promoState.code = data.code;
+      promoState.type = data.type === "fixed" ? "fixed" : "percent";
       promoState.percent = Number(data.percent) || 0;
       promoState.applied = true;
       promoState.locked = false;
-      promoState.fixedAmount = 0;
+      promoState.fixedAmount = promoState.type === "fixed" ? Number(data.discount) || 0 : 0;
 
       promoInput.value = promoState.code;
       syncPromoBadge();
       actualizarResumen();
-      alertify.success(`Código ${promoState.code} aplicado (${promoState.percent}%).`);
+      const promoLabel = promoState.type === "fixed"
+        ? `S/. ${(promoState.fixedAmount || 0).toFixed(2)}`
+        : `${promoState.percent}%`;
+      alertify.success(`Código ${promoState.code} aplicado (${promoLabel}).`);
     } catch (error) {
       console.error("Error validando promo code:", error);
       alertify.error("No se pudo validar el código promocional.");
@@ -408,6 +417,7 @@
 
   window.lockPromoForEdit = function (code, amount) {
     promoState.code = (code || "").trim().toUpperCase();
+    promoState.type = "fixed";
     promoState.percent = 0;
     promoState.applied = false;
     promoState.locked = true;
@@ -593,8 +603,8 @@
 
     const subtotal = total / 1.18; 
     const igv = total - subtotal;  
-    const descuentoActual = promoState.locked
-      ? promoState.fixedAmount || 0
+    const descuentoActual = promoState.locked || promoState.type === "fixed"
+      ? Math.min(promoState.fixedAmount || 0, total)
       : (promoState.applied && promoState.percent > 0)
         ? (total * promoState.percent) / 100
         : 0;
