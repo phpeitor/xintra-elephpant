@@ -288,25 +288,12 @@ require_once ROOT . '/controller/check_session.php';
                </div>
             </div>
          </div>
-         <!-- END MAINCONTENT --> 
-         <footer class="mt-auto py-4 bg-white dark:bg-bodybg text-center border-t border-defaultborder dark:border-defaultborder/10">
-            <div class="container"> <span class="text-textmuted dark:text-textmuted/50"> Copyright © <span id="year">2025</span> <a href="javascript:void(0);" class="text-dark font-medium">Xintra</a>. Designed with <span class="text-danger">❤</span> by <a href="https://www.instagram.com/amvsoft.tech/" target="_blank"> <span class="font-medium text-primary">AMV</span> </a> All rights reserved </span> </div>
-         </footer>
-         <div class="hs-overlay ti-modal hidden" id="header-responsive-search" tabindex="-1" aria-labelledby="header-responsive-search">
-            <div class="ti-modal-box">
-               <div class="ti-modal-dialog">
-                  <div class="ti-modal-content">
-                     <div class="ti-modal-body">
-                        <div class="input-group"> <input type="text" class="form-control border-end-0 !border-s" placeholder="Search Anything ..." aria-label="Search Anything ..." aria-describedby="button-addon2"> <button aria-label="button" class="ti-btn ti-btn-primary !m-0" type="button" id="button-addon2"><i class="bi bi-search"></i></button> </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </div>
+    
+         <?php include ROOT . '/layout/footer.php'; ?>
       </div>
-      <!-- Scroll To Top --> 
-      <div class="scrollToTop" style="display: flex;"> <span class="arrow"><i class="ti ti-arrow-narrow-up text-xl"></i></span> </div>
-      <div id="responsive-overlay"></div>
+
+      <?php include ROOT . '/layout/scroll.php'; ?>
+
       <script src="./assets/js/switch.js"></script>
       <script src="./assets/libs/@popperjs/core/umd/popper.min.js"></script>
       <script src="./assets/libs/preline/preline.js"></script>
@@ -327,69 +314,5 @@ require_once ROOT . '/controller/check_session.php';
       <script src="./assets/js/datatables_user.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
       <script src="./assets/js/custom.js"></script>
-      <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
-         <div class="pcr-selection">
-            <div class="pcr-color-preview">
-               <button type="button" class="pcr-last-color" aria-label="use previous color" style="--pcr-color: rgba(92, 103, 247, 1);"></button>
-               <div class="pcr-current-color" style="--pcr-color: rgba(92, 103, 247, 1);"></div>
-            </div>
-            <div class="pcr-color-palette">
-               <div class="pcr-picker" style="left: calc(62.753% - 9px); top: calc(3.13725% - 9px); background: rgb(92, 103, 247);"></div>
-               <div class="pcr-palette" tabindex="0" aria-label="color selection area" role="listbox" style="background: linear-gradient(to top, rgb(0, 0, 0), transparent), linear-gradient(to left, rgb(0, 18, 255), rgb(255, 255, 255));"></div>
-            </div>
-            <div class="pcr-color-chooser">
-               <div class="pcr-picker" style="left: calc(65.4839% - 9px); background-color: rgb(0, 18, 255);"></div>
-               <div class="pcr-hue pcr-slider" tabindex="0" aria-label="hue selection slider" role="slider"></div>
-            </div>
-            <div class="pcr-color-opacity" style="display:none" hidden="">
-               <div class="pcr-picker"></div>
-               <div class="pcr-opacity pcr-slider" tabindex="0" aria-label="selection slider" role="slider"></div>
-            </div>
-         </div>
-         <div class="pcr-swatches "></div>
-         <div class="pcr-interaction">
-            <input class="pcr-result" type="text" spellcheck="false" aria-label="color input field">
-            <input class="pcr-type" data-type="HEXA" value="HEXA" type="button" style="display:none" hidden="">
-            <input class="pcr-type active" data-type="RGBA" value="RGBA" type="button">
-            <input class="pcr-type" data-type="HSLA" value="HSLA" type="button" style="display:none" hidden="">
-            <input class="pcr-type" data-type="HSVA" value="HSVA" type="button" style="display:none" hidden="">
-            <input class="pcr-type" data-type="CMYK" value="CMYK" type="button" style="display:none" hidden="">
-            <input class="pcr-save" value="Save" type="button" style="display:none" hidden="" aria-label="save and close">
-            <input class="pcr-cancel" value="Cancel" type="button" style="display:none" hidden="" aria-label="cancel and close">
-            <input class="pcr-clear" value="Clear" type="button" style="display:none" hidden="" aria-label="clear and close">
-         </div>
-      </div>
-      <div class="pcr-app " data-theme="nano" aria-label="color picker dialog" role="window" style="left: 0px; top: 8px;">
-         <div class="pcr-selection">
-            <div class="pcr-color-preview">
-               <button type="button" class="pcr-last-color" aria-label="use previous color" style="--pcr-color: rgba(92, 103, 247, 1);"></button>
-               <div class="pcr-current-color" style="--pcr-color: rgba(92, 103, 247, 1);"></div>
-            </div>
-            <div class="pcr-color-palette">
-               <div class="pcr-picker" style="left: calc(62.753% - 9px); top: calc(3.13725% - 9px); background: rgb(92, 103, 247);"></div>
-               <div class="pcr-palette" tabindex="0" aria-label="color selection area" role="listbox" style="background: linear-gradient(to top, rgb(0, 0, 0), transparent), linear-gradient(to left, rgb(0, 18, 255), rgb(255, 255, 255));"></div>
-            </div>
-            <div class="pcr-color-chooser">
-               <div class="pcr-picker" style="left: calc(65.4839% - 9px); background-color: rgb(0, 18, 255);"></div>
-               <div class="pcr-hue pcr-slider" tabindex="0" aria-label="hue selection slider" role="slider"></div>
-            </div>
-            <div class="pcr-color-opacity" style="display:none" hidden="">
-               <div class="pcr-picker"></div>
-               <div class="pcr-opacity pcr-slider" tabindex="0" aria-label="selection slider" role="slider"></div>
-            </div>
-         </div>
-         <div class="pcr-swatches "></div>
-         <div class="pcr-interaction">
-            <input class="pcr-result" type="text" spellcheck="false" aria-label="color input field">
-            <input class="pcr-type" data-type="HEXA" value="HEXA" type="button" style="display:none" hidden="">
-            <input class="pcr-type active" data-type="RGBA" value="RGBA" type="button">
-            <input class="pcr-type" data-type="HSLA" value="HSLA" type="button" style="display:none" hidden="">
-            <input class="pcr-type" data-type="HSVA" value="HSVA" type="button" style="display:none" hidden="">
-            <input class="pcr-type" data-type="CMYK" value="CMYK" type="button" style="display:none" hidden="">
-            <input class="pcr-save" value="Save" type="button" style="display:none" hidden="" aria-label="save and close">
-            <input class="pcr-cancel" value="Cancel" type="button" style="display:none" hidden="" aria-label="cancel and close">
-            <input class="pcr-clear" value="Clear" type="button" style="display:none" hidden="" aria-label="clear and close">
-         </div>
-      </div>
    </body>
 </html>

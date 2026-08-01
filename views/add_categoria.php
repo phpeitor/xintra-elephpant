@@ -9,53 +9,26 @@ require_once ROOT . '/controller/check_session.php';
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🐘</text></svg>" />
   <title>Xintra Elephant</title>
-  <script src="./assets/js/main.js"></script>
+  <script src="./assets/js/main.js"></script> 
   <link href="./assets/css/styles.css" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
+  <link rel="stylesheet" href="./assets/libs/@simonwep/pickr/themes/nano.min.css">
+  <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
+  <link rel="stylesheet" href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css">
+  <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
+  <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
+  <meta http-equiv="imagetoolbar" content="no">
 </head>
 <body>
-  <div id="loader" class="loader-disable"> <img src="./assets/images/media/loader.svg" alt=""> </div>
-  <div class="page">
-    <header class="app-header sticky sticky-pin" id="header">
-      <div class="main-header-container container-fluid">
-        <div class="header-content-left">
-          <div class="header-element"><div class="horizontal-logo"><a href="index.php" class="header-logo"><img src="./assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo"></a></div></div>
-          <div class="header-element mx-lg-0"><a aria-label="Hide Sidebar" class="sidemenu-toggle header-link animated-arrow hor-toggle horizontal-navtoggle" data-bs-toggle="sidebar" href="javascript:void(0);"><span></span></a></div>
-        </div>
-        <?php include ROOT . '/layout/navbar.php'; ?>
-      </div>
-    </header>
+  <?php include ROOT . '/layout/init.php'; ?>
 
-    <aside class="app-sidebar sticky-pin" id="sidebar">
-      <div class="main-sidebar-header"> <a href="index.php" class="header-logo"> <img src="./assets/images/brand-logos/desktop-logo.png" alt="logo" class="desktop-logo"> <img src="./assets/images/brand-logos/toggle-dark.png" alt="logo" class="toggle-dark"> <img src="./assets/images/brand-logos/desktop-dark.png" alt="logo" class="desktop-dark"> <img src="./assets/images/brand-logos/toggle-logo.png" alt="logo" class="toggle-logo"> <img src="./assets/images/brand-logos/toggle-white.png" alt="logo" class="toggle-white"> <img src="./assets/images/brand-logos/desktop-white.png" alt="logo" class="desktop-white"> </a> </div>
-      <div class="main-sidebar" id="sidebar-scroll" data-simplebar="init">
-        <div class="simplebar-wrapper" style="margin: -8px 0px -80px;">
-          <div class="simplebar-height-auto-observer-wrapper">
-            <div class="simplebar-height-auto-observer"></div>
-          </div>
-          <div class="simplebar-mask">
-            <div class="simplebar-offset" style="right: 0px; bottom: 0px;">
-              <div class="simplebar-content-wrapper" tabindex="0" role="region" aria-label="scrollable content" style="height: 100%; overflow: hidden scroll;">
-                <div class="simplebar-content" style="padding: 8px 0px 80px;">
-                  <?php include ROOT . '/layout/menu.php'; ?>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="simplebar-placeholder" style="width: auto; height: 1210px;"></div>
-        </div>
-        <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
-          <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
-        </div>
-        <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
-          <div class="simplebar-scrollbar" style="height: 42px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
-        </div>
-      </div>
-    </aside>
+  <div class="page">
+    <?php include ROOT . '/layout/header.php'; ?>
+    <?php include ROOT . '/layout/sidebar.php'; ?>
 
     <div class="main-content app-content">
       <div class="container-fluid">
@@ -102,22 +75,23 @@ require_once ROOT . '/controller/check_session.php';
       </div>
     </div>
 
-    <footer class="mt-auto py-4 bg-white dark:bg-bodybg text-center border-t border-defaultborder dark:border-defaultborder/10">
-      <div class="container"><span class="text-textmuted dark:text-textmuted/50">Copyright © <span id="year">2026</span> Xintra.</span></div>
-    </footer>
+  <?php include ROOT . '/layout/footer.php'; ?>
   </div>
 
-    <div class="scrollToTop" style="display: flex;"> <span class="arrow"><i class="ti ti-arrow-narrow-up text-xl"></i></span> </div>
-    <div id="responsive-overlay"></div>
+  <?php include ROOT . '/layout/scroll.php'; ?>
+
   <script src="./assets/js/switch.js"></script>
   <script src="./assets/libs/@popperjs/core/umd/popper.min.js"></script>
   <script src="./assets/libs/preline/preline.js"></script>
-  <script src="./assets/js/defaultmenu.min.js"></script>
+  <script src="./assets/js/defaultmenu.min.js"> </script>
   <script src="./assets/libs/node-waves/waves.min.js"></script>
   <script src="./assets/js/sticky.js"></script>
   <script src="./assets/libs/simplebar/simplebar.min.js"></script>
   <script src="./assets/js/simplebar.js"></script>
+  <script src="./assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
+  <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
   <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
+  <script src="./assets/js/custom-switcher.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
   <script src="./assets/js/form-validation.js"></script>
   <script src="./assets/js/custom.js"></script>
