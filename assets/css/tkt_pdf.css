@@ -1,0 +1,304 @@
+@page {
+  margin: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  width: 80mm;
+  margin: 0;
+  padding: 0;
+  color: #111;
+  background: #fff;
+  font-family: DejaVu Sans, Arial, sans-serif;
+  line-height: 1.05;
+}
+
+.ticket {
+  position: relative;
+  width: 78mm;
+  margin: 0 auto;
+  padding: 2.2mm 2.6mm 3mm;
+  overflow: hidden;
+}
+
+.ticket:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border: .28mm dashed #111;
+}
+
+.stub {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 6mm;
+  height: 100%;
+  background: #fafafa;
+  border-left: .22mm dashed #111;
+}
+
+.stub-title {
+  position: absolute;
+  top: 14mm;
+  right: -17mm;
+  width: 43mm;
+  text-align: center;
+  font-family: Georgia, serif;
+  font-size: 6.8px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  transform: rotate(90deg);
+}
+
+.stub-number {
+  position: absolute;
+  top: 50mm;
+  right: -14.5mm;
+  width: 38mm;
+  text-align: center;
+  font-size: 4.8px;
+  letter-spacing: .5px;
+  transform: rotate(90deg);
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  width: 67mm;
+}
+
+.topline {
+  margin-bottom: .5mm;
+  text-align: center;
+  font-size: 5.3px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.brand {
+  text-align: center;
+}
+
+.logo-img {
+  display: block;
+  width: 11mm;
+  height: 11mm;
+  margin: 0 auto .2mm;
+  object-fit: contain;
+}
+
+.admit {
+  font-family: Georgia, serif;
+  font-size: 7.7px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-top: .2mm;
+  font-family: Georgia, serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: .9;
+}
+
+.subtitle {
+  margin-top: .4mm;
+  font-size: 5.5px;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+}
+
+.meta-card {
+  margin-top: 2mm;
+  padding: 1.3mm 1.6mm;
+  border: .3mm solid #111;
+  background: #fafafa;
+}
+
+.meta-row {
+  display: table;
+  width: 100%;
+  margin-bottom: .65mm;
+  font-size: 5.8px;
+}
+
+.meta-row:last-child {
+  margin-bottom: 0;
+}
+
+.meta-label {
+  display: table-cell;
+  width: 16mm;
+  color: #555;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+}
+
+.meta-value {
+  display: table-cell;
+  text-align: right;
+  font-weight: 700;
+}
+
+.section-label {
+  margin-top: 2mm;
+  padding-bottom: .65mm;
+  border-bottom: .3mm solid #111;
+  font-size: 5.8px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+table {
+  width: 100%;
+  margin-top: .7mm;
+  border-collapse: collapse;
+  font-size: 5.65px;
+}
+
+th {
+  padding: 0 0 .45mm;
+  border-bottom: .2mm solid #999;
+  text-align: left;
+  font-size: 5.25px;
+  letter-spacing: .5px;
+}
+
+td {
+  padding: .55mm 0;
+  border-bottom: .18mm solid #ddd;
+  vertical-align: top;
+}
+
+.item {
+  width: 36mm;
+  font-weight: 700;
+}
+
+.money {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.qty {
+  width: 4mm;
+  text-align: center;
+}
+
+.totals {
+  width: 34mm;
+  margin: 1.5mm 0 1.6mm auto;
+  font-size: 5.8px;
+}
+
+.total-row {
+  display: table;
+  width: 100%;
+  padding: .25mm 0;
+}
+
+.total-row span {
+  display: table-cell;
+}
+
+.total-row span:last-child {
+  text-align: right;
+  font-weight: 700;
+}
+
+.grand {
+  margin-top: .4mm;
+  padding-top: .65mm;
+  border-top: .3mm solid #111;
+  font-size: 7px;
+  font-weight: 700;
+}
+
+.barcode-wrap {
+  width: 45mm;
+  margin-top: 12mm;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 1mm .9mm .8mm;
+  border: .1mm solid #272727;
+  text-align: center;
+}
+
+.barcode {
+  height: 6.5mm;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.bar,
+.gap {
+  display: inline-block;
+  height: 6.5mm;
+  vertical-align: top;
+}
+
+.bar {
+  background: #333333;
+}
+
+.narrow {
+  width: .15mm;
+}
+
+.wide {
+  width: .45mm;
+}
+
+.char-gap {
+  width: .16mm;
+}
+
+.barcode-label {
+  margin-top: .45mm;
+  font-size: 4.7px;
+  letter-spacing: .1px;
+  line-height: 1.2;
+  word-break: break-all;
+}
+
+.footer {
+  margin-top: 1.4mm;
+  text-align: center;
+  font-size: 5.7px;
+  letter-spacing: .9px;
+  text-transform: uppercase;
+}
+
+.website {
+  margin-top: .8mm;
+  text-align: center;
+  font-size: 5.4px;
+  letter-spacing: .35px;
+}
+
+.pixel {
+  position: absolute;
+  width: 2.2mm;
+  height: 2.2mm;
+  background: #e0e0dc;
+  opacity: .9;
+}
+
+.p1 { left: 2.8mm; bottom: 3.2mm; }
+.p2 { left: 5.2mm; bottom: 5.5mm; }
+.p3 { left: 7.6mm; bottom: 3.2mm; }
+.p4 { right: 6.5mm; bottom: 3.4mm; }
+.p5 { right: 8.9mm; bottom: 5.8mm; }
+.p6 { right: 11.3mm; bottom: 3.4mm; }

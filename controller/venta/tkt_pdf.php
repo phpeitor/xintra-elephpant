@@ -6,7 +6,7 @@ use Dompdf\Dompdf;
 use Dompdf\Options;
 
 if (!isset($_GET['hash']) || strlen($_GET['hash']) !== 32) {
-    die('Hash no válido.');
+    die('Hash no valido.');
 }
 
 $hash = $_GET['hash'];
@@ -16,7 +16,7 @@ $data     = $ticket->obtenerPorHash($hash);
 $detalles = $ticket->obtenerDetallePorHash($hash);
 
 if (!$data) {
-    die('No se encontró el ticket.');
+    die('No se encontro el ticket.');
 }
 
 $options = new Options();
@@ -30,10 +30,9 @@ $logoBase64 = '';
 if (!$logoFs) {
     $logoPath = __DIR__ . '/../../assets/images/brand-logos/logo.png';
     if (is_file($logoPath)) {
-
         $ch = curl_init();
         curl_setopt_array($ch, [
-            CURLOPT_URL => "file://" . $logoPath,
+            CURLOPT_URL => 'file://' . $logoPath,
             CURLOPT_RETURNTRANSFER => true,
         ]);
         $imageData = curl_exec($ch);
@@ -45,10 +44,51 @@ if (!$logoFs) {
         curl_close($ch);
     }
 }
-$logoSrc = $logoFs ?: $logoBase64; 
 
-$logoTag = $logoSrc !== '' ? "<img src='" . $logoSrc . "' class='logo-img' />" : '';
-$detalles  = is_array($detalles) ? $detalles : [];
+$e = function ($value) {
+    return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8');
+};
+
+$logoSrc = $logoFs ?: $logoBase64;
+$logoTag = $logoSrc !== '' ? "<img src='" . $e($logoSrc) . "' class='logo-img' />" : '';
+$detalles = is_array($detalles) ? $detalles : [];
+
+$barcode39 = function ($value, $label = null) use ($e) {
+    $patterns = [
+        '0' => 'nnnwwnwnn', '1' => 'wnnwnnnnw', '2' => 'nnwwnnnnw', '3' => 'wnwwnnnnn',
+        '4' => 'nnnwwnnnw', '5' => 'wnnwwnnnn', '6' => 'nnwwwnnnn', '7' => 'nnnwnnwnw',
+        '8' => 'wnnwnnwnn', '9' => 'nnwwnnwnn', 'A' => 'wnnnnwnnw', 'B' => 'nnwnnwnnw',
+        'C' => 'wnwnnwnnn', 'D' => 'nnnnwwnnw', 'E' => 'wnnnwwnnn', 'F' => 'nnwnwwnnn',
+        'G' => 'nnnnnwwnw', 'H' => 'wnnnnwwnn', 'I' => 'nnwnnwwnn', 'J' => 'nnnnwwwnn',
+        'K' => 'wnnnnnnww', 'L' => 'nnwnnnnww', 'M' => 'wnwnnnnwn', 'N' => 'nnnnwnnww',
+        'O' => 'wnnnwnnwn', 'P' => 'nnwnwnnwn', 'Q' => 'nnnnnnwww', 'R' => 'wnnnnnwwn',
+        'S' => 'nnwnnnwwn', 'T' => 'nnnnwnwwn', 'U' => 'wwnnnnnnw', 'V' => 'nwwnnnnnw',
+        'W' => 'wwwnnnnnn', 'X' => 'nwnnwnnnw', 'Y' => 'wwnnwnnnn', 'Z' => 'nwwnwnnnn',
+        '-' => 'nwnnnnwnw', '.' => 'wwnnnnwnn', ' ' => 'nwwnnnwnn', '$' => 'nwnwnwnnn',
+        '/' => 'nwnwnnnwn', '+' => 'nwnnnwnwn', '%' => 'nnnwnwnwn', '*' => 'nwnnwnwnn',
+    ];
+
+    $value = strtoupper(preg_replace('/[^0-9A-Z\. \-\/\+\$%]/', '', (string)$value));
+    $value = $value !== '' ? '*' . $value . '*' : '*TICKET*';
+    $html = '';
+
+    for ($i = 0, $len = strlen($value); $i < $len; $i++) {
+        $pattern = $patterns[$value[$i]] ?? $patterns['-'];
+        for ($j = 0; $j < 9; $j++) {
+            $widthClass = $pattern[$j] === 'w' ? 'wide' : 'narrow';
+            if ($j % 2 === 0) {
+                $html .= "<span class='bar {$widthClass}'></span>";
+            } else {
+                $html .= "<span class='gap {$widthClass}'></span>";
+            }
+        }
+        $html .= "<span class='gap char-gap'></span>";
+    }
+
+    $label = $label ?? trim($value, '*');
+
+    return "<div class='barcode'>{$html}</div><div class='barcode-label'>" . $e($label) . '</div>';
+};
 
 $sumItems = 0.0;
 foreach ($detalles as $d) {
@@ -59,103 +99,86 @@ $total    = round($sumItems, 2);
 $subtotal = round($total / 1.18, 2);
 $igv      = round($total - $subtotal, 2);
 $fmtSubtotal = number_format($subtotal, 2, '.', ',');
-$fmtIgv      = number_format($igv,      2, '.', ',');
-$fmtTotal    = number_format($total,    2, '.', ',');
+$fmtIgv      = number_format($igv, 2, '.', ',');
+$fmtTotal    = number_format($total, 2, '.', ',');
 
-/* -------- HTML -------- */
-$html  = '';
-$html .= '
+$barcodeValue = strtoupper(substr($hash, 0, 16));
+$mainBarcode = $barcode39($barcodeValue, $hash);
+$paperHeightMm = max(180, 88 + (count($detalles) * 4.6));
+$paperHeightPt = $paperHeightMm * 2.83465;
+$cssPath = realpath(__DIR__ . '/../../assets/css/tkt_pdf.css');
+$cssHref = $cssPath ? 'file://' . str_replace('\\', '/', $cssPath) : '';
+
+$html = '
 <html>
 <head>
-<meta charset=\'UTF-8\'>
+<meta charset="UTF-8">
 <title>Xintra PDF</title>
-<style>
-@page { margin: 0 }
-body{ margin:0; padding:0; width:80mm; font-family: Arial, sans-serif; font-size:9px; position:relative; line-height:1.2; }
-.pos{ position:absolute; }
-h1,h2,h3,p,div{ margin:0; }
-.logo-img{ position:absolute; top:9mm; left:32mm; width:16mm; height:16mm; object-fit:contain; z-index:1; }
-.linea{ position:absolute; left:3mm; width:74mm; border-top:.3px dashed #000; }
-.texto{ font-size:8px; }
-.col-item{ left:3mm;  width:36mm; box-sizing:border-box; overflow:hidden; white-space:nowrap; }
-.col-pu  { left:39mm; width:16mm; text-align:left;  box-sizing:border-box; } 
-.col-cant{ left:55mm; width:6mm;  text-align:left;  box-sizing:border-box; } 
-.col-sub { left:62mm; width:14mm; text-align:left;  box-sizing:border-box; } 
-.gracias{
-  position:absolute;
-  letter-spacing:1.2px;     
-  word-spacing:3px;       
-  padding:2mm 4mm;
-  text-align:center;
-}
-</style>
+<link rel="stylesheet" href="' . $e($cssHref) . '">
 </head>
-<body>
-';
-
-$html .= $logoTag;
+<body>';
 
 $html .= "
-<div class='pos' style='top:22mm; left:8mm; font-weight:bold; z-index:2;'>*** TICKET DE VENTA EXPRESS ***</div>
-<div class='pos texto' style='top:25.2mm; left:8mm; z-index:2;'>BLACK WHITE BARBERÍA SALÓN</div>
-<div class='pos texto' style='top:27.4mm; left:8mm; z-index:2;'>LAMBAYEQUE - PERÚ</div>
+<div class='ticket'>
+    <div class='stub'>
+        <div class='stub-title'>XINTRA AMVSOFT</div>
+        <div class='stub-number'>NRO " . $e($data['id'] ?? '') . ' - ' . $e($data['fecha'] ?? '') . "</div>
+    </div>
+    <div class='pixel p1'></div><div class='pixel p2'></div><div class='pixel p3'></div>
+    <div class='pixel p4'></div><div class='pixel p5'></div><div class='pixel p6'></div>
+    <div class='content'>
+        <div class='topline'>Black White Barberia Salon</div>
+        <div class='brand'>
+            {$logoTag}
+            <div class='admit'>Ticket de Venta</div>
+            <div class='title'>TICKET</div>
+            <div class='subtitle'>Lambayeque - Peru</div>
+        </div>
+        <div class='meta-card'>
+            <div class='meta-row'><span class='meta-label'>Numero</span><span class='meta-value'>" . $e($data['id'] ?? '') . "</span></div>
+            <div class='meta-row'><span class='meta-label'>Usuario</span><span class='meta-value'>" . $e($data['user'] ?? '') . "</span></div>
+            <div class='meta-row'><span class='meta-label'>Cliente</span><span class='meta-value'>" . $e($data['cliente_nombre'] ?? '') . "</span></div>
+            <div class='meta-row'><span class='meta-label'>Fecha</span><span class='meta-value'>" . $e($data['fecha'] ?? '') . "</span></div>
+        </div>
+        <div class='section-label'>Detalle</div>
+        <table>
+            <thead>
+                <tr><th>ITEM</th><th class='money'>P.U</th><th class='qty'>#</th><th class='money'>IMP.</th></tr>
+            </thead>
+            <tbody>";
 
-<div class='linea' style='top:30.5mm;'></div>
-
-<div class='pos texto' style='top:36mm; left:3mm;'>Número:</div>
-<div class='pos texto' style='top:36mm; left:20mm;'>{$data['id']}</div>
-
-<div class='pos texto' style='top:39mm; left:3mm;'>Usuario:</div>
-<div class='pos texto' style='top:39mm; left:20mm;'>{$data['user']}</div>
-
-<div class='pos texto' style='top:42mm; left:3mm;'>Cliente:</div>
-<div class='pos texto' style='top:42mm; left:20mm;'>{$data['cliente_nombre']}</div>
-
-<div class='pos texto' style='top:45mm; left:3mm;'>Fecha:</div>
-<div class='pos texto' style='top:45mm; left:20mm;'>{$data['fecha']}</div>
-
-<div class='linea' style='top:48mm;'></div>
-
-<div class='pos texto' style='top:51mm; left:3mm;  font-weight:bold;'>ITEM</div>
-<div class='pos texto' style='top:51mm; left:39mm; font-weight:bold;'>P.U</div>  <!-- antes 40mm -->
-<div class='pos texto' style='top:51mm; left:55mm; font-weight:bold;'>#</div>
-<div class='pos texto' style='top:51mm; left:62mm; font-weight:bold;'>IMP.</div> <!-- antes 63mm -->
-";
-
-$y = 54;
 foreach ($detalles as $d) {
-    $item     = $d['item']    ?? '';
-    $precio   = number_format((float)($d['precio']   ?? 0), 2, '.', ',');
+    $item     = $e($d['item'] ?? '');
+    $precio   = number_format((float)($d['precio'] ?? 0), 2, '.', ',');
     $cantidad = (int)($d['cantidad'] ?? 0);
     $subfila  = number_format((float)($d['subtotal'] ?? 0), 2, '.', ',');
 
     $html .= "
-    <div class='pos texto col-item' style='top: {$y}mm;'>{$item}</div>
-    <div class='pos texto col-pu'   style='top: {$y}mm;'>S/ {$precio}</div>
-    <div class='pos texto col-cant' style='top: {$y}mm;'>{$cantidad}</div>
-    <div class='pos texto col-sub'  style='top: {$y}mm;'>S/ {$subfila}</div>";
-    $y += 3;
+                <tr>
+                    <td class='item'>{$item}</td>
+                    <td class='money'>S/ {$precio}</td>
+                    <td class='qty'>{$cantidad}</td>
+                    <td class='money'>S/ {$subfila}</td>
+                </tr>";
 }
 
 $html .= "
-<div class='linea' style='top: " . ($y + 2) . "mm;'></div>
-
-<div class='pos texto' style='top: " . ($y + 5)  . "mm; left:45mm;'>Subtotal:</div>
-<div class='pos texto' style='top: " . ($y + 5)  . "mm; left:63mm;'>S/ {$fmtSubtotal}</div>
-
-<div class='pos texto' style='top: " . ($y + 8)  . "mm; left:45mm;'>IGV:</div>
-<div class='pos texto' style='top: " . ($y + 8)  . "mm; left:63mm;'>S/ {$fmtIgv}</div>
-
-<div class='pos texto' style='top: " . ($y + 11) . "mm; left:45mm; font-weight:bold;'>Total Venta:</div>
-<div class='pos texto' style='top: " . ($y + 11) . "mm; left:63mm; font-weight:bold;'>S/ {$fmtTotal}</div>
-
-<div class='pos texto' style='top: " . ($y + 17) . "mm; left:15mm;'><!-- espacio reservado --></div>
-<div class='gracias' style='top: " . ($y + 17) . "mm; left:14mm;'>Gracias por su preferencia...</div>
+            </tbody>
+        </table>
+        <div class='totals'>
+            <div class='total-row'><span>Subtotal</span><span>S/ {$fmtSubtotal}</span></div>
+            <div class='total-row'><span>IGV</span><span>S/ {$fmtIgv}</span></div>
+            <div class='total-row grand'><span>Total</span><span>S/ {$fmtTotal}</span></div>
+        </div>
+        <div class='barcode-wrap'>{$mainBarcode}</div>
+        <div class='footer'>Gracias por su preferencia</div>
+        <div class='website'>www.sales.metadatape.com</div>
+    </div>
+</div>
 </body></html>";
 
-/* -------- Render -------- */
 $dompdf->loadHtml($html);
-$dompdf->setPaper([0, 0, 226.77, 566.93]); 
+$dompdf->setPaper([0, 0, 226.77, $paperHeightPt]);
 $dompdf->render();
 $dompdf->stream('ticket_' . $data['id'] . '.pdf', ['Attachment' => false]);
 exit;
