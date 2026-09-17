@@ -28,7 +28,8 @@ form {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.82);
+  transform-origin: center center;
   display: block;
   width: 100%;
   max-width: 400px;
@@ -39,6 +40,12 @@ form {
   border: solid 1px #DDD;
   border-radius: 0.5em;
   font-family: "Source Sans Pro", sans-serif;
+}
+
+@media (max-height: 850px) {
+  form {
+    transform: translate(-50%, -50%) scale(0.76);
+  }
 }
 form .svgContainer {
   position: relative;

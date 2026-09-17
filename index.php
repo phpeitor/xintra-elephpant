@@ -18,14 +18,14 @@ $turnstileSiteKey = $_ENV['TURNSTILE_SITE_KEY'] ?? '';
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-  <link rel="stylesheet" href="./assets/css/loginstyle.css">
+   <link rel="stylesheet" href="./assets/css/loginstyle.css?v=2">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 <video autoplay loop muted playsinline id="background-video">
-	<source src="./assets/resources/video.mp4" type="video/mp4">
+	<source src="./assets/resources/video3.mp4" type="video/mp4">
 	Tu navegador no soporta la reproducción de video.
 </video>
 <form>
