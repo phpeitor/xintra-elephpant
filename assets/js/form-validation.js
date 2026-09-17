@@ -326,6 +326,18 @@
       const u = json.data;
       const detalle = json.detalle || [];
 
+      const ticketIdInput = document.querySelector("#ticket-id");
+      if (ticketIdInput) ticketIdInput.textContent = u.id || "-";
+
+      const ticketCreatedAtInput = document.querySelector("#ticket-created-at");
+      if (ticketCreatedAtInput) {
+        const registrationDate = String(u.fecha_registro || "");
+        const match = registrationDate.match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})/);
+        ticketCreatedAtInput.textContent = match
+          ? `${match[3]}/${match[2]}/${match[1]} ${match[4]}:${match[5]}:${match[6]}`
+          : (registrationDate || "-");
+      }
+
       if (window.itemChoices?.clienteInstance) {
         setChoiceValueWhenReady(window.itemChoices.clienteInstance, u.cliente);
       }

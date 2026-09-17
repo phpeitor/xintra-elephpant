@@ -57,11 +57,11 @@
                     const id = row.id;
                     const idHash = md5(id.toString());
                     return `
-                    <div style="display:flex;gap:.5rem;justify-content:center;">
+                    <div style="display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;">
                         <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
                             <i class="ri-edit-2-line"></i>
                         </button>
-                        <button class="btn-pdf ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave me-5 waves-effect waves-light" data-id="${idHash}">
+                        <button class="btn-pdf ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
                             <i class="ri-file-pdf-2-line"></i>
                         </button>
                     </div>`;

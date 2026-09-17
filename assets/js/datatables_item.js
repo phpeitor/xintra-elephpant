@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         `;
                     }
 
-                    return `<div style="display:flex;gap:.5rem;justify-content:center;">${buttons}</div>`;
+                    return `<div style="display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;">${buttons}</div>`;
                 },
                 cellClick: function (e, cell) {
                     const row = cell.getRow().getData();

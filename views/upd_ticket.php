@@ -44,7 +44,14 @@ require_once ROOT . '/controller/check_session.php';
                      </nav>
                      <h1 class="page-title font-medium text-lg mb-0">Editar Ticket</h1>
                   </div>
-                  <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='tickets.php'"> <i class="ri-reply-line"></i> </button> </div>
+                   <div class="flex items-center gap-4">
+                      <div class="flex items-center gap-4 rounded-md border border-defaultborder dark:border-defaultborder/10 bg-white dark:bg-bodybg px-4 py-2 text-sm">
+                         <span class="text-textmuted dark:text-textmuted/50">ID <strong id="ticket-id" class="ms-1 text-defaulttextcolor dark:text-defaulttextcolor/80">-</strong></span>
+                         <span class="h-4 border-s border-defaultborder dark:border-defaultborder/10"></span>
+                         <span class="text-textmuted dark:text-textmuted/50">FECHA <strong id="ticket-created-at" class="ms-1 text-defaulttextcolor dark:text-defaulttextcolor/80">-</strong></span>
+                      </div>
+                      <div class="btn-list"> <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='tickets.php'"> <i class="ri-reply-line"></i> </button> </div>
+                   </div>
                </div>
             
                <div class="col-span-12">

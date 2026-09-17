@@ -42,7 +42,7 @@
           const puedeEliminar = estado !== "0" && estado !== "SUSPENDED";
           const idHash = md5(String(id));
           return `
-            <div style="display:flex;gap:.5rem;justify-content:center;">
+            <div style="display:flex;align-items:center;justify-content:center;gap:.5rem;width:100%;">
               <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
                 <i class="ri-edit-2-line"></i>
               </button>
