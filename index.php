@@ -7,6 +7,7 @@ if (isset($_SESSION['session_usuario'])) {
 }
 
 $turnstileSiteKey = $_ENV['TURNSTILE_SITE_KEY'] ?? '';
+$backgroundVideo = 'video' . random_int(1, 3) . '.mp4';
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +26,7 @@ $turnstileSiteKey = $_ENV['TURNSTILE_SITE_KEY'] ?? '';
 </head>
 <body>
 <video autoplay loop muted playsinline id="background-video">
-	<source src="./assets/resources/video3.mp4" type="video/mp4">
+  <source src="./assets/resources/<?php echo $backgroundVideo; ?>" type="video/mp4">
 	Tu navegador no soporta la reproducción de video.
 </video>
 <form>
