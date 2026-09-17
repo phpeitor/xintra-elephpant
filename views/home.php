@@ -4,7 +4,7 @@
 ?>
 
 <html bg-img="bgimg5" class="light" data-header-styles="light" data-menu-styles="dark" data-nav-layout="vertical"
-    data-vertical-style="overlay" data-width="fullwidth" dir="ltr" lang="en" loader="disable">
+    data-vertical-style="default" data-width="fullwidth" dir="ltr" lang="en" loader="disable">
 
 <head>
     <meta charset="utf-8" />
@@ -175,8 +175,11 @@
                                         </div>
                                     </div>
                                     <div class="box-body">
-                                        <div id="sales-overview" class="" style="min-height: 333px;">
-
+                                        <div id="sales-overview" class="chart-loading" style="min-height: 333px;" aria-busy="true" aria-label="Cargando ventas">
+                                            <div class="chart-skeleton" role="status">
+                                                <span class="chart-spinner" aria-hidden="true"></span>
+                                                <span>Cargando datos de ventas...</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -228,8 +231,11 @@
                                                     class="text-success text-xs decoration-solid">Earnings ?</a>
                                             </div>
                                         </div>
-                                        <div id="orders" class="my-2" style="min-height: 188.8px;">
-
+                                        <div id="orders" class="my-2 chart-loading" style="min-height: 188.8px;" aria-busy="true" aria-label="Cargando estadisticas">
+                                            <div class="chart-skeleton" role="status">
+                                                <span class="chart-spinner" aria-hidden="true"></span>
+                                                <span>Cargando estadisticas...</span>
+                                            </div>
                                         </div>
                                     </div>
 

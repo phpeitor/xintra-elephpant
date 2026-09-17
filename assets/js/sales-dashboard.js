@@ -7,6 +7,19 @@
     maximumFractionDigits: 2,
   });
 
+  const finishChartLoading = (selector, message) => {
+    const container = document.querySelector(selector);
+    if (!container) return;
+
+    container.classList.remove('chart-loading');
+    container.removeAttribute('aria-busy');
+    if (message) {
+      container.innerHTML = `<div class="text-center text-gray-500 py-10">${message}</div>`;
+    } else {
+      container.querySelector('.chart-skeleton')?.remove();
+    }
+  };
+
 fetch('controller/dashboard/apx_contadores.php')
   .then(res => res.json())
   .then(data => {
@@ -125,7 +138,9 @@ fetch('controller/dashboard/apx_contadores.php')
     };
 
     const chart = new ApexCharts(document.querySelector('#sales-overview'), options);
-    chart.render();
+    chart.render()
+      .then(() => finishChartLoading('#sales-overview'))
+      .catch(() => finishChartLoading('#sales-overview', 'No se pudieron cargar las ventas.'));
 
     /* === GRAFICO ITEMS POR USUARIO === */
     const labels = versus.map(v => v.usuario);
@@ -156,10 +171,7 @@ fetch('controller/dashboard/apx_contadores.php')
     }
 
     if (totalItems === 0) {
-      document.querySelector("#orders").innerHTML = `
-        <div class="text-center text-gray-500 py-10">
-          No hay datos para mostrar 📊
-        </div>`;
+      finishChartLoading("#orders", "No hay datos para mostrar");
     } else {
       const options2 = {
         series,
@@ -216,7 +228,9 @@ fetch('controller/dashboard/apx_contadores.php')
       };
 
       const chart2 = new ApexCharts(document.querySelector("#orders"), options2);
-      chart2.render();
+      chart2.render()
+        .then(() => finishChartLoading('#orders'))
+        .catch(() => finishChartLoading('#orders', 'No se pudieron cargar las estadisticas.'));
     }
 
 
@@ -337,7 +351,11 @@ fetch('controller/dashboard/apx_contadores.php')
 
 
   })
-  .catch(err => console.error('Error al cargar dashboard:', err));
+  .catch(err => {
+    console.error('Error al cargar dashboard:', err);
+    finishChartLoading('#sales-overview', 'No se pudieron cargar las ventas.');
+    finishChartLoading('#orders', 'No se pudieron cargar las estadisticas.');
+  });
 
   
 })();
