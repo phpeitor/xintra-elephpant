@@ -80,8 +80,7 @@
                                     <div class="box-body">
                                         <div class="flex items-start justify-between mb-2">
                                             <div>
-                                                <span class="text-textmuted dark:text-textmuted/50 block mb-1">Total
-                                                    Productos</span>
+                                                <span class="text-textmuted dark:text-textmuted/50 block mb-1">Productos</span>
                                                 <h4 class="font-medium mb-0" id="total_producto">0</h4>
                                             </div>
                                             <div class="leading-none">
@@ -98,8 +97,7 @@
                                     <div class="box-body">
                                         <div class="flex items-start justify-between mb-2">
                                             <div>
-                                                <span class="block text-textmuted dark:text-textmuted/50 mb-1">Total
-                                                    Usuarios</span>
+                                                <span class="block text-textmuted dark:text-textmuted/50 mb-1">Usuarios</span>
                                                 <h4 class="font-medium mb-0" id="total_usuario">0</h4>
                                             </div>
                                             <div class="leading-none">
@@ -116,8 +114,7 @@
                                     <div class="box-body">
                                         <div class="flex items-start justify-between mb-2">
                                             <div>
-                                                <span class="text-textmuted dark:text-textmuted/50 block mb-1">Total
-                                                    Tickets</span>
+                                                <span class="text-textmuted dark:text-textmuted/50 block mb-1">Tickets</span>
                                                 <h4 class="font-medium mb-0" id="total_ticket">0</h4>
                                             </div>
                                             <div class="leading-none">
@@ -135,8 +132,7 @@
                                     <div class="box-body">
                                         <div class="flex items-start justify-between mb-2">
                                             <div>
-                                                <span class="text-textmuted dark:text-textmuted/50 block mb-1">Total
-                                                    Servicios</span>
+                                                <span class="text-textmuted dark:text-textmuted/50 block mb-1">Servicios</span>
                                                 <h4 class="font-medium mb-0" id="total_servicio">0</h4>
                                             </div>
                                             <div class="leading-none">
@@ -152,7 +148,7 @@
                             <div class="xxl:col-span-8 xl:col-span-6 col-span-12">
                                 <div class="box">
                                     <div class="box-header justify-between">
-                                        <div class="box-title"> Total Sales </div>
+                                        <div class="box-title"> Sales </div>
                                         <div class="ti-dropdown hs-dropdown">
                                             <a href="javascript:void(0);"
                                                 class="ti-btn ti-btn-light ti-btn-sm text-textmuted dark:text-textmuted/50 ti-dropdown-toggle hs-dropdown-toggle"
@@ -188,7 +184,7 @@
                             <div class="xxl:col-span-4 xl:col-span-6 col-span-12">
                                 <div class="box overflow-hidden">
                                     <div class="box-header pb-0 justify-between">
-                                        <div class="box-title"> Total Statistics </div>
+                                        <div class="box-title">  Statistics </div>
                                         <div class="ti-dropdown hs-dropdown">
                                             <a aria-label="anchor" href="javascript:void(0);"
                                                 class="ti-btn ti-btn-light ti-btn-sm ti-btn-icon text-textmuted dark:text-textmuted/50 hs-dropdown-toggle ti-dropdown-toggle"

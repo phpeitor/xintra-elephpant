@@ -70,7 +70,7 @@
 
   const buildCalendar = () => {
     calendar = new FullCalendar.Calendar(calendarElement, {
-      locale: "es", firstDay: 1, initialView: "dayGridMonth", height: "auto", expandRows: true, nowIndicator: true, navLinks: true, dayMaxEvents: true,
+      locale: "es", firstDay: 1, initialView: "dayGridMonth", height: "auto", expandRows: true, nowIndicator: true, navLinks: true, dayMaxEvents: 2,
       headerToolbar: { left: "prev,next today", center: "title", right: "dayGridMonth,timeGridWeek,listWeek" },
       buttonText: { today: "Hoy", month: "Mes", week: "Semana", list: "Lista" },
       events: (fetchInfo, successCallback, failureCallback) => {
