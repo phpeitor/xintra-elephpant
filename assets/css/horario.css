@@ -1,0 +1,10 @@
+.schedule-error {
+  display: block;
+  min-height: 1rem;
+  color: rgb(var(--danger));
+  font-size: 0.75rem;
+}
+
+.schedule-invalid {
+  border-color: rgb(var(--danger)) !important;
+}

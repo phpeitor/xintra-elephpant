@@ -46,6 +46,8 @@ class Horario
                  VALUES (:id_personal, :dia_semana, :hora_inicio, :hora_fin, :activo)'
             );
 
+            $days = [];
+            $dayNames = [1 => 'Lunes', 2 => 'Martes', 3 => 'Miércoles', 4 => 'Jueves', 5 => 'Viernes', 6 => 'Sábado', 7 => 'Domingo'];
             foreach ($horarios as $horario) {
                 $dia = (int)($horario['dia_semana'] ?? 0);
                 $activo = (int)($horario['activo'] ?? 0) === 1 ? 1 : 0;
@@ -55,8 +57,18 @@ class Horario
                 if ($dia < 1 || $dia > 7) {
                     throw new RuntimeException('Día de semana inválido.');
                 }
-                if ($activo && (!$inicio || !$fin || $inicio >= $fin)) {
-                    throw new RuntimeException('Completa correctamente las horas de cada día activo.');
+                if (isset($days[$dia])) {
+                    throw new RuntimeException('El día ' . $dayNames[$dia] . ' está repetido.');
+                }
+                $days[$dia] = true;
+                if ($activo && !$inicio) {
+                    throw new RuntimeException($dayNames[$dia] . ': indica la hora de entrada.');
+                }
+                if ($activo && !$fin) {
+                    throw new RuntimeException($dayNames[$dia] . ': indica la hora de salida.');
+                }
+                if ($activo && $inicio >= $fin) {
+                    throw new RuntimeException($dayNames[$dia] . ': la hora de salida debe ser mayor que la hora de entrada.');
                 }
 
                 $insert->bindValue(':id_personal', $idPersonal, PDO::PARAM_INT);

@@ -91,13 +91,13 @@
                     const idHash = md5(row.IDPERSONAL.toString()); 
                     return `
                      <div style="display:flex;align-items:center;justify-content:flex-start;gap:.5rem;width:100%;">
-                        <button class="btn-schedule ti-btn ti-btn-icon bg-info/10 text-info hover:bg-info hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}" title="Horario">
+                        <button class="btn-schedule ti-btn ti-btn-icon bg-info/10 text-info hover:bg-info hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}" aria-label="Configurar horario" ${window.XintraTooltip.attr("Horario")}>
                             <i class="ri-time-line"></i>
                         </button>
-                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
+                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}" aria-label="Editar usuario" ${window.XintraTooltip.attr("Editar")}>
                             <i class="ri-edit-2-line"></i>
                         </button>
-                        ${puedeEliminar ? `<button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${id}"><i class="ri-delete-bin-line"></i></button>` : ""}
+                        ${puedeEliminar ? `<button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${id}" aria-label="Eliminar usuario" ${window.XintraTooltip.attr("Eliminar")}><i class="ri-delete-bin-line"></i></button>` : ""}
                     </div>`;
                 },
                 cellClick: function (e, cell) {
@@ -142,6 +142,10 @@
                 },
             },
         ],
+    });
+
+    table.on("renderComplete", () => {
+        window.XintraTooltip?.init(document.querySelector("#download-table"));
     });
 
     //trigger download of data.xlsx file
