@@ -82,7 +82,7 @@
                 field: "acciones",
                 hozAlign: "center",
                 headerSort: false,
-                width: 160,
+                width: 220,
                 formatter: (cell) => {
                     const row = cell.getRow().getData();
                     const id = row.IDPERSONAL;
@@ -90,7 +90,10 @@
                     const puedeEliminar = estado !== "0" && estado !== "SUSPENDED";
                     const idHash = md5(row.IDPERSONAL.toString()); 
                     return `
-                    <div style="display:flex;align-items:center;justify-content:flex-start;gap:.5rem;width:100%;">
+                     <div style="display:flex;align-items:center;justify-content:flex-start;gap:.5rem;width:100%;">
+                        <button class="btn-schedule ti-btn ti-btn-icon bg-info/10 text-info hover:bg-info hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}" title="Horario">
+                            <i class="ri-time-line"></i>
+                        </button>
                         <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
                             <i class="ri-edit-2-line"></i>
                         </button>
@@ -104,6 +107,9 @@
                         console.log("Actualizar ID:", id);
                         const idHash = e.target.closest(".btn-edit").dataset.id;
                         window.location.href = "upd_usuario.php?hash=" + idHash;
+                    } else if (e.target.closest(".btn-schedule")) {
+                        const idHash = e.target.closest(".btn-schedule").dataset.id;
+                        window.location.href = "horario.php?hash=" + idHash;
                     } else if (e.target.closest(".btn-delete")) {
                         alertify.confirm(
                             "Eliminar usuario",
