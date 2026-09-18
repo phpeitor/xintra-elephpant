@@ -33,7 +33,7 @@
                 data-popper-escaped=""
                 style="position: relative; left: 0px; top: 0px; margin: 0px; transform: translate(120px, 3222px);">
                 <li class="slide"> <a href="usuarios.php" class="side-menu__item">Usuarios</a> </li>
-                <li class="slide"> <a href="#" class="side-menu__item">Horarios</a> </li>
+                <li class="slide"> <a href="asistencia.php" class="side-menu__item">Asistencia</a> </li>
             </ul>
         </li>
 
