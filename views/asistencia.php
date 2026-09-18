@@ -79,15 +79,6 @@ require_once ROOT . '/controller/check_session.php';
   </main>
   <?php include ROOT . '/layout/footer.php'; ?>
 </div>
-<div id="attendance-more-modal" class="attendance-more-modal hidden" role="dialog" aria-modal="true" aria-labelledby="attendance-more-title">
-  <div class="attendance-more-dialog">
-    <div class="attendance-more-header">
-      <h5 id="attendance-more-title">Registros del día</h5>
-      <button type="button" id="attendance-more-close" class="attendance-more-close" aria-label="Cerrar registros">&times;</button>
-    </div>
-    <div id="attendance-more-list" class="attendance-more-list"></div>
-  </div>
-</div>
 <script src="./assets/libs/@popperjs/core/umd/popper.min.js"></script>
 <script src="./assets/libs/preline/preline.js"></script>
 <script src="./assets/js/defaultmenu.min.js"></script>
@@ -103,6 +94,6 @@ require_once ROOT . '/controller/check_session.php';
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/locales-all.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
 <script src="./assets/js/custom.js"></script>
-<script src="./assets/js/asistencia.js?v=3"></script>
+<script src="./assets/js/asistencia.js?v=5"></script>
 </body>
 </html>

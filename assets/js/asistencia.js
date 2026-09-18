@@ -8,9 +8,6 @@
   const activity = document.querySelector("#attendance-activity");
   const emptyState = document.querySelector("#attendance-empty");
   const errorState = document.querySelector("#attendance-error");
-  const moreModal = document.querySelector("#attendance-more-modal");
-  const moreTitle = document.querySelector("#attendance-more-title");
-  const moreList = document.querySelector("#attendance-more-list");
   let calendar;
   let userChoices;
 
@@ -26,30 +23,6 @@
     return match ? `${match[3]}/${match[2]}/${match[1]} ${match[4]}:${match[5]}:${match[6]}` : value;
   };
 
-  const formatDayTitle = (value) => {
-    const match = String(value || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
-    if (!match) return "Registros del día";
-    const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, Number(match[3])));
-    return date.toLocaleDateString("es-PE", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
-  };
-
-  const closeMoreModal = () => moreModal.classList.add("hidden");
-  const openMoreModal = (events) => {
-    if (!events.length) return;
-    moreTitle.textContent = formatDayTitle(events[0].extendedProps.fecha);
-    moreList.replaceChildren();
-    events.forEach((event) => {
-      const item = document.createElement("div");
-      item.className = `attendance-more-item ${event.extendedProps.tipo === "ENTRADA" ? "is-entry" : "is-exit"}`;
-      const time = document.createElement("strong");
-      time.textContent = formatAttendanceDate(event.extendedProps.fecha).split(" ")[1] || "";
-      const label = document.createElement("span");
-      label.textContent = `${event.extendedProps.tipo === "ENTRADA" ? "Entrada" : "Salida"} · ${event.extendedProps.usuario}`;
-      item.append(time, label);
-      moreList.appendChild(item);
-    });
-    moreModal.classList.remove("hidden");
-  };
 
   const refreshStatus = () => {
     const id = selectedUser();
@@ -114,10 +87,6 @@
       locale: "es", firstDay: 1, initialView: "dayGridMonth", height: "auto", expandRows: true, nowIndicator: true, navLinks: true, dayMaxEvents: 2,
       headerToolbar: { left: "prev,next today", center: "title", right: "dayGridMonth,timeGridWeek,listWeek" },
       buttonText: { today: "Hoy", month: "Mes", week: "Semana", list: "Lista" },
-      moreLinkClick: (info) => {
-        openMoreModal(info.allSegs.map((segment) => segment.event));
-        return false;
-      },
       events: (fetchInfo, successCallback, failureCallback) => {
         const params = new URLSearchParams({ action: "events", start: fetchInfo.startStr, end: fetchInfo.endStr });
         if (selectedUser()) params.set("usuario", selectedUser());
@@ -138,8 +107,5 @@
   userSelect.addEventListener("change", () => { refreshStatus(); loadActivity(); calendar?.refetchEvents(); });
   entryButton.addEventListener("click", () => mark("ENTRADA"));
   exitButton.addEventListener("click", () => mark("SALIDA"));
-  document.querySelector("#attendance-more-close").addEventListener("click", closeMoreModal);
-  moreModal.addEventListener("click", (event) => { if (event.target === moreModal) closeMoreModal(); });
-  document.addEventListener("keydown", (event) => { if (event.key === "Escape") closeMoreModal(); });
   loadUsers().then(() => { buildCalendar(); loadActivity(); refreshStatus(); }).catch((error) => setState("error", error.message));
 })();
