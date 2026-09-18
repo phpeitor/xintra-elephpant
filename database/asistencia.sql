@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS asistencia_personal (
     fecha DATETIME NOT NULL,
     PRIMARY KEY (id),
     KEY idx_asistencia_personal_fecha (id_personal, fecha),
+    KEY idx_asistencia_fecha (fecha),
     CONSTRAINT fk_asistencia_personal
         FOREIGN KEY (id_personal) REFERENCES personal (IDPERSONAL)
         ON DELETE CASCADE ON UPDATE CASCADE
