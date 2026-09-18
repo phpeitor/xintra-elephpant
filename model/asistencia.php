@@ -84,7 +84,8 @@ class Asistencia
     {
         return array_map(static function (array $row): array {
             $entrada = $row['tipo'] === 'ENTRADA';
-            return ['id' => 'asistencia-' . $row['id'], 'title' => ($entrada ? 'Entrada' : 'Salida') . ' · ' . $row['usuario'], 'start' => str_replace(' ', 'T', $row['fecha']), 'tipo' => $row['tipo'], 'usuario' => $row['usuario'], 'usuarioId' => (int)$row['usuario_id'], 'fecha' => $row['fecha'], 'allDay' => false, 'className' => [$entrada ? 'attendance-entry' : 'attendance-exit']];
+            $hora = substr($row['fecha'], 11, 8);
+            return ['id' => 'asistencia-' . $row['id'], 'title' => $hora . ' · ' . ($entrada ? 'Entrada' : 'Salida') . ' · ' . $row['usuario'], 'start' => substr($row['fecha'], 0, 10), 'tipo' => $row['tipo'], 'usuario' => $row['usuario'], 'usuarioId' => (int)$row['usuario_id'], 'fecha' => $row['fecha'], 'allDay' => true, 'className' => [$entrada ? 'attendance-entry' : 'attendance-exit']];
         }, $rows);
     }
 }
