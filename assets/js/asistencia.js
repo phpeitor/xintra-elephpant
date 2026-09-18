@@ -99,7 +99,7 @@
           })
           .catch((error) => { setState("error", error.message); failureCallback(error); });
       },
-      eventClick: (info) => alertify.message(`${info.event.extendedProps.tipo}: ${info.event.extendedProps.usuario}<br>${formatAttendanceDate(info.event.extendedProps.fecha)}`),
+      eventClick: (info) => alertify.message(`${info.event.title}<br>${formatAttendanceDate(info.event.extendedProps.fecha)}`),
     });
     calendar.render();
   };

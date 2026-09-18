@@ -128,6 +128,27 @@
   color: rgb(var(--danger)) !important;
 }
 
+#attendance-calendar .attendance-schedule {
+  background-color: rgb(var(--primary) / 0.1);
+  color: rgb(var(--primary));
+}
+
+#attendance-calendar .attendance-warning {
+  background-color: rgb(var(--warning) / 0.14);
+  color: rgb(var(--warning));
+}
+
+#attendance-calendar .attendance-absence {
+  background-color: rgb(var(--danger) / 0.12);
+  color: rgb(var(--danger));
+}
+
+#attendance-calendar .attendance-schedule .fc-event-main,
+#attendance-calendar .attendance-warning .fc-event-main,
+#attendance-calendar .attendance-absence .fc-event-main {
+  color: inherit !important;
+}
+
 .choices__inner,
 .choices__list--single .choices__item,
 .choices__list--dropdown .choices__item {

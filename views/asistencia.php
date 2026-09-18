@@ -43,7 +43,7 @@ require_once ROOT . '/controller/check_session.php';
             <div class="box-header flex items-center justify-between flex-wrap gap-3">
               <div>
                 <h5 class="box-title mb-1">Calendario de asistencia</h5>
-                <p class="text-textmuted dark:text-textmuted/50 text-xs mb-0">Registra y consulta las entradas y salidas del personal.</p>
+                <p class="text-textmuted dark:text-textmuted/50 text-xs mb-0">Registra y consulta entradas, salidas y cumplimiento del horario.</p>
               </div>
               <div class="attendance-legend"><span><i class="entry-dot"></i> Entrada</span><span><i class="exit-dot"></i> Salida</span></div>
             </div>
