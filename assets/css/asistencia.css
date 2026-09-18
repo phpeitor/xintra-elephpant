@@ -1,0 +1,153 @@
+.attendance-filters {
+  display: flex;
+  align-items: end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.attendance-filter {
+  min-width: 15rem;
+}
+
+.attendance-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.attendance-event-card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-bottom: 0.65rem;
+  border-radius: 0.35rem;
+  padding: 0.7rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.attendance-event-card i {
+  font-size: 1.1rem;
+}
+
+.attendance-event-card.entry-card {
+  background-color: rgb(var(--success) / 0.1);
+  color: rgb(var(--success));
+}
+
+.attendance-event-card.exit-card {
+  background-color: rgb(var(--danger) / 0.1);
+  color: rgb(var(--danger));
+}
+
+.attendance-activity {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.attendance-activity-item {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed rgb(var(--text-muted) / 0.2);
+}
+
+.attendance-activity-item > div {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.attendance-activity-item span,
+.attendance-activity-item time {
+  color: rgb(var(--text-muted));
+  font-size: 0.75rem;
+}
+
+.attendance-activity-dot {
+  width: 0.65rem;
+  height: 0.65rem;
+  flex: 0 0 auto;
+  margin-top: 0.35rem;
+  border-radius: 9999px;
+  background-color: rgb(var(--success));
+}
+
+.attendance-activity-item.is-exit .attendance-activity-dot {
+  background-color: rgb(var(--danger));
+}
+
+#attendance-calendar {
+  min-height: 42rem;
+}
+
+#attendance-calendar .fc-toolbar-title {
+  color: rgb(var(--default-text-color));
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+#attendance-calendar .fc-button-primary {
+  border-color: rgb(var(--primary-rgb));
+  background-color: rgb(var(--primary-rgb));
+}
+
+#attendance-calendar .fc-button-primary:hover,
+#attendance-calendar .fc-button-primary:focus {
+  border-color: rgb(var(--primary-rgb));
+  background-color: rgb(var(--primary-rgb) / 0.85);
+}
+
+#attendance-calendar .fc-event {
+  border: 0;
+  border-radius: 0.25rem;
+  padding: 0.2rem 0.35rem;
+  cursor: pointer;
+}
+
+#attendance-calendar .attendance-entry {
+  background-color: rgb(var(--success));
+}
+
+#attendance-calendar .attendance-exit {
+  background-color: rgb(var(--danger));
+}
+
+.attendance-legend {
+  display: flex;
+  gap: 1rem;
+  color: rgb(var(--text-muted));
+  font-size: 0.75rem;
+}
+
+.attendance-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.attendance-legend i {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 9999px;
+}
+
+.attendance-legend .entry-dot {
+  background-color: rgb(var(--success));
+}
+
+.attendance-legend .exit-dot {
+  background-color: rgb(var(--danger));
+}
+
+@media (max-width: 640px) {
+  #attendance-calendar {
+    min-height: 34rem;
+  }
+
+  #attendance-calendar .fc-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
