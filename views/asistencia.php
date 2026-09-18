@@ -18,7 +18,9 @@ require_once ROOT . '/controller/check_session.php';
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
   <link href="./assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet">
-  <link href="./assets/css/asistencia.css?v=3" rel="stylesheet">
+  <link href="./assets/libs/@simonwep/pickr/themes/nano.min.css" rel="stylesheet">
+  <link href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css" rel="stylesheet">
+  <link href="./assets/css/asistencia.css?v=4" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
 </head>

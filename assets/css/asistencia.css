@@ -134,6 +134,27 @@
   color: rgb(var(--default-text-color));
 }
 
+.attendance-filter .choices {
+  margin-bottom: 0;
+  min-width: 20rem;
+  position: relative;
+  z-index: 20;
+}
+
+.attendance-filter .choices__inner {
+  min-height: 2.5rem;
+  border: 1px solid rgb(var(--default-border));
+  border-radius: 0.35rem;
+  background-color: rgb(255 255 255);
+  font-size: 0.875rem;
+}
+
+.attendance-filter .choices__list--dropdown {
+  z-index: 50;
+  border: 1px solid rgb(var(--default-border));
+  background-color: rgb(255 255 255);
+}
+
 .choices__list--dropdown .choices__item.is-highlighted {
   color: rgb(var(--default-text-color));
   background-color: rgb(var(--primary) / 0.08);
