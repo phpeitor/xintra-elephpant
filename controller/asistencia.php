@@ -34,8 +34,9 @@ try {
     $inicio = trim($_GET['start'] ?? '');
     $fin = trim($_GET['end'] ?? '');
     if ($inicio === '' || $fin === '') throw new RuntimeException('El rango de fechas es obligatorio.');
-    $inicioDate = new DateTimeImmutable($inicio, new DateTimeZone('America/Lima'));
-    $finDate = new DateTimeImmutable($fin, new DateTimeZone('America/Lima'));
+    // The database stores attendance in Lima time; preserve calendar boundaries exactly.
+    $inicioDate = new DateTimeImmutable($inicio, new DateTimeZone('UTC'));
+    $finDate = new DateTimeImmutable($fin, new DateTimeZone('UTC'));
     $idUsuario = filter_var($_GET['usuario'] ?? null, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
     echo json_encode(['ok' => true, 'data' => $asistencia->eventos($inicioDate->format('Y-m-d H:i:s'), $finDate->format('Y-m-d H:i:s'), $idUsuario)]);
 } catch (Throwable $e) {

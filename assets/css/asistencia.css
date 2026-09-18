@@ -106,18 +106,37 @@
 }
 
 #attendance-calendar .attendance-entry {
-  background-color: rgb(var(--success));
-  color: #fff;
+  background-color: rgb(var(--success) / 0.12);
+  color: rgb(var(--success));
 }
 
 #attendance-calendar .attendance-exit {
-  background-color: rgb(var(--danger));
-  color: #fff;
+  background-color: rgb(var(--danger) / 0.12);
+  color: rgb(var(--danger));
 }
 
 #attendance-calendar .attendance-entry .fc-event-main,
 #attendance-calendar .attendance-exit .fc-event-main {
-  color: #fff;
+  color: inherit;
+}
+
+#attendance-calendar .attendance-entry .fc-event-main {
+  color: rgb(var(--success)) !important;
+}
+
+#attendance-calendar .attendance-exit .fc-event-main {
+  color: rgb(var(--danger)) !important;
+}
+
+.choices__inner,
+.choices__list--single .choices__item,
+.choices__list--dropdown .choices__item {
+  color: rgb(var(--default-text-color));
+}
+
+.choices__list--dropdown .choices__item.is-highlighted {
+  color: rgb(var(--default-text-color));
+  background-color: rgb(var(--primary) / 0.08);
 }
 
 #attendance-calendar .fc-more-link {

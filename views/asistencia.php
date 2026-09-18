@@ -17,7 +17,8 @@ require_once ROOT . '/controller/check_session.php';
   <link href="./assets/css/styles.css" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
-  <link href="./assets/css/asistencia.css" rel="stylesheet">
+  <link href="./assets/libs/choices.js/public/assets/styles/choices.min.css" rel="stylesheet">
+  <link href="./assets/css/asistencia.css?v=3" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
 </head>
@@ -84,6 +85,7 @@ require_once ROOT . '/controller/check_session.php';
 <script src="./assets/libs/node-waves/waves.min.js"></script>
 <script src="./assets/js/sticky.js"></script>
 <script src="./assets/libs/simplebar/simplebar.min.js"></script>
+<script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
 <script src="./assets/js/simplebar.js"></script>
 <script src="./assets/js/custom-switcher.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>

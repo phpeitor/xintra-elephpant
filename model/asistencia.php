@@ -12,7 +12,7 @@ class Asistencia
 
     public function usuarios(): array
     {
-        $stmt = $this->conn->query("SELECT IDPERSONAL AS id, CONCAT(NOMBRES, ' ', APELLIDOS) AS nombre FROM personal WHERE IDSUCURSAL = 5 AND APELLIDOS <> 'ERROR' AND IDPERSONAL > 1 ORDER BY NOMBRES, APELLIDOS");
+        $stmt = $this->conn->query("SELECT IDPERSONAL AS id, CONCAT(NOMBRES, ' ', APELLIDOS) AS nombre FROM personal WHERE IDSUCURSAL = 5 AND APELLIDOS <> 'ERROR' AND IDPERSONAL > 1 AND IDESTADO = 1 ORDER BY NOMBRES, APELLIDOS");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
