@@ -15,7 +15,7 @@ class Categoria {
     public function baja(int $id): bool {
         $sql = "UPDATE categoria
                 SET estado = 0
-                WHERE id = :id AND id_sucursal = 5";
+                WHERE id = :id AND id_sucursal = @id_sucursal";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -26,7 +26,7 @@ class Categoria {
         $sql = "INSERT INTO categoria
                 (tpo, nombre, estado, fecha_creacion, id_sucursal)
                 VALUES
-                (:tpo, :nombre, :estado, :fecha_creacion, 5)";
+                (:tpo, :nombre, :estado, :fecha_creacion, @id_sucursal)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':tpo', strtoupper(trim($data['tpo'] ?? '')));
         $stmt->bindValue(':nombre', trim($data['nombre'] ?? ''));
@@ -42,7 +42,7 @@ class Categoria {
                     nombre = :nombre,
                     estado = :estado,
                     fecha_creacion = :fecha_creacion
-                WHERE MD5(id) = :hash AND id_sucursal = 5";
+                WHERE MD5(id) = :hash AND id_sucursal = @id_sucursal";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':tpo', strtoupper(trim($data['tpo'] ?? '')));
         $stmt->bindValue(':nombre', trim($data['nombre'] ?? ''));
@@ -56,7 +56,7 @@ class Categoria {
     public function table_categoria(): array {
         $sql = "SELECT id, tpo, nombre, estado, fecha_creacion, id_sucursal
                 FROM categoria
-                WHERE id_sucursal = 5
+                WHERE id_sucursal = @id_sucursal
                 ORDER BY id DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
@@ -66,7 +66,7 @@ class Categoria {
     public function obtenerPorHash(string $hash): ?array {
         $sql = "SELECT id, tpo, nombre, estado, fecha_creacion, id_sucursal
                 FROM categoria
-                WHERE MD5(id) = :hash AND id_sucursal = 5
+                WHERE MD5(id) = :hash AND id_sucursal = @id_sucursal
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
@@ -80,7 +80,7 @@ class Categoria {
                 FROM categoria
                 WHERE UPPER(tpo) = UPPER(:tpo)
                 AND UPPER(nombre) = UPPER(:nombre)
-                AND id_sucursal = 5
+                AND id_sucursal = @id_sucursal
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':tpo', trim($tpo));
@@ -95,7 +95,7 @@ class Categoria {
                 FROM categoria
                 WHERE UPPER(tpo) = UPPER(:tpo)
                 AND UPPER(nombre) = UPPER(:nombre)
-                AND id_sucursal = 5
+                AND id_sucursal = @id_sucursal
                 AND MD5(id) <> :hash
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);

@@ -15,7 +15,7 @@ class Usuario {
     public function baja(int $id): bool {
         $sql = "UPDATE personal 
                 SET IDESTADO = 0, fecha_baja = :fecha_baja 
-                WHERE IDPERSONAL = :id";
+                WHERE IDPERSONAL = :id AND IDSUCURSAL = @id_sucursal";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':fecha_baja', $this->nowLima);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
@@ -32,7 +32,7 @@ class Usuario {
                     TLF = :TLF,
                     SEXO = :SEXO,
                     IDESTADO = :IDESTADO
-                WHERE MD5(IDPERSONAL) = :hash";
+                WHERE MD5(IDPERSONAL) = :hash AND IDSUCURSAL = @id_sucursal";
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(':APELLIDOS', $data['apellidos']);
@@ -57,7 +57,7 @@ class Usuario {
         $sql = "INSERT INTO personal 
                 (APELLIDOS, NOMBRES, EMAIL, DOC, TLF, SEXO, USUARIO, PASSWORD, fecha_registro, IDSUCURSAL, IDESTADO, CARGO, fecha_baja, id_cartera)
                 VALUES 
-                (:apellidos, :nombres, :email, :documento, :telefono, :sexo, :usuario, MD5(:documento), :fecha_registro, 5, 1, 5, '1900-01-01 00:00:00', 5)";
+                (:apellidos, :nombres, :email, :documento, :telefono, :sexo, :usuario, MD5(:documento), :fecha_registro, @id_sucursal, 1, 5, '1900-01-01 00:00:00', @id_sucursal)";
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(':nombres',   $data['nombres'] ?? '');
@@ -91,7 +91,7 @@ class Usuario {
                 *,
                 CONCAT(nombres,' ',apellidos) AS nombre_completo
                 FROM personal
-                WHERE IDSUCURSAL = 5 AND APELLIDOS <>'ERROR' AND IDPERSONAL > 1
+                WHERE IDSUCURSAL = @id_sucursal AND APELLIDOS <>'ERROR' AND IDPERSONAL > 1
                 ";
          if ($estado === 'ACTIVOS') {
              $sql .= ' AND IDESTADO = 1';
@@ -114,8 +114,9 @@ class Usuario {
                     TLF,
                     SEXO,
                     IDESTADO
+                    , IDSUCURSAL
                 FROM personal
-                WHERE MD5(IDPERSONAL) = :hash
+                WHERE MD5(IDPERSONAL) = :hash AND IDSUCURSAL = @id_sucursal
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
@@ -131,7 +132,8 @@ class Usuario {
                     NOMBRES,
                     USUARIO,
                     PASSWORD,
-                    IDESTADO
+                    IDESTADO,
+                    IDSUCURSAL
                 FROM personal
                 WHERE USUARIO = :USUARIO
                 AND PASSWORD= :PASSWORD
@@ -148,7 +150,7 @@ class Usuario {
     {
         $sql = "SELECT IDPERSONAL
                 FROM personal
-                WHERE DOC = :documento
+                WHERE DOC = :documento AND IDSUCURSAL = @id_sucursal
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':documento', $documento);
@@ -161,7 +163,7 @@ class Usuario {
     {
         $sql = "SELECT IDPERSONAL
                 FROM personal
-                WHERE DOC = :documento
+                WHERE DOC = :documento AND IDSUCURSAL = @id_sucursal
                 AND MD5(IDPERSONAL) <> :hash
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);

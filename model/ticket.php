@@ -20,7 +20,7 @@ class Ticket {
                     dscto = :dscto,
                     tipo_dscto = :tipo_dscto,
                     pago = :pago
-                WHERE MD5(id) = :hash";
+                WHERE MD5(id) = :hash AND EXISTS (SELECT 1 FROM personal p WHERE p.IDPERSONAL = pedido.usuario AND p.IDSUCURSAL = @id_sucursal)";
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(':cliente', $data['cliente']);
@@ -36,7 +36,7 @@ class Ticket {
 
     public function eliminar_pedido(string $hash): bool {
         $sql = "DELETE from detalle_pedido 
-                WHERE MD5(id_pedido) = :hash";
+                WHERE MD5(id_pedido) = :hash AND EXISTS (SELECT 1 FROM pedido p INNER JOIN personal u ON u.IDPERSONAL = p.usuario WHERE p.id = detalle_pedido.id_pedido AND u.IDSUCURSAL = @id_sucursal)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
         $stmt->execute();
@@ -45,7 +45,7 @@ class Ticket {
 
     public function eliminar_stock(string $hash): bool {
         $sql = "DELETE from stock_black 
-                WHERE MD5(id_pedido) = :hash and tipo='S'";
+                WHERE MD5(id_pedido) = :hash and tipo='S' AND EXISTS (SELECT 1 FROM pedido p INNER JOIN personal u ON u.IDPERSONAL = p.usuario WHERE p.id = stock_black.id_pedido AND u.IDSUCURSAL = @id_sucursal)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
         $stmt->execute();
@@ -83,6 +83,34 @@ class Ticket {
         return (int)$this->conn->lastInsertId();
     }
 
+    public function validarReferencias(string $cliente, string $usuario, array $items): void {
+        $buscar = function (string $tabla, string $columna, string $id) {
+            $valor = ctype_digit($id) ? (int)$id : null;
+            $hash = $valor === null ? $id : '';
+            $sql = "SELECT 1 FROM {$tabla} WHERE ({$columna} = :id OR MD5({$columna}) = :hash) AND "
+                . ($tabla === 'personal' ? 'IDSUCURSAL' : 'id_sucursal')
+                . ' = @id_sucursal LIMIT 1';
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindValue(':id', $valor, $valor === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+            $stmt->bindValue(':hash', $hash);
+            $stmt->execute();
+            return (bool)$stmt->fetchColumn();
+        };
+
+        if (!$buscar('cliente', 'id', $cliente)) {
+            throw new RuntimeException('El cliente no pertenece a la sucursal actual.');
+        }
+        if (!$buscar('personal', 'IDPERSONAL', $usuario)) {
+            throw new RuntimeException('El usuario no pertenece a la sucursal actual.');
+        }
+        foreach ($items as $item) {
+            $id = (string)($item['id'] ?? '');
+            if ($id === '' || !$buscar('product_service', 'id', $id)) {
+                throw new RuntimeException('Uno de los ítems no pertenece a la sucursal actual.');
+            }
+        }
+    }
+
     public function guardar_detalle(array $data): int {
         $id_pedido         = $data['id_pedido'] ?? '';
         $id_productservice = $data['id_productservice'] ?? '';
@@ -100,13 +128,13 @@ class Ticket {
                 VALUES (
                     (CASE 
                         WHEN LENGTH(:id_pedido) = 32 THEN (
-                            SELECT id FROM pedido WHERE MD5(id) = :id_pedido LIMIT 1
+                            SELECT p.id FROM pedido p INNER JOIN personal u ON u.IDPERSONAL = p.usuario WHERE MD5(p.id) = :id_pedido AND u.IDSUCURSAL = @id_sucursal LIMIT 1
                         )
                         ELSE :id_pedido
                     END),
                     (CASE 
                         WHEN LENGTH(:id_productservice) = 32 THEN (
-                            SELECT id FROM product_service WHERE MD5(id) = :id_productservice LIMIT 1
+                            SELECT id FROM product_service WHERE MD5(id) = :id_productservice AND id_sucursal = @id_sucursal LIMIT 1
                         )
                         ELSE :id_productservice
                     END),
@@ -145,13 +173,13 @@ class Ticket {
                 VALUES (
                     (CASE 
                         WHEN LENGTH(:id_product) = 32 THEN (
-                            SELECT id FROM product_service WHERE MD5(id) = :id_product LIMIT 1
+                            SELECT id FROM product_service WHERE MD5(id) = :id_product AND id_sucursal = @id_sucursal LIMIT 1
                         )
                         ELSE :id_product
                     END),
                     (CASE 
                         WHEN LENGTH(:id_pedido) = 32 THEN (
-                            SELECT id FROM pedido WHERE MD5(id) = :id_pedido LIMIT 1
+                            SELECT p.id FROM pedido p INNER JOIN personal u ON u.IDPERSONAL = p.usuario WHERE MD5(p.id) = :id_pedido AND u.IDSUCURSAL = @id_sucursal LIMIT 1
                         )
                         ELSE :id_pedido
                     END),
@@ -198,8 +226,8 @@ class Ticket {
                     LEFT JOIN personal c ON a.usuario = c.IDPERSONAL 
                     LEFT JOIN product_service d ON b.id_productservice = d.id 
                     LEFT JOIN cliente e on e.id = a.cliente 
-                WHERE DATE(a.fecha) BETWEEN :fecha_inicio AND :fecha_fin
-                AND d.id_sucursal = 5 
+                WHERE a.fecha >= :fecha_inicio AND a.fecha < :fecha_fin_exclusiva
+                AND d.id_sucursal = @id_sucursal
                 AND a.cliente > 0
                 GROUP BY a.id 
                 ORDER BY a.id DESC
@@ -207,7 +235,7 @@ class Ticket {
         $this->conn->query("SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))");
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':fecha_inicio', $fecha_inicio);
-        $stmt->bindValue(':fecha_fin', $fecha_fin);
+        $stmt->bindValue(':fecha_fin_exclusiva', (new DateTimeImmutable($fecha_fin))->modify('+1 day')->format('Y-m-d'));
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -272,13 +300,13 @@ class Ticket {
                 LEFT JOIN product_service d ON b.id_productservice = d.id 
                 left join categoria x on x.id = d.categoria
                 left join cliente e on e.id=a.cliente
-                where date(a.fecha) between :fecha_inicio AND :fecha_fin
-                and d.id_sucursal=5
+                where a.fecha >= :fecha_inicio AND a.fecha < :fecha_fin_exclusiva
+                and d.id_sucursal=@id_sucursal
                 ORDER BY a.id DESC
             ";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':fecha_inicio', $fecha_inicio);
-        $stmt->bindValue(':fecha_fin', $fecha_fin);
+        $stmt->bindValue(':fecha_fin_exclusiva', (new DateTimeImmutable($fecha_fin))->modify('+1 day')->format('Y-m-d'));
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -290,7 +318,7 @@ class Ticket {
                 from pedido a
                 LEFT JOIN personal c ON a.usuario = c.IDPERSONAL 
                 LEFT JOIN cliente e on e.id=a.cliente 
-                where md5(a.id) = :hash
+                where md5(a.id) = :hash AND c.IDSUCURSAL = @id_sucursal
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
@@ -314,7 +342,7 @@ class Ticket {
                                         group by id_product) 
                             b on a.id_product=b.id_product2 where tipo='E' 
                             group by id_product) t on t.id_product=b.id 
-                WHERE MD5(id_pedido) = :hash";
+                WHERE MD5(a.id_pedido) = :hash AND b.id_sucursal = @id_sucursal";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
         $stmt->execute();
@@ -330,7 +358,7 @@ class Ticket {
                 LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
                 LEFT JOIN product_service d ON b.id_productservice = d.id
                 WHERE 
-                    d.id_sucursal = 5
+                    d.id_sucursal = @id_sucursal
                     AND a.cliente > 0
                     AND a.fecha >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
                 GROUP BY DATE_FORMAT(a.fecha, '%Y-%m')
@@ -349,7 +377,7 @@ class Ticket {
                 LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
                 LEFT JOIN product_service d ON b.id_productservice = d.id
                 WHERE 
-                    d.id_sucursal = 5
+                    d.id_sucursal = @id_sucursal
                     AND a.cliente > 0
                 GROUP BY DATE_FORMAT(a.fecha, '%Y-%m-%d')
                 ORDER BY dia DESC
@@ -369,7 +397,7 @@ class Ticket {
                 LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
                 LEFT JOIN product_service d ON b.id_productservice = d.id
                 WHERE 
-                    d.id_sucursal = 5
+                    d.id_sucursal = @id_sucursal
                     AND a.cliente > 0
                 GROUP BY DATE_FORMAT(a.fecha, '%Y-%m')
                 ORDER BY mes DESC
@@ -397,7 +425,7 @@ class Ticket {
                 LEFT JOIN personal c
                     ON a.usuario = c.IDPERSONAL
                 WHERE
-                    d.id_sucursal = 5
+                    d.id_sucursal = @id_sucursal
                     AND a.cliente > 0
                     AND a.fecha >= DATE_SUB(CURDATE(), INTERVAL 24 MONTH)
                 GROUP BY
@@ -522,7 +550,7 @@ class Ticket {
                 LEFT JOIN detalle_pedido b ON a.id = b.id_pedido
                 LEFT JOIN product_service d ON b.id_productservice = d.id
                 WHERE 
-                d.id_sucursal = 5
+                d.id_sucursal = @id_sucursal
                 AND a.cliente > 0
                 and a.fecha>= DATE_SUB(CURDATE(), INTERVAL 15 DAY)
                 GROUP BY d.nombre
@@ -543,13 +571,13 @@ class Ticket {
                     SELECT 1 
                     FROM personal per 
                     WHERE per.idpersonal = ped.usuario
-                    AND per.idsucursal = 5
+                    AND per.idsucursal = @id_sucursal
                     )
                 ) AS total_pedido,
                 (
                     SELECT cuota 
                     FROM sucursal_cuota 
-                    WHERE id_sucursal = 5
+                    WHERE id_sucursal = @id_sucursal
                     LIMIT 1
                 ) AS cuota
                 ";
@@ -577,7 +605,7 @@ class Ticket {
                                 b on a.id_product=b.id_product2 where tipo='E' 
                                 group by id_product) t on t.id_product=b.id 
                 WHERE b.estado=1 
-                and b.categoria=:categoria";
+                and b.categoria=:categoria AND b.id_sucursal = @id_sucursal";
         $stmt = $this->conn->prepare($sql);
         if ($categoria !== '') {
             $stmt->bindValue(':categoria', $categoria, PDO::PARAM_STR);

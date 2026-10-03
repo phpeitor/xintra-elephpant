@@ -16,7 +16,7 @@ class Horario
                        h.dia_semana, h.hora_inicio, h.hora_fin, h.activo
                 FROM personal p
                 LEFT JOIN horario_personal h ON h.id_personal = p.IDPERSONAL
-                WHERE MD5(p.IDPERSONAL) = :hash
+                WHERE MD5(p.IDPERSONAL) = :hash AND p.IDSUCURSAL = @id_sucursal
                 ORDER BY h.dia_semana";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
@@ -28,7 +28,7 @@ class Horario
     {
         $this->conn->beginTransaction();
         try {
-            $find = $this->conn->prepare('SELECT IDPERSONAL FROM personal WHERE MD5(IDPERSONAL) = :hash LIMIT 1');
+            $find = $this->conn->prepare('SELECT IDPERSONAL FROM personal WHERE MD5(IDPERSONAL) = :hash AND IDSUCURSAL = @id_sucursal LIMIT 1');
             $find->bindValue(':hash', $hash);
             $find->execute();
             $idPersonal = $find->fetchColumn();

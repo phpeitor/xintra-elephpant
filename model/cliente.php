@@ -20,7 +20,7 @@ class Cliente {
                     documento = :documento,
                     telefono = :telefono,
                     sexo = :sexo
-                WHERE MD5(id) = :hash";
+                WHERE MD5(id) = :hash AND id_sucursal = @id_sucursal";
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(':apellidos', $data['apellidos']);
@@ -38,7 +38,7 @@ class Cliente {
         $sql = "INSERT INTO cliente 
                 (nombres, apellidos, email, documento, telefono, sexo, fecha_creacion, id_sucursal)
                 VALUES 
-                (:nombres, :apellidos, :email, :documento, :telefono, :sexo, :fecha_creacion, 5)";
+                (:nombres, :apellidos, :email, :documento, :telefono, :sexo, :fecha_creacion, @id_sucursal)";
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(':nombres',   $data['nombres'] ?? '');
@@ -63,6 +63,7 @@ class Cliente {
                 sexo,
                 fecha_creacion
             FROM cliente
+            WHERE id_sucursal = @id_sucursal
             ORDER BY id DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
@@ -72,7 +73,7 @@ class Cliente {
     public function obtenerPorHash(string $hash): ?array {
         $sql = "SELECT *
                 FROM cliente
-                WHERE MD5(id) = :hash
+                WHERE MD5(id) = :hash AND id_sucursal = @id_sucursal
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);

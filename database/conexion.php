@@ -17,6 +17,8 @@ class Conexion {
                 $pass
             );
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $idSucursal = (int)($_SESSION['session_idsucursal'] ?? 0);
+            $this->conn->exec('SET @id_sucursal = ' . $idSucursal);
 
             return $this->conn;
         } catch (PDOException $e) {

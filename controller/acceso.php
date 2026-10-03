@@ -79,6 +79,7 @@ try {
 
         $_SESSION['session_usuario'] = $data['USUARIO'];
         $_SESSION['session_id'] = $data['IDPERSONAL'];
+        $_SESSION['session_idsucursal'] = (int)$data['IDSUCURSAL'];
         $_SESSION['session_nombre'] = $data['NOMBRES'];
         $_SESSION['session_time'] = time(); 
 

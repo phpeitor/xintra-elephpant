@@ -15,7 +15,7 @@ class Item {
     public function baja(int $id): bool {
         $sql = "UPDATE product_service 
                 SET estado = 0
-                WHERE id = :id";
+                WHERE id = :id AND id_sucursal = @id_sucursal";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -23,12 +23,13 @@ class Item {
     }
 
     public function actualizarPorHash(string $hash, array $data): bool {
+        $this->validarCategoria((string)($data['categoria'] ?? ''));
         $sql = "UPDATE product_service 
                 SET nombre = :nombre,
                     categoria = :categoria,
                     precio = :precio,
                     estado = :estado
-                WHERE MD5(id) = :hash";
+                WHERE MD5(id) = :hash AND id_sucursal = @id_sucursal";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':nombre', $data['nombre']);
         $stmt->bindValue(':categoria', $data['categoria']);
@@ -40,10 +41,11 @@ class Item {
     }
 
     public function guardar(array $data): int {
+        $this->validarCategoria((string)($data['categoria'] ?? ''));
         $sql = "INSERT INTO product_service 
                 (nombre, categoria, precio, estado, stock, fecha_creacion, id_sucursal, medida)
                 VALUES 
-                (:nombre, :categoria, :precio, 1, :stock, :fecha_creacion, 5, '')";
+                (:nombre, :categoria, :precio, 1, :stock, :fecha_creacion, @id_sucursal, '')";
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(':nombre',   $data['nombre'] ?? '');
@@ -55,8 +57,27 @@ class Item {
         return (int)$this->conn->lastInsertId();
     }
 
+    private function validarCategoria(string $categoria): void {
+        $numericId = ctype_digit($categoria) ? (int)$categoria : null;
+        $stmt = $this->conn->prepare('SELECT 1 FROM categoria WHERE (id = :id OR MD5(id) = :hash) AND id_sucursal = @id_sucursal LIMIT 1');
+        $stmt->bindValue(':id', $numericId, $numericId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $stmt->bindValue(':hash', $numericId === null ? $categoria : '');
+        $stmt->execute();
+        if (!$stmt->fetchColumn()) {
+            throw new RuntimeException('La categoría no pertenece a la sucursal actual.');
+        }
+    }
+
     public function guardar_stock(array $data): int {
         $id_product = $data['id_product'] ?? '';
+        $numericId = ctype_digit((string)$id_product) ? (int)$id_product : null;
+        $productCheck = $this->conn->prepare('SELECT 1 FROM product_service WHERE (id = :id OR MD5(id) = :hash) AND id_sucursal = @id_sucursal LIMIT 1');
+        $productCheck->bindValue(':id', $numericId, $numericId === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $productCheck->bindValue(':hash', $numericId === null ? (string)$id_product : '');
+        $productCheck->execute();
+        if (!$productCheck->fetchColumn()) {
+            throw new RuntimeException('El ítem no pertenece a la sucursal actual.');
+        }
         $id_pedido  = (int)($data['id_pedido'] ?? 0);
         $tipo       = $data['tipo'] ?? 'E';
         $stock      = (float)($data['stock'] ?? 0);
@@ -67,7 +88,7 @@ class Item {
                 VALUES (
                     (CASE 
                         WHEN LENGTH(:id_product) = 32 THEN (
-                            SELECT id FROM product_service WHERE MD5(id) = :id_product LIMIT 1
+                            SELECT id FROM product_service WHERE MD5(id) = :id_product AND id_sucursal = @id_sucursal LIMIT 1
                         )
                         ELSE :id_product
                     END),
@@ -104,7 +125,7 @@ class Item {
                                             group by id_product) 
                                 b on a.id_product=b.id_product2 where tipo='E' 
                                 group by id_product) t on t.id_product=b.id 
-                    where b.id_sucursal=5";
+                     where b.id_sucursal=@id_sucursal";
 
         if ($tpo !== '') {
             $sql .= " AND c.tpo = :tpo";
@@ -136,7 +157,7 @@ class Item {
                             b on a.id_product=b.id_product2 where tipo='E' 
                             group by id_product
                         ) t on t.id_product=b.id 
-                WHERE MD5(b.id) = :hash
+                WHERE MD5(b.id) = :hash AND b.id_sucursal = @id_sucursal
                 LIMIT 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
@@ -151,7 +172,7 @@ class Item {
                 date(fecha) as Fecha, 
                 date_format(fecha, '%b-%y') as Date,stock as Total 
                 FROM stock_black 
-                WHERE MD5(id_product) = :hash
+                WHERE EXISTS (SELECT 1 FROM product_service p WHERE p.id = stock_black.id_product AND MD5(p.id) = :hash AND p.id_sucursal = @id_sucursal)
                 order by fecha desc";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindValue(':hash', $hash);
@@ -163,7 +184,7 @@ class Item {
     public function obtenerCategoria(string $grupo): ?array {
         $sql = "SELECT *
                 FROM categoria
-                WHERE estado=1 and id_sucursal=5
+                WHERE estado=1 and id_sucursal=@id_sucursal
                 and tpo=:grupo";
         $stmt = $this->conn->prepare($sql);
         if ($grupo !== '') {

@@ -12,13 +12,13 @@ class Asistencia
 
     public function usuarios(): array
     {
-        $stmt = $this->conn->query("SELECT IDPERSONAL AS id, CONCAT(NOMBRES, ' ', APELLIDOS) AS nombre FROM personal WHERE IDSUCURSAL = 5 AND APELLIDOS <> 'ERROR' AND IDPERSONAL > 1 AND IDESTADO = 1 ORDER BY NOMBRES, APELLIDOS");
+        $stmt = $this->conn->query("SELECT IDPERSONAL AS id, CONCAT(NOMBRES, ' ', APELLIDOS) AS nombre FROM personal WHERE IDSUCURSAL = @id_sucursal AND APELLIDOS <> 'ERROR' AND IDPERSONAL > 1 AND IDESTADO = 1 ORDER BY NOMBRES, APELLIDOS");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function estado(int $idUsuario): ?string
     {
-        $stmt = $this->conn->prepare('SELECT tipo FROM asistencia_personal WHERE id_personal = :id ORDER BY fecha DESC, id DESC LIMIT 1');
+        $stmt = $this->conn->prepare('SELECT a.tipo FROM asistencia_personal a INNER JOIN personal p ON p.IDPERSONAL = a.id_personal WHERE a.id_personal = :id AND p.IDSUCURSAL = @id_sucursal ORDER BY a.fecha DESC, a.id DESC LIMIT 1');
         $stmt->bindValue(':id', $idUsuario, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchColumn() ?: null;
@@ -29,7 +29,7 @@ class Asistencia
         if (!in_array($tipo, ['ENTRADA', 'SALIDA'], true)) throw new RuntimeException('Tipo de marcación no válido.');
         $this->conn->beginTransaction();
         try {
-            $usuario = $this->conn->prepare("SELECT CONCAT(NOMBRES, ' ', APELLIDOS) FROM personal WHERE IDPERSONAL = :id AND IDESTADO = 1 LIMIT 1");
+            $usuario = $this->conn->prepare("SELECT CONCAT(NOMBRES, ' ', APELLIDOS) FROM personal WHERE IDPERSONAL = :id AND IDSUCURSAL = @id_sucursal AND IDESTADO = 1 LIMIT 1");
             $usuario->bindValue(':id', $idUsuario, PDO::PARAM_INT);
             $usuario->execute();
             $nombre = $usuario->fetchColumn();
@@ -128,7 +128,7 @@ class Asistencia
 
     private function obtenerFilas(string $inicio, string $fin, ?int $idUsuario): array
     {
-        $sql = "SELECT a.id, a.tipo, a.fecha, a.id_personal AS usuario_id, CONCAT(p.NOMBRES, ' ', p.APELLIDOS) AS usuario FROM asistencia_personal a INNER JOIN personal p ON p.IDPERSONAL = a.id_personal WHERE a.fecha >= :inicio AND a.fecha < :fin";
+        $sql = "SELECT a.id, a.tipo, a.fecha, a.id_personal AS usuario_id, CONCAT(p.NOMBRES, ' ', p.APELLIDOS) AS usuario FROM asistencia_personal a INNER JOIN personal p ON p.IDPERSONAL = a.id_personal WHERE p.IDSUCURSAL = @id_sucursal AND a.fecha >= :inicio AND a.fecha < :fin";
         if ($idUsuario !== null) $sql .= ' AND a.id_personal = :id_usuario';
         $sql .= ' ORDER BY a.fecha ASC, a.id ASC';
         $stmt = $this->conn->prepare($sql);
@@ -151,8 +151,8 @@ class Asistencia
 
     public function recientes(?int $idUsuario = null): array
     {
-        $sql = "SELECT a.id, a.tipo, a.fecha, a.id_personal AS usuario_id, CONCAT(p.NOMBRES, ' ', p.APELLIDOS) AS usuario FROM asistencia_personal a INNER JOIN personal p ON p.IDPERSONAL = a.id_personal";
-        if ($idUsuario !== null) $sql .= ' WHERE a.id_personal = :id_usuario';
+        $sql = "SELECT a.id, a.tipo, a.fecha, a.id_personal AS usuario_id, CONCAT(p.NOMBRES, ' ', p.APELLIDOS) AS usuario FROM asistencia_personal a INNER JOIN personal p ON p.IDPERSONAL = a.id_personal WHERE p.IDSUCURSAL = @id_sucursal";
+        if ($idUsuario !== null) $sql .= ' AND a.id_personal = :id_usuario';
         $sql .= ' ORDER BY a.fecha DESC, a.id DESC LIMIT 10';
         $stmt = $this->conn->prepare($sql);
         if ($idUsuario !== null) $stmt->bindValue(':id_usuario', $idUsuario, PDO::PARAM_INT);

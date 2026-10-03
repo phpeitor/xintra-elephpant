@@ -17,20 +17,20 @@ class Dashboard {
                 (SELECT COUNT(1)
                 FROM personal p
                 WHERE p.idestado = 1 
-                AND p.idsucursal = 5) AS total_personal,
+                AND p.idsucursal = @id_sucursal) AS total_personal,
 
                 (SELECT COUNT(1)
                 FROM product_service a
                 LEFT JOIN categoria b ON a.categoria = b.id
                 WHERE a.estado = 1 
-                AND a.id_sucursal = 5 
+                AND a.id_sucursal = @id_sucursal
                 AND b.tpo = 'PRODUCTO') AS total_productos,
 
                 (SELECT COUNT(1)
                 FROM product_service a
                 LEFT JOIN categoria b ON a.categoria = b.id
                 WHERE a.estado = 1 
-                AND a.id_sucursal = 5 
+                AND a.id_sucursal = @id_sucursal
                 AND b.tpo = 'SERVICIO') AS total_servicios,
 
                 (SELECT COUNT(1)
@@ -39,7 +39,7 @@ class Dashboard {
                 SELECT 1 
                 FROM personal per 
                 WHERE per.idpersonal = ped.usuario
-                AND per.idsucursal = 5
+                AND per.idsucursal = @id_sucursal
                 )) AS total_pedidos
              ";
         $stmt = $this->conn->prepare($sql);
@@ -59,7 +59,7 @@ class Dashboard {
                 LEFT JOIN product_service d ON b.id_productservice = d.id
                 LEFT JOIN categoria c ON d.categoria = c.id
                 WHERE 
-                d.id_sucursal = 5
+                d.id_sucursal = @id_sucursal
                 AND a.cliente > 0
                 AND a.fecha >= DATE_SUB(CURDATE(), INTERVAL 12 MONTH)
                 GROUP BY DATE_FORMAT(a.fecha, '%Y-%m')
@@ -87,7 +87,7 @@ class Dashboard {
                             LEFT JOIN personal c
                                 ON a.usuario = c.IDPERSONAL
                             WHERE
-                                d.id_sucursal = 5
+                                d.id_sucursal = @id_sucursal
                                 AND a.cliente > 0
                                 AND a.fecha >= DATE_SUB(CURDATE(), INTERVAL 24 MONTH)
                             GROUP BY

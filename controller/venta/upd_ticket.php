@@ -47,6 +47,7 @@ try {
     if (!is_array($items)) {
         throw new Exception('Formato inválido en los ítems.');
     }
+    $ticket->validarReferencias($data['cliente'], $data['usuario'], $items);
 
     if (!empty($items)) {
         $ticket->eliminar_pedido($hash);

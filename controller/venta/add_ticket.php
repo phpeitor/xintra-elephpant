@@ -105,6 +105,7 @@ try {
     }
 
     $ticket = new Ticket();
+    $ticket->validarReferencias($cliente, $usuario, $items);
     $id = $ticket->guardar([
         'cliente'       => $cliente,
         'usuario'       => $usuario,

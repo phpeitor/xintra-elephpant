@@ -31,7 +31,7 @@ class Notify {
                     WHERE tipo = 'IN'
                     GROUP BY id_user
                 ) ult ON a.id_user = ult.id_user AND a.fecha = ult.ultima_fecha
-                WHERE DATE(a.fecha) = :fechaHoy and a.id_user <> 1
+                    WHERE DATE(a.fecha) = :fechaHoy and a.id_user <> 1 AND b.IDSUCURSAL = @id_sucursal
 
                 UNION ALL
 
@@ -44,6 +44,7 @@ class Notify {
                 CAST(CONCAT(a.fecha, ' 00:00:00') AS DATETIME) AS fecha
                 FROM pedido a
                 LEFT JOIN personal b ON a.usuario = b.idpersonal
+                WHERE b.IDSUCURSAL = @id_sucursal
 
                 ORDER BY fecha DESC
                 LIMIT :limit
