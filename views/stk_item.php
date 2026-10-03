@@ -23,6 +23,10 @@ require_once ROOT . '/controller/check_session.php';
       <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
+      <style>
+         #create-stock { z-index: 110 !important; }
+         .hs-overlay-backdrop { z-index: 109 !important; }
+      </style>
       <meta http-equiv="imagetoolbar" content="no">
    </head>
    <body>
@@ -128,6 +132,33 @@ require_once ROOT . '/controller/check_session.php';
                         <div class="box-body">
                            <div id="salerevenue1" class="" style="min-height: 315px;">
                            </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div id="create-stock" class="hs-overlay hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none hidden" role="dialog" tabindex="-1" aria-labelledby="create-stock-title">
+                  <div class="sm:max-w-lg sm:w-full m-3 sm:mx-auto">
+                     <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
+                        <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-white/10">
+                           <h3 id="create-stock-title" class="font-semibold text-defaulttextcolor dark:text-white">Agregar stock</h3>
+                           <button type="button" class="ti-btn ti-btn-light !mb-0" data-hs-overlay="#create-stock" aria-label="Cerrar">
+                              <i class="ri-close-line"></i>
+                           </button>
+                        </div>
+                        <div class="p-4 space-y-4">
+                           <div class="space-y-2">
+                              <label for="deal-lead-score" class="ti-form-label">Cantidad</label>
+                              <input id="deal-lead-score" type="number" min="1" step="1" class="ti-form-input rounded-sm" placeholder="Ingrese la cantidad">
+                           </div>
+                           <div class="space-y-2">
+                              <label for="targetDate" class="ti-form-label">Fecha y hora</label>
+                              <input id="targetDate" type="text" class="ti-form-input rounded-sm" placeholder="Seleccione fecha y hora" readonly>
+                           </div>
+                        </div>
+                        <div class="flex justify-end items-center gap-2 p-4 border-t border-defaultborder dark:border-white/10">
+                           <button type="button" class="ti-btn ti-btn-light" data-hs-overlay="#create-stock">Cancelar</button>
+                           <button type="button" id="btnGuardarStock" class="ti-btn ti-btn-primary">Guardar stock</button>
                         </div>
                      </div>
                   </div>
