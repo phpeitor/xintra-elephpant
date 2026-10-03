@@ -564,7 +564,7 @@
           prepararFormularioEdicion(form, hash);
         }
 
-        if (form.classList.contains("ti-custom-validation-user")) {
+        if (form.classList.contains("ti-custom-validation-user") || form.classList.contains("ti-custom-validation")) {
           const inputDocumento = form.querySelector("#documento");
           const inputNombre = form.querySelector("#firstName");
           const inputApellido = form.querySelector("#lastName");

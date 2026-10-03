@@ -61,8 +61,8 @@ require_once ROOT . '/controller/check_session.php';
                            <div class="sm:grid grid-cols-12 gap-6 space-y-2 sm:space-y-0"> 
                                <div class="col-span-12 lg:!col-span-2 sm:col-span-3">
                                  <select id="filtroTipo" class="form-select">
-                                    <option value="PRODUCTO" selected>Productos</option>
-                                    <option value="SERVICIO">Servicios</option>
+                                    <option value="PRODUCTO">Productos</option>
+                                    <option value="SERVICIO" selected>Servicios</option>
                                  </select>
                                </div>
                               
