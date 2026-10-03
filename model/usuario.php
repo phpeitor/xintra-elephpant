@@ -86,13 +86,19 @@ class Usuario {
         return (int)$this->conn->lastInsertId();
     }
 
-    public function table_personal(): array{
-         $sql = "SELECT
+    public function table_personal(string $estado = 'ACTIVOS'): array{
+          $sql = "SELECT
                 *,
                 CONCAT(nombres,' ',apellidos) AS nombre_completo
                 FROM personal
                 WHERE IDSUCURSAL = 5 AND APELLIDOS <>'ERROR' AND IDPERSONAL > 1
-                ORDER BY idpersonal DESC";
+                ";
+         if ($estado === 'ACTIVOS') {
+             $sql .= ' AND IDESTADO = 1';
+         } elseif ($estado === 'INACTIVOS') {
+             $sql .= ' AND IDESTADO = 0';
+         }
+         $sql .= ' ORDER BY idpersonal DESC';
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

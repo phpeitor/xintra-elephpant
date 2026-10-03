@@ -58,7 +58,15 @@ require_once ROOT . '/controller/check_session.php';
                            <h5 class="box-title">Download DataTable</h5>
                         </div>
                         <div class="box-body space-y-3">
-                           <div class="download-data"> <button type="button" class="ti-btn ti-btn-primary" id="download-xlsx">Download XLSX</button> <button type="button" class="ti-btn ti-btn-primary" id="download-pdf">Download PDF</button> </div>
+                            <div class="download-data flex items-center gap-2 flex-wrap">
+                               <button type="button" class="ti-btn ti-btn-primary" id="download-xlsx">Download XLSX</button>
+                               <button type="button" class="ti-btn ti-btn-primary" id="download-pdf">Download PDF</button>
+                               <select id="user-status-filter" class="ti-form-select rounded-sm !py-2 !px-3 w-auto" aria-label="Filtrar usuarios por estado">
+                                  <option value="ACTIVOS" selected>Usuarios activos</option>
+                                  <option value="INACTIVOS">Usuarios inactivos</option>
+                                  <option value="TODOS">Todos los usuarios</option>
+                               </select>
+                            </div>
                            <div class="overflow-hidden table-bordered">
                               <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
                                  

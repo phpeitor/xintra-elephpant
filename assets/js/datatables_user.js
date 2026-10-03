@@ -19,7 +19,7 @@
         paginationCounter: "rows",
         movableColumns: true,
         reactiveData: true,
-        ajaxURL: "controller/table_usuario.php",
+        ajaxURL: "controller/table_usuario.php?estado=ACTIVOS",
 
         ajaxResponse: function(url, params, response) {
             return response;
@@ -146,6 +146,11 @@
 
     table.on("renderComplete", () => {
         window.XintraTooltip?.init(document.querySelector("#download-table"));
+    });
+
+    document.querySelector("#user-status-filter")?.addEventListener("change", (event) => {
+        const estado = encodeURIComponent(event.target.value);
+        table.setData(`controller/table_usuario.php?estado=${estado}`);
     });
 
     //trigger download of data.xlsx file

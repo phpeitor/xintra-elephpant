@@ -100,19 +100,25 @@ class Asistencia
                     if ($row['tipo'] === 'ENTRADA' && $entrada === null) $entrada = $row;
                     if ($row['tipo'] === 'SALIDA') $salida = $row;
                 }
-                if ($date < $today) {
-                    if (!$entrada) {
-                        $events[] = $this->statusEvent($date, 'Ausencia', 'attendance-absence');
-                    } elseif (!$salida) {
-                        $events[] = $this->statusEvent($date, 'Sin salida registrada', 'attendance-warning');
-                    } else {
-                        $labels = [];
-                        $entradaHora = substr($entrada['fecha'], 11, 5);
-                        $salidaHora = substr($salida['fecha'], 11, 5);
-                        if ($entradaHora > $inicioHorario) $labels[] = 'Tardanza ' . $this->minutesBetween($inicioHorario, $entradaHora) . ' min';
-                        if ($salidaHora < $finHorario) $labels[] = 'Salida anticipada ' . $this->minutesBetween($salidaHora, $finHorario) . ' min';
-                        foreach ($labels as $label) $events[] = $this->statusEvent($date, $label, 'attendance-warning');
+                if ($date < $today && !$entrada) {
+                    $events[] = $this->statusEvent($date, 'Ausencia', 'attendance-absence');
+                } elseif ($date < $today && !$salida) {
+                    $events[] = $this->statusEvent($date, 'Sin salida registrada', 'attendance-warning');
+                } elseif ($date <= $today && $entrada && $salida) {
+                    $labels = [];
+                    $entradaHora = substr($entrada['fecha'], 11, 5);
+                    $salidaHora = substr($salida['fecha'], 11, 5);
+                    if ($entradaHora < $inicioHorario) {
+                        $labels[] = 'Entrada anticipada ' . $this->minutesBetween($entradaHora, $inicioHorario) . ' min';
+                    } elseif ($entradaHora > $inicioHorario) {
+                        $labels[] = 'Tardanza ' . $this->minutesBetween($inicioHorario, $entradaHora) . ' min';
                     }
+                    if ($salidaHora < $finHorario) {
+                        $labels[] = 'Salida anticipada ' . $this->minutesBetween($salidaHora, $finHorario) . ' min';
+                    } elseif ($salidaHora > $finHorario) {
+                        $labels[] = 'Salida fuera de horario ' . $this->minutesBetween($finHorario, $salidaHora) . ' min';
+                    }
+                    foreach ($labels as $label) $events[] = $this->statusEvent($date, $label, 'attendance-warning');
                 }
             }
             $day = $day->modify('+1 day');
