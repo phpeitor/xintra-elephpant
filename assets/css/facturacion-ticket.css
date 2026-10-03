@@ -1,0 +1,11 @@
+#facturacion-ticket-modal {
+  z-index: 110 !important;
+}
+
+.hs-overlay-backdrop {
+  z-index: 109 !important;
+}
+
+.ticket-summary-chart {
+  min-height: 85px;
+}

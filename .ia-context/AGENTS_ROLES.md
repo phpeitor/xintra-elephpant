@@ -3,7 +3,7 @@
 ## Contexto del sistema
 
 - Aplicación web PHP para gestión operativa de sucursales.
-- Funcionalidades principales: usuarios, clientes, categorías, productos/servicios, inventario, tickets/ventas, horarios, asistencia, dashboard y reportes.
+- Funcionalidades principales: usuarios, clientes, categorías, productos/servicios, inventario, tickets/ventas, comprobantes electrónicos NubeFact, horarios, asistencia, dashboard y reportes.
 - Backend organizado en `controller/`, `model/`, `config/` y `database/`.
 - Frontend basado en las vistas PHP, el template Xintra, JavaScript en `assets/js/` y CSS en `assets/css/`.
 - Persistencia MySQL/MariaDB mediante PDO.

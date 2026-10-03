@@ -51,19 +51,51 @@
                 field: "acciones",
                 hozAlign: "center",
                 headerSort: false,
-                width: 160,
+                width: 290,
                 formatter: (cell) => {
                     const row = cell.getRow().getData();
                     const id = row.id;
                     const idHash = md5(id.toString());
+                    const comprobanteEstado = row.comprobante_estado || "";
+                    let comprobanteAction = "";
+                    const escapeAttribute = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
+                        "&": "&amp;",
+                        "<": "&lt;",
+                        ">": "&gt;",
+                        '"': "&quot;",
+                        "'": "&#39;",
+                    }[character]));
+
+                    if (comprobanteEstado === "EMITIDO") {
+                        const pdfUrl = String(row.comprobante_pdf || "");
+                        const safePdfUrl = /^https:\/\//i.test(pdfUrl)
+                            ? escapeAttribute(pdfUrl)
+                            : "";
+                        const sunatNoAcepto = row.comprobante_aceptada === 0 || row.comprobante_aceptada === "0";
+                        const linkClass = sunatNoAcepto
+                            ? "bg-warning/10 text-warning hover:bg-warning hover:text-white"
+                            : "bg-success/10 text-success hover:bg-success hover:text-white";
+                        const comprobanteTitle = `${row.comprobante_serie}-${row.comprobante_numero}${sunatNoAcepto ? ` · SUNAT: ${row.comprobante_mensaje || "No aceptado"}` : " · Ver comprobante"}`;
+                        comprobanteAction = safePdfUrl
+                            ? `<a class="btn-comprobante-pdf ti-btn ti-btn-icon ${linkClass} !rounded-full" href="${safePdfUrl}" target="_blank" rel="noopener noreferrer" title="${escapeAttribute(comprobanteTitle)}"><i class="ri-file-list-3-line"></i></a>`
+                            : `<span class="badge ${sunatNoAcepto ? "bg-warning" : "bg-success"}" title="${escapeAttribute(comprobanteTitle)}">${escapeAttribute(row.comprobante_serie)}-${escapeAttribute(row.comprobante_numero)}</span>`;
+                    } else if (comprobanteEstado === "ERROR") {
+                        comprobanteAction = `<button type="button" class="btn-comprobante-retry ti-btn ti-btn-sm ti-btn-outline-danger" title="${escapeAttribute(row.comprobante_mensaje || "Error de emisión")}"><i class="ri-refresh-line"></i> Reintentar</button>`;
+                    } else if (comprobanteEstado === "PENDIENTE") {
+                        comprobanteAction = `<button type="button" class="ti-btn ti-btn-sm ti-btn-light" disabled>Emitiendo…</button>`;
+                    } else {
+                        comprobanteAction = `<button type="button" class="btn-comprobante-emit ti-btn ti-btn-sm ti-btn-outline-success" title="Emitir boleta o factura"><i class="ri-bill-line"></i> Emitir</button>`;
+                    }
+
                     return `
-                    <div style="display:flex;align-items:center;justify-content:flex-start;gap:.5rem;width:100%;">
+                    <div class="flex items-center justify-start gap-2 w-full">
                         <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
                             <i class="ri-edit-2-line"></i>
                         </button>
                         <button class="btn-pdf ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
                             <i class="ri-file-pdf-2-line"></i>
                         </button>
+                        ${comprobanteAction}
                     </div>`;
                 },
                 cellClick: function (e, cell) {
@@ -83,6 +115,16 @@
                                 alertify.error('Acción cancelada');
                             }
                         ).set('labels', { ok: 'Sí', cancel: 'No' });
+                    } else if (e.target.closest(".btn-comprobante-emit")) {
+                        const row = cell.getRow().getData();
+                        if (window.facturacionTicket) {
+                            window.facturacionTicket.abrir(row);
+                        } else {
+                            alertify.error("No se pudo inicializar el formulario de facturación.");
+                        }
+                    } else if (e.target.closest(".btn-comprobante-retry")) {
+                        const row = cell.getRow().getData();
+                        window.facturacionTicket?.reintentar(row);
                     }
                 },
             },

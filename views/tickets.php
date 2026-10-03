@@ -15,6 +15,7 @@ require_once ROOT . '/controller/check_session.php';
       <meta name="keywords" content="tailwind template,tailwind dashboard,tailwind,tailwind admin template,dashboard,tailwind css templates,html dashboard template,tailwind dashboard template,dashboard tailwind,admin,html css templates,html dashboard,html css javascript templates,dashboard tailwind template,tailwind css dashboard">
       <script src="./assets/js/main.js"></script> 
       <link href="./assets/css/styles.css" rel="stylesheet">
+      <link href="./assets/css/facturacion-ticket.css" rel="stylesheet">
       <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
       <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
       <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
@@ -73,7 +74,7 @@ require_once ROOT . '/controller/check_session.php';
                               <div class="text-textmuted dark:text-textmuted/50 text-[13px]" id="inc_21">Increased By</div>
                               <span class="text-success" id="pct_21">0% <i class="ti ti-arrow-narrow-up text-[16px]"></i></span>
                            </div>
-                           <div id="chart-21" style="min-height:85px;"></div>
+                            <div id="chart-21" class="ticket-summary-chart"></div>
                         </div>
                         </div>
                      </div>
@@ -95,7 +96,7 @@ require_once ROOT . '/controller/check_session.php';
                               <div class="text-textmuted dark:text-textmuted/50 text-[13px]" id="inc_22">Increased By</div>
                               <span class="text-success" id="pct_22">0% <i class="ti ti-arrow-narrow-up text-[16px]"></i></span>
                            </div>
-                           <div id="chart-22" style="min-height:85px;"></div>
+                            <div id="chart-22" class="ticket-summary-chart"></div>
                         </div>
                         </div>
                      </div>
@@ -117,7 +118,7 @@ require_once ROOT . '/controller/check_session.php';
                               <div class="text-textmuted dark:text-textmuted/50 text-[13px]" id="inc_23">Decreased By</div>
                               <span class="text-danger" id="pct_23">0% <i class="ti ti-arrow-narrow-down text-[16px]"></i></span>
                            </div>
-                           <div id="chart-23" style="min-height:85px;"></div>
+                            <div id="chart-23" class="ticket-summary-chart"></div>
                         </div>
                         </div>
                      </div>
@@ -150,8 +151,7 @@ require_once ROOT . '/controller/check_session.php';
 
                      <div class="btn-list"> 
                         <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> 
-                        <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light btn-registrar" onclick="window.location.href='add_ticket.php'"> <i class="ri-share-forward-line me-1"></i> Registrar 
-                        </button> 
+                         <a href="add_ticket.php" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light btn-registrar"> <i class="ri-share-forward-line me-1"></i> Registrar</a>
                      </div>
                   </div>
                </div>
@@ -169,6 +169,51 @@ require_once ROOT . '/controller/check_session.php';
 
                            <div class="overflow-hidden table-bordered">
                               <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
+                              </div>
+                           </div>
+
+                           <button id="facturacion-ticket-open" class="hidden" type="button" data-hs-overlay="#facturacion-ticket-modal" aria-hidden="true" tabindex="-1"></button>
+                           <div id="facturacion-ticket-modal" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="facturacion-ticket-title">
+                              <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-xl sm:w-full m-3 sm:mx-auto">
+                                 <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
+                                    <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-white/10">
+                                       <h2 id="facturacion-ticket-title" class="font-semibold text-defaulttextcolor dark:text-white">Emitir comprobante electrónico</h2>
+                                       <button type="button" class="ti-btn ti-btn-light !mb-0" data-hs-overlay="#facturacion-ticket-modal" aria-label="Cerrar">
+                                          <i class="ri-close-line"></i>
+                                       </button>
+                                    </div>
+                                    <form id="facturacion-ticket-form" class="p-4 space-y-4">
+                                       <input type="hidden" id="facturacion-ticket-hash" name="hash">
+                                       <div class="space-y-2">
+                                          <label for="facturacion-tipo" class="ti-form-label">Tipo de comprobante</label>
+                                          <select id="facturacion-tipo" name="tipo" class="ti-form-select rounded-sm" required>
+                                             <option value="2">Boleta de venta</option>
+                                             <option value="1">Factura</option>
+                                          </select>
+                                       </div>
+                                       <div class="space-y-2">
+                                          <label for="facturacion-documento" class="ti-form-label">Documento del cliente</label>
+                                          <input id="facturacion-documento" class="ti-form-input rounded-sm" type="text" readonly>
+                                       </div>
+                                       <div class="space-y-2">
+                                          <label for="facturacion-denominacion" class="ti-form-label">Nombre o razón social</label>
+                                          <input id="facturacion-denominacion" name="denominacion" class="ti-form-input rounded-sm" type="text" maxlength="100" required>
+                                       </div>
+                                       <div id="facturacion-datos-factura" class="space-y-2 hidden">
+                                          <label for="facturacion-direccion" class="ti-form-label">Dirección fiscal (obligatoria para factura)</label>
+                                          <input id="facturacion-direccion" name="direccion" class="ti-form-input rounded-sm" type="text" maxlength="100">
+                                       </div>
+                                       <div class="space-y-2">
+                                          <label for="facturacion-email" class="ti-form-label">Correo del cliente (opcional)</label>
+                                          <input id="facturacion-email" name="email" class="ti-form-input rounded-sm" type="email" maxlength="250">
+                                       </div>
+                                       <p id="facturacion-ticket-mensaje" class="text-sm text-danger hidden" role="alert"></p>
+                                       <div class="flex justify-end gap-2 pt-2">
+                                          <button type="button" class="ti-btn ti-btn-light" data-hs-overlay="#facturacion-ticket-modal">Cancelar</button>
+                                          <button type="submit" id="facturacion-ticket-submit" class="ti-btn ti-btn-primary">Emitir en NubeFact</button>
+                                       </div>
+                                    </form>
+                                 </div>
                               </div>
                            </div>
                         </div>
@@ -200,6 +245,7 @@ require_once ROOT . '/controller/check_session.php';
       <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
       <script src="./assets/js/datatables_ticket.js?v=1"></script>
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+      <script src="./assets/js/facturacion_ticket.js?v=1"></script>
       <script src="./assets/js/custom.js"></script>
       <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
       <script src="./assets/js/analytics-dashboard.js?v=1.0"></script>

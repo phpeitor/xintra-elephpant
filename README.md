@@ -1,14 +1,11 @@
-# Xintra Elephpant
+## Xintra Elephpant 🐘
 
-Aplicación web para la gestión operativa de sucursales: usuarios, clientes, categorías, productos y servicios, inventario, tickets/ventas, horarios, asistencia, dashboards y reportes.
+[![forthebadge](http://forthebadge.com/badges/uses-css.svg)](https://www.linkedin.com/in/drphp/)
+[![forthebadge](http://forthebadge.com/badges/built-with-love.svg)](https://www.linkedin.com/in/drphp/)
 
-## Tecnologías
+[![Video](https://img.youtube.com/vi/G7heyYn1CBk/0.jpg)](https://www.youtube.com/watch?v=G7heyYn1CBk)
 
-- PHP 8.0 o superior, PDO y sesiones nativas.
-- MySQL 8.0 recomendado (o una versión compatible con CTE y funciones de ventana).
-- Composer, `vlucas/phpdotenv` y Dompdf.
-- JavaScript vanilla, `fetch`, ApexCharts y el template Xintra.
-- Cloudflare Turnstile para protección del inicio de sesión.
+[![Video Demo](https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube)](https://www.youtube.com/watch?v=G7heyYn1CBk)
 
 ## Requisitos
 
@@ -42,9 +39,19 @@ TURNSTILE_HOSTNAME=localhost
 
 UBUNTUX_API_URL=https://api.example.test/consulta?dni=
 PROMOCODE=
+
+NUBEFACT_ENV=demo
+NUBEFACT_URL=https://api.nubefact.com/api/v1/REEMPLAZAR_RUTA_DEMO
+NUBEFACT_TOKEN=REEMPLAZAR_TOKEN_DEMO
+NUBEFACT_SERIE_BOLETA=BBB1
+NUBEFACT_SERIE_FACTURA=FFF1
+NUBEFACT_NUMERO_INICIAL_BOLETA=1
+NUBEFACT_NUMERO_INICIAL_FACTURA=1
 ```
 
 `TURNSTILE_SECRET_KEY` puede dejarse vacío en un entorno local sin validación Turnstile. En producción, configura las claves y el hostname autorizados en Cloudflare. Define `UBUNTUX_API_URL` si se usará la consulta externa del documento; `PROMOCODE` contiene los códigos promocionales habilitados según el formato que espera el backend.
+
+Para emitir comprobantes, configura la ruta y el token de tu cuenta DEMO NubeFact en `.env`. Las series del ejemplo (`BBB1` y `FFF1`) deben coincidir con las habilitadas para tu cuenta. Ajusta los números iniciales si esas series ya tienen documentos emitidos. En modo demo se acepta la ruta de `demo.nubefact.com` o una ruta asignada en `api.nubefact.com` a una cuenta DEMO. Producción requiere cambiar explícitamente `NUBEFACT_ENV`, confirmar la ruta y configurar los próximos correlativos. Nunca publiques el token ni lo guardes en JavaScript, SQL o el repositorio. Revisa `database/migration/20261003_nubefact_comprobantes.sql` y aplícala antes de habilitar la emisión.
 
 Abre la aplicación desde el host configurado, por ejemplo:
 
@@ -86,7 +93,7 @@ La sesión y configuración común se inicializan en `config/bootstrap.php`. Las
 6. Los cambios de esquema se documentan como SQL en `database/migration/` y se ejecutan antes del código que dependa de ellos.
 7. Usa `ROOT` para includes internos y conserva los parciales comunes en `layout/`.
 
-Consulta `.ia-context/README.md` para el índice de estándares y `.ia-context/` antes de implementar cambios.
+Consulta los estándares disponibles en `.ia-context/` antes de implementar cambios.
 
 ## Base de datos y migraciones
 

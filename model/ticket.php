@@ -208,7 +208,17 @@ class Ticket {
         }
 
         $sql = "SELECT a.id, b.id_productservice as id_producto, date(a.fecha) as fecha_pedido, case when upper(c.USUARIO) is null then 'SALIDA INSUMOS' else upper(c.USUARIO) end as usuario,
-                case when e.apellidos is null then 'INVENTARIO' else concat(e.nombres,' ',e.apellidos) end as cliente, 
+                case when e.apellidos is null then 'INVENTARIO' else concat(e.nombres,' ',e.apellidos) end as cliente,
+                concat_ws(' ', e.nombres, e.apellidos) as cliente_denominacion,
+                e.documento as cliente_documento,
+                e.email as cliente_email,
+                ce.tipo_de_comprobante as comprobante_tipo,
+                ce.serie as comprobante_serie,
+                ce.numero as comprobante_numero,
+                ce.estado as comprobante_estado,
+                ce.aceptada_por_sunat as comprobante_aceptada,
+                ce.enlace_del_pdf as comprobante_pdf,
+                ce.mensaje as comprobante_mensaje,
                 GROUP_CONCAT('• ',d.nombre SEPARATOR ' </br> ') as productos, 
                 GROUP_CONCAT('S/.',b.precio,' x ',b.cantidad SEPARATOR ' </br> ') as precioxcant,
                 case when dscto > 0 and pago='EFECTIVO' then concat('S/.',sum(b.subtotal),'<br/><code>',tipo_dscto,
@@ -225,7 +235,8 @@ class Ticket {
                     LEFT JOIN detalle_pedido b ON a.id = b.id_pedido 
                     LEFT JOIN personal c ON a.usuario = c.IDPERSONAL 
                     LEFT JOIN product_service d ON b.id_productservice = d.id 
-                    LEFT JOIN cliente e on e.id = a.cliente 
+                    LEFT JOIN cliente e on e.id = a.cliente
+                    LEFT JOIN nubefact_comprobante ce ON ce.id_pedido = a.id
                 WHERE a.fecha >= :fecha_inicio AND a.fecha < :fecha_fin_exclusiva
                 AND d.id_sucursal = @id_sucursal
                 AND a.cliente > 0
