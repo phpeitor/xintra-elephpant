@@ -1,0 +1,11 @@
+#create-stock {
+  z-index: 110 !important;
+}
+
+.hs-overlay-backdrop {
+  z-index: 109 !important;
+}
+
+.stock-revenue-chart {
+  min-height: 315px;
+}

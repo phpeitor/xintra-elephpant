@@ -14,6 +14,7 @@ require_once ROOT . '/controller/check_session.php';
       <meta name="keywords" content="tailwind template,tailwind dashboard,tailwind,tailwind admin template,dashboard,tailwind css templates,html dashboard template,tailwind dashboard template,dashboard tailwind,admin,html css templates,html dashboard,html css javascript templates,dashboard tailwind template,tailwind css dashboard">
       <script src="./assets/js/main.js"></script> 
       <link href="./assets/css/styles.css" rel="stylesheet">
+      <link href="./assets/css/stk_item.css" rel="stylesheet">
       <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
       <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
       <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
@@ -23,10 +24,6 @@ require_once ROOT . '/controller/check_session.php';
       <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css"/>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css"/>
-      <style>
-         #create-stock { z-index: 110 !important; }
-         .hs-overlay-backdrop { z-index: 109 !important; }
-      </style>
       <meta http-equiv="imagetoolbar" content="no">
    </head>
    <body>
@@ -48,8 +45,8 @@ require_once ROOT . '/controller/check_session.php';
                      </nav>
                      <h1 class="page-title font-medium text-lg mb-0">Stock Item </h1>
                   </div>
-                  <div class="btn-list"> 
-                     <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <button type="button" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light"  onclick="window.location.href='items.php'"> <i class="ri-reply-line"></i> </button> 
+                  <div class="btn-list">
+                     <button type="button" class="ti-btn bg-white dark:bg-bodybg border border-defaultborder dark:border-defaultborder/10 btn-wave !my-0 waves-effect waves-light"> <i class="ri-filter-3-line align-middle me-1 leading-none"></i> Filter </button> <a href="items.php" class="ti-btn ti-btn-primary !border-0 btn-wave me-0 waves-effect waves-light" aria-label="Volver a items"> <i class="ri-reply-line"></i> </a>
                   </div>
                </div>
 
@@ -130,7 +127,7 @@ require_once ROOT . '/controller/check_session.php';
                            <div class="box-title"> Sales </div>
                         </div>
                         <div class="box-body">
-                           <div id="salerevenue1" class="" style="min-height: 315px;">
+                           <div id="salerevenue1" class="stock-revenue-chart">
                            </div>
                         </div>
                      </div>
