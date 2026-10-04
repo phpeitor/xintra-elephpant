@@ -1,5 +1,5 @@
 <?php
-require_once "../../database/conexion.php";
+require_once __DIR__ . '/../database/conexion.php';
 
 class Ticket {
     private PDO $conn;
@@ -216,6 +216,14 @@ class Ticket {
                 ce.serie as comprobante_serie,
                 ce.numero as comprobante_numero,
                 ce.estado as comprobante_estado,
+                CASE
+                    WHEN ce.id IS NULL THEN NULL
+                    WHEN ce.estado <> 'EMITIDO' THEN ce.estado
+                    WHEN ce.aceptada_por_sunat = 1 THEN 'ACEPTADO'
+                    WHEN ce.aceptada_por_sunat = 0 AND ce.mensaje IN ('Comprobante emitido.', 'Pendiente de respuesta de SUNAT.') THEN 'PENDIENTE'
+                    WHEN ce.aceptada_por_sunat = 0 THEN 'RECHAZADO'
+                    ELSE 'PENDIENTE'
+                END as comprobante_sunat_estado,
                 ce.aceptada_por_sunat as comprobante_aceptada,
                 ce.enlace_del_pdf as comprobante_pdf,
                 ce.mensaje as comprobante_mensaje,

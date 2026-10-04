@@ -43,8 +43,8 @@
             { title: "Fecha",     field: "fecha_pedido", width: 140 },
             { title: "Personal",  field: "usuario", headerFilter: "input", width: 120},
             { title: "Cliente",   field: "cliente", headerFilter: "input", width: 180 },
-            { title: "Items",     field: "productos",  formatter: "html", cssClass: "wrap" },
-            { title: "Subtotal",  field: "precioxcant",formatter: "html", cssClass: "wrap" },
+            { title: "Items",     field: "productos",  formatter: "html", cssClass: "wrap" , width: 180},
+            { title: "Subtotal",  field: "precioxcant",formatter: "html", cssClass: "wrap" , width: 120},
             { title: "Total",     field: "total",      formatter: "html", cssClass: "wrap", width: 120 },
             {
                 title: "Opciones",
@@ -71,14 +71,25 @@
                         const safePdfUrl = /^https:\/\//i.test(pdfUrl)
                             ? escapeAttribute(pdfUrl)
                             : "";
-                        const sunatNoAcepto = row.comprobante_aceptada === 0 || row.comprobante_aceptada === "0";
-                        const linkClass = sunatNoAcepto
-                            ? "bg-warning/10 text-warning hover:bg-warning hover:text-white"
-                            : "bg-success/10 text-success hover:bg-success hover:text-white";
-                        const comprobanteTitle = `${row.comprobante_serie}-${row.comprobante_numero}${sunatNoAcepto ? ` · SUNAT: ${row.comprobante_mensaje || "No aceptado"}` : " · Ver comprobante"}`;
-                        comprobanteAction = safePdfUrl
-                            ? `<a class="btn-comprobante-pdf ti-btn ti-btn-icon ${linkClass} !rounded-full" href="${safePdfUrl}" target="_blank" rel="noopener noreferrer" title="${escapeAttribute(comprobanteTitle)}"><i class="ri-file-list-3-line"></i></a>`
-                            : `<span class="badge ${sunatNoAcepto ? "bg-warning" : "bg-success"}" title="${escapeAttribute(comprobanteTitle)}">${escapeAttribute(row.comprobante_serie)}-${escapeAttribute(row.comprobante_numero)}</span>`;
+                        const estadoSunat = row.comprobante_sunat_estado || "PENDIENTE";
+                        const statusStyle = estadoSunat === "ACEPTADO"
+                            ? "bg-success"
+                            : estadoSunat === "RECHAZADO"
+                                ? "bg-danger"
+                                : "bg-warning text-dark";
+                        const statusLabel = estadoSunat === "ACEPTADO"
+                            ? "SUNAT OK"
+                            : estadoSunat === "RECHAZADO"
+                                ? "SUNAT RECHAZADO"
+                                : "SUNAT PENDIENTE";
+                        const comprobanteTitle = `${row.comprobante_serie}-${row.comprobante_numero}: ${row.comprobante_mensaje || statusLabel}`;
+                        const pdfAction = safePdfUrl
+                            ? `<a class="btn-comprobante-pdf ti-btn ti-btn-icon bg-success/10 text-success hover:bg-success hover:text-white !rounded-full" href="${safePdfUrl}" target="_blank" rel="noopener noreferrer" title="Ver PDF"><i class="ri-file-list-3-line"></i></a>`
+                            : `<span class="badge bg-success">${escapeAttribute(row.comprobante_serie)}-${escapeAttribute(row.comprobante_numero)}</span>`;
+                        const consultAction = estadoSunat !== "ACEPTADO"
+                            ? `<button type="button" class="btn-comprobante-consult ti-btn ti-btn-icon bg-info/10 text-info hover:bg-info hover:text-white !rounded-full" title="Consultar estado en SUNAT"><i class="ri-refresh-line"></i></button>`
+                            : "";
+                        comprobanteAction = `<span class="badge ${statusStyle}" title="${escapeAttribute(comprobanteTitle)}">${statusLabel}</span>${pdfAction}${consultAction}`;
                     } else if (comprobanteEstado === "ERROR") {
                         comprobanteAction = `<button type="button" class="btn-comprobante-retry ti-btn ti-btn-sm ti-btn-outline-danger" title="${escapeAttribute(row.comprobante_mensaje || "Error de emisión")}"><i class="ri-refresh-line"></i> Reintentar</button>`;
                     } else if (comprobanteEstado === "PENDIENTE") {
@@ -125,6 +136,9 @@
                     } else if (e.target.closest(".btn-comprobante-retry")) {
                         const row = cell.getRow().getData();
                         window.facturacionTicket?.reintentar(row);
+                    } else if (e.target.closest(".btn-comprobante-consult")) {
+                        const row = cell.getRow().getData();
+                        window.facturacionTicket?.consultar(row);
                     }
                 },
             },

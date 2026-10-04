@@ -77,6 +77,16 @@
           () => alertify.message("Reintento cancelado.")
         ).set("labels", { ok: "Reintentar", cancel: "Cancelar" });
       },
+
+      consultar(row) {
+        const hash = md5(String(row.id));
+        postEmission({ hash, accion: "consultar" })
+          .then((result) => {
+            alertify.success(result.mensaje || "Estado NubeFact actualizado.");
+            window.location.reload();
+          })
+          .catch((error) => alertify.error(error.message));
+      },
     };
 
     tipoInput.addEventListener("change", updateDocumentType);

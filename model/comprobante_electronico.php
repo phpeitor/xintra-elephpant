@@ -91,6 +91,113 @@ class ComprobanteElectronico
         return $this->enviarNubeFact($comprobanteId, $payload, $config);
     }
 
+    public function consultar(string $hashTicket): array
+    {
+        $config = $this->configuracion();
+        $ticket = $this->obtenerTicket($hashTicket);
+        if (!$ticket) {
+            throw new RuntimeException('Ticket no encontrado en la sucursal actual.');
+        }
+
+        $stmt = $this->conn->prepare('SELECT * FROM nubefact_comprobante WHERE id_pedido = :id_pedido LIMIT 1');
+        $stmt->bindValue(':id_pedido', (int)$ticket['id'], PDO::PARAM_INT);
+        $stmt->execute();
+        $comprobante = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$comprobante || $comprobante['estado'] !== 'EMITIDO') {
+            throw new RuntimeException('No hay un comprobante emitido para consultar.');
+        }
+
+        $payload = [
+            'operacion' => 'consultar_comprobante',
+            'tipo_de_comprobante' => (int)$comprobante['tipo_de_comprobante'],
+            'serie' => (string)$comprobante['serie'],
+            'numero' => (int)$comprobante['numero'],
+        ];
+        $ch = curl_init($config['url']);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR),
+            CURLOPT_HTTPHEADER => [
+                'Authorization: Token token="' . $config['token'] . '"',
+                'Content-Type: application/json',
+                'Accept: application/json',
+            ],
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
+        ]);
+        $caBundle = dirname(__DIR__) . '/config/cacert.pem';
+        if (is_file($caBundle)) {
+            curl_setopt($ch, CURLOPT_CAINFO, $caBundle);
+        }
+
+        $raw = curl_exec($ch);
+        $curlError = curl_error($ch);
+        $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+        $response = is_string($raw) ? json_decode($raw, true) : null;
+        if (!is_array($response)) {
+            throw new RuntimeException($curlError !== '' ? 'Error consultando NubeFact: ' . $curlError : 'NubeFact devolvió una respuesta no válida (HTTP ' . $httpCode . ').');
+        }
+        if ($httpCode < 200 || $httpCode >= 300 || !empty($response['errors'])) {
+            throw new RuntimeException($this->formatearError($response['errors'] ?? 'No se pudo consultar el comprobante en NubeFact.'));
+        }
+
+        $accepted = array_key_exists('aceptada_por_sunat', $response) ? (bool)$response['aceptada_por_sunat'] : null;
+        $sunatDescription = trim((string)($response['sunat_description'] ?? ''));
+        $sunatCode = trim((string)($response['sunat_responsecode'] ?? ''));
+        $soapError = trim((string)($response['sunat_soap_error'] ?? ''));
+        if ($accepted === true) {
+            $message = $sunatDescription !== '' ? $sunatDescription : 'Aceptado por SUNAT.';
+        } elseif ($sunatDescription !== '' || $soapError !== '' || ($sunatCode !== '' && $sunatCode !== '0')) {
+            $message = $sunatDescription ?: ($soapError ?: 'SUNAT rechazó el comprobante.');
+        } else {
+            $message = 'Pendiente de respuesta de SUNAT.';
+        }
+
+        $normalized = array_intersect_key($response, array_flip([
+            'tipo_de_comprobante', 'serie', 'numero', 'enlace', 'enlace_del_pdf', 'enlace_del_xml', 'enlace_del_cdr',
+            'aceptada_por_sunat', 'sunat_description', 'sunat_note', 'sunat_responsecode', 'sunat_soap_error',
+            'cadena_para_codigo_qr', 'codigo_hash', 'anulado',
+        ]));
+        $link = trim((string)($response['enlace'] ?? '')) ?: (string)$comprobante['enlace'];
+        $pdf = trim((string)($response['enlace_del_pdf'] ?? '')) ?: (string)$comprobante['enlace_del_pdf'];
+        $xml = trim((string)($response['enlace_del_xml'] ?? '')) ?: (string)$comprobante['enlace_del_xml'];
+        $cdr = trim((string)($response['enlace_del_cdr'] ?? '')) ?: (string)$comprobante['enlace_del_cdr'];
+        $update = $this->conn->prepare(
+            "UPDATE nubefact_comprobante
+             SET response_json = :response,
+                 enlace = :enlace,
+                 enlace_del_pdf = :pdf,
+                 enlace_del_xml = :xml,
+                 enlace_del_cdr = :cdr,
+                 aceptada_por_sunat = :aceptada,
+                 mensaje = :mensaje,
+                 fecha_respuesta = :fecha_respuesta
+             WHERE id = :id"
+        );
+        $update->bindValue(':response', json_encode($normalized, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        $update->bindValue(':enlace', $link);
+        $update->bindValue(':pdf', $pdf);
+        $update->bindValue(':xml', $xml);
+        $update->bindValue(':cdr', $cdr);
+        $update->bindValue(':aceptada', $accepted === null ? null : (int)$accepted, $accepted === null ? PDO::PARAM_NULL : PDO::PARAM_INT);
+        $update->bindValue(':mensaje', $message);
+        $update->bindValue(':fecha_respuesta', $this->nowLima);
+        $update->bindValue(':id', (int)$comprobante['id'], PDO::PARAM_INT);
+        $update->execute();
+
+        return [
+            'ok' => true,
+            'sunat_estado' => $accepted === true ? 'ACEPTADO' : (($sunatDescription !== '' || $soapError !== '' || ($sunatCode !== '' && $sunatCode !== '0')) ? 'RECHAZADO' : 'PENDIENTE'),
+            'mensaje' => $message,
+            'serie' => (string)$comprobante['serie'],
+            'numero' => (int)$comprobante['numero'],
+        ];
+    }
+
     private function configuracion(): array
     {
         $url = trim((string)($_ENV['NUBEFACT_URL'] ?? ''));

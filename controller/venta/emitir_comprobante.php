@@ -10,20 +10,25 @@ try {
     }
 
     $hash = trim((string)($_POST['hash'] ?? ''));
-    $tipo = filter_var($_POST['tipo'] ?? null, FILTER_VALIDATE_INT);
+    $accion = trim((string)($_POST['accion'] ?? 'emitir'));
     if (!preg_match('/^[a-f0-9]{32}$/i', $hash)) {
         throw new InvalidArgumentException('Hash de ticket inválido.');
     }
-    if ($tipo === false || !in_array((int)$tipo, [1, 2], true)) {
-        throw new InvalidArgumentException('Selecciona factura o boleta.');
-    }
 
     $comprobante = new ComprobanteElectronico();
-    $result = $comprobante->emitir($hash, (int)$tipo, [
-        'denominacion' => trim((string)($_POST['denominacion'] ?? '')),
-        'direccion' => trim((string)($_POST['direccion'] ?? '')),
-        'email' => trim((string)($_POST['email'] ?? '')),
-    ], (int)$_SESSION['session_id']);
+    if ($accion === 'consultar') {
+        $result = $comprobante->consultar($hash);
+    } else {
+        $tipo = filter_var($_POST['tipo'] ?? null, FILTER_VALIDATE_INT);
+        if ($tipo === false || !in_array((int)$tipo, [1, 2], true)) {
+            throw new InvalidArgumentException('Selecciona factura o boleta.');
+        }
+        $result = $comprobante->emitir($hash, (int)$tipo, [
+            'denominacion' => trim((string)($_POST['denominacion'] ?? '')),
+            'direccion' => trim((string)($_POST['direccion'] ?? '')),
+            'email' => trim((string)($_POST['email'] ?? '')),
+        ], (int)$_SESSION['session_id']);
+    }
 
     echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 } catch (InvalidArgumentException $e) {
