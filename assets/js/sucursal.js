@@ -2,11 +2,22 @@
   "use strict";
 
   document.addEventListener("DOMContentLoaded", () => {
+    const scrollToTop = document.querySelector(".scrollToTop");
+    const actualizarScrollToTop = () => {
+      if (scrollToTop) scrollToTop.style.display = window.scrollY > 100 ? "flex" : "none";
+    };
+    window.addEventListener("scroll", actualizarScrollToTop, { passive: true });
+    scrollToTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    actualizarScrollToTop();
+
     const form = document.getElementById("form-sucursal");
     const modalTrigger = document.getElementById("abrir-modal-sucursal");
     const modalClose = document.querySelector('#modal-sucursal [data-hs-overlay="#modal-sucursal"]');
     const formError = document.getElementById("sucursal-form-error");
     const saveButton = document.getElementById("btnGuardarSucursal");
+    const reloadButton = document.getElementById("btnRecargarSucursales");
+    const reloadIcon = document.getElementById("iconRecargarSucursales");
+    const reloadLabel = document.getElementById("textoRecargarSucursales");
     const tableElement = document.getElementById("tabla-sucursales");
     if (!form || !tableElement) return;
 
@@ -101,7 +112,7 @@
                     const result = await response.json();
                     if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo cambiar el estado.");
                     alertify.success(result.message);
-                    table.replaceData();
+                    await recargarListado();
                   } catch (error) {
                     alertify.error(error.message);
                     stateButton.disabled = false;
@@ -119,6 +130,27 @@
     table.on("tableBuilt", initTooltips);
     table.on("renderComplete", initTooltips);
 
+    const recargarListado = async (mostrarExito = false) => {
+      if (reloadButton.disabled) return;
+      reloadButton.disabled = true;
+      reloadButton.setAttribute("aria-busy", "true");
+      reloadIcon.classList.remove("ri-refresh-line");
+      reloadIcon.classList.add("ri-loader-4-line", "animate-spin");
+      reloadLabel.textContent = "Cargando...";
+      try {
+        await table.replaceData();
+        if (mostrarExito) alertify.success("Listado de sucursales actualizado.");
+      } catch (error) {
+        alertify.error("No se pudo actualizar el listado de sucursales.");
+      } finally {
+        reloadButton.disabled = false;
+        reloadButton.removeAttribute("aria-busy");
+        reloadIcon.classList.remove("ri-loader-4-line", "animate-spin");
+        reloadIcon.classList.add("ri-refresh-line");
+        reloadLabel.textContent = "Recargar listado";
+      }
+    };
+
     document.getElementById("btnNuevaSucursal")?.addEventListener("click", () => {
       form.reset();
       formError.textContent = "";
@@ -130,7 +162,7 @@
       document.getElementById("sucursal-nombre").focus();
     });
 
-    document.getElementById("btnRecargarSucursales")?.addEventListener("click", () => table.replaceData());
+    reloadButton?.addEventListener("click", () => recargarListado(true));
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -152,7 +184,7 @@
         if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo guardar la sucursal.");
         alertify.success(result.message);
         modalClose?.click();
-        table.replaceData();
+        await recargarListado();
       } catch (error) {
         formError.textContent = error.message || "No se pudo guardar la sucursal.";
         formError.classList.remove("hidden");

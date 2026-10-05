@@ -39,7 +39,8 @@ require_once ROOT . '/controller/check_session.php';
           <div class="box-header flex items-center justify-between">
             <h2 id="sucursales-heading" class="box-title">Listado de sucursales</h2>
             <button id="btnRecargarSucursales" type="button" class="ti-btn ti-btn-light ti-btn-sm" aria-label="Recargar listado de sucursales">
-              <i class="ri-refresh-line me-1" aria-hidden="true"></i>Recargar listado
+              <i id="iconRecargarSucursales" class="ri-refresh-line me-1" aria-hidden="true"></i>
+              <span id="textoRecargarSucursales">Recargar listado</span>
             </button>
           </div>
           <div class="box-body">
