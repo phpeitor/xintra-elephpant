@@ -9,6 +9,12 @@ try {
         echo json_encode(['ok' => false, 'message' => 'Método no permitido.'], JSON_UNESCAPED_UNICODE);
         exit;
     }
+    $permisos = new Permisos();
+    if (!$permisos->esAdminOCargoUno((int)($_SESSION['session_id'] ?? 0))) {
+        http_response_code(403);
+        echo json_encode(['ok' => false, 'message' => 'No tienes permiso para cambiar sucursales o cargos.'], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
     $usuario = new Usuario();
     echo json_encode(['ok' => true, 'data' => $usuario->catalogosSucursalCargo()], JSON_UNESCAPED_UNICODE);
 } catch (Throwable $e) {

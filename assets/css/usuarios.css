@@ -21,3 +21,77 @@
   max-height: calc(100vh - 2rem);
   overflow-y: auto;
 }
+
+.permission-switch-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 3.1rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--default-border, #e5e7eb);
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.permission-switch-name {
+  font-size: 0.9375rem;
+}
+
+.permission-switch-input {
+  position: absolute;
+  z-index: 2;
+  inset-inline-end: 0.5rem;
+  width: 5.75rem;
+  height: 2rem;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.permission-switch-track {
+  display: flex;
+  flex: 0 0 5.5rem;
+  align-items: center;
+  justify-content: space-between;
+  height: 2rem;
+  padding: 0.2rem;
+  border-radius: 0.25rem;
+  background: #f8f9fa;
+  color: #64748b;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.permission-switch-state {
+  padding-inline: 0.3rem;
+}
+
+.permission-switch-thumb {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex: 0 0 1.5rem;
+  border-radius: 0.2rem;
+  background: #fff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 20%);
+}
+
+.permission-switch-input:not(:checked) + .permission-switch-track {
+  flex-direction: row-reverse;
+}
+
+.permission-switch-input:checked + .permission-switch-track {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.permission-switch-input:checked + .permission-switch-track .permission-switch-thumb {
+  background: #20c997;
+}
+
+.permission-switch-input:focus-visible + .permission-switch-track {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}

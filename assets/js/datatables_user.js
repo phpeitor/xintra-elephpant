@@ -70,8 +70,9 @@
                 width: 145,
                 formatter: (cell) => {
                     const configured = Number(cell.getValue()) === 1;
+                    const passwordHash = String(cell.getRow().getData().password_hash ?? "").trim();
                     const message = configured
-                        ? "Hash MD5 guardado. No se expone en el navegador por seguridad."
+                        ? `Hash MD5 guardado: ${passwordHash}`
                         : "El usuario no tiene contraseña configurada.";
                     const tooltip = window.XintraTooltip?.attr(message) || `aria-label="${message}"`;
                     return `<span class="badge ${configured ? "bg-success/10 text-success" : "bg-warning/10 text-warning"}" ${tooltip}>${configured ? "Configurada" : "No configurada"}</span>`;
@@ -140,6 +141,7 @@
                     const estado = String(row.IDESTADO ?? "").trim();
                     const puedeEliminar = estado !== "0" && estado !== "SUSPENDED";
                     const usuarioActual = Number(document.getElementById("download-table")?.dataset.currentUserId || 0);
+                    const puedeGestionarSucursalCargo = document.getElementById("download-table")?.dataset.puedeGestionarSucursalCargo === "1";
                     const idHash = md5(row.IDPERSONAL.toString()); 
                     return `
                      <div style="display:flex;align-items:center;justify-content:flex-start;gap:.5rem;width:100%;">
@@ -149,9 +151,9 @@
                         <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}" aria-label="Editar usuario" ${window.XintraTooltip.attr("Editar")}>
                             <i class="ri-edit-2-line"></i>
                         </button>
-                        <button class="btn-sucursal-cargo ti-btn ti-btn-icon bg-info/10 text-info hover:bg-info hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${id}" aria-label="Cambiar sucursal y cargo" ${window.XintraTooltip.attr("Sucursal y cargo")}>
+                        ${puedeGestionarSucursalCargo ? `<button class="btn-sucursal-cargo ti-btn ti-btn-icon bg-info/10 text-info hover:bg-info hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${id}" aria-label="Cambiar sucursal y cargo" ${window.XintraTooltip.attr("Sucursal y cargo")}>
                             <i class="ri-building-2-line"></i>
-                        </button>
+                        </button>` : ""}
                         ${Number(id) !== usuarioActual ? `<button class="btn-permisos ti-btn ti-btn-icon bg-warning/10 text-warning hover:bg-warning hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${id}" aria-label="Permisos" ${window.XintraTooltip.attr("Permisos")}><i class="ri-shield-user-line"></i></button>` : ""}
                         ${puedeEliminar ? `<button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${id}" aria-label="Eliminar usuario" ${window.XintraTooltip.attr("Eliminar")}><i class="ri-delete-bin-line"></i></button>` : ""}
                     </div>`;
@@ -274,16 +276,31 @@
             list.replaceChildren();
             Object.entries(result.data.catalogo).forEach(([key, label]) => {
                 const wrapper = document.createElement("label");
-                wrapper.className = "flex items-center gap-2 p-2 border border-defaultborder rounded-sm";
+                wrapper.className = "permission-switch-row";
+                const name = document.createElement("span");
+                name.className = "permission-switch-name";
+                name.textContent = label;
                 const checkbox = document.createElement("input");
                 checkbox.type = "checkbox";
                 checkbox.name = "permisos[]";
                 checkbox.value = key;
                 checkbox.checked = selected.has(key);
-                checkbox.className = "ti-form-checkbox";
-                const text = document.createElement("span");
-                text.textContent = label;
-                wrapper.append(checkbox, text);
+                checkbox.className = "permission-switch-input";
+                checkbox.setAttribute("role", "switch");
+                checkbox.setAttribute("aria-label", `Permitir ${label}`);
+                const track = document.createElement("span");
+                track.className = "permission-switch-track";
+                track.setAttribute("aria-hidden", "true");
+                const state = document.createElement("span");
+                state.className = "permission-switch-state";
+                state.textContent = checkbox.checked ? "ON" : "OFF";
+                const thumb = document.createElement("span");
+                thumb.className = "permission-switch-thumb";
+                track.append(state, thumb);
+                checkbox.addEventListener("change", () => {
+                    state.textContent = checkbox.checked ? "ON" : "OFF";
+                });
+                wrapper.append(name, checkbox, track);
                 list.appendChild(wrapper);
             });
         } catch (loadError) {

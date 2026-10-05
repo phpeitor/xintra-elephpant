@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../config/bootstrap.php';
 require_once ROOT . '/controller/check_session.php';
+$permisosVista = new Permisos();
+$puedeGestionarSucursalCargo = $permisosVista->esAdminOCargoUno((int)($_SESSION['session_id'] ?? 0));
 ?>
 
 <html lang="en" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
@@ -69,7 +71,7 @@ require_once ROOT . '/controller/check_session.php';
                                </select>
                             </div>
                             <div class="overflow-x-auto table-bordered">
-                               <div id="download-table" data-current-user-id="<?= (int)($_SESSION['session_id'] ?? 0) ?>" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
+                               <div id="download-table" data-current-user-id="<?= (int)($_SESSION['session_id'] ?? 0) ?>" data-puede-gestionar-sucursal-cargo="<?= $puedeGestionarSucursalCargo ? '1' : '0' ?>" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
                                </div>
 
                             </div>

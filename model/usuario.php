@@ -96,6 +96,7 @@ class Usuario {
                 p.IDESTADO,
                 p.fecha_registro,
                 p.USUARIO,
+                p.PASSWORD AS password_hash,
                 CASE WHEN p.PASSWORD IS NULL OR p.PASSWORD = '' THEN 0 ELSE 1 END AS password_configurada,
                 p.CARGO,
                 p.IDSUCURSAL,

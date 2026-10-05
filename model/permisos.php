@@ -46,6 +46,17 @@ class Permisos
         return in_array($permiso, $this->permitidos($idUsuario), true);
     }
 
+    public function esAdminOCargoUno(int $idUsuario): bool
+    {
+        if ($idUsuario === 1) return true;
+
+        $stmt = $this->conn->prepare('SELECT USUARIO, CARGO FROM personal WHERE IDPERSONAL = :id LIMIT 1');
+        $stmt->execute([':id' => $idUsuario]);
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $usuario
+            && (strcasecmp((string)$usuario['USUARIO'], 'admin') === 0 || (int)$usuario['CARGO'] === 1);
+    }
+
     public function asignar(int $idUsuario, array $permisos): void
     {
         $permisos = array_values(array_intersect(array_keys(self::CATALOGO), $permisos));

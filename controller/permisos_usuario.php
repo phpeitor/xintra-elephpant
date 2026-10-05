@@ -12,6 +12,7 @@ try {
         http_response_code(403);
         throw new RuntimeException('No tienes permiso para administrar usuarios.');
     }
+    $puedeAdministrarSucursal = $permisos->esAdminOCargoUno($actorId);
 
     $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT) ?: filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
     if (!$id || $id === $actorId) {
@@ -29,15 +30,21 @@ try {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $seleccionados = $_POST['permisos'] ?? [];
         if (!is_array($seleccionados)) throw new InvalidArgumentException('La lista de permisos no es válida.');
+        if (!$puedeAdministrarSucursal && $permisos->tiene((int)$id, 'sucursales')) {
+            $seleccionados[] = 'sucursales';
+        }
         $permisos->asignar((int)$id, $seleccionados);
         echo json_encode(['ok' => true, 'message' => 'Permisos actualizados.']);
         exit;
     }
 
+    $catalogo = Permisos::CATALOGO;
+    if (!$puedeAdministrarSucursal) unset($catalogo['sucursales']);
+
     echo json_encode([
         'ok' => true,
         'data' => [
-            'catalogo' => Permisos::CATALOGO,
+            'catalogo' => $catalogo,
             'permisos' => $permisos->permitidos((int)$id),
         ],
     ]);
