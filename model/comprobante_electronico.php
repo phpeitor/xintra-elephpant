@@ -200,26 +200,31 @@ class ComprobanteElectronico
 
     private function configuracion(): array
     {
-        $url = trim((string)($_ENV['NUBEFACT_URL'] ?? ''));
-        $token = trim((string)($_ENV['NUBEFACT_TOKEN'] ?? ''));
         $environment = strtolower(trim((string)($_ENV['NUBEFACT_ENV'] ?? 'demo')));
-        $serieBoleta = strtoupper(trim((string)($_ENV['NUBEFACT_SERIE_BOLETA'] ?? '')));
-        $serieFactura = strtoupper(trim((string)($_ENV['NUBEFACT_SERIE_FACTURA'] ?? '')));
-        $primerNumeroBoletaConfig = $_ENV['NUBEFACT_NUMERO_INICIAL_BOLETA'] ?? null;
-        $primerNumeroFacturaConfig = $_ENV['NUBEFACT_NUMERO_INICIAL_FACTURA'] ?? null;
+        if (!in_array($environment, ['demo', 'production'], true)) {
+            throw new RuntimeException('NUBEFACT_ENV debe ser demo o production.');
+        }
+
+        $prefix = $environment === 'demo' ? 'NUBEFACT_DEMO_' : 'NUBEFACT_PRODUCTION_';
+        $url = trim((string)($_ENV[$prefix . 'URL'] ?? ''));
+        $token = trim((string)($_ENV[$prefix . 'TOKEN'] ?? ''));
+        $serieBoleta = strtoupper(trim((string)($_ENV[$prefix . 'SERIE_BOLETA'] ?? '')));
+        $serieFactura = strtoupper(trim((string)($_ENV[$prefix . 'SERIE_FACTURA'] ?? '')));
+        $primerNumeroBoletaConfig = $_ENV[$prefix . 'NUMERO_INICIAL_BOLETA'] ?? null;
+        $primerNumeroFacturaConfig = $_ENV[$prefix . 'NUMERO_INICIAL_FACTURA'] ?? null;
 
         if ($url === '' || $token === '' || stripos($url, 'REEMPLAZAR') !== false || stripos($token, 'REEMPLAZAR') !== false) {
-            throw new RuntimeException('Configura NUBEFACT_URL y NUBEFACT_TOKEN en .env.');
+            throw new RuntimeException('Configura la ruta y el token NubeFact del entorno ' . strtoupper($environment) . ' en .env.');
         }
         if (!filter_var($url, FILTER_VALIDATE_URL) || parse_url($url, PHP_URL_SCHEME) !== 'https') {
-            throw new RuntimeException('NUBEFACT_URL debe ser una URL HTTPS válida.');
+            throw new RuntimeException($prefix . 'URL debe ser una URL HTTPS válida.');
         }
 
         $host = strtolower((string)parse_url($url, PHP_URL_HOST));
         $allowedHosts = $environment === 'demo'
             ? ['demo.nubefact.com', 'api.nubefact.com']
             : ['api.nubefact.com'];
-        if (!in_array($environment, ['demo', 'production'], true) || !in_array($host, $allowedHosts, true)) {
+        if (!in_array($host, $allowedHosts, true)) {
             throw new RuntimeException('La URL de NubeFact no coincide con NUBEFACT_ENV. Verifica el entorno antes de emitir.');
         }
         if ($environment === 'production' && ($primerNumeroBoletaConfig === null || $primerNumeroFacturaConfig === null)) {
