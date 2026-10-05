@@ -7,10 +7,12 @@ require_once ROOT . '/controller/check_session.php';
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🐘</text></svg>" />
   <title>Sucursales | Xintra Elephpant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
-  <link href="./assets/css/sucursal.css" rel="stylesheet">
+  <link href="./assets/css/sucursal.css?v=3" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
@@ -54,10 +56,10 @@ require_once ROOT . '/controller/check_session.php';
     </main>
 
     <div id="modal-sucursal" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="modal-sucursal-titulo">
-      <div class="sucursal-modal-dialog hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-xl sm:w-full m-3 sm:mx-auto">
+      <div class="sucursal-modal-dialog sucursal-modal-fall hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-xl sm:w-full m-3 sm:mx-auto">
         <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
           <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-white/10">
-            <h3 id="modal-sucursal-titulo" class="font-semibold text-defaulttextcolor dark:text-white">Nueva sucursal</h3>
+            <h6 id="modal-sucursal-titulo" class="font-semibold text-defaulttextcolor dark:text-white">Nueva sucursal</h6>
             <button type="button" class="ti-btn ti-btn-light !mb-0" data-hs-overlay="#modal-sucursal" aria-label="Cerrar">
               <i class="ri-close-line" aria-hidden="true"></i>
             </button>
@@ -104,6 +106,61 @@ require_once ROOT . '/controller/check_session.php';
     </div>
     <button id="abrir-modal-sucursal" class="hidden" type="button" data-hs-overlay="#modal-sucursal" aria-hidden="true" tabindex="-1"></button>
 
+    <div id="modal-cuota-sucursal" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="modal-cuota-titulo">
+      <div class="sucursal-modal-dialog sucursal-modal-fall hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-xl sm:w-full m-3 sm:mx-auto">
+        <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
+          <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-white/10">
+            <div>
+              <h6 id="modal-cuota-titulo" class="font-semibold text-defaulttextcolor dark:text-white">Aumentar cuota de tickets</h6>
+              <p id="cuota-sucursal-nombre" class="text-sm text-textmuted mt-1"></p>
+            </div>
+            <button type="button" class="ti-btn ti-btn-light !mb-0" data-hs-overlay="#modal-cuota-sucursal" aria-label="Cerrar">
+              <i class="ri-close-line" aria-hidden="true"></i>
+            </button>
+          </div>
+          <form id="form-cuota-sucursal" class="p-4 space-y-4">
+            <input type="hidden" id="cuota-sucursal-id" name="id_sucursal">
+            <div class="grid grid-cols-2 gap-3">
+              <div class="rounded-lg border border-defaultborder p-3">
+                <p class="text-xs text-textmuted">Tickets usados</p>
+                <p id="cuota-tickets-usados" class="text-lg font-semibold">0</p>
+              </div>
+              <div class="rounded-lg border border-defaultborder p-3">
+                <p class="text-xs text-textmuted">Cuota actual</p>
+                <p id="cuota-actual" class="text-lg font-semibold">0</p>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label for="cuota-incremento" class="ti-form-label">Tickets adicionales <span aria-hidden="true">*</span></label>
+              <input id="cuota-incremento" name="incremento" class="ti-form-input rounded-sm" type="number" min="1" step="1" required inputmode="numeric" placeholder="Ej. 500">
+              <p class="text-xs text-textmuted">La cantidad se sumará a la cuota vigente.</p>
+            </div>
+            <div class="space-y-2">
+              <label for="cuota-nueva" class="ti-form-label">Nueva cuota total</label>
+              <input id="cuota-nueva" class="ti-form-input rounded-sm bg-light" type="text" readonly value="0">
+            </div>
+            <div class="space-y-2">
+              <label for="cuota-motivo" class="ti-form-label">Motivo (opcional)</label>
+              <input id="cuota-motivo" name="motivo" class="ti-form-input rounded-sm" type="text" maxlength="250" placeholder="Ej. ampliación de tickets">
+            </div>
+            <div class="border-t border-defaultborder pt-4">
+              <div class="flex items-center justify-between mb-2">
+                <h6 class="font-medium">Historial de aumentos</h6>
+                <span id="cuota-historial-estado" class="text-xs text-textmuted" aria-live="polite"></span>
+              </div>
+              <ol id="cuota-historial-lista" class="space-y-2 max-h-48 overflow-y-auto" aria-label="Historial de cambios de cuota"></ol>
+            </div>
+            <p id="cuota-form-error" class="hidden text-danger text-sm" role="alert"></p>
+            <div class="flex justify-end gap-2 border-t border-defaultborder pt-4">
+              <button type="button" class="ti-btn ti-btn-light" data-hs-overlay="#modal-cuota-sucursal">Cancelar</button>
+              <button id="btnAumentarCuota" type="submit" class="ti-btn ti-btn-primary">Aumentar cuota</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <button id="abrir-modal-cuota" class="hidden" type="button" data-hs-overlay="#modal-cuota-sucursal" aria-hidden="true" tabindex="-1"></button>
+
     <?php include ROOT . '/layout/footer.php'; ?>
   </div>
 
@@ -119,6 +176,6 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
   <script src="./assets/js/xintra-tooltip.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/sucursal.js?v=1"></script>
+  <script src="./assets/js/sucursal.js?v=2"></script>
 </body>
 </html>

@@ -2,6 +2,10 @@
   z-index: 110 !important;
 }
 
+#modal-cuota-sucursal {
+  z-index: 110 !important;
+}
+
 .hs-overlay-backdrop {
   z-index: 109 !important;
 }
@@ -11,4 +15,34 @@
   max-height: calc(100vh - 2rem);
   margin: 1rem auto;
   overflow-y: auto;
+}
+
+#modal-sucursal:not(.hidden) .sucursal-modal-fall,
+#modal-cuota-sucursal:not(.hidden) .sucursal-modal-fall {
+  animation: sucursal-modal-fall 650ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes sucursal-modal-fall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -5rem, 0) scale(0.96);
+  }
+  68% {
+    opacity: 1;
+    transform: translate3d(0, 0.6rem, 0) scale(1);
+  }
+  84% {
+    transform: translate3d(0, -0.25rem, 0) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #modal-sucursal:not(.hidden) .sucursal-modal-fall,
+  #modal-cuota-sucursal:not(.hidden) .sucursal-modal-fall {
+    animation: none;
+  }
 }

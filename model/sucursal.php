@@ -4,19 +4,28 @@ require_once __DIR__ . '/../database/conexion.php';
 class Sucursal
 {
     private PDO $conn;
+    private string $nowLima;
 
     public function __construct()
     {
         $this->conn = (new Conexion())->conectar();
+        $this->nowLima = (new DateTimeImmutable('now', new DateTimeZone('America/Lima')))
+            ->format('Y-m-d H:i:s');
     }
 
     public function listar(): array
     {
         $stmt = $this->conn->query(
-            'SELECT IDSUCURSAL AS id, SUCURSAL AS nombre, DISTRITO AS distrito, DPTO AS departamento,
-                    DIRECCION AS direccion, TLF AS telefono, IDESTADO AS estado
-             FROM sucursal
-             ORDER BY IDSUCURSAL DESC'
+            'SELECT s.IDSUCURSAL AS id, s.SUCURSAL AS nombre, s.DISTRITO AS distrito, s.DPTO AS departamento,
+                    s.DIRECCION AS direccion, s.TLF AS telefono, s.IDESTADO AS estado,
+                    COALESCE(q.cuota, 0) AS cuota,
+                    (SELECT COUNT(1)
+                     FROM pedido p
+                     INNER JOIN personal per ON per.IDPERSONAL = p.usuario
+                     WHERE per.IDSUCURSAL = s.IDSUCURSAL) AS tickets_usados
+             FROM sucursal s
+             LEFT JOIN sucursal_cuota q ON q.id_sucursal = s.IDSUCURSAL
+             ORDER BY s.IDSUCURSAL DESC'
         );
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -77,6 +86,99 @@ class Sucursal
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->rowCount() > 0;
+    }
+
+    public function aumentarCuota(int $idSucursal, int $incremento, int $idUsuario, string $motivo = ''): array
+    {
+        if ($idSucursal < 1 || $incremento < 1) {
+            throw new InvalidArgumentException('Indica la sucursal y un incremento de cuota mayor que cero.');
+        }
+        $motivo = trim($motivo);
+        if (mb_strlen($motivo) > 250) {
+            throw new InvalidArgumentException('El motivo no puede superar 250 caracteres.');
+        }
+
+        $this->conn->beginTransaction();
+        try {
+            $branch = $this->conn->prepare('SELECT IDSUCURSAL FROM sucursal WHERE IDSUCURSAL = :id FOR UPDATE');
+            $branch->bindValue(':id', $idSucursal, PDO::PARAM_INT);
+            $branch->execute();
+            if (!$branch->fetchColumn()) {
+                throw new RuntimeException('Sucursal no encontrada.');
+            }
+
+            $currentStmt = $this->conn->prepare(
+                'SELECT id, cuota FROM sucursal_cuota WHERE id_sucursal = :id_sucursal LIMIT 1 FOR UPDATE'
+            );
+            $currentStmt->bindValue(':id_sucursal', $idSucursal, PDO::PARAM_INT);
+            $currentStmt->execute();
+            $current = $currentStmt->fetch(PDO::FETCH_ASSOC);
+            $previous = $current ? (int)$current['cuota'] : 0;
+            $newQuota = $previous + $incremento;
+            if ($newQuota > 2147483647) {
+                throw new InvalidArgumentException('El total de cuota supera el límite permitido.');
+            }
+
+            if ($current) {
+                $quotaId = (int)$current['id'];
+                $update = $this->conn->prepare(
+                    "UPDATE sucursal_cuota SET cuota = :cuota, fecha = :fecha, tipo = 'Ventas' WHERE id = :id"
+                );
+                $update->bindValue(':cuota', $newQuota, PDO::PARAM_INT);
+                $update->bindValue(':fecha', $this->nowLima);
+                $update->bindValue(':id', $quotaId, PDO::PARAM_INT);
+                $update->execute();
+            } else {
+                $insertQuota = $this->conn->prepare(
+                    "INSERT INTO sucursal_cuota (id_sucursal, cuota, fecha, tipo) VALUES (:id_sucursal, :cuota, :fecha, 'Ventas')"
+                );
+                $insertQuota->bindValue(':id_sucursal', $idSucursal, PDO::PARAM_INT);
+                $insertQuota->bindValue(':cuota', $newQuota, PDO::PARAM_INT);
+                $insertQuota->bindValue(':fecha', $this->nowLima);
+                $insertQuota->execute();
+                $quotaId = (int)$this->conn->lastInsertId();
+            }
+
+            $log = $this->conn->prepare(
+                'INSERT INTO sucursal_cuota_log
+                    (id_sucursal, id_sucursal_cuota, cuota_anterior, incremento, cuota_nueva, id_usuario, motivo, fecha)
+                 VALUES
+                    (:id_sucursal, :id_cuota, :anterior, :incremento, :nueva, :id_usuario, :motivo, :fecha)'
+            );
+            $log->bindValue(':id_sucursal', $idSucursal, PDO::PARAM_INT);
+            $log->bindValue(':id_cuota', $quotaId, PDO::PARAM_INT);
+            $log->bindValue(':anterior', $previous, PDO::PARAM_INT);
+            $log->bindValue(':incremento', $incremento, PDO::PARAM_INT);
+            $log->bindValue(':nueva', $newQuota, PDO::PARAM_INT);
+            $log->bindValue(':id_usuario', $idUsuario, PDO::PARAM_INT);
+            $log->bindValue(':motivo', $motivo);
+            $log->bindValue(':fecha', $this->nowLima);
+            $log->execute();
+            $this->conn->commit();
+
+            return ['cuota_anterior' => $previous, 'incremento' => $incremento, 'cuota_nueva' => $newQuota];
+        } catch (Throwable $e) {
+            if ($this->conn->inTransaction()) {
+                $this->conn->rollBack();
+            }
+            throw $e;
+        }
+    }
+
+    public function historialCuota(int $idSucursal): array
+    {
+        $stmt = $this->conn->prepare(
+            "SELECT l.fecha, l.cuota_anterior, l.incremento, l.cuota_nueva, l.motivo,
+                    COALESCE(CONCAT_WS(' ', p.NOMBRES, p.APELLIDOS), 'Usuario no disponible') AS usuario
+             FROM sucursal_cuota_log l
+             LEFT JOIN personal p ON p.IDPERSONAL = l.id_usuario
+             WHERE l.id_sucursal = :id_sucursal
+             ORDER BY l.id DESC
+             LIMIT 50"
+        );
+        $stmt->bindValue(':id_sucursal', $idSucursal, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     private function normalizar(array $data): array

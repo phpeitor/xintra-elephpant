@@ -18,6 +18,12 @@
     const reloadButton = document.getElementById("btnRecargarSucursales");
     const reloadIcon = document.getElementById("iconRecargarSucursales");
     const reloadLabel = document.getElementById("textoRecargarSucursales");
+    const cuotaForm = document.getElementById("form-cuota-sucursal");
+    const cuotaModalTrigger = document.getElementById("abrir-modal-cuota");
+    const cuotaIncrementInput = document.getElementById("cuota-incremento");
+    const cuotaNuevaInput = document.getElementById("cuota-nueva");
+    const cuotaError = document.getElementById("cuota-form-error");
+    const cuotaSaveButton = document.getElementById("btnAumentarCuota");
     const tableElement = document.getElementById("tabla-sucursales");
     if (!form || !tableElement) return;
 
@@ -47,6 +53,8 @@
         { title: "Departamento", field: "departamento", headerFilter: "input", minWidth: 130 },
         { title: "Dirección", field: "direccion", headerFilter: "input", minWidth: 180, widthGrow: 2 },
         { title: "Teléfono", field: "telefono", width: 125 },
+        { title: "Tickets", field: "tickets_usados", sorter: "number", width: 105 },
+        { title: "Cuota", field: "cuota", sorter: "number", width: 110, formatter: (cell) => Number(cell.getValue()) > 0 ? Number(cell.getValue()).toLocaleString("es-PE") : '<span class="text-textmuted">Sin cuota</span>' },
         {
           title: "Estado",
           field: "estado",
@@ -59,7 +67,7 @@
         {
           title: "Opciones",
           field: "acciones",
-          width: 145,
+          width: 190,
           hozAlign: "center",
           headerSort: false,
           formatter: (cell) => {
@@ -69,6 +77,9 @@
               <button type="button" class="btn-editar-sucursal ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full" data-id="${Number(row.id)}" ${tooltipAttributes("Editar sucursal")} aria-label="Editar sucursal">
                 <i class="ri-edit-2-line" aria-hidden="true"></i>
               </button>
+              <button type="button" class="btn-cuota-sucursal ti-btn ti-btn-icon bg-primary/10 text-primary hover:bg-primary hover:text-white !rounded-full" data-id="${Number(row.id)}" ${tooltipAttributes("Aumentar cuota y consultar historial")} aria-label="Aumentar cuota de tickets">
+                <i class="ri-add-circle-line" aria-hidden="true"></i>
+              </button>
               <button type="button" class="btn-estado-sucursal ti-btn ti-btn-icon ${state ? 'bg-danger/10 text-danger hover:bg-danger hover:text-white' : 'bg-success/10 text-success hover:bg-success hover:text-white'} !rounded-full" data-id="${Number(row.id)}" data-state="${state ? 0 : 1}" ${tooltipAttributes(state ? "Dar de baja sucursal" : "Reactivar sucursal")} aria-label="${state ? "Dar de baja sucursal" : "Reactivar sucursal"}">
                 <i class="${state ? 'ri-pause-circle-line' : 'ri-play-circle-line'}" aria-hidden="true"></i>
               </button>
@@ -77,6 +88,7 @@
           cellClick: (event, cell) => {
             const row = cell.getRow().getData();
             const editButton = event.target.closest(".btn-editar-sucursal");
+            const quotaButton = event.target.closest(".btn-cuota-sucursal");
             const stateButton = event.target.closest(".btn-estado-sucursal");
 
             if (editButton) {
@@ -92,6 +104,11 @@
               document.getElementById("sucursal-estado").value = String(row.estado);
               document.getElementById("modal-sucursal-titulo").textContent = "Editar sucursal";
               modalTrigger.click();
+              return;
+            }
+
+            if (quotaButton) {
+              window.sucursalCuota?.abrir(row);
               return;
             }
 
@@ -150,6 +167,115 @@
         reloadLabel.textContent = "Recargar listado";
       }
     };
+
+    const historialList = document.getElementById("cuota-historial-lista");
+    const historialStatus = document.getElementById("cuota-historial-estado");
+    const cuotaActualLabel = document.getElementById("cuota-actual");
+    const ticketsUsadosLabel = document.getElementById("cuota-tickets-usados");
+    const quotaNumberFormat = new Intl.NumberFormat("es-PE");
+    let cuotaActual = 0;
+
+    const actualizarProyeccionCuota = () => {
+      const incremento = Math.max(0, Number.parseInt(cuotaIncrementInput.value, 10) || 0);
+      cuotaNuevaInput.value = quotaNumberFormat.format(cuotaActual + incremento);
+    };
+
+    const renderHistorialCuota = (registros) => {
+      historialList.replaceChildren();
+      if (!registros.length) {
+        const empty = document.createElement("li");
+        empty.className = "rounded-md bg-light p-3 text-sm text-textmuted";
+        empty.textContent = "Aún no hay aumentos registrados para esta sucursal.";
+        historialList.appendChild(empty);
+        return;
+      }
+
+      registros.forEach((entry) => {
+        const item = document.createElement("li");
+        item.className = "rounded-md border border-defaultborder p-3 text-sm";
+        const summary = document.createElement("p");
+        summary.className = "font-medium";
+        summary.textContent = `Cuota ${quotaNumberFormat.format(Number(entry.cuota_anterior))} → ${quotaNumberFormat.format(Number(entry.cuota_nueva))} (+${quotaNumberFormat.format(Number(entry.incremento))})`;
+        const metadata = document.createElement("p");
+        metadata.className = "mt-1 text-xs text-textmuted";
+        metadata.textContent = `${entry.fecha || "Fecha desconocida"} · ${entry.usuario || "Usuario desconocido"}${entry.motivo ? ` · ${entry.motivo}` : ""}`;
+        item.append(summary, metadata);
+        historialList.appendChild(item);
+      });
+    };
+
+    const cargarHistorialCuota = async (idSucursal) => {
+      historialStatus.textContent = "Cargando historial…";
+      try {
+        const response = await fetch(`controller/historial_cuota_sucursal.php?id=${encodeURIComponent(idSucursal)}`);
+        const result = await response.json();
+        if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo cargar el historial.");
+        renderHistorialCuota(result.data || []);
+        historialStatus.textContent = "";
+      } catch (error) {
+        historialList.replaceChildren();
+        historialStatus.textContent = "Error al cargar";
+      }
+    };
+
+    window.sucursalCuota = {
+      abrir(row) {
+        cuotaForm.reset();
+        cuotaError.textContent = "";
+        cuotaError.classList.add("hidden");
+        cuotaForm.dataset.idSucursal = String(row.id);
+        document.getElementById("cuota-sucursal-id").value = row.id;
+        document.getElementById("cuota-sucursal-nombre").textContent = row.nombre || "";
+        cuotaActual = Number(row.cuota) || 0;
+        cuotaActualLabel.textContent = quotaNumberFormat.format(cuotaActual);
+        ticketsUsadosLabel.textContent = quotaNumberFormat.format(Number(row.tickets_usados) || 0);
+        actualizarProyeccionCuota();
+        cargarHistorialCuota(row.id);
+        cuotaModalTrigger.click();
+      },
+    };
+
+    cuotaIncrementInput.addEventListener("input", actualizarProyeccionCuota);
+    cuotaForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      cuotaError.textContent = "";
+      cuotaError.classList.add("hidden");
+      if (!cuotaForm.reportValidity()) return;
+
+      const id = cuotaForm.dataset.idSucursal;
+      const incremento = Number.parseInt(cuotaIncrementInput.value, 10);
+      const nuevaCuota = cuotaActual + incremento;
+      alertify.confirm(
+        "Confirmar aumento de cuota",
+        `La cuota de la sucursal ${id} cambiará de ${quotaNumberFormat.format(cuotaActual)} a ${quotaNumberFormat.format(nuevaCuota)} tickets. Se guardará el movimiento en el historial. ¿Continuar?`,
+        async () => {
+          cuotaSaveButton.disabled = true;
+          cuotaSaveButton.classList.add("opacity-50", "cursor-not-allowed");
+          try {
+            const response = await fetch("controller/aumentar_cuota_sucursal.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+              body: new URLSearchParams(new FormData(cuotaForm)),
+            });
+            const result = await response.json();
+            if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo aumentar la cuota.");
+            cuotaActual = Number(result.data.cuota_nueva) || cuotaActual;
+            cuotaActualLabel.textContent = quotaNumberFormat.format(cuotaActual);
+            cuotaIncrementInput.value = "";
+            actualizarProyeccionCuota();
+            alertify.success(result.message);
+            await Promise.all([recargarListado(), cargarHistorialCuota(id)]);
+          } catch (error) {
+            cuotaError.textContent = error.message || "No se pudo guardar el aumento.";
+            cuotaError.classList.remove("hidden");
+          } finally {
+            cuotaSaveButton.disabled = false;
+            cuotaSaveButton.classList.remove("opacity-50", "cursor-not-allowed");
+          }
+        },
+        () => alertify.message("Aumento cancelado.")
+      ).set("labels", { ok: "Aumentar", cancel: "Cancelar" });
+    });
 
     document.getElementById("btnNuevaSucursal")?.addEventListener("click", () => {
       form.reset();
