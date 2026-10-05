@@ -260,7 +260,7 @@
         <a aria-label="anchor" href="javascript:void(0);" class="header-link hs-dropdown-toggle ti-dropdown-toggle"
             id="mainHeaderProfile" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <div class="flex items-center">
-                <div> <img src="./assets/images/faces/15.jpg" alt="img" class="avatar avatar-sm mb-0"> </div>
+                <div> <img src="./assets/images/faces/15.jpg" alt="Perfil de <?= htmlspecialchars((string)($_SESSION['session_nombre'] ?? ''), ENT_QUOTES, 'UTF-8') ?>" class="avatar avatar-sm mb-0"> </div>
             </div>
         </a>
         <ul class="main-header-dropdown hs-dropdown-menu ti-dropdown-menu pt-0 overflow-hidden header-profile-dropdown hidden"
@@ -268,12 +268,12 @@
             <li>
                 <div
                     class="ti-dropdown-item text-center border-b border-defaultborder dark:border-defaultborder/10 block">
-                    <span> <?php echo $_SESSION['session_nombre'];?> </span>
-                    <span class="block text-xs text-textmuted dark:text-textmuted/50">UI/UX Designer</span>
+                    <span><?= htmlspecialchars((string)($_SESSION['session_nombre'] ?? ''), ENT_QUOTES, 'UTF-8') ?></span>
+                    <span class="block text-xs text-textmuted dark:text-textmuted/50"><?= htmlspecialchars((string)($_SESSION['session_usuario'] ?? ''), ENT_QUOTES, 'UTF-8') ?></span>
                 </div>
             </li>
-            <li><a class="ti-dropdown-item flex items-center" href="#"><i
-                        class="fe fe-user p-1 rounded-full bg-primary/10 text-primary me-2 text-[1rem]"></i>Profile</a>
+            <li><a class="ti-dropdown-item flex items-center" href="profile.php"><i
+                        class="fe fe-user p-1 rounded-full bg-primary/10 text-primary me-2 text-[1rem]"></i>Mi perfil</a>
             </li>
             <li class="border-t border-defaultborder dark:border-defaultborder/10 bg-light"><a
                     class="ti-dropdown-item flex items-center" href="#"><i

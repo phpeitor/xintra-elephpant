@@ -1,5 +1,5 @@
 <?php
-require_once "../database/conexion.php";
+require_once __DIR__ . '/../database/conexion.php';
 
 class Usuario {
     private PDO $conn;
@@ -102,6 +102,39 @@ class Usuario {
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function obtenerPerfil(int $idPersonal): ?array {
+        $sql = "SELECT
+                    p.IDPERSONAL AS id,
+                    p.NOMBRES AS nombres,
+                    p.APELLIDOS AS apellidos,
+                    p.USUARIO AS usuario,
+                    p.DOC AS documento,
+                    p.EMAIL AS email,
+                    p.TLF AS telefono,
+                    p.CEL AS celular,
+                    p.FECHANAC AS fecha_nacimiento,
+                    p.SEXO AS sexo,
+                    p.DIRECCION AS direccion,
+                    p.DISTRITO AS distrito,
+                    p.DPTO AS departamento,
+                    p.IDESTADO AS estado,
+                    p.fecha_registro,
+                    p.IDSUCURSAL AS id_sucursal,
+                    s.SUCURSAL AS sucursal,
+                    c.nombre AS cargo
+                FROM personal p
+                LEFT JOIN sucursal s ON s.IDSUCURSAL = p.IDSUCURSAL
+                LEFT JOIN cargo c ON c.id = p.CARGO
+                WHERE p.IDPERSONAL = :id
+                  AND p.IDSUCURSAL = @id_sucursal
+                LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':id', $idPersonal, PDO::PARAM_INT);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ?: null;
     }
 
     public function obtenerPorHash(string $hash): ?array {
