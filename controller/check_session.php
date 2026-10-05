@@ -22,7 +22,7 @@ if ($permisoRuta !== null) {
                 header('Content-Type: application/json; charset=utf-8');
                 echo json_encode(['ok' => false, 'message' => 'No tienes permiso para realizar esta acción.']);
             } else {
-                echo 'No tienes permiso para acceder a esta página.';
+                require ROOT . '/404.html';
             }
             exit;
         }

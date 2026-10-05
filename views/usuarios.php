@@ -94,7 +94,7 @@ require_once ROOT . '/controller/check_session.php';
                      <p id="permisos-usuario-error" class="hidden text-danger text-sm" role="alert"></p>
                      <div class="flex justify-end gap-2 border-t border-defaultborder dark:border-white/10 pt-4">
                         <button type="button" class="ti-btn ti-btn-light" data-hs-overlay="#modal-permisos-usuario">Cancelar</button>
-                        <button id="btnGuardarPermisosUsuario" type="submit" class="ti-btn ti-btn-primary">Guardar permisos</button>
+                        <button id="btnGuardarPermisosUsuario" type="submit" class="ti-btn ti-btn-primary">Guardar </button>
                      </div>
                   </form>
                </div>
