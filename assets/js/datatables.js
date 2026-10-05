@@ -35,6 +35,7 @@
         columns: [
             { title: "Id", field: "id", sorter: "number", width: 90 },
             { title: "Nombre Completo", field: "nombre_completo", headerFilter: "input", widthGrow: 2, minWidth: 100 },
+            { title: "Tipo Doc.", field: "tipo_documento", headerFilter: "select", headerFilterParams: { values: { "": "Todos", DNI: "DNI", RUC: "RUC" } }, width: 110 },
             { title: "Documento", field: "documento", headerFilter: "input" },
 
             {

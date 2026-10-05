@@ -208,8 +208,8 @@ class Ticket {
         }
 
         $sql = "SELECT a.id, b.id_productservice as id_producto, date(a.fecha) as fecha_pedido, case when upper(c.USUARIO) is null then 'SALIDA INSUMOS' else upper(c.USUARIO) end as usuario,
-                case when e.apellidos is null then 'INVENTARIO' else concat(e.nombres,' ',e.apellidos) end as cliente,
-                concat_ws(' ', e.nombres, e.apellidos) as cliente_denominacion,
+                case when e.apellidos is null then 'INVENTARIO' else trim(concat_ws(' ', e.nombres, e.apellidos)) end as cliente,
+                trim(concat_ws(' ', e.nombres, e.apellidos)) as cliente_denominacion,
                 e.documento as cliente_documento,
                 e.email as cliente_email,
                 ce.tipo_de_comprobante as comprobante_tipo,
@@ -332,7 +332,7 @@ class Ticket {
 
     public function obtenerPorHash(string $hash): ?array {
         $sql = "SELECT a.id,cliente,a.usuario,user_registro,fecha,a.fecha_registro,dscto,tipo_dscto,pago,
-                concat(e.nombres,' ',e.apellidos)  as cliente_nombre,
+                trim(concat_ws(' ', e.nombres, e.apellidos)) as cliente_nombre,
                 upper(c.USUARIO) as user
                 from pedido a
                 LEFT JOIN personal c ON a.usuario = c.IDPERSONAL 

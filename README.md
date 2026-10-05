@@ -38,6 +38,8 @@ TURNSTILE_SECRET_KEY=clave-privada
 TURNSTILE_HOSTNAME=localhost
 
 UBUNTUX_API_URL=https://api.example.test/consulta?dni=
+API_RUC_URL=https://ruc-primary.example.test/consulta?ruc=
+API_RUC_URL_2=https://ruc-fallback.example.test/consulta?ruc=
 PROMOCODE=
 
 NUBEFACT_ENV=demo
@@ -50,6 +52,8 @@ NUBEFACT_NUMERO_INICIAL_FACTURA=1
 ```
 
 `TURNSTILE_SECRET_KEY` puede dejarse vacío en un entorno local sin validación Turnstile. En producción, configura las claves y el hostname autorizados en Cloudflare. Define `UBUNTUX_API_URL` si se usará la consulta externa del documento; `PROMOCODE` contiene los códigos promocionales habilitados según el formato que espera el backend.
+
+`API_RUC_URL` y `API_RUC_URL_2` son las URLs de consulta de RUC, en orden primario y fallback. Sustituye las direcciones de ejemplo por las URLs privadas de tus proveedores; pueden terminar en `ruc=`, incluir `{ruc}` o aceptar el número como último segmento de la ruta.
 
 Para emitir comprobantes, configura la ruta y el token de tu cuenta DEMO NubeFact en `.env`. Las series del ejemplo (`BBB1` y `FFF1`) deben coincidir con las habilitadas para tu cuenta. Ajusta los números iniciales si esas series ya tienen documentos emitidos. En modo demo se acepta la ruta de `demo.nubefact.com` o una ruta asignada en `api.nubefact.com` a una cuenta DEMO. Producción requiere cambiar explícitamente `NUBEFACT_ENV`, confirmar la ruta y configurar los próximos correlativos. Nunca publiques el token ni lo guardes en JavaScript, SQL o el repositorio. Revisa `database/migration/20261003_nubefact_comprobantes.sql` y aplícala antes de habilitar la emisión.
 

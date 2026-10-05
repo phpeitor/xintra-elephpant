@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
+require_once __DIR__ . '/../controller/check_session.php';
 require_once __DIR__ . '/../model/cliente.php';
 
 try {
@@ -18,6 +19,7 @@ try {
     $data = [
         'nombres'   => $_POST['nombres'] ?? '',
         'apellidos' => $_POST['apellidos'] ?? '',
+        'tipo_documento' => $_POST['tipo_documento'] ?? 'DNI',
         'documento' => $_POST['documento'] ?? '',
         'email'     => $_POST['email'] ?? '',
         'telefono'  => $_POST['telefono'] ?? '',
@@ -32,6 +34,9 @@ try {
         'message' => $ok ? 'Cliente actualizado correctamente' : 'No se realizaron cambios'
     ]);
 
+} catch (InvalidArgumentException $e) {
+    http_response_code(422);
+    echo json_encode(['ok' => false, 'message' => $e->getMessage()], JSON_UNESCAPED_UNICODE);
 } catch (Throwable $e) {
     http_response_code(500);
     echo json_encode([

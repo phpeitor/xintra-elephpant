@@ -169,6 +169,11 @@
       }
 
       const u = json.data;
+      const tipoDocumento = document.querySelector('#tipo_documento');
+      if (tipoDocumento) {
+        tipoDocumento.value = u.tipo_documento || (String(u.documento || '').length === 11 ? 'RUC' : 'DNI');
+        tipoDocumento.dispatchEvent(new Event('change', { bubbles: true }));
+      }
       document.querySelector('#firstName').value = u.nombres || '';
       document.querySelector('#lastName').value = u.apellidos || '';
       document.querySelector('#documento').value = u.documento || '';
@@ -564,7 +569,7 @@
           prepararFormularioEdicion(form, hash);
         }
 
-        if (form.classList.contains("ti-custom-validation-user") || form.classList.contains("ti-custom-validation")) {
+        if (form.classList.contains("ti-custom-validation-user")) {
           const inputDocumento = form.querySelector("#documento");
           const inputNombre = form.querySelector("#firstName");
           const inputApellido = form.querySelector("#lastName");
@@ -600,6 +605,104 @@
               if (value.length < 8) {
                 inputNombre.value = "";
                 inputApellido.value = "";
+              }
+            });
+          }
+        }
+
+        if (form.classList.contains("ti-custom-validation")) {
+          const tipoDocumento = form.querySelector("#tipo_documento");
+          const inputDocumento = form.querySelector("#documento");
+          const inputNombre = form.querySelector("#firstName");
+          const inputApellido = form.querySelector("#lastName");
+          const grupoApellidos = form.querySelector("#lastName-group");
+          const labelNombre = form.querySelector("#firstName-label");
+
+          if (tipoDocumento && inputDocumento && inputNombre && inputApellido) {
+            let lastQuery = "";
+            let lastAutoFilledDocument = "";
+            let lookupSequence = 0;
+
+            const aplicarTipoDocumento = (limpiar = false) => {
+              const esRuc = tipoDocumento.value === "RUC";
+              lookupSequence++;
+              lastQuery = "";
+              inputDocumento.maxLength = esRuc ? 11 : 8;
+              inputDocumento.dataset.rules = esRuc
+                ? "required|numeric|length:11"
+                : "required|numeric|length:8";
+              inputNombre.maxLength = esRuc ? 100 : 50;
+              inputNombre.dataset.rules = esRuc
+                ? "required|min:2|max:100"
+                : "required|min:2|max:50";
+              if (labelNombre) labelNombre.textContent = esRuc ? "Razón social" : "Nombres";
+              grupoApellidos?.classList.toggle("hidden", esRuc);
+              inputApellido.disabled = esRuc;
+              if (esRuc) {
+                inputApellido.value = "";
+                inputApellido.removeAttribute("data-rules");
+              } else {
+                inputApellido.dataset.rules = "required|min:2|max:50";
+              }
+              if (limpiar) {
+                inputDocumento.value = "";
+                inputNombre.value = "";
+                inputApellido.value = "";
+                lastAutoFilledDocument = "";
+              }
+            };
+
+            tipoDocumento.addEventListener("change", () => aplicarTipoDocumento(true));
+            aplicarTipoDocumento(false);
+
+            inputDocumento.addEventListener("input", async () => {
+              const tipo = tipoDocumento.value;
+              const requiredLength = tipo === "RUC" ? 11 : 8;
+              const value = inputDocumento.value.replace(/\D/g, "");
+              if (inputDocumento.value !== value) inputDocumento.value = value;
+
+              if (lastAutoFilledDocument && value !== lastAutoFilledDocument) {
+                inputNombre.value = "";
+                inputApellido.value = "";
+                lastAutoFilledDocument = "";
+              }
+              if (value.length !== requiredLength) {
+                lastQuery = "";
+                return;
+              }
+              if (value === lastQuery) return;
+
+              lastQuery = value;
+              const currentSequence = ++lookupSequence;
+              const endpoint = tipo === "RUC"
+                ? `./config/api_ruc.php?ruc=${encodeURIComponent(value)}`
+                : `./config/api.php?dni=${encodeURIComponent(value)}`;
+
+              try {
+                const response = await fetch(endpoint);
+                const data = await response.json();
+                if (currentSequence !== lookupSequence || inputDocumento.value !== value || tipoDocumento.value !== tipo) return;
+                if (!response.ok || data?.error || data?.ok === false) {
+                  throw new Error(data?.message || data?.error || `HTTP ${response.status}`);
+                }
+
+                if (tipo === "RUC") {
+                  const razonSocial = (data.nombre || data.name || "").trim();
+                  if (!razonSocial) throw new Error("La API no devolvió la razón social del RUC.");
+                  inputNombre.value = razonSocial;
+                  inputApellido.value = "";
+                } else {
+                  if (!(data.NOMBRES || data.PATERNO || data.MATERNO)) {
+                    throw new Error("No se encontró información asociada al DNI.");
+                  }
+                  inputNombre.value = data.NOMBRES || "";
+                  inputApellido.value = [data.PATERNO, data.MATERNO].filter(Boolean).join(" ");
+                }
+                lastAutoFilledDocument = value;
+                alertify.success(tipo === "RUC" ? "Razón social completada automáticamente ✅" : "Datos RENIEC completados automáticamente ✅");
+              } catch (error) {
+                console.error(`Error consultando documento ${tipo}:`, error);
+                alertify.warning(error.message || "No se pudo consultar el documento.");
               }
             });
           }

@@ -55,26 +55,35 @@ require_once ROOT . '/controller/check_session.php';
                      </div>
                      <div class="box-body">
                         <form class="ti-custom-validation" novalidate>
-                           <div class="grid lg:grid-cols-2 gap-6">
+                            <div class="grid lg:grid-cols-2 gap-6">
 
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Documento</label>
-                                 <input id="documento" name="documento" type="text" inputmode="numeric" class="ti-form-input rounded-sm"
-                                       placeholder="12345678" data-rules="required|numeric|min:8|max:11">
-                                 <span class="text-red-500 text-xs hidden" data-error-for="documento"></span>
-                              </div>
+                               <div class="space-y-2">
+                                  <label for="tipo_documento" class="ti-form-label">Tipo de documento</label>
+                                  <select id="tipo_documento" name="tipo_documento" class="ti-form-select rounded-sm" data-rules="required">
+                                     <option value="DNI">DNI</option>
+                                     <option value="RUC">RUC</option>
+                                  </select>
+                                  <span class="text-red-500 text-xs hidden" data-error-for="tipo_documento"></span>
+                               </div>
 
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Nombres</label>
-                                 <input id="firstName" name="nombres" type="text" class="ti-form-input rounded-sm"
-                                       placeholder="Firstname" data-rules="required|min:2|max:50">
-                                 <span class="text-red-500 text-xs hidden" data-error-for="firstName"></span>
-                              </div>
+                               <div class="space-y-2">
+                                  <label for="documento" class="ti-form-label">Número de documento</label>
+                                  <input id="documento" name="documento" type="text" inputmode="numeric" class="ti-form-input rounded-sm"
+                                        placeholder="12345678" maxlength="8" data-rules="required|numeric|length:8">
+                                  <span class="text-red-500 text-xs hidden" data-error-for="documento"></span>
+                               </div>
 
-                              <div class="space-y-2">
-                                 <label class="ti-form-label">Apellidos</label>
-                                 <input id="lastName" name="apellidos" type="text" class="ti-form-input rounded-sm"
-                                       placeholder="Lastname" data-rules="required|min:2|max:50">
+                               <div class="space-y-2">
+                                  <label id="firstName-label" for="firstName" class="ti-form-label">Nombres</label>
+                                  <input id="firstName" name="nombres" type="text" class="ti-form-input rounded-sm"
+                                        placeholder="Nombres" maxlength="100" data-rules="required|min:2|max:50">
+                                  <span class="text-red-500 text-xs hidden" data-error-for="firstName"></span>
+                               </div>
+
+                               <div id="lastName-group" class="space-y-2">
+                                  <label for="lastName" class="ti-form-label">Apellidos</label>
+                                  <input id="lastName" name="apellidos" type="text" class="ti-form-input rounded-sm"
+                                        placeholder="Apellidos" maxlength="50" data-rules="required|min:2|max:50">
                                  <span class="text-red-500 text-xs hidden" data-error-for="lastName"></span>
                               </div>
 
