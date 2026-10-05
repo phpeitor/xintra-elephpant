@@ -9,3 +9,15 @@
 .ticket-summary-chart {
   min-height: 85px;
 }
+
+.facturacion-ticket-dialog {
+  width: min(38rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  margin: 1rem auto;
+  overflow-y: auto;
+}
+
+.facturacion-ticket-dialog #facturacion-ticket-title {
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+}

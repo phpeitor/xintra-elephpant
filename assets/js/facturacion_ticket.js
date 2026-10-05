@@ -12,6 +12,7 @@
     const addressInput = document.getElementById("facturacion-direccion");
     const message = document.getElementById("facturacion-ticket-mensaje");
     const submitButton = document.getElementById("facturacion-ticket-submit");
+    const nubefactEnvironment = document.getElementById("facturacion-ticket-modal").dataset.nubefactEnv || "demo";
 
     const showMessage = (text) => {
       message.textContent = text;
@@ -53,7 +54,7 @@
         document.getElementById("facturacion-documento").value = row.cliente_documento || "";
         document.getElementById("facturacion-denominacion").value = row.cliente_denominacion || "";
         document.getElementById("facturacion-email").value = row.cliente_email || "";
-        tipoInput.value = "2";
+        tipoInput.value = /^\d{11}$/.test(String(row.cliente_documento || "")) ? "1" : "2";
         updateDocumentType();
         modalOpen.click();
       },
@@ -96,9 +97,11 @@
       if (!form.reportValidity()) return;
 
       const data = Object.fromEntries(new FormData(form).entries());
+      const tipoNombre = tipoInput.value === "1" ? "FACTURA" : "BOLETA";
+      const documento = document.getElementById("facturacion-documento").value;
       alertify.confirm(
-        "Confirmar emisión",
-        `Se enviará ${tipoInput.value === "1" ? "una factura" : "una boleta"} al entorno configurado de NubeFact. Esta acción no se puede deshacer desde el sistema. ¿Continuar?`,
+        `Confirmar emisión de ${tipoNombre}`,
+        `Se enviará una ${tipoNombre.toLowerCase()} para el documento ${documento} al entorno ${nubefactEnvironment === "production" ? "de PRODUCCIÓN" : "de pruebas (DEMO)"} de NubeFact. El ticket solo puede tener un comprobante electrónico. ¿Deseas continuar?`,
         async () => {
           submitButton.disabled = true;
           showMessage("");

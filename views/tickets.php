@@ -167,14 +167,14 @@ require_once ROOT . '/controller/check_session.php';
                               <button type="button" class="ti-btn ti-btn-primary" id="download-json">Download JSON</button> <button type="button" class="ti-btn ti-btn-primary" id="download-xlsx">Download XLSX</button>
                            </div>
 
-                           <div class="overflow-hidden table-bordered">
+                           <div class="overflow-x-auto table-bordered">
                               <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
                               </div>
                            </div>
 
                            <button id="facturacion-ticket-open" class="hidden" type="button" data-hs-overlay="#facturacion-ticket-modal" aria-hidden="true" tabindex="-1"></button>
-                           <div id="facturacion-ticket-modal" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="facturacion-ticket-title">
-                              <div class="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-xl sm:w-full m-3 sm:mx-auto">
+                           <div id="facturacion-ticket-modal" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" data-nubefact-env="<?= htmlspecialchars((string)($_ENV['NUBEFACT_ENV'] ?? 'demo'), ENT_QUOTES, 'UTF-8') ?>" role="dialog" tabindex="-1" aria-labelledby="facturacion-ticket-title">
+                              <div class="facturacion-ticket-dialog hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-xl sm:w-full m-3 sm:mx-auto">
                                  <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
                                     <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-white/10">
                                        <h2 id="facturacion-ticket-title" class="font-semibold text-defaulttextcolor dark:text-white">Emitir comprobante electrónico</h2>
@@ -243,9 +243,10 @@ require_once ROOT . '/controller/check_session.php';
       <script src="./assets/libs/jspdf/jspdf.umd.min.js"></script>
       <script src="./assets/libs/jspdf-autotable/jspdf.plugin.autotable.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
-      <script src="./assets/js/datatables_ticket.js?v=1"></script>
+      <script src="./assets/js/xintra-tooltip.js"></script>
+      <script src="./assets/js/datatables_ticket.js?v=2"></script>
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-      <script src="./assets/js/facturacion_ticket.js?v=1"></script>
+      <script src="./assets/js/facturacion_ticket.js?v=2"></script>
       <script src="./assets/js/custom.js"></script>
       <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
       <script src="./assets/js/analytics-dashboard.js?v=1.0"></script>

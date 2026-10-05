@@ -51,7 +51,7 @@
                 field: "acciones",
                 hozAlign: "center",
                 headerSort: false,
-                width: 290,
+                width: 370,
                 formatter: (cell) => {
                     const row = cell.getRow().getData();
                     const id = row.id;
@@ -65,6 +65,9 @@
                         '"': "&quot;",
                         "'": "&#39;",
                     }[character]));
+                    const tooltipAttributes = (text) => window.XintraTooltip
+                        ? window.XintraTooltip.attr(text)
+                        : `aria-label="${escapeAttribute(text)}"`;
 
                     if (comprobanteEstado === "EMITIDO") {
                         const pdfUrl = String(row.comprobante_pdf || "");
@@ -84,26 +87,26 @@
                                 : "SUNAT PENDIENTE";
                         const comprobanteTitle = `${row.comprobante_serie}-${row.comprobante_numero}: ${row.comprobante_mensaje || statusLabel}`;
                         const pdfAction = safePdfUrl
-                            ? `<a class="btn-comprobante-pdf ti-btn ti-btn-icon bg-success/10 text-success hover:bg-success hover:text-white !rounded-full" href="${safePdfUrl}" target="_blank" rel="noopener noreferrer" title="Ver PDF"><i class="ri-file-list-3-line"></i></a>`
+                            ? `<a class="btn-comprobante-pdf ti-btn ti-btn-icon bg-success/10 text-success hover:bg-success hover:text-white !rounded-full" ${tooltipAttributes("Abrir comprobante PDF")} href="${safePdfUrl}" target="_blank" rel="noopener noreferrer" aria-label="Abrir comprobante PDF"><i class="ri-file-list-3-line"></i></a>`
                             : `<span class="badge bg-success">${escapeAttribute(row.comprobante_serie)}-${escapeAttribute(row.comprobante_numero)}</span>`;
                         const consultAction = estadoSunat !== "ACEPTADO"
-                            ? `<button type="button" class="btn-comprobante-consult ti-btn ti-btn-icon bg-info/10 text-info hover:bg-info hover:text-white !rounded-full" title="Consultar estado en SUNAT"><i class="ri-refresh-line"></i></button>`
+                            ? `<button type="button" class="btn-comprobante-consult ti-btn ti-btn-sm ti-btn-outline-info" ${tooltipAttributes("Actualizar estado del comprobante en SUNAT")} aria-label="Consultar estado en SUNAT"><i class="ri-refresh-line"></i></button>`
                             : "";
-                        comprobanteAction = `<span class="badge ${statusStyle}" title="${escapeAttribute(comprobanteTitle)}">${statusLabel}</span>${pdfAction}${consultAction}`;
+                        comprobanteAction = `${consultAction}<span class="badge ${statusStyle}" ${tooltipAttributes(comprobanteTitle)}>${statusLabel}</span>${pdfAction}`;
                     } else if (comprobanteEstado === "ERROR") {
-                        comprobanteAction = `<button type="button" class="btn-comprobante-retry ti-btn ti-btn-sm ti-btn-outline-danger" title="${escapeAttribute(row.comprobante_mensaje || "Error de emisión")}"><i class="ri-refresh-line"></i> Reintentar</button>`;
+                        comprobanteAction = `<button type="button" class="btn-comprobante-retry ti-btn ti-btn-sm ti-btn-outline-danger" ${tooltipAttributes(row.comprobante_mensaje || "Error de emisión")}><i class="ri-refresh-line"></i> Reintentar</button>`;
                     } else if (comprobanteEstado === "PENDIENTE") {
                         comprobanteAction = `<button type="button" class="ti-btn ti-btn-sm ti-btn-light" disabled>Emitiendo…</button>`;
                     } else {
-                        comprobanteAction = `<button type="button" class="btn-comprobante-emit ti-btn ti-btn-sm ti-btn-outline-success" title="Emitir boleta o factura"><i class="ri-bill-line"></i> Emitir</button>`;
+                        comprobanteAction = `<button type="button" class="btn-comprobante-emit ti-btn ti-btn-sm ti-btn-outline-success" ${tooltipAttributes("Emitir boleta o factura")}><i class="ri-bill-line"></i> </button>`;
                     }
 
                     return `
-                    <div class="flex items-center justify-start gap-2 w-full">
-                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
+                    <div class="flex items-center justify-start gap-2 w-full flex-wrap">
+                        <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}" ${tooltipAttributes("Editar ticket")} aria-label="Editar ticket">
                             <i class="ri-edit-2-line"></i>
                         </button>
-                        <button class="btn-pdf ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}">
+                        <button class="btn-pdf ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}" ${tooltipAttributes("Abrir ticket PDF")} aria-label="Abrir ticket PDF">
                             <i class="ri-file-pdf-2-line"></i>
                         </button>
                         ${comprobanteAction}
@@ -144,6 +147,13 @@
             },
         ],
     });
+
+    const inicializarTooltipsTabla = () => {
+        const tableElement = document.getElementById("download-table");
+        if (tableElement) window.XintraTooltip?.init(tableElement);
+    };
+    table.on("tableBuilt", inicializarTooltipsTabla);
+    table.on("renderComplete", inicializarTooltipsTabla);
 
     const btnBuscar = document.querySelector(".input-group button i.ri-search-line").closest("button");
     btnBuscar.addEventListener("click", () => {
