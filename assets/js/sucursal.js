@@ -263,6 +263,7 @@
             cuotaActualLabel.textContent = quotaNumberFormat.format(cuotaActual);
             cuotaIncrementInput.value = "";
             actualizarProyeccionCuota();
+            localStorage.setItem("xintra-sucursal-cuota-updated", String(Date.now()));
             alertify.success(result.message);
             await Promise.all([recargarListado(), cargarHistorialCuota(id)]);
           } catch (error) {

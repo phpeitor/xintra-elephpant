@@ -63,6 +63,12 @@
   }
   window.validarPedidoTotal = validarPedidoTotal;
 
+  window.addEventListener("storage", (event) => {
+    if (event.key === "xintra-sucursal-cuota-updated") {
+      window.validarPedidoTotal?.();
+    }
+  });
+
 
   if (document.querySelector("#hs-overlay-switcher")) {
   
