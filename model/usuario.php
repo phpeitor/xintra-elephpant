@@ -55,9 +55,9 @@ class Usuario {
         $usuario = strtolower($primerNombre . '.' . $primerApellido);
 
         $sql = "INSERT INTO personal 
-                (APELLIDOS, NOMBRES, EMAIL, DOC, TLF, SEXO, USUARIO, PASSWORD, fecha_registro, IDSUCURSAL, IDESTADO, CARGO, fecha_baja, id_cartera)
+                (APELLIDOS, NOMBRES, EMAIL, DOC, TLF, SEXO, USUARIO, PASSWORD, fecha_registro, IDSUCURSAL, IDESTADO, CARGO, fecha_baja)
                 VALUES 
-                (:apellidos, :nombres, :email, :documento, :telefono, :sexo, :usuario, MD5(:documento), :fecha_registro, @id_sucursal, 1, 5, '1900-01-01 00:00:00', @id_sucursal)";
+                (:apellidos, :nombres, :email, :documento, :telefono, :sexo, :usuario, MD5(:documento), :fecha_registro, @id_sucursal, 1, 5, '1900-01-01 00:00:00')";
         $stmt = $this->conn->prepare($sql);
 
         $stmt->bindValue(':nombres',   $data['nombres'] ?? '');
@@ -88,20 +88,112 @@ class Usuario {
 
     public function table_personal(string $estado = 'ACTIVOS'): array{
           $sql = "SELECT
-                *,
-                CONCAT(nombres,' ',apellidos) AS nombre_completo
-                FROM personal
-                WHERE IDSUCURSAL = @id_sucursal AND APELLIDOS <>'ERROR' AND IDPERSONAL > 1
+                p.IDPERSONAL,
+                p.NOMBRES,
+                p.APELLIDOS,
+                p.DOC,
+                p.SEXO,
+                p.IDESTADO,
+                p.fecha_registro,
+                p.USUARIO,
+                CASE WHEN p.PASSWORD IS NULL OR p.PASSWORD = '' THEN 0 ELSE 1 END AS password_configurada,
+                p.CARGO,
+                p.IDSUCURSAL,
+                c.nombre AS CARGO_NOMBRE,
+                s.SUCURSAL AS SUCURSAL_NOMBRE,
+                TRIM(CONCAT_WS(' ', p.NOMBRES, p.APELLIDOS)) AS nombre_completo
+                FROM personal p
+                LEFT JOIN cargo c ON c.id = p.CARGO
+                LEFT JOIN sucursal s ON s.IDSUCURSAL = p.IDSUCURSAL
+                WHERE p.IDSUCURSAL = @id_sucursal AND p.APELLIDOS <>'ERROR' AND p.IDPERSONAL > 1
                 ";
          if ($estado === 'ACTIVOS') {
-             $sql .= ' AND IDESTADO = 1';
+             $sql .= ' AND p.IDESTADO = 1';
          } elseif ($estado === 'INACTIVOS') {
-             $sql .= ' AND IDESTADO = 0';
+             $sql .= ' AND p.IDESTADO = 0';
          }
-         $sql .= ' ORDER BY idpersonal DESC';
+          $sql .= ' ORDER BY p.IDPERSONAL DESC';
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function catalogosSucursalCargo(): array
+    {
+        $sucursales = $this->conn->query(
+            'SELECT IDSUCURSAL AS id, SUCURSAL AS nombre FROM sucursal WHERE IDESTADO = 1 ORDER BY SUCURSAL'
+        )->fetchAll(PDO::FETCH_ASSOC);
+        $cargos = $this->conn->query(
+            'SELECT id, nombre FROM cargo WHERE estado = 1 ORDER BY nombre'
+        )->fetchAll(PDO::FETCH_ASSOC);
+
+        return ['sucursales' => $sucursales, 'cargos' => $cargos];
+    }
+
+    public function actualizarSucursalCargo(int $idPersonal, int $idSucursal, int $idCargo, int $idActor): void
+    {
+        if ($idPersonal < 1 || $idSucursal < 1 || $idCargo < 1) {
+            throw new InvalidArgumentException('Selecciona una sucursal y un cargo válidos.');
+        }
+        $this->conn->beginTransaction();
+        try {
+            $personal = $this->conn->prepare(
+                'SELECT IDSUCURSAL FROM personal WHERE IDPERSONAL = :id AND IDSUCURSAL = @id_sucursal LIMIT 1 FOR UPDATE'
+            );
+            $personal->bindValue(':id', $idPersonal, PDO::PARAM_INT);
+            $personal->execute();
+            $sucursalActual = $personal->fetchColumn();
+            if (!$sucursalActual) {
+                throw new RuntimeException('Usuario no encontrado en la sucursal actual.');
+            }
+
+            $targetSucursal = $this->conn->prepare('SELECT 1 FROM sucursal WHERE IDSUCURSAL = :id AND IDESTADO = 1 LIMIT 1');
+            $targetSucursal->bindValue(':id', $idSucursal, PDO::PARAM_INT);
+            $targetSucursal->execute();
+            if (!$targetSucursal->fetchColumn()) {
+                throw new InvalidArgumentException('La sucursal seleccionada no existe o está inactiva.');
+            }
+
+            $targetCargo = $this->conn->prepare('SELECT 1 FROM cargo WHERE id = :id AND estado = 1 LIMIT 1');
+            $targetCargo->bindValue(':id', $idCargo, PDO::PARAM_INT);
+            $targetCargo->execute();
+            if (!$targetCargo->fetchColumn()) {
+                throw new InvalidArgumentException('El cargo seleccionado no existe o está inactivo.');
+            }
+
+            if ((int)$sucursalActual !== $idSucursal) {
+                if ($idPersonal === $idActor) {
+                    throw new InvalidArgumentException('No puedes transferir tu propio usuario de sucursal con la sesión activa.');
+                }
+                $tickets = $this->conn->prepare('SELECT 1 FROM pedido WHERE usuario = :id LIMIT 1');
+                $tickets->bindValue(':id', $idPersonal, PDO::PARAM_INT);
+                $tickets->execute();
+                if ($tickets->fetchColumn()) {
+                    throw new RuntimeException('No se puede transferir de sucursal a un usuario con tickets históricos; así se conserva el historial en su sucursal original.');
+                }
+
+                $asistencias = $this->conn->prepare('SELECT 1 FROM asistencia_personal WHERE id_personal = :id LIMIT 1');
+                $asistencias->bindValue(':id', $idPersonal, PDO::PARAM_INT);
+                $asistencias->execute();
+                if ($asistencias->fetchColumn()) {
+                    throw new RuntimeException('No se puede transferir de sucursal a un usuario con asistencias históricas.');
+                }
+            }
+
+            $update = $this->conn->prepare(
+                'UPDATE personal SET IDSUCURSAL = :sucursal, CARGO = :cargo WHERE IDPERSONAL = :id AND IDSUCURSAL = @id_sucursal'
+            );
+            $update->bindValue(':sucursal', $idSucursal, PDO::PARAM_INT);
+            $update->bindValue(':cargo', $idCargo, PDO::PARAM_INT);
+            $update->bindValue(':id', $idPersonal, PDO::PARAM_INT);
+            $update->execute();
+            $this->conn->commit();
+        } catch (Throwable $e) {
+            if ($this->conn->inTransaction()) {
+                $this->conn->rollBack();
+            }
+            throw $e;
+        }
     }
 
     public function obtenerPerfil(int $idPersonal): ?array {

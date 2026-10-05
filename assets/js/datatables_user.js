@@ -11,6 +11,41 @@
         }
     });
 
+    async function cargarCatalogosAsignacion(row, button) {
+        const sucursalSelect = document.getElementById("asignacion-sucursal");
+        const cargoSelect = document.getElementById("asignacion-cargo");
+        const error = document.getElementById("asignacion-usuario-error");
+        sucursalSelect.disabled = true;
+        cargoSelect.disabled = true;
+        button.disabled = true;
+        try {
+            const response = await fetch("controller/catalogos_usuario.php");
+            const result = await response.json();
+            if (!response.ok || !result.ok) throw new Error(result.message || "No se pudieron cargar las opciones.");
+
+            const fillSelect = (select, rows, selectedId) => {
+                select.replaceChildren();
+                rows.forEach((item) => {
+                    const option = document.createElement("option");
+                    option.value = String(item.id);
+                    option.textContent = item.nombre;
+                    select.appendChild(option);
+                });
+                select.value = String(selectedId ?? "");
+            };
+
+            fillSelect(sucursalSelect, result.data.sucursales || [], row.IDSUCURSAL);
+            fillSelect(cargoSelect, result.data.cargos || [], row.CARGO);
+        } catch (loadError) {
+            error.textContent = loadError.message || "No se pudieron cargar las opciones.";
+            error.classList.remove("hidden");
+        } finally {
+            sucursalSelect.disabled = false;
+            cargoSelect.disabled = false;
+            button.disabled = false;
+        }
+    }
+
     var table = new Tabulator("#download-table", {
         layout: "fitColumns",
         pagination: "local",
@@ -28,7 +63,23 @@
         columns: [
             { title: "Id", field: "IDPERSONAL", sorter: "number", width: 90 },
             { title: "Nombre Completo", field: "nombre_completo", headerFilter: "input", widthGrow: 2, minWidth: 100 },
-            { title: "Documento", field: "DOC", headerFilter: "input" },
+            { title: "Usuario", field: "USUARIO", headerFilter: "input", minWidth: 130 },
+            {
+                title: "Password",
+                field: "password_configurada",
+                width: 145,
+                formatter: (cell) => {
+                    const configured = Number(cell.getValue()) === 1;
+                    const message = configured
+                        ? "Hash MD5 guardado. No se expone en el navegador por seguridad."
+                        : "El usuario no tiene contraseña configurada.";
+                    const tooltip = window.XintraTooltip?.attr(message) || `aria-label="${message}"`;
+                    return `<span class="badge ${configured ? "bg-success/10 text-success" : "bg-warning/10 text-warning"}" ${tooltip}>${configured ? "Configurada" : "No configurada"}</span>`;
+                },
+                accessorDownload: (value) => Number(value) === 1 ? "Configurada" : "No configurada",
+            },
+            { title: "Documento", field: "DOC", headerFilter: "input" , minWidth: 130},
+            { title: "Cargo", field: "CARGO_NOMBRE", headerFilter: "input", width: 130 },
             {
                 title: "Sexo",
                 field: "SEXO",
@@ -52,7 +103,7 @@
                     }
                     return `<span class="badge bg-outline-dark dark:!text-defaulttextcolor/70">Otro</span>`;
                 },
-                accessorDownload: (value) => (String(value) === "1" ? "Masculino" : String(value) === "2" ? "Femenino" : "Otro"),
+                accessorDownload: (value) => (String(value) === "1" ? "Masculino" : String(value) === "2" ? "Femenino" : "Otro"), minWidth: 130
             },
             {
                 title: "Estado",
@@ -73,16 +124,16 @@
                     }
                     return `<span class="badge bg-outline-dark dark:!text-defaulttextcolor/70">NDF</span>`;
                 },
-                accessorDownload: (value) => (String(value) === "1" ? "ACTIVE" : String(value) === "0" ? "SUSPENDED" : "NDF"),
+                accessorDownload: (value) => (String(value) === "1" ? "ACTIVE" : String(value) === "0" ? "SUSPENDED" : "NDF"), minWidth: 130
             },
             { title: "Fec. Registro", field: "fecha_registro", sorter: "datetime",
-            sorterParams:{format:"YYYY-MM-DD HH:mm:ss"} },
+            sorterParams:{format:"YYYY-MM-DD HH:mm:ss"} , minWidth: 150},
             {
                 title: "Opciones",
                 field: "acciones",
                 hozAlign: "center",
                 headerSort: false,
-                width: 220,
+                width: 270,
                 formatter: (cell) => {
                     const row = cell.getRow().getData();
                     const id = row.IDPERSONAL;
@@ -97,6 +148,9 @@
                         <button class="btn-edit ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full btn-wave waves-effect waves-light" data-id="${idHash}" aria-label="Editar usuario" ${window.XintraTooltip.attr("Editar")}>
                             <i class="ri-edit-2-line"></i>
                         </button>
+                        <button class="btn-sucursal-cargo ti-btn ti-btn-icon bg-info/10 text-info hover:bg-info hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${id}" aria-label="Cambiar sucursal y cargo" ${window.XintraTooltip.attr("Sucursal y cargo")}>
+                            <i class="ri-building-2-line"></i>
+                        </button>
                         ${puedeEliminar ? `<button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${id}" aria-label="Eliminar usuario" ${window.XintraTooltip.attr("Eliminar")}><i class="ri-delete-bin-line"></i></button>` : ""}
                     </div>`;
                 },
@@ -110,6 +164,16 @@
                     } else if (e.target.closest(".btn-schedule")) {
                         const idHash = e.target.closest(".btn-schedule").dataset.id;
                         window.location.href = "horario.php?hash=" + idHash;
+                    } else if (e.target.closest(".btn-sucursal-cargo")) {
+                        const assignmentButton = e.target.closest(".btn-sucursal-cargo");
+                        const assignmentModal = document.getElementById("abrir-modal-asignacion-usuario");
+                        const assignmentError = document.getElementById("asignacion-usuario-error");
+                        document.getElementById("asignacion-usuario-id").value = String(id);
+                        document.getElementById("asignacion-usuario-nombre").textContent = cell.getRow().getData().nombre_completo || "";
+                        assignmentError.textContent = "";
+                        assignmentError.classList.add("hidden");
+                        assignmentModal.click();
+                        cargarCatalogosAsignacion(cell.getRow().getData(), assignmentButton);
                     } else if (e.target.closest(".btn-delete")) {
                         alertify.confirm(
                             "Eliminar usuario",
@@ -146,6 +210,45 @@
 
     table.on("renderComplete", () => {
         window.XintraTooltip?.init(document.querySelector("#download-table"));
+    });
+
+    const assignmentForm = document.getElementById("form-asignacion-usuario");
+    const assignmentSaveButton = document.getElementById("btnGuardarAsignacionUsuario");
+    assignmentForm?.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const assignmentError = document.getElementById("asignacion-usuario-error");
+        assignmentError.textContent = "";
+        assignmentError.classList.add("hidden");
+        if (!assignmentForm.reportValidity()) return;
+
+        const payload = Object.fromEntries(new FormData(assignmentForm).entries());
+        alertify.confirm(
+            "Confirmar sucursal y cargo",
+            `Se actualizarán la sucursal y el cargo del usuario #${payload.id}. Si la sucursal cambia, se comprobará que no tenga tickets ni asistencias históricas. ¿Continuar?`,
+            async () => {
+                assignmentSaveButton.disabled = true;
+                assignmentSaveButton.classList.add("opacity-50", "cursor-not-allowed");
+                try {
+                    const response = await fetch("controller/asignar_sucursal_cargo.php", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                        body: new URLSearchParams(payload),
+                    });
+                    const result = await response.json();
+                    if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo cambiar la sucursal y el cargo.");
+                    alertify.success(result.message);
+                    document.querySelector('#modal-asignacion-usuario [data-hs-overlay="#modal-asignacion-usuario"]')?.click();
+                    table.replaceData();
+                } catch (error) {
+                    assignmentError.textContent = error.message || "No se pudo cambiar la sucursal y el cargo.";
+                    assignmentError.classList.remove("hidden");
+                } finally {
+                    assignmentSaveButton.disabled = false;
+                    assignmentSaveButton.classList.remove("opacity-50", "cursor-not-allowed");
+                }
+            },
+            () => alertify.message("Cambio cancelado.")
+        ).set("labels", { ok: "Guardar", cancel: "Cancelar" });
     });
 
     document.querySelector("#user-status-filter")?.addEventListener("change", (event) => {

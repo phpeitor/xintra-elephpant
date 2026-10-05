@@ -15,6 +15,7 @@ require_once ROOT . '/controller/check_session.php';
       <meta name="keywords" content="tailwind template,tailwind dashboard,tailwind,tailwind admin template,dashboard,tailwind css templates,html dashboard template,tailwind dashboard template,dashboard tailwind,admin,html css templates,html dashboard,html css javascript templates,dashboard tailwind template,tailwind css dashboard">
       <script src="./assets/js/main.js"></script> 
       <link href="./assets/css/styles.css" rel="stylesheet">
+      <link href="./assets/css/usuarios.css?v=2" rel="stylesheet">
       <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
       <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
       <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
@@ -67,7 +68,7 @@ require_once ROOT . '/controller/check_session.php';
                                   <option value="TODOS">Todos los usuarios</option>
                                </select>
                             </div>
-                           <div class="overflow-hidden table-bordered">
+                            <div class="overflow-x-auto table-bordered">
                               <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
                                  
                               </div>
@@ -75,10 +76,44 @@ require_once ROOT . '/controller/check_session.php';
                         </div>
                      </div>
                   </div>
+                </div>
+            </div>
+         </div>
+
+         <button id="abrir-modal-asignacion-usuario" class="hidden" type="button" data-hs-overlay="#modal-asignacion-usuario" aria-hidden="true" tabindex="-1"></button>
+         <div id="modal-asignacion-usuario" class="hs-overlay hidden fixed inset-0 z-[110] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="modal-asignacion-usuario-titulo">
+             <div class="assignment-modal-dialog hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-300 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
+               <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
+                  <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-defaultborder/10">
+                     <div>
+                        <h2 id="modal-asignacion-usuario-titulo" class="text-lg font-semibold">Sucursal y cargo</h2>
+                        <p id="asignacion-usuario-nombre" class="text-sm text-textmuted mt-1"></p>
+                     </div>
+                     <button type="button" class="ti-btn ti-btn-light !mb-0" data-hs-overlay="#modal-asignacion-usuario" aria-label="Cerrar">
+                        <i class="ri-close-line" aria-hidden="true"></i>
+                     </button>
+                  </div>
+                  <form id="form-asignacion-usuario" class="p-4 space-y-4">
+                     <input type="hidden" id="asignacion-usuario-id" name="id">
+                     <div class="space-y-2">
+                        <label for="asignacion-sucursal" class="ti-form-label">Sucursal</label>
+                        <select id="asignacion-sucursal" name="id_sucursal" class="ti-form-select rounded-sm" required></select>
+                     </div>
+                     <div class="space-y-2">
+                        <label for="asignacion-cargo" class="ti-form-label">Cargo</label>
+                        <select id="asignacion-cargo" name="cargo" class="ti-form-select rounded-sm" required></select>
+                     </div>
+                     <p class="text-xs text-textmuted">La transferencia se bloquea si el usuario tiene tickets o asistencias históricas para preservar la sucursal de esos registros. Si cambia de sucursal, deberá iniciar sesión nuevamente.</p>
+                     <p id="asignacion-usuario-error" class="hidden text-danger text-sm" role="alert"></p>
+                     <div class="flex justify-end gap-2 border-t border-defaultborder dark:border-white/10 pt-4">
+                        <button type="button" class="ti-btn ti-btn-light" data-hs-overlay="#modal-asignacion-usuario">Cancelar</button>
+                        <button id="btnGuardarAsignacionUsuario" type="submit" class="ti-btn ti-btn-primary">Guardar cambios</button>
+                     </div>
+                  </form>
                </div>
             </div>
          </div>
-    
+
          <?php include ROOT . '/layout/footer.php'; ?>
       </div>
 
