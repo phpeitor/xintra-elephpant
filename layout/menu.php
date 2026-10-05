@@ -1,3 +1,9 @@
+<?php
+require_once ROOT . '/model/permisos.php';
+$menuPermisos = new Permisos();
+$menuUsuarioId = (int)($_SESSION['session_id'] ?? 0);
+$puedeVerMenu = static fn(string $permiso): bool => $menuPermisos->tiene($menuUsuarioId, $permiso);
+?>
 <nav aria-label="nav2" class="main-menu-container nav nav-pills flex-col sub-open open active">
     <div class="slide-left active hidden" id="slide-left">
         <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
@@ -5,7 +11,7 @@
         </svg>
     </div>
     <ul class="main-menu" style="display: block; margin-left: 0px; margin-right: 0px;">
-        <li class="slide">
+        <?php if ($puedeVerMenu('inicio')): ?><li class="slide">
             <a href="home.php" class="side-menu__item">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor">
@@ -15,8 +21,9 @@
                 </svg>
                 <span class="side-menu__label">Inicio</span>
             </a>
-        </li>
+        </li><?php endif; ?>
 
+        <?php if ($puedeVerMenu('usuarios') || $puedeVerMenu('asistencia')): ?>
         <li class="slide__category"><span class="category-name">Personal &amp; Clientes</span></li>
         <li class="slide has-sub">
             <a href="javascript:void(0);" class="side-menu__item">
@@ -32,12 +39,13 @@
             <ul class="slide-menu child1" data-popper-placement="top" data-popper-reference-hidden=""
                 data-popper-escaped=""
                 style="position: relative; left: 0px; top: 0px; margin: 0px; transform: translate(120px, 3222px);">
-                <li class="slide"> <a href="usuarios.php" class="side-menu__item">Usuarios</a> </li>
-                <li class="slide"> <a href="asistencia.php" class="side-menu__item">Asistencia</a> </li>
+                <?php if ($puedeVerMenu('usuarios')): ?><li class="slide"> <a href="usuarios.php" class="side-menu__item">Usuarios</a> </li><?php endif; ?>
+                <?php if ($puedeVerMenu('asistencia')): ?><li class="slide"> <a href="asistencia.php" class="side-menu__item">Asistencia</a> </li><?php endif; ?>
             </ul>
         </li>
 
-        <li class="slide">
+        <?php endif; ?>
+        <?php if ($puedeVerMenu('clientes')): ?><li class="slide">
             <a href="clientes.php" class="side-menu__item">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor">
@@ -49,10 +57,11 @@
                 </svg>
                 <span class="side-menu__label">Clientes</span>
             </a>
-        </li>
+        </li><?php endif; ?>
 
+        <?php if ($puedeVerMenu('categorias') || $puedeVerMenu('items')): ?>
         <li class="slide__category"><span class="category-name">Categoria &amp; Items</span></li>
-        <li class="slide">
+        <?php if ($puedeVerMenu('categorias')): ?><li class="slide">
             <a href="categorias.php" class="side-menu__item">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor">
@@ -62,9 +71,9 @@
                 </svg>
                 <span class="side-menu__label">Categoria</span>
             </a>
-        </li>
+        </li><?php endif; ?>
 
-        <li class="slide">
+        <?php if ($puedeVerMenu('items')): ?><li class="slide">
             <a href="items.php" class="side-menu__item">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24"
                     stroke-width="1.5" stroke="currentColor">
@@ -74,9 +83,12 @@
                 </svg>
                 <span class="side-menu__label">Items</span>
             </a>
-        </li>
+        </li><?php endif; ?>
+        <?php endif; ?>
 
+        <?php if ($puedeVerMenu('tickets') || $puedeVerMenu('reporte') || $puedeVerMenu('compras')): ?>
         <li class="slide__category"><span class="category-name">Ventas &amp; Compras</span></li>
+        <?php if ($puedeVerMenu('tickets') || $puedeVerMenu('reporte')): ?>
         <li class="slide has-sub">
             <a href="javascript:void(0);" class="side-menu__item">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24"
@@ -91,11 +103,13 @@
             <ul class="slide-menu child1" data-popper-placement="top" data-popper-reference-hidden=""
                 data-popper-escaped=""
                 style="position: relative; left: 0px; top: 0px; margin: 0px; transform: translate(120px, 3222px);">
-                <li class="slide"> <a href="tickets.php" class="side-menu__item">Tickets</a> </li>
-                <li class="slide"> <a href="reporte.php" class="side-menu__item">Reporte</a> </li>
+                <?php if ($puedeVerMenu('tickets')): ?><li class="slide"> <a href="tickets.php" class="side-menu__item">Tickets</a> </li><?php endif; ?>
+                <?php if ($puedeVerMenu('reporte')): ?><li class="slide"> <a href="reporte.php" class="side-menu__item">Reporte</a> </li><?php endif; ?>
             </ul>
         </li>
+        <?php endif; ?>
 
+        <?php if ($puedeVerMenu('compras')): ?>
         <li class="slide has-sub">
             <a href="javascript:void(0);" class="side-menu__item">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75"></path> </svg>
@@ -107,13 +121,17 @@
                 <li class="slide"> <a href="#" class="side-menu__item">Proveedores</a> </li>
             </ul>
         </li>
+        <?php endif; ?>
+        <?php endif; ?>
 
+        <?php if ($puedeVerMenu('sucursales')): ?>
         <li class="slide">
             <a href="sucursal.php" class="side-menu__item">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 side-menu__icon" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"> <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Zm9.75-9.75H18a2.25 2.25 0 0 0 2.25-2.25V6A2.25 2.25 0 0 0 18 3.75h-2.25A2.25 2.25 0 0 0 13.5 6v2.25a2.25 2.25 0 0 0 2.25 2.25Z"></path> </svg>
                 <span class="side-menu__label">Sucursales</span>
             </a>
         </li>
+        <?php endif; ?>
     </ul>
     <div class="slide-right hidden" id="slide-right">
         <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">

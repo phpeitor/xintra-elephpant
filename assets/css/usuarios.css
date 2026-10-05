@@ -6,11 +6,17 @@
   z-index: 110 !important;
 }
 
+#modal-permisos-usuario,
+#modal-permisos-usuario:not(.hidden) {
+  z-index: 110 !important;
+}
+
 .hs-overlay-backdrop {
   z-index: 109 !important;
 }
 
-#modal-asignacion-usuario .assignment-modal-dialog {
+#modal-asignacion-usuario .assignment-modal-dialog,
+#modal-permisos-usuario .assignment-modal-dialog {
   width: min(34rem, calc(100vw - 2rem));
   max-height: calc(100vh - 2rem);
   overflow-y: auto;

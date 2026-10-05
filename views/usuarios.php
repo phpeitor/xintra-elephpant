@@ -69,14 +69,35 @@ require_once ROOT . '/controller/check_session.php';
                                </select>
                             </div>
                             <div class="overflow-x-auto table-bordered">
-                              <div id="download-table" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
-                                 
-                              </div>
-                           </div>
+                               <div id="download-table" data-current-user-id="<?= (int)($_SESSION['session_id'] ?? 0) ?>" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid" tabulator-layout="fitColumns">
+                               </div>
+
+                            </div>
                         </div>
                      </div>
                   </div>
                 </div>
+            </div>
+         </div>
+
+         <button id="abrir-modal-permisos-usuario" class="hidden" type="button" data-hs-overlay="#modal-permisos-usuario" aria-hidden="true" tabindex="-1"></button>
+         <div id="modal-permisos-usuario" class="hs-overlay hidden fixed inset-0 z-[110] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="modal-permisos-usuario-titulo">
+            <div class="assignment-modal-dialog hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-300 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto">
+               <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
+                  <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-defaultborder/10">
+                     <div><h2 id="modal-permisos-usuario-titulo" class="text-lg font-semibold">Permisos del usuario</h2><p id="permisos-usuario-nombre" class="text-sm text-textmuted mt-1"></p></div>
+                     <button type="button" class="ti-btn ti-btn-light !mb-0" data-hs-overlay="#modal-permisos-usuario" aria-label="Cerrar"><i class="ri-close-line" aria-hidden="true"></i></button>
+                  </div>
+                  <form id="form-permisos-usuario" class="p-4 space-y-4">
+                     <input type="hidden" id="permisos-usuario-id" name="id">
+                     <div id="permisos-usuario-lista" class="grid grid-cols-1 sm:grid-cols-2 gap-3" aria-live="polite"></div>
+                     <p id="permisos-usuario-error" class="hidden text-danger text-sm" role="alert"></p>
+                     <div class="flex justify-end gap-2 border-t border-defaultborder dark:border-white/10 pt-4">
+                        <button type="button" class="ti-btn ti-btn-light" data-hs-overlay="#modal-permisos-usuario">Cancelar</button>
+                        <button id="btnGuardarPermisosUsuario" type="submit" class="ti-btn ti-btn-primary">Guardar permisos</button>
+                     </div>
+                  </form>
+               </div>
             </div>
          </div>
 

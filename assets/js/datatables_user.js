@@ -133,12 +133,13 @@
                 field: "acciones",
                 hozAlign: "center",
                 headerSort: false,
-                width: 270,
+                width: 320,
                 formatter: (cell) => {
                     const row = cell.getRow().getData();
                     const id = row.IDPERSONAL;
                     const estado = String(row.IDESTADO ?? "").trim();
                     const puedeEliminar = estado !== "0" && estado !== "SUSPENDED";
+                    const usuarioActual = Number(document.getElementById("download-table")?.dataset.currentUserId || 0);
                     const idHash = md5(row.IDPERSONAL.toString()); 
                     return `
                      <div style="display:flex;align-items:center;justify-content:flex-start;gap:.5rem;width:100%;">
@@ -151,6 +152,7 @@
                         <button class="btn-sucursal-cargo ti-btn ti-btn-icon bg-info/10 text-info hover:bg-info hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${id}" aria-label="Cambiar sucursal y cargo" ${window.XintraTooltip.attr("Sucursal y cargo")}>
                             <i class="ri-building-2-line"></i>
                         </button>
+                        ${Number(id) !== usuarioActual ? `<button class="btn-permisos ti-btn ti-btn-icon bg-warning/10 text-warning hover:bg-warning hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${id}" aria-label="Permisos" ${window.XintraTooltip.attr("Permisos")}><i class="ri-shield-user-line"></i></button>` : ""}
                         ${puedeEliminar ? `<button class="btn-delete ti-btn ti-btn-icon bg-danger/10 text-danger hover:bg-danger hover:text-white !rounded-full btn-wave waves-effect waves-light" data-id="${id}" aria-label="Eliminar usuario" ${window.XintraTooltip.attr("Eliminar")}><i class="ri-delete-bin-line"></i></button>` : ""}
                     </div>`;
                 },
@@ -174,6 +176,8 @@
                         assignmentError.classList.add("hidden");
                         assignmentModal.click();
                         cargarCatalogosAsignacion(cell.getRow().getData(), assignmentButton);
+                    } else if (e.target.closest(".btn-permisos")) {
+                        abrirPermisosUsuario(cell.getRow().getData());
                     } else if (e.target.closest(".btn-delete")) {
                         alertify.confirm(
                             "Eliminar usuario",
@@ -249,6 +253,68 @@
             },
             () => alertify.message("Cambio cancelado.")
         ).set("labels", { ok: "Guardar", cancel: "Cancelar" });
+    });
+
+    const permissionForm = document.getElementById("form-permisos-usuario");
+    const permissionSaveButton = document.getElementById("btnGuardarPermisosUsuario");
+    async function abrirPermisosUsuario(row) {
+        const error = document.getElementById("permisos-usuario-error");
+        const list = document.getElementById("permisos-usuario-lista");
+        document.getElementById("permisos-usuario-id").value = String(row.IDPERSONAL);
+        document.getElementById("permisos-usuario-nombre").textContent = row.nombre_completo || "";
+        error.textContent = "";
+        error.classList.add("hidden");
+        list.textContent = "Cargando permisos…";
+        document.getElementById("abrir-modal-permisos-usuario").click();
+        try {
+            const response = await fetch(`controller/permisos_usuario.php?id=${encodeURIComponent(row.IDPERSONAL)}`);
+            const result = await response.json();
+            if (!response.ok || !result.ok) throw new Error(result.message || "No se pudieron cargar los permisos.");
+            const selected = new Set(result.data.permisos);
+            list.replaceChildren();
+            Object.entries(result.data.catalogo).forEach(([key, label]) => {
+                const wrapper = document.createElement("label");
+                wrapper.className = "flex items-center gap-2 p-2 border border-defaultborder rounded-sm";
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.name = "permisos[]";
+                checkbox.value = key;
+                checkbox.checked = selected.has(key);
+                checkbox.className = "ti-form-checkbox";
+                const text = document.createElement("span");
+                text.textContent = label;
+                wrapper.append(checkbox, text);
+                list.appendChild(wrapper);
+            });
+        } catch (loadError) {
+            list.replaceChildren();
+            error.textContent = loadError.message || "No se pudieron cargar los permisos.";
+            error.classList.remove("hidden");
+        }
+    }
+
+    permissionForm?.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const error = document.getElementById("permisos-usuario-error");
+        error.textContent = "";
+        error.classList.add("hidden");
+        permissionSaveButton.disabled = true;
+        try {
+            const response = await fetch("controller/permisos_usuario.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                body: new URLSearchParams(new FormData(permissionForm)),
+            });
+            const result = await response.json();
+            if (!response.ok || !result.ok) throw new Error(result.message || "No se pudieron guardar los permisos.");
+            alertify.success(result.message);
+            document.querySelector('#modal-permisos-usuario [data-hs-overlay="#modal-permisos-usuario"]')?.click();
+        } catch (saveError) {
+            error.textContent = saveError.message || "No se pudieron guardar los permisos.";
+            error.classList.remove("hidden");
+        } finally {
+            permissionSaveButton.disabled = false;
+        }
     });
 
     document.querySelector("#user-status-filter")?.addEventListener("change", (event) => {
