@@ -3,7 +3,7 @@ require_once __DIR__ . '/../config/bootstrap.php';
 require_once ROOT . '/controller/check_session.php';
 ?>
 <!doctype html>
-<html lang="es" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
+<html lang="en" dir="ltr" data-nav-layout="vertical" class="light" data-header-styles="light" data-menu-styles="dark" data-width="fullwidth" loader="disable" bg-img="bgimg5" data-vertical-style="overlay">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,12 +27,7 @@ require_once ROOT . '/controller/check_session.php';
       <div class="container-fluid">
         <div class="flex items-center justify-between page-header-breadcrumb flex-wrap gap-2">
           <div>
-            <nav aria-label="Navegación">
-              <ol class="breadcrumb mb-1">
-                <li class="breadcrumb-item">Administración</li>
-                <li class="breadcrumb-item active" aria-current="page">Sucursales</li>
-              </ol>
-            </nav>
+            <ol class="breadcrumb mb-1"><li class="breadcrumb-item"><a href="usuarios.php">Administración</a></li><li class="breadcrumb-item active">Sucursales</li></ol>
             <h1 class="page-title font-medium text-lg mb-0">Sucursales</h1>
           </div>
           <button id="btnNuevaSucursal" type="button" class="ti-btn ti-btn-primary !border-0">
@@ -43,8 +38,8 @@ require_once ROOT . '/controller/check_session.php';
         <section class="box" aria-labelledby="sucursales-heading">
           <div class="box-header flex items-center justify-between">
             <h2 id="sucursales-heading" class="box-title">Listado de sucursales</h2>
-            <button id="btnRecargarSucursales" type="button" class="ti-btn ti-btn-light ti-btn-sm">
-              <i class="ri-refresh-line me-1" aria-hidden="true"></i>Actualizar
+            <button id="btnRecargarSucursales" type="button" class="ti-btn ti-btn-light ti-btn-sm" aria-label="Recargar listado de sucursales">
+              <i class="ri-refresh-line me-1" aria-hidden="true"></i>Recargar listado
             </button>
           </div>
           <div class="box-body">
@@ -61,7 +56,7 @@ require_once ROOT . '/controller/check_session.php';
       <div class="sucursal-modal-dialog hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-xl sm:w-full m-3 sm:mx-auto">
         <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
           <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-white/10">
-            <h2 id="modal-sucursal-titulo" class="font-semibold text-defaulttextcolor dark:text-white">Nueva sucursal</h2>
+            <h3 id="modal-sucursal-titulo" class="font-semibold text-defaulttextcolor dark:text-white">Nueva sucursal</h3>
             <button type="button" class="ti-btn ti-btn-light !mb-0" data-hs-overlay="#modal-sucursal" aria-label="Cerrar">
               <i class="ri-close-line" aria-hidden="true"></i>
             </button>
@@ -100,7 +95,7 @@ require_once ROOT . '/controller/check_session.php';
             <p id="sucursal-form-error" class="hidden text-danger text-sm" role="alert"></p>
             <div class="flex justify-end gap-2 border-t border-defaultborder dark:border-white/10 pt-4">
               <button type="button" class="ti-btn ti-btn-light" data-hs-overlay="#modal-sucursal">Cancelar</button>
-              <button id="btnGuardarSucursal" type="submit" class="ti-btn ti-btn-primary">Guardar sucursal</button>
+              <button id="btnGuardarSucursal" type="submit" class="ti-btn ti-btn-primary">Guardar</button>
             </div>
           </form>
         </div>
