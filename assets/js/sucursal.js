@@ -24,6 +24,11 @@
     const cuotaNuevaInput = document.getElementById("cuota-nueva");
     const cuotaError = document.getElementById("cuota-form-error");
     const cuotaSaveButton = document.getElementById("btnAumentarCuota");
+    const nubefactForm = document.getElementById("form-nubefact-sucursal");
+    const nubefactModalTrigger = document.getElementById("abrir-modal-nubefact");
+    const nubefactModalClose = document.querySelector('#modal-nubefact-sucursal [data-hs-overlay="#modal-nubefact-sucursal"]');
+    const nubefactError = document.getElementById("nubefact-form-error");
+    const nubefactSaveButton = document.getElementById("btnGuardarNubefact");
     const tableElement = document.getElementById("tabla-sucursales");
     if (!form || !tableElement) return;
 
@@ -56,6 +61,18 @@
         { title: "Tickets", field: "tickets_usados", sorter: "number", width: 105 },
         { title: "Cuota", field: "cuota", sorter: "number", width: 110, formatter: (cell) => Number(cell.getValue()) > 0 ? Number(cell.getValue()).toLocaleString("es-PE") : '<span class="text-textmuted">Sin cuota</span>' },
         {
+          title: "NubeFact",
+          field: "nubefact_configurada",
+          width: 130,
+          formatter: (cell) => {
+            const row = cell.getRow().getData();
+            if (Number(cell.getValue()) !== 1) return '<span class="badge bg-outline-secondary">Sin configurar</span>';
+            return row.nubefact_entorno === "production"
+              ? '<span class="badge bg-success">Producción</span>'
+              : '<span class="badge bg-warning text-dark">Demo</span>';
+          },
+        },
+        {
           title: "Estado",
           field: "estado",
           width: 110,
@@ -67,7 +84,7 @@
         {
           title: "Opciones",
           field: "acciones",
-          width: 190,
+          width: 235,
           hozAlign: "center",
           headerSort: false,
           formatter: (cell) => {
@@ -76,6 +93,9 @@
             return `<div class="flex items-center justify-center gap-2">
               <button type="button" class="btn-editar-sucursal ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full" data-id="${Number(row.id)}" ${tooltipAttributes("Editar sucursal")} aria-label="Editar sucursal">
                 <i class="ri-edit-2-line" aria-hidden="true"></i>
+              </button>
+              <button type="button" class="btn-config-nubefact ti-btn ti-btn-icon bg-info/10 text-info hover:bg-info hover:text-white !rounded-full" data-id="${Number(row.id)}" ${tooltipAttributes("Configurar facturación electrónica")} aria-label="Configurar NubeFact para sucursal">
+                <i class="ri-settings-3-line" aria-hidden="true"></i>
               </button>
               <button type="button" class="btn-cuota-sucursal ti-btn ti-btn-icon bg-primary/10 text-primary hover:bg-primary hover:text-white !rounded-full" data-id="${Number(row.id)}" ${tooltipAttributes("Aumentar cuota y consultar historial")} aria-label="Aumentar cuota de tickets">
                 <i class="ri-add-circle-line" aria-hidden="true"></i>
@@ -88,6 +108,7 @@
           cellClick: (event, cell) => {
             const row = cell.getRow().getData();
             const editButton = event.target.closest(".btn-editar-sucursal");
+            const nubefactButton = event.target.closest(".btn-config-nubefact");
             const quotaButton = event.target.closest(".btn-cuota-sucursal");
             const stateButton = event.target.closest(".btn-estado-sucursal");
 
@@ -104,6 +125,11 @@
               document.getElementById("sucursal-estado").value = String(row.estado);
               document.getElementById("modal-sucursal-titulo").textContent = "Editar sucursal";
               modalTrigger.click();
+              return;
+            }
+
+            if (nubefactButton) {
+              window.sucursalNubefact?.abrir(row);
               return;
             }
 
@@ -276,6 +302,73 @@
         },
         () => alertify.message("Aumento cancelado.")
       ).set("labels", { ok: "Aumentar", cancel: "Cancelar" });
+    });
+
+    const rellenarEntornoNubefact = (environment, config) => {
+      const capitalized = environment.charAt(0).toUpperCase() + environment.slice(1);
+      document.getElementById(`nubefact-${environment}-url`).value = config.url || "";
+      document.getElementById(`nubefact-${environment}-serie-boleta`).value = config.serie_boleta || "";
+      document.getElementById(`nubefact-${environment}-serie-factura`).value = config.serie_factura || "";
+      document.getElementById(`nubefact-${environment}-num-boleta`).value = config.numero_inicial_boleta || 1;
+      document.getElementById(`nubefact-${environment}-num-factura`).value = config.numero_inicial_factura || 1;
+      document.getElementById(`nubefact-${environment}-token`).value = "";
+      document.getElementById(`nubefact-${environment}-token-status`).textContent = config.token_configurado
+        ? `Token ${capitalized} guardado; déjalo vacío para conservarlo.`
+        : `Token ${capitalized} aún no configurado.`;
+    };
+
+    window.sucursalNubefact = {
+      async abrir(row) {
+        nubefactForm.reset();
+        nubefactError.textContent = "";
+        nubefactError.classList.add("hidden");
+        document.getElementById("nubefact-id-sucursal").value = row.id;
+        document.getElementById("nubefact-sucursal-nombre").textContent = row.nombre || "";
+        document.getElementById("nubefact-entorno-activo").value = "demo";
+        document.getElementById("nubefact-demo-num-boleta").value = "1";
+        document.getElementById("nubefact-demo-num-factura").value = "1";
+        document.getElementById("nubefact-production-num-boleta").value = "1";
+        document.getElementById("nubefact-production-num-factura").value = "1";
+        nubefactModalTrigger.click();
+
+        try {
+          const response = await fetch(`controller/configurar_nubefact_sucursal.php?id=${encodeURIComponent(row.id)}`);
+          const result = await response.json();
+          if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo cargar la configuración.");
+          document.getElementById("nubefact-entorno-activo").value = result.data.entorno_activo || "demo";
+          rellenarEntornoNubefact("demo", result.data.demo || {});
+          rellenarEntornoNubefact("production", result.data.production || {});
+        } catch (error) {
+          nubefactError.textContent = error.message || "No se pudo cargar la configuración NubeFact.";
+          nubefactError.classList.remove("hidden");
+        }
+      },
+    };
+
+    nubefactForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      nubefactError.textContent = "";
+      nubefactError.classList.add("hidden");
+      nubefactSaveButton.disabled = true;
+      nubefactSaveButton.classList.add("opacity-50", "cursor-not-allowed");
+      try {
+        const response = await fetch("controller/configurar_nubefact_sucursal.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+          body: new URLSearchParams(new FormData(nubefactForm)),
+        });
+        const result = await response.json();
+        if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo guardar la configuración.");
+        alertify.success(result.message);
+        nubefactModalClose?.click();
+        await recargarListado();
+      } catch (error) {
+        nubefactError.textContent = error.message || "No se pudo guardar la configuración NubeFact.";
+        nubefactError.classList.remove("hidden");
+      } finally {
+        nubefactSaveButton.disabled = false;
+        nubefactSaveButton.classList.remove("opacity-50", "cursor-not-allowed");
+      }
     });
 
     document.getElementById("btnNuevaSucursal")?.addEventListener("click", () => {

@@ -6,6 +6,10 @@
   z-index: 110 !important;
 }
 
+#modal-nubefact-sucursal {
+  z-index: 110 !important;
+}
+
 .hs-overlay-backdrop {
   z-index: 109 !important;
 }
@@ -14,6 +18,12 @@
   width: min(40rem, calc(100vw - 2rem));
   max-height: calc(100vh - 2rem);
   margin: 1rem auto;
+  overflow-y: auto;
+}
+
+.sucursal-nubefact-dialog {
+  width: min(46rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
   overflow-y: auto;
 }
 

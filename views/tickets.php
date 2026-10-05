@@ -173,7 +173,7 @@ require_once ROOT . '/controller/check_session.php';
                            </div>
 
                            <button id="facturacion-ticket-open" class="hidden" type="button" data-hs-overlay="#facturacion-ticket-modal" aria-hidden="true" tabindex="-1"></button>
-                           <div id="facturacion-ticket-modal" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" data-nubefact-env="<?= htmlspecialchars((string)($_ENV['NUBEFACT_ENV'] ?? 'demo'), ENT_QUOTES, 'UTF-8') ?>" role="dialog" tabindex="-1" aria-labelledby="facturacion-ticket-title">
+                           <div id="facturacion-ticket-modal" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="facturacion-ticket-title">
                               <div class="facturacion-ticket-dialog hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-xl sm:w-full m-3 sm:mx-auto">
                                  <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
                                     <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-white/10">

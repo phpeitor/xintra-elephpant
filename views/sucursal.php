@@ -12,7 +12,7 @@ require_once ROOT . '/controller/check_session.php';
   <title>Sucursales | Xintra Elephpant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
-  <link href="./assets/css/sucursal.css?v=3" rel="stylesheet">
+  <link href="./assets/css/sucursal.css?v=4" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
@@ -160,6 +160,103 @@ require_once ROOT . '/controller/check_session.php';
       </div>
     </div>
     <button id="abrir-modal-cuota" class="hidden" type="button" data-hs-overlay="#modal-cuota-sucursal" aria-hidden="true" tabindex="-1"></button>
+
+    <div id="modal-nubefact-sucursal" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="modal-nubefact-titulo">
+      <div class="sucursal-modal-dialog sucursal-nubefact-dialog sucursal-modal-fall hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-2xl sm:w-full m-3 sm:mx-auto">
+        <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
+          <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-defaultborder/10">
+            <div>
+              <h6 id="modal-nubefact-titulo" class="font-semibold text-defaulttextcolor dark:text-white">Facturación electrónica por sucursal</h6>
+              <p id="nubefact-sucursal-nombre" class="text-sm text-textmuted mt-1"></p>
+            </div>
+            <button type="button" class="ti-btn ti-btn-light !mb-0" data-hs-overlay="#modal-nubefact-sucursal" aria-label="Cerrar">
+              <i class="ri-close-line" aria-hidden="true"></i>
+            </button>
+          </div>
+          <form id="form-nubefact-sucursal" class="p-4 space-y-4">
+            <input type="hidden" id="nubefact-id-sucursal" name="id_sucursal">
+            <input type="hidden" id="nubefact-id-sucursal" name="id_sucursal">
+            <div class="space-y-2">
+              <label for="nubefact-entorno-activo" class="ti-form-label">Entorno que se usará al emitir</label>
+              <select id="nubefact-entorno-activo" name="entorno_activo" class="ti-form-select rounded-sm">
+                <option value="demo">Pruebas (Demo)</option>
+                <option value="production">Producción (SUNAT)</option>
+              </select>
+              <p class="text-xs text-textmuted">Demo y Producción tienen rutas, tokens, series y correlativos independientes.</p>
+            </div>
+
+            <details class="rounded-lg border border-defaultborder p-4" open>
+              <summary class="cursor-pointer font-semibold">Configuración Demo</summary>
+              <div class="grid sm:grid-cols-2 gap-4 mt-4">
+                <div class="space-y-2 sm:col-span-2">
+                  <label for="nubefact-demo-url" class="ti-form-label">Ruta Demo</label>
+                  <input id="nubefact-demo-url" name="demo_url" type="url" class="ti-form-input rounded-sm" placeholder="https://api.nubefact.com/api/v1/...">
+                </div>
+                <div class="space-y-2 sm:col-span-2">
+                  <label for="nubefact-demo-token" class="ti-form-label">Token Demo</label>
+                  <input id="nubefact-demo-token" name="demo_token" type="password" class="ti-form-input rounded-sm" autocomplete="new-password" placeholder="Token guardado: deja vacío para conservarlo">
+                  <span id="nubefact-demo-token-status" class="text-xs text-textmuted" aria-live="polite"></span>
+                </div>
+                <div class="space-y-2">
+                  <label for="nubefact-demo-serie-boleta" class="ti-form-label">Serie boleta Demo</label>
+                  <input id="nubefact-demo-serie-boleta" name="demo_serie_boleta" class="ti-form-input rounded-sm" maxlength="4" placeholder="BBB1">
+                </div>
+                <div class="space-y-2">
+                  <label for="nubefact-demo-serie-factura" class="ti-form-label">Serie factura Demo</label>
+                  <input id="nubefact-demo-serie-factura" name="demo_serie_factura" class="ti-form-input rounded-sm" maxlength="4" placeholder="FFF1">
+                </div>
+                <div class="space-y-2">
+                  <label for="nubefact-demo-num-boleta" class="ti-form-label">Próximo N.º boleta</label>
+                  <input id="nubefact-demo-num-boleta" name="demo_numero_inicial_boleta" type="number" min="1" max="99999999" step="1" class="ti-form-input rounded-sm">
+                </div>
+                <div class="space-y-2">
+                  <label for="nubefact-demo-num-factura" class="ti-form-label">Próximo N.º factura</label>
+                  <input id="nubefact-demo-num-factura" name="demo_numero_inicial_factura" type="number" min="1" max="99999999" step="1" class="ti-form-input rounded-sm">
+                </div>
+              </div>
+            </details>
+
+            <details class="rounded-lg border border-defaultborder p-4">
+              <summary class="cursor-pointer font-semibold">Configuración Producción</summary>
+              <div class="grid sm:grid-cols-2 gap-4 mt-4">
+                <div class="space-y-2 sm:col-span-2">
+                  <label for="nubefact-production-url" class="ti-form-label">Ruta Producción</label>
+                  <input id="nubefact-production-url" name="production_url" type="url" class="ti-form-input rounded-sm" placeholder="https://api.nubefact.com/api/v1/...">
+                </div>
+                <div class="space-y-2 sm:col-span-2">
+                  <label for="nubefact-production-token" class="ti-form-label">Token Producción</label>
+                  <input id="nubefact-production-token" name="production_token" type="password" class="ti-form-input rounded-sm" autocomplete="new-password" placeholder="Token guardado: deja vacío para conservarlo">
+                  <span id="nubefact-production-token-status" class="text-xs text-textmuted" aria-live="polite"></span>
+                </div>
+                <div class="space-y-2">
+                  <label for="nubefact-production-serie-boleta" class="ti-form-label">Serie boleta Producción</label>
+                  <input id="nubefact-production-serie-boleta" name="production_serie_boleta" class="ti-form-input rounded-sm" maxlength="4" placeholder="B001">
+                </div>
+                <div class="space-y-2">
+                  <label for="nubefact-production-serie-factura" class="ti-form-label">Serie factura Producción</label>
+                  <input id="nubefact-production-serie-factura" name="production_serie_factura" class="ti-form-input rounded-sm" maxlength="4" placeholder="F001">
+                </div>
+                <div class="space-y-2">
+                  <label for="nubefact-production-num-boleta" class="ti-form-label">Próximo N.º boleta</label>
+                  <input id="nubefact-production-num-boleta" name="production_numero_inicial_boleta" type="number" min="1" max="99999999" step="1" class="ti-form-input rounded-sm">
+                </div>
+                <div class="space-y-2">
+                  <label for="nubefact-production-num-factura" class="ti-form-label">Próximo N.º factura</label>
+                  <input id="nubefact-production-num-factura" name="production_numero_inicial_factura" type="number" min="1" max="99999999" step="1" class="ti-form-input rounded-sm">
+                </div>
+              </div>
+            </details>
+
+            <p id="nubefact-form-error" class="hidden text-danger text-sm" role="alert"></p>
+            <div class="flex justify-end gap-2 border-t border-defaultborder pt-4">
+              <button type="button" class="ti-btn ti-btn-light" data-hs-overlay="#modal-nubefact-sucursal">Cancelar</button>
+              <button id="btnGuardarNubefact" type="submit" class="ti-btn ti-btn-primary">Guardar configuración</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <button id="abrir-modal-nubefact" class="hidden" type="button" data-hs-overlay="#modal-nubefact-sucursal" aria-hidden="true" tabindex="-1"></button>
 
     <?php include ROOT . '/layout/footer.php'; ?>
   </div>

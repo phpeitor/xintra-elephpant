@@ -225,6 +225,7 @@ class Ticket {
                     ELSE 'PENDIENTE'
                 END as comprobante_sunat_estado,
                 ce.aceptada_por_sunat as comprobante_aceptada,
+                nf.entorno_activo as comprobante_entorno,
                 ce.enlace_del_pdf as comprobante_pdf,
                 ce.mensaje as comprobante_mensaje,
                 GROUP_CONCAT('• ',d.nombre SEPARATOR ' </br> ') as productos, 
@@ -242,6 +243,7 @@ class Ticket {
                     FROM pedido a 
                     LEFT JOIN detalle_pedido b ON a.id = b.id_pedido 
                     LEFT JOIN personal c ON a.usuario = c.IDPERSONAL 
+                    LEFT JOIN sucursal_nubefact nf ON nf.id_sucursal = c.IDSUCURSAL
                     LEFT JOIN product_service d ON b.id_productservice = d.id 
                     LEFT JOIN cliente e on e.id = a.cliente
                     LEFT JOIN nubefact_comprobante ce ON ce.id_pedido = a.id

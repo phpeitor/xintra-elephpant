@@ -19,11 +19,11 @@ class ComprobanteElectronico
             throw new InvalidArgumentException('Selecciona boleta o factura.');
         }
 
-        $config = $this->configuracion();
         $ticket = $this->obtenerTicket($hashTicket);
         if (!$ticket) {
             throw new RuntimeException('Ticket no encontrado en la sucursal actual.');
         }
+        $config = $this->configuracion((int)$ticket['id_sucursal']);
 
         $this->conn->beginTransaction();
         try {
@@ -57,7 +57,7 @@ class ComprobanteElectronico
                 $serie = $tipo === 1 ? $config['serie_factura'] : $config['serie_boleta'];
                 $payloadBase = $this->construirPayload($ticket, $tipo, $serie, $datosCliente);
                 $primerNumero = $tipo === 1 ? $config['primer_numero_factura'] : $config['primer_numero_boleta'];
-                $numero = $this->reservarNumero($tipo, $serie, $primerNumero);
+                $numero = $this->reservarNumero((int)$ticket['id_sucursal'], $tipo, $serie, $primerNumero);
                 $payloadBase['numero'] = $numero;
                 $payloadBase['codigo_unico'] = 'X' . $ticket['id'] . $tipo;
                 $payload = $payloadBase;
@@ -65,11 +65,12 @@ class ComprobanteElectronico
 
                 $insert = $this->conn->prepare(
                     "INSERT INTO nubefact_comprobante
-                        (id_pedido, tipo_de_comprobante, serie, numero, codigo_unico, estado, request_json, id_usuario_emision, fecha_emision)
+                        (id_pedido, id_sucursal, tipo_de_comprobante, serie, numero, codigo_unico, estado, request_json, id_usuario_emision, fecha_emision)
                      VALUES
-                        (:id_pedido, :tipo, :serie, :numero, :codigo_unico, 'PENDIENTE', :request_json, :id_usuario, :fecha_emision)"
+                        (:id_pedido, :id_sucursal, :tipo, :serie, :numero, :codigo_unico, 'PENDIENTE', :request_json, :id_usuario, :fecha_emision)"
                 );
                 $insert->bindValue(':id_pedido', (int)$ticket['id'], PDO::PARAM_INT);
+                $insert->bindValue(':id_sucursal', (int)$ticket['id_sucursal'], PDO::PARAM_INT);
                 $insert->bindValue(':tipo', $tipo, PDO::PARAM_INT);
                 $insert->bindValue(':serie', $serie);
                 $insert->bindValue(':numero', $numero, PDO::PARAM_INT);
@@ -93,11 +94,11 @@ class ComprobanteElectronico
 
     public function consultar(string $hashTicket): array
     {
-        $config = $this->configuracion();
         $ticket = $this->obtenerTicket($hashTicket);
         if (!$ticket) {
             throw new RuntimeException('Ticket no encontrado en la sucursal actual.');
         }
+        $config = $this->configuracion((int)$ticket['id_sucursal']);
 
         $stmt = $this->conn->prepare('SELECT * FROM nubefact_comprobante WHERE id_pedido = :id_pedido LIMIT 1');
         $stmt->bindValue(':id_pedido', (int)$ticket['id'], PDO::PARAM_INT);
@@ -198,52 +199,52 @@ class ComprobanteElectronico
         ];
     }
 
-    private function configuracion(): array
+    private function configuracion(int $idSucursal): array
     {
-        $environment = strtolower(trim((string)($_ENV['NUBEFACT_ENV'] ?? 'demo')));
-        if (!in_array($environment, ['demo', 'production'], true)) {
-            throw new RuntimeException('NUBEFACT_ENV debe ser demo o production.');
+        $stmt = $this->conn->prepare('SELECT * FROM sucursal_nubefact WHERE id_sucursal = :id_sucursal LIMIT 1');
+        $stmt->bindValue(':id_sucursal', $idSucursal, PDO::PARAM_INT);
+        $stmt->execute();
+        $settings = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$settings) {
+            throw new RuntimeException('Configura NubeFact para la sucursal del ticket antes de emitir.');
         }
 
-        $prefix = $environment === 'demo' ? 'NUBEFACT_DEMO_' : 'NUBEFACT_PRODUCTION_';
-        $url = trim((string)($_ENV[$prefix . 'URL'] ?? ''));
-        $token = trim((string)($_ENV[$prefix . 'TOKEN'] ?? ''));
-        $serieBoleta = strtoupper(trim((string)($_ENV[$prefix . 'SERIE_BOLETA'] ?? '')));
-        $serieFactura = strtoupper(trim((string)($_ENV[$prefix . 'SERIE_FACTURA'] ?? '')));
-        $primerNumeroBoletaConfig = $_ENV[$prefix . 'NUMERO_INICIAL_BOLETA'] ?? null;
-        $primerNumeroFacturaConfig = $_ENV[$prefix . 'NUMERO_INICIAL_FACTURA'] ?? null;
+        $environment = strtolower((string)$settings['entorno_activo']);
+        if (!in_array($environment, ['demo', 'production'], true)) {
+            throw new RuntimeException('El entorno NubeFact de la sucursal no es válido.');
+        }
+        $prefix = $environment . '_';
+        $url = trim((string)($settings[$prefix . 'url'] ?? ''));
+        $token = trim((string)($settings[$prefix . 'token'] ?? ''));
+        $serieBoleta = strtoupper(trim((string)($settings[$prefix . 'serie_boleta'] ?? '')));
+        $serieFactura = strtoupper(trim((string)($settings[$prefix . 'serie_factura'] ?? '')));
+        $primerNumeroBoleta = (int)($settings[$prefix . 'numero_inicial_boleta'] ?? 0);
+        $primerNumeroFactura = (int)($settings[$prefix . 'numero_inicial_factura'] ?? 0);
 
-        if ($url === '' || $token === '' || stripos($url, 'REEMPLAZAR') !== false || stripos($token, 'REEMPLAZAR') !== false) {
-            throw new RuntimeException('Configura la ruta y el token NubeFact del entorno ' . strtoupper($environment) . ' en .env.');
+        if ($url === '' || $token === '') {
+            throw new RuntimeException('La sucursal no tiene una ruta y un token NubeFact configurados para ' . strtoupper($environment) . '.');
         }
         if (!filter_var($url, FILTER_VALIDATE_URL) || parse_url($url, PHP_URL_SCHEME) !== 'https') {
-            throw new RuntimeException($prefix . 'URL debe ser una URL HTTPS válida.');
+            throw new RuntimeException('La ruta NubeFact configurada para la sucursal no es válida.');
         }
-
         $host = strtolower((string)parse_url($url, PHP_URL_HOST));
-        $allowedHosts = $environment === 'demo'
-            ? ['demo.nubefact.com', 'api.nubefact.com']
-            : ['api.nubefact.com'];
+        $allowedHosts = $environment === 'demo' ? ['demo.nubefact.com', 'api.nubefact.com'] : ['api.nubefact.com'];
         if (!in_array($host, $allowedHosts, true)) {
-            throw new RuntimeException('La URL de NubeFact no coincide con NUBEFACT_ENV. Verifica el entorno antes de emitir.');
-        }
-        if ($environment === 'production' && ($primerNumeroBoletaConfig === null || $primerNumeroFacturaConfig === null)) {
-            throw new RuntimeException('Antes de producción configura en .env el próximo correlativo de ambas series.');
+            throw new RuntimeException('La ruta de NubeFact no corresponde al entorno configurado en esta sucursal.');
         }
         if (!preg_match('/^B[A-Z0-9]{3}$/', $serieBoleta) || !preg_match('/^F[A-Z0-9]{3}$/', $serieFactura)) {
-            throw new RuntimeException('Configura series NubeFact válidas de cuatro caracteres para boleta y factura.');
+            throw new RuntimeException('Configura series NubeFact válidas de cuatro caracteres para esta sucursal.');
         }
-        $primerNumeroBoleta = filter_var($primerNumeroBoletaConfig ?? 1, FILTER_VALIDATE_INT);
-        $primerNumeroFactura = filter_var($primerNumeroFacturaConfig ?? 1, FILTER_VALIDATE_INT);
-        if ($primerNumeroBoleta === false || $primerNumeroBoleta < 1 || $primerNumeroBoleta > 99999999
-            || $primerNumeroFactura === false || $primerNumeroFactura < 1 || $primerNumeroFactura > 99999999) {
-            throw new RuntimeException('Los números iniciales de NubeFact deben ser enteros entre 1 y 99,999,999.');
+        if ($primerNumeroBoleta < 1 || $primerNumeroBoleta > 99999999
+            || $primerNumeroFactura < 1 || $primerNumeroFactura > 99999999) {
+            throw new RuntimeException('Configura los próximos correlativos de las series de esta sucursal.');
         }
 
         return [
             'url' => $url,
             'token' => $token,
             'environment' => $environment,
+            'id_sucursal' => $idSucursal,
             'serie_boleta' => $serieBoleta,
             'serie_factura' => $serieFactura,
             'primer_numero_boleta' => $primerNumeroBoleta,
@@ -258,6 +259,7 @@ class ComprobanteElectronico
         }
 
         $sql = "SELECT p.id, p.cliente, p.fecha, p.dscto, p.tipo_dscto, p.pago,
+                       u.IDSUCURSAL AS id_sucursal,
                        c.documento AS cliente_documento,
                        c.nombres AS cliente_nombres,
                        c.apellidos AS cliente_apellidos,
@@ -434,26 +436,26 @@ class ComprobanteElectronico
         ];
     }
 
-    private function reservarNumero(int $tipo, string $serie, int $primerNumero): int
+    private function reservarNumero(int $idSucursal, int $tipo, string $serie, int $primerNumero): int
     {
         $insert = $this->conn->prepare(
-            'INSERT IGNORE INTO nubefact_secuencia (tipo_de_comprobante, serie, ultimo_numero) VALUES (:tipo, :serie, :ultimo_numero)'
+            'INSERT IGNORE INTO nubefact_secuencia_sucursal (id_sucursal, tipo_de_comprobante, serie, ultimo_numero) VALUES (:id_sucursal, :tipo, :serie, :ultimo_numero)'
         );
-        $insert->execute([':tipo' => $tipo, ':serie' => $serie, ':ultimo_numero' => $primerNumero - 1]);
+        $insert->execute([':id_sucursal' => $idSucursal, ':tipo' => $tipo, ':serie' => $serie, ':ultimo_numero' => $primerNumero - 1]);
 
         $select = $this->conn->prepare(
-            'SELECT ultimo_numero FROM nubefact_secuencia WHERE tipo_de_comprobante = :tipo AND serie = :serie FOR UPDATE'
+            'SELECT ultimo_numero FROM nubefact_secuencia_sucursal WHERE id_sucursal = :id_sucursal AND tipo_de_comprobante = :tipo AND serie = :serie FOR UPDATE'
         );
-        $select->execute([':tipo' => $tipo, ':serie' => $serie]);
+        $select->execute([':id_sucursal' => $idSucursal, ':tipo' => $tipo, ':serie' => $serie]);
         $next = (int)$select->fetchColumn() + 1;
         if ($next > 99999999) {
             throw new RuntimeException('Se agotó el correlativo configurado para la serie NubeFact.');
         }
 
         $update = $this->conn->prepare(
-            'UPDATE nubefact_secuencia SET ultimo_numero = :numero WHERE tipo_de_comprobante = :tipo AND serie = :serie'
+            'UPDATE nubefact_secuencia_sucursal SET ultimo_numero = :numero WHERE id_sucursal = :id_sucursal AND tipo_de_comprobante = :tipo AND serie = :serie'
         );
-        $update->execute([':numero' => $next, ':tipo' => $tipo, ':serie' => $serie]);
+        $update->execute([':numero' => $next, ':id_sucursal' => $idSucursal, ':tipo' => $tipo, ':serie' => $serie]);
         return $next;
     }
 

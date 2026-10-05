@@ -42,28 +42,13 @@ API_RUC_URL=https://ruc-primary.example.test/consulta?ruc=
 API_RUC_URL_2=https://ruc-fallback.example.test/consulta?ruc=
 PROMOCODE=
 
-NUBEFACT_ENV=demo
-NUBEFACT_DEMO_URL=https://api.nubefact.com/api/v1/REEMPLAZAR_RUTA_DEMO
-NUBEFACT_DEMO_TOKEN=REEMPLAZAR_TOKEN_DEMO
-NUBEFACT_DEMO_SERIE_BOLETA=BBB1
-NUBEFACT_DEMO_SERIE_FACTURA=FFF1
-NUBEFACT_DEMO_NUMERO_INICIAL_BOLETA=1
-NUBEFACT_DEMO_NUMERO_INICIAL_FACTURA=1
-
-# Producción requiere un bloque distinto:
-# NUBEFACT_PRODUCTION_URL=https://api.nubefact.com/api/v1/REEMPLAZAR_RUTA_PRODUCCION
-# NUBEFACT_PRODUCTION_TOKEN=REEMPLAZAR_TOKEN_PRODUCCION
-# NUBEFACT_PRODUCTION_SERIE_BOLETA=REEMPLAZAR_SERIE
-# NUBEFACT_PRODUCTION_SERIE_FACTURA=REEMPLAZAR_SERIE
-# NUBEFACT_PRODUCTION_NUMERO_INICIAL_BOLETA=CORRELATIVO_CONFIRMADO
-# NUBEFACT_PRODUCTION_NUMERO_INICIAL_FACTURA=CORRELATIVO_CONFIRMADO
 ```
 
 `TURNSTILE_SECRET_KEY` puede dejarse vacío en un entorno local sin validación Turnstile. En producción, configura las claves y el hostname autorizados en Cloudflare. Define `UBUNTUX_API_URL` si se usará la consulta externa del documento; `PROMOCODE` contiene los códigos promocionales habilitados según el formato que espera el backend.
 
 `API_RUC_URL` y `API_RUC_URL_2` son las URLs de consulta de RUC, en orden primario y fallback. Sustituye las direcciones de ejemplo por las URLs privadas de tus proveedores; pueden terminar en `ruc=`, incluir `{ruc}` o aceptar el número como último segmento de la ruta.
 
-Para emitir comprobantes, configura el bloque `NUBEFACT_DEMO_*` con la ruta, token, series y correlativos de pruebas. Al pasar a producción, cambia `NUBEFACT_ENV=production` y configura el bloque separado `NUBEFACT_PRODUCTION_*`; el código no reutiliza las credenciales ni los correlativos Demo. Usa las series y próximos números confirmados por NubeFact. Nunca publiques los tokens ni los guardes en JavaScript, SQL o el repositorio. Revisa `database/migration/20261003_nubefact_comprobantes.sql` y aplícala antes de habilitar la emisión.
+La integración NubeFact se configura por sucursal desde **Sucursales → Configurar facturación**. Demo y Producción guardan rutas, tokens, series y correlativos separados; el token no se devuelve a la interfaz. Para habilitar esta función, aplica `database/migration/20261003_nubefact_comprobantes.sql` y `database/migration/20261007_nubefact_por_sucursal.sql`. Confirma con NubeFact las series y próximos números de cada sucursal antes de producción; no guardes tokens en `.env`, JavaScript, SQL versionado ni el repositorio.
 
 Abre la aplicación desde el host configurado, por ejemplo:
 

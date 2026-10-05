@@ -12,7 +12,7 @@
     const addressInput = document.getElementById("facturacion-direccion");
     const message = document.getElementById("facturacion-ticket-mensaje");
     const submitButton = document.getElementById("facturacion-ticket-submit");
-    const nubefactEnvironment = document.getElementById("facturacion-ticket-modal").dataset.nubefactEnv || "demo";
+    const facturacionModal = document.getElementById("facturacion-ticket-modal");
 
     const showMessage = (text) => {
       message.textContent = text;
@@ -50,6 +50,7 @@
       abrir(row) {
         form.reset();
         showMessage("");
+        document.getElementById("facturacion-ticket-modal").dataset.nubefactEnv = row.comprobante_entorno || "no configurado";
         document.getElementById("facturacion-ticket-hash").value = md5(String(row.id));
         document.getElementById("facturacion-documento").value = row.cliente_documento || "";
         document.getElementById("facturacion-denominacion").value = row.cliente_denominacion || "";
@@ -99,9 +100,10 @@
       const data = Object.fromEntries(new FormData(form).entries());
       const tipoNombre = tipoInput.value === "1" ? "FACTURA" : "BOLETA";
       const documento = document.getElementById("facturacion-documento").value;
+      const entorno = facturacionModal.dataset.nubefactEnv || "no configurado";
       alertify.confirm(
         `Confirmar emisión de ${tipoNombre}`,
-        `Se enviará una ${tipoNombre.toLowerCase()} para el documento ${documento} al entorno ${nubefactEnvironment === "production" ? "de PRODUCCIÓN" : "de pruebas (DEMO)"} de NubeFact. El ticket solo puede tener un comprobante electrónico. ¿Deseas continuar?`,
+        `Se enviará una ${tipoNombre.toLowerCase()} para el documento ${documento} al entorno ${entorno === "production" ? "de PRODUCCIÓN" : entorno === "demo" ? "de pruebas (DEMO)" : "configurado"} de NubeFact para esta sucursal. El ticket solo puede tener un comprobante electrónico. ¿Deseas continuar?`,
         async () => {
           submitButton.disabled = true;
           showMessage("");
