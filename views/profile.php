@@ -39,6 +39,9 @@ $fechaRegistro = !empty($perfil['fecha_registro'])
   <link href="./assets/css/profile.css" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
+  <link href="./assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet">
+  <link href="./assets/libs/@simonwep/pickr/themes/nano.min.css" rel="stylesheet">
+  <link href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css" rel="stylesheet">
 </head>
 <body>
   <?php include ROOT . '/layout/init.php'; ?>
@@ -143,6 +146,9 @@ $fechaRegistro = !empty($perfil['fecha_registro'])
   <script src="./assets/js/sticky.js"></script>
   <script src="./assets/libs/simplebar/simplebar.min.js"></script>
   <script src="./assets/js/simplebar.js"></script>
+  <script src="./assets/libs/@tarekraafat/autocomplete.js/autoComplete.min.js"></script>
+  <script src="./assets/libs/@simonwep/pickr/pickr.es5.min.js"></script>
+  <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
   <script src="./assets/js/custom-switcher.min.js"></script>
   <script src="./assets/js/custom.js"></script>
 </body>

@@ -4,7 +4,12 @@
 
 .profile-cover {
   min-height: 8rem;
-  background: linear-gradient(120deg, rgb(var(--primary)) 0%, rgb(var(--primary) / 0.65) 55%, rgb(var(--primary-tint1-rgb) / 0.7) 100%);
+  background-image:
+    linear-gradient(120deg, rgb(var(--primary) / 0.25), rgb(var(--primary-tint1-rgb) / 0.2)),
+    url("../images/media/media-3.jpg"),
+    url("https://preview.sprukomarket.com/html/bootstrap/xintra/dist/assets/images/media/media-3.jpg");
+  background-position: center;
+  background-size: cover;
 }
 
 .profile-summary-body {
