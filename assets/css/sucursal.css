@@ -1,0 +1,14 @@
+#modal-sucursal {
+  z-index: 110 !important;
+}
+
+.hs-overlay-backdrop {
+  z-index: 109 !important;
+}
+
+.sucursal-modal-dialog {
+  width: min(40rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  margin: 1rem auto;
+  overflow-y: auto;
+}
