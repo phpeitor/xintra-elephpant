@@ -106,3 +106,58 @@ html {
   transform: translateY(-2px);
   filter: brightness(0.98);
 }
+
+.content p {
+  max-width: 42rem;
+  overflow-wrap: anywhere;
+}
+
+.content p span {
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.content p .public-ip {
+  text-decoration: none;
+}
+
+@media (max-width: 900px) {
+  #yetiSVG,
+  #lightSVG {
+    width: min(100vw, 600px);
+    height: auto;
+  }
+
+  .content {
+    padding: clamp(18rem, 62vw, 27rem) clamp(1.25rem, 5vw, 3rem) 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body,
+  html {
+    min-height: 100%;
+  }
+
+  #yetiSVG,
+  #lightSVG {
+    width: 100vw;
+  }
+
+  .content {
+    padding: 80vw 1.25rem 2rem;
+  }
+
+  .content h3 {
+    font-size: clamp(1.75rem, 8vw, 2.25rem);
+  }
+
+  .content p {
+    font-size: 1.05rem;
+  }
+
+  .content .btn-list {
+    margin-top: 1.25rem;
+  }
+}

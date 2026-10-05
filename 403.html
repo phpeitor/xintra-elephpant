@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
 	<meta charset="UTF-8">
+	<base href="/xintra-elephpant/">
 	<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🐘</text></svg>" />
 	<title>403 Xintra Elephant</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -324,7 +325,7 @@
 	</svg>
 	<div class="content">
 		<h3>403 Forbidden</h3>
-		<p>No tienes permiso para acceder a esta página <span>192.168.1.1</span> desde esta dirección IP.
+		<p>No tienes permiso para acceder a esta página <span id="public-ip" class="public-ip" aria-live="polite">Consultando IP…</span> desde esta dirección IP
 		</p>
 		<div class="btn-list">
 			<button type="button" class="ti-btn ti-btn-primary btn-404 !border-0 btn-wave me-0 waves-effect waves-light" onclick="window.location.href='index.php'">Inicio</button>
@@ -333,5 +334,6 @@
 	<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
 	<script src="https://unpkg.com/gsap@3/dist/MorphSVGPlugin.min.js"></script>
 	<script src="./assets/js/404.js"></script>
+	<script src="./assets/js/error-page.js" defer></script>
 </body>
 </html>
