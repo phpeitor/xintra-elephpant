@@ -1,12 +1,12 @@
 <aside class="app-sidebar" id="sidebar">
     <div class="main-sidebar-header">
         <a class="header-logo" href="index.php">
-            <img alt="logo" class="desktop-logo" src="./assets/images/brand-logos/desktop-logo.png" />
-            <img alt="logo" class="toggle-dark" src="./assets/images/brand-logos/toggle-dark.png" />
-            <img alt="logo" class="desktop-dark" src="./assets/images/brand-logos/desktop-dark.png" />
-            <img alt="logo" class="toggle-logo" src="./assets/images/brand-logos/toggle-logo.png" />
-            <img alt="logo" class="toggle-white" src="./assets/images/brand-logos/toggle-white.png" />
-            <img alt="logo" class="desktop-white" src="./assets/images/brand-logos/desktop-white.png" />
+            <img alt="Xintra PHPeitor" class="desktop-logo" src="./assets/resources/phpeitor.svg" />
+            <img alt="Xintra PHPeitor" class="toggle-dark" src="./assets/resources/phpeitor-light.svg" />
+            <img alt="Xintra PHPeitor" class="desktop-dark" src="./assets/resources/phpeitor-light.svg" />
+            <img alt="Xintra PHPeitor" class="toggle-logo" src="./assets/resources/phpeitor-light.svg" />
+            <img alt="Xintra PHPeitor" class="toggle-white" src="./assets/resources/phpeitor-light.svg" />
+            <img alt="Xintra PHPeitor" class="desktop-white" src="./assets/resources/phpeitor-light.svg" />
         </a>
     </div>
     <div class="main-sidebar" data-simplebar="init" id="sidebar-scroll">
