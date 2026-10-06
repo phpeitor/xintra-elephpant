@@ -11,17 +11,14 @@ if (!$perfil) {
 
 $escapar = static fn($valor): string => htmlspecialchars((string)($valor ?? ''), ENT_QUOTES, 'UTF-8');
 $nombreCompleto = trim((string)($perfil['nombres'] ?? '') . ' ' . (string)($perfil['apellidos'] ?? ''));
-$sexo = match ((int)($perfil['sexo'] ?? -1)) {
+$sexoTextoPerfil = match ((int)($perfil['sexo'] ?? -1)) {
     1 => 'Masculino',
     2 => 'Femenino',
     0 => 'Otro',
     default => 'No registrado',
 };
+$fotoPerfil = (int)($perfil['sexo'] ?? 0) === 2 ? '6.jpg' : '15.jpg';
 $estado = (int)($perfil['estado'] ?? 0) === 1 ? 'Activo' : 'Inactivo';
-$ubicacion = trim(implode(' · ', array_filter([
-    trim((string)($perfil['distrito'] ?? '')),
-    trim((string)($perfil['departamento'] ?? '')),
-])));
 $fechaRegistro = !empty($perfil['fecha_registro'])
     ? (new DateTimeImmutable((string)$perfil['fecha_registro']))->format('d/m/Y')
     : 'No registrada';
@@ -42,6 +39,8 @@ $fechaRegistro = !empty($perfil['fecha_registro'])
   <link href="./assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet">
   <link href="./assets/libs/@simonwep/pickr/themes/nano.min.css" rel="stylesheet">
   <link href="./assets/libs/@tarekraafat/autocomplete.js/css/autoComplete.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
 </head>
 <body>
   <?php include ROOT . '/layout/init.php'; ?>
@@ -70,7 +69,7 @@ $fechaRegistro = !empty($perfil['fecha_registro'])
             <div class="profile-cover"></div>
             <div class="box-body profile-summary-body">
               <div class="flex flex-col sm:flex-row sm:items-end gap-4">
-                <img src="./assets/images/faces/15.jpg" alt="Foto de perfil" class="avatar avatar-xxl profile-avatar">
+                <img src="./assets/images/faces/<?= $escapar($fotoPerfil) ?>" alt="Foto de perfil" class="avatar avatar-xxl profile-avatar">
                 <div class="flex-auto min-w-0">
                   <div class="flex flex-wrap items-center gap-2">
                     <h2 id="profile-name" class="text-xl font-semibold mb-0"><?= $escapar($nombreCompleto ?: $perfil['usuario']) ?></h2>
@@ -100,12 +99,8 @@ $fechaRegistro = !empty($perfil['fecha_registro'])
                     <div><p class="profile-detail-label">Teléfono</p><p class="profile-detail-value"><?= $escapar($perfil['telefono'] ?: 'No registrado') ?></p></div>
                   </div>
                   <div class="profile-detail-row">
-                    <span class="profile-detail-icon"><i class="ri-smartphone-line" aria-hidden="true"></i></span>
-                    <div><p class="profile-detail-label">Celular</p><p class="profile-detail-value"><?= $escapar($perfil['celular'] ?: 'No registrado') ?></p></div>
-                  </div>
-                  <div class="profile-detail-row">
-                    <span class="profile-detail-icon"><i class="ri-map-pin-line" aria-hidden="true"></i></span>
-                    <div class="min-w-0"><p class="profile-detail-label">Dirección</p><p class="profile-detail-value"><?= $escapar($perfil['direccion'] ?: 'No registrada') ?></p><p class="profile-detail-caption"><?= $escapar($ubicacion ?: 'Ubicación no registrada') ?></p></div>
+                    <span class="profile-detail-icon"><i class="ri-global-line" aria-hidden="true"></i></span>
+                    <div><p class="profile-detail-label">IP pública</p><p id="public-ip" class="profile-detail-value break-all" aria-live="polite">Consultando IP…</p></div>
                   </div>
                 </div>
               </div>
@@ -119,13 +114,11 @@ $fechaRegistro = !empty($perfil['fecha_registro'])
                     <div class="profile-info-card"><dt>Nombres</dt><dd><?= $escapar($perfil['nombres'] ?: 'No registrados') ?></dd></div>
                     <div class="profile-info-card"><dt>Apellidos</dt><dd><?= $escapar($perfil['apellidos'] ?: 'No registrados') ?></dd></div>
                     <div class="profile-info-card"><dt>Documento</dt><dd><?= $escapar($perfil['documento'] ?: 'No registrado') ?></dd></div>
-                    <div class="profile-info-card"><dt>Sexo</dt><dd><?= $escapar($sexo) ?></dd></div>
-                    <div class="profile-info-card"><dt>Fecha de nacimiento</dt><dd><?= $escapar($perfil['fecha_nacimiento'] ?: 'No registrada') ?></dd></div>
+                    <div class="profile-info-card"><dt>Sexo</dt><dd><?= $escapar($sexoTextoPerfil) ?></dd></div>
                     <div class="profile-info-card"><dt>Cargo</dt><dd><?= $escapar($perfil['cargo'] ?: 'No registrado') ?></dd></div>
                     <div class="profile-info-card"><dt>Sucursal</dt><dd><?= $escapar($perfil['sucursal'] ?: 'Sucursal no asignada') ?></dd></div>
                     <div class="profile-info-card"><dt>Miembro desde</dt><dd><?= $escapar($fechaRegistro) ?></dd></div>
-                    <div class="profile-info-card"><dt>ID de usuario</dt><dd>#<?= (int)$perfil['id'] ?></dd></div>
-                    <div class="profile-info-card"><dt>Usuario</dt><dd><?= $escapar($perfil['usuario']) ?></dd></div>
+                    <div class="profile-info-card"><dt>ID </dt><dd>#<?= (int)$perfil['id'] ?></dd></div>
                   </dl>
                 </div>
               </div>
@@ -151,5 +144,7 @@ $fechaRegistro = !empty($perfil['fecha_registro'])
   <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
   <script src="./assets/js/custom-switcher.min.js"></script>
   <script src="./assets/js/custom.js"></script>
+  <script src="./assets/js/public-ip.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
 </body>
 </html>
