@@ -175,7 +175,6 @@ require_once ROOT . '/controller/check_session.php';
           </div>
           <form id="form-nubefact-sucursal" class="p-4 space-y-4">
             <input type="hidden" id="nubefact-id-sucursal" name="id_sucursal">
-            <input type="hidden" id="nubefact-id-sucursal" name="id_sucursal">
             <div class="space-y-2">
               <label for="nubefact-entorno-activo" class="ti-form-label">Entorno que se usará al emitir</label>
               <select id="nubefact-entorno-activo" name="entorno_activo" class="ti-form-select rounded-sm">
