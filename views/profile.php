@@ -34,6 +34,7 @@ $fechaRegistro = !empty($perfil['fecha_registro'])
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
   <link href="./assets/css/profile.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
   <link href="./assets/libs/flatpickr/flatpickr.min.css" rel="stylesheet">
@@ -124,6 +125,24 @@ $fechaRegistro = !empty($perfil['fecha_registro'])
               </div>
             </section>
           </div>
+
+          <section class="box mt-6" aria-labelledby="profile-location-title">
+            <div class="box-header"><h3 id="profile-location-title" class="box-title">Ubicación aproximada de la IP</h3></div>
+            <div class="box-body grid grid-cols-12 gap-6">
+              <div class="col-span-12 xl:col-span-8">
+                <div id="profile-location-map" class="profile-location-map" role="application" aria-label="Mapa de ubicación aproximada"></div>
+                <p id="profile-map-status" class="text-textmuted text-sm mt-3" role="status">Consultando ubicación…</p>
+              </div>
+              <dl class="profile-location-details col-span-12 xl:col-span-4">
+                <div><dt>País</dt><dd id="profile-location-country">—</dd></div>
+                <div><dt>Región</dt><dd id="profile-location-region">—</dd></div>
+                <div><dt>Ciudad</dt><dd id="profile-location-city">—</dd></div>
+                <div><dt>Zona horaria</dt><dd id="profile-location-timezone">—</dd></div>
+                <div><dt>Proveedor de Internet</dt><dd id="profile-location-isp">—</dd></div>
+                <div><dt>Coordenadas</dt><dd id="profile-location-coordinates">—</dd></div>
+              </dl>
+            </div>
+          </section>
         <?php endif; ?>
       </div>
     </main>
@@ -144,7 +163,8 @@ $fechaRegistro = !empty($perfil['fecha_registro'])
   <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
   <script src="./assets/js/custom-switcher.min.js"></script>
   <script src="./assets/js/custom.js"></script>
-  <script src="./assets/js/public-ip.js" defer></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="./assets/js/profile-map.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
 </body>
 </html>
