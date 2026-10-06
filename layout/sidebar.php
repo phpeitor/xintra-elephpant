@@ -2,10 +2,10 @@
     <div class="main-sidebar-header">
         <a class="header-logo" href="index.php">
             <img alt="Xintra PHPeitor" class="desktop-logo" src="./assets/resources/phpeitor.svg" />
-            <img alt="Xintra PHPeitor" class="toggle-dark" src="./assets/resources/phpeitor-light.svg" />
+            <img alt="Xintra" class="toggle-dark" src="./assets/images/brand-logos/toggle-logo.png" />
             <img alt="Xintra PHPeitor" class="desktop-dark" src="./assets/resources/phpeitor-light.svg" />
-            <img alt="Xintra PHPeitor" class="toggle-logo" src="./assets/resources/phpeitor-light.svg" />
-            <img alt="Xintra PHPeitor" class="toggle-white" src="./assets/resources/phpeitor-light.svg" />
+            <img alt="Xintra" class="toggle-logo" src="./assets/images/brand-logos/toggle-logo.png" />
+            <img alt="Xintra" class="toggle-white" src="./assets/images/brand-logos/toggle-logo.png" />
             <img alt="Xintra PHPeitor" class="desktop-white" src="./assets/resources/phpeitor-light.svg" />
         </a>
     </div>

@@ -49982,6 +49982,30 @@ select.tabulator-page-size option:is(.dark *){
   height: 1.7rem;
   line-height: 1.7rem;
 }
+.app-sidebar .main-sidebar-header .header-logo{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0 1rem;
+}
+.app-sidebar .main-sidebar-header .header-logo img.desktop-logo,
+.app-sidebar .main-sidebar-header .header-logo img.desktop-dark,
+.app-sidebar .main-sidebar-header .header-logo img.desktop-white{
+  width: 100%;
+  height: auto;
+  max-height: 3.8rem;
+  object-fit: contain;
+}
+.app-sidebar .main-sidebar-header .header-logo img.toggle-dark,
+.app-sidebar .main-sidebar-header .header-logo img.toggle-logo,
+.app-sidebar .main-sidebar-header .header-logo img.toggle-white{
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+}
 .app-sidebar .main-sidebar-header .header-logo .desktop-logo{
   display: block;
 }
