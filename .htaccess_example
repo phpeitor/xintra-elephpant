@@ -1,0 +1,35 @@
+# Habilita reescritura para servir vistas desde /views
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Documento 404 personalizado
+    ErrorDocument 404 /404.html
+    ErrorDocument 403 /403.html
+
+    # Evita listados de directorio; si alguien entra a una carpeta, Apache responde sin index.
+    Options -Indexes
+
+    # Sirve archivos y directorios reales sin tocar.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Canoniza accesos directos a /views/*.php hacia la raíz solo si el usuario
+    # pidió esa URL directamente, para evitar bucles con reescrituras internas.
+    RewriteCond %{THE_REQUEST} \s/+views/([^\s?]+\.php)[\s?]
+    RewriteRule ^views/([^/]+\.php)$ /$1 [R=302,L]
+
+    # Compatibilidad: si alguien pide /archivo.php y no existe en la raíz,
+    # servimos la vista movida dentro de /views.
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^([^/]+\.php)$ /views/$1 [L]
+</IfModule>
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# Set the “ea-php82” package as the default “PHP” programming language.
+<IfModule mime_module>
+  AddHandler application/x-httpd-ea-php82___lsphp .php .php8 .phtml
+</IfModule>
+# php -- END cPanel-generated handler, do not edit
