@@ -1,0 +1,57 @@
+#modal-compra,
+#modal-detalle-compra {
+  z-index: 110 !important;
+}
+
+.hs-overlay-backdrop {
+  z-index: 109 !important;
+}
+
+.compra-modal-dialog {
+  width: min(70rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  max-height: calc(100dvh - 2rem);
+  margin: 1rem auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.compra-detail-dialog {
+  width: min(58rem, calc(100vw - 2rem));
+}
+
+.compra-lines-table th,
+.compra-lines-table td {
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid rgb(226 232 240 / 0.8);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.compra-lines-table th {
+  color: #64748b;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.035em;
+}
+
+.compra-line-product {
+  min-width: 15rem;
+}
+
+.compra-line-number {
+  min-width: 6.5rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #modal-compra:not(.hidden) .compra-modal-dialog,
+  #modal-detalle-compra:not(.hidden) .compra-modal-dialog {
+    animation: compra-modal-enter 220ms ease-out both;
+  }
+}
+
+@keyframes compra-modal-enter {
+  from { opacity: 0; transform: translate3d(0, -0.65rem, 0) scale(0.99); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
