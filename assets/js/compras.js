@@ -10,6 +10,7 @@
     const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
     }[character]));
+    const tooltip = (text) => window.XintraTooltip?.attr(text) || `aria-label="${escapeHtml(text)}"`;
     if (!element) return;
 
     const table = new Tabulator(element, {
@@ -34,19 +35,63 @@
         { title: "Total", field: "total", sorter: "number", hozAlign: "right", width: 145,
           formatter: (cell) => `<strong>${money.format(Number(cell.getValue()) || 0)}</strong>` },
         { title: "Estado", field: "estado", width: 180,
-          formatter: (cell) => cell.getValue() === "ANULADA"
-            ? '<span class="compra-status-pill is-cancelled"><i class="ri-close-circle-line" aria-hidden="true"></i>Anulada</span>'
-            : '<span class="compra-status-pill is-pending"><i class="ri-time-line" aria-hidden="true"></i>Pendiente de recepción</span>' },
-        { title: "Acción", field: "acciones", width: 125, hozAlign: "right", headerSort: false,
-          formatter: (cell) => `<a class="ti-btn ti-btn-light ti-btn-sm" href="detalle_compra.php?id=${Number(cell.getRow().getData().id)}">Ver detalle<i class="ri-arrow-right-line ms-1" aria-hidden="true"></i></a>` },
+          formatter: (cell) => cell.getValue() === "RECIBIDA"
+            ? '<span class="compra-status-pill is-received"><i class="ri-checkbox-circle-line" aria-hidden="true"></i>Recibida</span>'
+            : cell.getValue() === "ANULADA"
+              ? '<span class="compra-status-pill is-cancelled"><i class="ri-close-circle-line" aria-hidden="true"></i>Anulada</span>'
+              : '<span class="compra-status-pill is-pending"><i class="ri-time-line" aria-hidden="true"></i>Pendiente de recepción</span>' },
+        { title: "Acciones", field: "acciones", width: 210, hozAlign: "right", headerSort: false,
+          formatter: (cell) => {
+            const row = cell.getRow().getData();
+            const receiveButton = row.estado === "PENDIENTE"
+              ? `<button type="button" class="btn-recibir-compra ti-btn ti-btn-success ti-btn-sm" data-id="${Number(row.id)}" ${tooltip("Confirmar recepción e ingresar stock")} aria-label="Recibir compra"><i class="ri-inbox-archive-line me-1" aria-hidden="true"></i>Recibir</button>`
+              : "";
+            return `<div class="flex items-center justify-end gap-2 flex-wrap">${receiveButton}<a class="ti-btn ti-btn-light ti-btn-sm" href="detalle_compra.php?id=${Number(row.id)}">Detalle<i class="ri-arrow-right-line ms-1" aria-hidden="true"></i></a></div>`;
+          },
+          cellClick: (event, cell) => {
+            const button = event.target.closest(".btn-recibir-compra");
+            if (!button) return;
+            const row = cell.getRow().getData();
+            let resolved = false;
+            alertify.confirm(
+              "Confirmar recepción de compra",
+              `Se ingresarán al inventario las cantidades de ${row.proveedor}. Esta acción no debe repetirse. ¿Continuar?`,
+              async () => {
+                if (resolved) return;
+                resolved = true;
+                button.disabled = true;
+                try {
+                  const response = await fetch("controller/recibir_compra.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
+                    body: new URLSearchParams({ id: String(row.id) }),
+                  });
+                  const result = await response.json();
+                  if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo recibir la compra.");
+                  alertify.success(result.message);
+                  await table.replaceData();
+                  filterRows();
+                } catch (error) {
+                  alertify.error(error.message || "No se pudo recibir la compra.");
+                  button.disabled = false;
+                }
+              },
+              () => {
+                resolved = true;
+                alertify.message("Recepción cancelada. No se modificó el inventario.");
+              }
+            ).set("labels", { ok: "Confirmar recepción", cancel: "Volver" });
+          } },
       ],
     });
 
     const updateSummary = (rows) => {
       const pending = rows.filter((row) => row.estado === "PENDIENTE");
+      const received = rows.filter((row) => row.estado === "RECIBIDA");
       const total = rows.reduce((sum, row) => sum + (Number(row.total) || 0), 0);
       document.getElementById("compra-kpi-total").textContent = String(rows.length);
       document.getElementById("compra-kpi-pendientes").textContent = String(pending.length);
+      document.getElementById("compra-kpi-recibidas").textContent = String(received.length);
       document.getElementById("compra-kpi-monto").textContent = money.format(total);
     };
     const filterRows = () => {
@@ -60,6 +105,9 @@
     };
 
     table.on("dataLoaded", updateSummary);
+    const initTooltips = () => window.XintraTooltip?.init(element);
+    table.on("tableBuilt", initTooltips);
+    table.on("renderComplete", initTooltips);
     table.on("dataLoadError", () => {
       const error = document.getElementById("compras-error");
       error.textContent = "No se pudo cargar el historial. Verifica que las migraciones de proveedores y compras estén aplicadas.";

@@ -12,10 +12,14 @@ require_once ROOT . '/controller/check_session.php';
   <title>Compras | Xintra Elephpant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
-  <link href="./assets/css/compras.css?v=7" rel="stylesheet">
+  <link href="./assets/css/compras.css?v=9" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
 </head>
 <body>
   <?php include ROOT . '/layout/init.php'; ?>
@@ -37,7 +41,7 @@ require_once ROOT . '/controller/check_session.php';
           <article class="box compra-kpi-card"><div class="box-body flex items-center gap-3"><span class="compra-kpi-icon bg-primary/10 text-primary"><i class="ri-file-list-3-line" aria-hidden="true"></i></span><div><p class="text-xs text-textmuted">Documentos registrados</p><strong id="compra-kpi-total" class="text-xl">0</strong></div></div></article>
           <article class="box compra-kpi-card"><div class="box-body flex items-center gap-3"><span class="compra-kpi-icon bg-warning/10 text-warning"><i class="ri-time-line" aria-hidden="true"></i></span><div><p class="text-xs text-textmuted">Pendientes de recepción</p><strong id="compra-kpi-pendientes" class="text-xl">0</strong></div></div></article>
           <article class="box compra-kpi-card"><div class="box-body flex items-center gap-3"><span class="compra-kpi-icon bg-success/10 text-success"><i class="ri-money-dollar-circle-line" aria-hidden="true"></i></span><div><p class="text-xs text-textmuted">Total registrado</p><strong id="compra-kpi-monto" class="text-xl">S/ 0.00</strong></div></div></article>
-          <article class="box compra-kpi-card"><div class="box-body flex items-center gap-3"><span class="compra-kpi-icon bg-info/10 text-info"><i class="ri-store-2-line" aria-hidden="true"></i></span><div><p class="text-xs text-textmuted">Proveedores activos</p><a href="proveedores.php" class="text-sm font-semibold text-info">Administrar proveedores <i class="ri-arrow-right-up-line" aria-hidden="true"></i></a></div></div></article>
+          <article class="box compra-kpi-card"><div class="box-body flex items-center gap-3"><span class="compra-kpi-icon bg-success/10 text-success"><i class="ri-checkbox-circle-line" aria-hidden="true"></i></span><div><p class="text-xs text-textmuted">Recepcionadas</p><strong id="compra-kpi-recibidas" class="text-xl">0</strong></div></div></article>
         </div>
 
         <section class="box" aria-labelledby="compras-heading">
@@ -54,6 +58,7 @@ require_once ROOT . '/controller/check_session.php';
               <select id="compras-estado-filter" class="ti-form-select rounded-sm sm:max-w-56" aria-label="Filtrar por estado">
                 <option value="">Todos los estados</option>
                 <option value="PENDIENTE">Pendiente de recepción</option>
+                <option value="RECIBIDA">Recibida</option>
                 <option value="ANULADA">Anulada</option>
               </select>
             </div>
@@ -61,7 +66,7 @@ require_once ROOT . '/controller/check_session.php';
             <div class="overflow-x-auto table-bordered rounded-lg">
               <div id="tabla-compras" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid"></div>
             </div>
-            <div class="mt-3 flex items-center gap-2 text-xs text-textmuted"><i class="ri-information-line text-info" aria-hidden="true"></i>Las compras registradas quedan pendientes y no modifican el inventario todavía.</div>
+            <div class="mt-3 flex items-center gap-2 text-xs text-textmuted"><i class="ri-information-line text-info" aria-hidden="true"></i>Solo al confirmar la recepción se registra la entrada de stock.</div>
           </div>
         </section>
       </div>
@@ -78,6 +83,8 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/libs/simplebar/simplebar.min.js"></script>
   <script src="./assets/js/simplebar.js"></script>
   <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
-  <script src="./assets/js/compras.js?v=2"></script>
+  <script src="./assets/js/xintra-tooltip.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+  <script src="./assets/js/compras.js?v=4"></script>
 </body>
 </html>

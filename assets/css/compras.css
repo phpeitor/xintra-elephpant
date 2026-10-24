@@ -161,6 +161,11 @@
   background: #fef9c3;
 }
 
+.compra-status-pill.is-received {
+  color: #15803d;
+  background: #dcfce7;
+}
+
 .compra-status-pill.is-cancelled {
   color: #b91c1c;
   background: #fee2e2;

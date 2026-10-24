@@ -36,7 +36,7 @@ class Compra
     {
         $stmt = $this->conn->query(
             'SELECT c.id, c.tipo_comprobante, c.serie, c.numero, c.fecha, c.moneda,
-                    c.subtotal, c.igv, c.total, c.estado, c.fecha_registro,
+                    c.subtotal, c.igv, c.total, c.estado, c.fecha_registro, c.fecha_recepcion,
                     p.razon_social AS proveedor, p.tipo_documento, p.documento
              FROM compra c
              INNER JOIN proveedor p ON p.id = c.id_proveedor AND p.id_sucursal = c.id_sucursal
@@ -51,9 +51,12 @@ class Compra
         $header = $this->conn->prepare(
             'SELECT c.id, c.id_proveedor, c.tipo_comprobante, c.serie, c.numero, c.fecha,
                     c.moneda, c.subtotal, c.igv, c.total, c.estado, c.observaciones,
-                    c.fecha_registro, p.razon_social AS proveedor, p.tipo_documento, p.documento
+                    c.recibido_por, c.fecha_recepcion, c.fecha_registro,
+                    p.razon_social AS proveedor, p.tipo_documento, p.documento,
+                    TRIM(CONCAT_WS(\' \', r.NOMBRES, r.APELLIDOS)) AS recibido_por_nombre
              FROM compra c
              INNER JOIN proveedor p ON p.id = c.id_proveedor AND p.id_sucursal = c.id_sucursal
+             LEFT JOIN personal r ON r.IDPERSONAL = c.recibido_por AND r.IDSUCURSAL = c.id_sucursal
              WHERE c.id = :id AND c.id_sucursal = @id_sucursal
              LIMIT 1'
         );
@@ -71,6 +74,99 @@ class Compra
         $details->execute([':id' => $id]);
         $purchase['items'] = $details->fetchAll(PDO::FETCH_ASSOC);
         return $purchase;
+    }
+
+    public function recibir(int $idCompra, int $idUsuario, string $nombreUsuario): array
+    {
+        $this->conn->beginTransaction();
+        try {
+            $purchaseStmt = $this->conn->prepare(
+                'SELECT estado FROM compra
+                 WHERE id = :id AND id_sucursal = @id_sucursal
+                 LIMIT 1 FOR UPDATE'
+            );
+            $purchaseStmt->execute([':id' => $idCompra]);
+            $estado = $purchaseStmt->fetchColumn();
+            if ($estado === false) {
+                throw new RuntimeException('Compra no encontrada en la sucursal actual.');
+            }
+            if ($estado === 'RECIBIDA') {
+                $this->conn->commit();
+                return ['ya_recibida' => true];
+            }
+            if ($estado !== 'PENDIENTE') {
+                throw new InvalidArgumentException('Solo se pueden recibir compras pendientes.');
+            }
+
+            $userStmt = $this->conn->prepare('SELECT 1 FROM personal WHERE IDPERSONAL = :id AND IDSUCURSAL = @id_sucursal LIMIT 1');
+            $userStmt->execute([':id' => $idUsuario]);
+            if (!$userStmt->fetchColumn()) {
+                throw new RuntimeException('El usuario no pertenece a la sucursal actual.');
+            }
+
+            $detailsStmt = $this->conn->prepare(
+                "SELECT d.id_productservice, d.cantidad
+                 FROM compra_detalle d
+                 INNER JOIN product_service p
+                    ON p.id = d.id_productservice
+                   AND p.id_sucursal = d.id_sucursal
+                   AND p.estado = 1
+                 INNER JOIN categoria cat
+                    ON cat.id = p.categoria
+                   AND cat.id_sucursal = p.id_sucursal
+                   AND UPPER(cat.tpo) = 'PRODUCTO'
+                 WHERE d.id_compra = :id_compra
+                   AND d.id_sucursal = @id_sucursal
+                 ORDER BY d.id
+                 FOR UPDATE"
+            );
+            $detailsStmt->execute([':id_compra' => $idCompra]);
+            $lines = $detailsStmt->fetchAll(PDO::FETCH_ASSOC);
+            $countStmt = $this->conn->prepare('SELECT COUNT(1) FROM compra_detalle WHERE id_compra = :id_compra AND id_sucursal = @id_sucursal');
+            $countStmt->execute([':id_compra' => $idCompra]);
+            $detailsCount = (int)$countStmt->fetchColumn();
+            if ($detailsCount < 1 || count($lines) !== $detailsCount) {
+                throw new RuntimeException('No se pueden recibir todos los productos: alguno ya no está activo como producto de inventario. Reactívalo y vuelve a intentar.');
+            }
+
+            $stockExists = $this->conn->prepare('SELECT id FROM stock_black WHERE id_compra = :id_compra LIMIT 1 FOR UPDATE');
+            $stockExists->execute([':id_compra' => $idCompra]);
+            if ($stockExists->fetchColumn()) {
+                throw new RuntimeException('Ya existen movimientos vinculados a esta compra; no se duplicó la recepción.');
+            }
+
+            $insertStock = $this->conn->prepare(
+                "INSERT INTO stock_black (id_product, id_pedido, id_compra, tipo, stock, fecha, user)
+                 VALUES (:producto, 0, :compra, 'E', :cantidad, :fecha, :usuario)"
+            );
+            foreach ($lines as $line) {
+                $insertStock->execute([
+                    ':producto' => (int)$line['id_productservice'],
+                    ':compra' => $idCompra,
+                    ':cantidad' => (int)$line['cantidad'],
+                    ':fecha' => $this->nowLima,
+                    ':usuario' => mb_substr($nombreUsuario, 0, 100),
+                ]);
+            }
+
+            $update = $this->conn->prepare(
+                "UPDATE compra
+                 SET estado = 'RECIBIDA', recibido_por = :usuario, fecha_recepcion = :fecha
+                 WHERE id = :id AND id_sucursal = @id_sucursal AND estado = 'PENDIENTE'"
+            );
+            $update->execute([':usuario' => $idUsuario, ':fecha' => $this->nowLima, ':id' => $idCompra]);
+            if ($update->rowCount() !== 1) {
+                throw new RuntimeException('No se pudo completar el cambio de estado de la compra.');
+            }
+
+            $this->conn->commit();
+            return ['ya_recibida' => false, 'productos_recibidos' => count($lines)];
+        } catch (Throwable $e) {
+            if ($this->conn->inTransaction()) {
+                $this->conn->rollBack();
+            }
+            throw $e;
+        }
     }
 
     public function guardar(array $input, int $idUsuario): int

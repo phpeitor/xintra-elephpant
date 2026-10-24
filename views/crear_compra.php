@@ -12,7 +12,7 @@ require_once ROOT . '/controller/check_session.php';
   <title>Nueva compra | Xintra Elephpant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
-  <link href="./assets/css/compras.css?v=7" rel="stylesheet">
+  <link href="./assets/css/compras.css?v=9" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
@@ -112,7 +112,7 @@ require_once ROOT . '/controller/check_session.php';
                 <p id="compra-form-error" class="hidden rounded-lg border border-danger/20 bg-danger/5 p-3 text-sm text-danger" role="alert"></p>
                 <div class="grid grid-cols-2 gap-2 pt-2">
                   <a href="compras.php" class="ti-btn ti-btn-light justify-center">Cancelar</a>
-                  <button id="btnGuardarCompra" type="submit" class="ti-btn ti-btn-primary justify-center"><i class="ri-save-line me-1" aria-hidden="true"></i>Registrar compra</button>
+                  <button id="btnGuardarCompra" type="submit" class="ti-btn ti-btn-primary justify-center"><i class="ri-save-line me-1" aria-hidden="true"></i>Registrar</button>
                 </div>
               </div>
             </div>
@@ -133,6 +133,7 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/js/simplebar.js"></script>
   <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
   <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script src="./assets/js/xintra-tooltip.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
   <script src="./assets/js/crear_compra.js?v=2"></script>
 </body>

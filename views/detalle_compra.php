@@ -21,9 +21,11 @@ if (!$compra) {
   <title><?= $compra ? 'Compra ' . $esc($compra['serie'] . '-' . $compra['numero']) : 'Compra no encontrada' ?> | Xintra Elephpant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
-  <link href="./assets/css/compras.css?v=7" rel="stylesheet">
+  <link href="./assets/css/compras.css?v=9" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
 </head>
 <body>
   <?php include ROOT . '/layout/init.php'; ?>
@@ -40,6 +42,7 @@ if (!$compra) {
           </div>
           <div class="flex gap-2">
             <a href="compras.php" class="ti-btn ti-btn-light"><i class="ri-arrow-left-line me-1" aria-hidden="true"></i>Historial</a>
+            <?php if ($compra && $compra['estado'] === 'PENDIENTE'): ?><button id="btnConfirmarRecepcion" data-id="<?= (int)$compra['id'] ?>" type="button" class="ti-btn ti-btn-success"><i class="ri-inbox-archive-line me-1" aria-hidden="true"></i>Confirmar recepción</button><?php endif; ?>
             <?php if ($compra): ?><button id="btnImprimirCompra" type="button" class="ti-btn ti-btn-primary !border-0"><i class="ri-printer-line me-1" aria-hidden="true"></i>Imprimir</button><?php endif; ?>
           </div>
         </div>
@@ -57,7 +60,7 @@ if (!$compra) {
                   <p class="text-sm text-textmuted mt-1">Emitido el <?= $esc($compra['fecha']) ?></p>
                 </div>
               </div>
-              <span class="badge <?= $compra['estado'] === 'ANULADA' ? 'bg-danger' : 'bg-warning text-dark' ?>"><i class="<?= $compra['estado'] === 'ANULADA' ? 'ri-close-circle-line' : 'ri-time-line' ?> me-1" aria-hidden="true"></i><?= $compra['estado'] === 'ANULADA' ? 'Anulada' : 'Pendiente de ingreso' ?></span>
+              <span class="badge <?= $compra['estado'] === 'ANULADA' ? 'bg-danger' : ($compra['estado'] === 'RECIBIDA' ? 'bg-success' : 'bg-warning text-dark') ?>"><i class="<?= $compra['estado'] === 'ANULADA' ? 'ri-close-circle-line' : ($compra['estado'] === 'RECIBIDA' ? 'ri-checkbox-circle-line' : 'ri-time-line') ?> me-1" aria-hidden="true"></i><?= $compra['estado'] === 'ANULADA' ? 'Anulada' : ($compra['estado'] === 'RECIBIDA' ? 'Recibida' : 'Pendiente de ingreso') ?></span>
             </div>
             <div class="box-body">
               <div class="grid md:grid-cols-2 gap-4 mb-6">
@@ -68,8 +71,16 @@ if (!$compra) {
                 </div>
                 <div class="rounded-xl border border-defaultborder dark:border-white/10 p-4">
                   <p class="text-xs font-semibold uppercase tracking-wide text-textmuted mb-2">Estado de recepción</p>
-                  <p class="font-medium"><?= $compra['estado'] === 'ANULADA' ? 'Esta compra está anulada.' : 'Pendiente de ingreso al inventario.' ?></p>
-                  <p class="text-xs text-textmuted mt-1">El registro por sí solo no modifica las existencias.</p>
+                  <?php if ($compra['estado'] === 'RECIBIDA'): ?>
+                    <p class="font-medium">Recepcionada el <?= $esc($compra['fecha_recepcion']) ?></p>
+                    <p class="text-xs text-textmuted mt-1">Confirmada por <?= $esc($compra['recibido_por_nombre'] ?: 'usuario') ?>. El movimiento de entrada ya está registrado.</p>
+                  <?php elseif ($compra['estado'] === 'ANULADA'): ?>
+                    <p class="font-medium">Esta compra está anulada.</p>
+                    <p class="text-xs text-textmuted mt-1">No se permite ingresarla al inventario.</p>
+                  <?php else: ?>
+                    <p class="font-medium">Pendiente de ingreso al inventario.</p>
+                    <p class="text-xs text-textmuted mt-1">Confirma la recepción solo cuando los productos hayan llegado.</p>
+                  <?php endif; ?>
                 </div>
               </div>
 
@@ -118,6 +129,7 @@ if (!$compra) {
   <script src="./assets/js/sticky.js"></script>
   <script src="./assets/libs/simplebar/simplebar.min.js"></script>
   <script src="./assets/js/simplebar.js"></script>
-  <script src="./assets/js/detalle_compra.js?v=1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
+  <script src="./assets/js/detalle_compra.js?v=3"></script>
 </body>
 </html>
