@@ -9,12 +9,12 @@ try {
         echo json_encode(['ok' => false, 'message' => 'Método no permitido.'], JSON_UNESCAPED_UNICODE);
         exit;
     }
-    $id = filter_var($_POST['id'] ?? null, FILTER_VALIDATE_INT);
-    if ($id === false || $id < 1) {
-        throw new InvalidArgumentException('ID de compra inválido.');
+    $hash = trim((string)($_POST['hash'] ?? ''));
+    if (!preg_match('/^[a-f0-9]{32}$/i', $hash)) {
+        throw new InvalidArgumentException('Identificador de compra inválido.');
     }
-    $result = (new Compra())->recibir(
-        (int)$id,
+    $result = (new Compra())->recibirPorHash(
+        $hash,
         (int)($_SESSION['session_id'] ?? 0),
         (string)($_SESSION['session_usuario'] ?? 'usuario')
     );

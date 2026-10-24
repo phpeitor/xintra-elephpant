@@ -10,7 +10,7 @@ try {
         exit;
     }
     $id = (new Compra())->guardar($_POST, (int)($_SESSION['session_id'] ?? 0));
-    echo json_encode(['ok' => true, 'id' => $id, 'message' => 'Compra registrada como pendiente de ingreso a inventario.'], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['ok' => true, 'hash' => md5((string)$id), 'message' => 'Compra registrada como pendiente de ingreso a inventario.'], JSON_UNESCAPED_UNICODE);
 } catch (InvalidArgumentException $e) {
     http_response_code(422);
     echo json_encode(['ok' => false, 'message' => $e->getMessage()], JSON_UNESCAPED_UNICODE);

@@ -27,7 +27,7 @@
         { title: "Documento", field: "numero", minWidth: 190,
           formatter: (cell) => {
             const row = cell.getRow().getData();
-            return `<div class="compra-document-cell"><span class="compra-document-icon"><i class="ri-file-text-line" aria-hidden="true"></i></span><div><strong>${escapeHtml(row.tipo_comprobante)} ${escapeHtml(row.serie)}-${escapeHtml(row.numero)}</strong><small>Compra #${Number(row.id)}</small></div></div>`;
+            return `<div class="compra-document-cell"><span class="compra-document-icon"><i class="ri-file-text-line" aria-hidden="true"></i></span><div><strong>${escapeHtml(row.tipo_comprobante)} ${escapeHtml(row.serie)}-${escapeHtml(row.numero)}</strong><small>Comprobante recibido</small></div></div>`;
           } },
         { title: "Proveedor", field: "proveedor", minWidth: 190, widthGrow: 2,
           formatter: (cell) => `<div><strong>${escapeHtml(cell.getValue())}</strong><small>${escapeHtml(cell.getRow().getData().tipo_documento)} ${escapeHtml(cell.getRow().getData().documento)}</small></div>` },
@@ -44,9 +44,9 @@
           formatter: (cell) => {
             const row = cell.getRow().getData();
             const receiveButton = row.estado === "PENDIENTE"
-              ? `<button type="button" class="btn-recibir-compra ti-btn ti-btn-success ti-btn-sm" data-id="${Number(row.id)}" ${tooltip("Confirmar recepción e ingresar stock")} aria-label="Recibir compra"><i class="ri-inbox-archive-line me-1" aria-hidden="true"></i>Recibir</button>`
+              ? `<button type="button" class="btn-recibir-compra ti-btn ti-btn-success ti-btn-sm" data-hash="${escapeHtml(row.hash)}" ${tooltip("Confirmar recepción e ingresar stock")} aria-label="Recibir compra"><i class="ri-inbox-archive-line me-1" aria-hidden="true"></i>Recibir</button>`
               : "";
-            return `<div class="flex items-center justify-end gap-2 flex-wrap">${receiveButton}<a class="ti-btn ti-btn-light ti-btn-sm" href="detalle_compra.php?id=${Number(row.id)}">Detalle<i class="ri-arrow-right-line ms-1" aria-hidden="true"></i></a></div>`;
+            return `<div class="flex items-center justify-end gap-2 flex-wrap">${receiveButton}<a class="ti-btn ti-btn-light ti-btn-sm" href="detalle_compra.php?hash=${encodeURIComponent(row.hash)}">Detalle<i class="ri-arrow-right-line ms-1" aria-hidden="true"></i></a></div>`;
           },
           cellClick: (event, cell) => {
             const button = event.target.closest(".btn-recibir-compra");
@@ -64,7 +64,7 @@
                   const response = await fetch("controller/recibir_compra.php", {
                     method: "POST",
                     headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-                    body: new URLSearchParams({ id: String(row.id) }),
+                    body: new URLSearchParams({ hash: String(row.hash) }),
                   });
                   const result = await response.json();
                   if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo recibir la compra.");

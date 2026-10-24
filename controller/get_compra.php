@@ -9,11 +9,11 @@ try {
         echo json_encode(['ok' => false, 'message' => 'Método no permitido.'], JSON_UNESCAPED_UNICODE);
         exit;
     }
-    $id = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT);
-    if ($id === false || $id < 1) {
-        throw new InvalidArgumentException('ID de compra inválido.');
+    $hash = trim((string)($_GET['hash'] ?? ''));
+    if (!preg_match('/^[a-f0-9]{32}$/i', $hash)) {
+        throw new InvalidArgumentException('Identificador de compra inválido.');
     }
-    $purchase = (new Compra())->obtener((int)$id);
+    $purchase = (new Compra())->obtenerPorHash($hash);
     if (!$purchase) {
         http_response_code(404);
         echo json_encode(['ok' => false, 'message' => 'Compra no encontrada en la sucursal actual.'], JSON_UNESCAPED_UNICODE);

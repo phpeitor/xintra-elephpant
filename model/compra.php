@@ -35,7 +35,7 @@ class Compra
     public function listar(): array
     {
         $stmt = $this->conn->query(
-            'SELECT c.id, c.tipo_comprobante, c.serie, c.numero, c.fecha, c.moneda,
+            'SELECT MD5(c.id) AS hash, c.tipo_comprobante, c.serie, c.numero, c.fecha, c.moneda,
                     c.subtotal, c.igv, c.total, c.estado, c.fecha_registro, c.fecha_recepcion,
                     p.razon_social AS proveedor, p.tipo_documento, p.documento
              FROM compra c
@@ -76,20 +76,38 @@ class Compra
         return $purchase;
     }
 
-    public function recibir(int $idCompra, int $idUsuario, string $nombreUsuario): array
+    public function obtenerPorHash(string $hash): ?array
     {
+        if (!preg_match('/^[a-f0-9]{32}$/i', $hash)) {
+            return null;
+        }
+        $stmt = $this->conn->prepare(
+            'SELECT id FROM compra WHERE MD5(id) = :hash AND id_sucursal = @id_sucursal LIMIT 1'
+        );
+        $stmt->execute([':hash' => $hash]);
+        $id = $stmt->fetchColumn();
+        return $id === false ? null : $this->obtener((int)$id);
+    }
+
+    public function recibirPorHash(string $hash, int $idUsuario, string $nombreUsuario): array
+    {
+        if (!preg_match('/^[a-f0-9]{32}$/i', $hash)) {
+            throw new InvalidArgumentException('Identificador de compra inválido.');
+        }
         $this->conn->beginTransaction();
         try {
             $purchaseStmt = $this->conn->prepare(
-                'SELECT estado FROM compra
-                 WHERE id = :id AND id_sucursal = @id_sucursal
+                'SELECT id, estado FROM compra
+                 WHERE MD5(id) = :hash AND id_sucursal = @id_sucursal
                  LIMIT 1 FOR UPDATE'
             );
-            $purchaseStmt->execute([':id' => $idCompra]);
-            $estado = $purchaseStmt->fetchColumn();
-            if ($estado === false) {
+            $purchaseStmt->execute([':hash' => $hash]);
+            $purchase = $purchaseStmt->fetch(PDO::FETCH_ASSOC);
+            if (!$purchase) {
                 throw new RuntimeException('Compra no encontrada en la sucursal actual.');
             }
+            $idCompra = (int)$purchase['id'];
+            $estado = (string)$purchase['estado'];
             if ($estado === 'RECIBIDA') {
                 $this->conn->commit();
                 return ['ya_recibida' => true];

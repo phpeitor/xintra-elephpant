@@ -120,7 +120,7 @@
       const remove = document.createElement("button");
       remove.type = "button";
       remove.className = "ti-btn ti-btn-icon ti-btn-light !rounded-full";
-      remove.title = "Quitar producto";
+      remove.setAttribute("data-xintra-tooltip", "Quitar producto");
       remove.setAttribute("aria-label", "Quitar producto");
       remove.innerHTML = '<i class="ri-delete-bin-line" aria-hidden="true"></i>';
       remove.addEventListener("click", () => {
@@ -133,6 +133,7 @@
       row.addEventListener("input", recalcularResumen);
       row.addEventListener("change", recalcularResumen);
       linesBody.appendChild(row);
+      window.XintraTooltip?.init(row);
       refreshProductPicker();
       recalcularResumen();
     };
@@ -204,7 +205,7 @@
         });
         const result = await response.json();
         if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo registrar la compra.");
-        window.location.href = `detalle_compra.php?id=${encodeURIComponent(result.id)}`;
+        window.location.href = `detalle_compra.php?hash=${encodeURIComponent(result.hash)}`;
       } catch (error) {
         formError.textContent = error.message || "No se pudo registrar la compra.";
         formError.classList.remove("hidden");

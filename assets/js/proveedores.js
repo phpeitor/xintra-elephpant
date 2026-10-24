@@ -22,6 +22,7 @@
     const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
     }[character]));
+    const tooltip = (text) => window.XintraTooltip?.attr(text) || `aria-label="${escapeHtml(text)}"`;
 
     const setState = (active) => {
       stateInput.value = active ? "1" : "0";
@@ -142,10 +143,10 @@
             const row = cell.getRow().getData();
             const active = Number(row.estado) === 1;
             return `<div class="flex items-center justify-center gap-2">
-              <button type="button" class="btn-editar-proveedor ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full" data-id="${Number(row.id)}" aria-label="Editar proveedor" title="Editar">
+              <button type="button" class="btn-editar-proveedor ti-btn ti-btn-icon ti-btn-outline-primary !rounded-full" data-id="${Number(row.id)}" aria-label="Editar proveedor" ${tooltip("Editar proveedor")}>
                 <i class="ri-edit-2-line" aria-hidden="true"></i>
               </button>
-              <button type="button" class="btn-estado-proveedor ti-btn ti-btn-icon ${active ? "bg-danger/10 text-danger hover:bg-danger hover:text-white" : "bg-success/10 text-success hover:bg-success hover:text-white"} !rounded-full" data-id="${Number(row.id)}" data-state="${active ? 0 : 1}" aria-label="${active ? "Desactivar" : "Activar"} proveedor" title="${active ? "Desactivar" : "Activar"}">
+              <button type="button" class="btn-estado-proveedor ti-btn ti-btn-icon ${active ? "bg-danger/10 text-danger hover:bg-danger hover:text-white" : "bg-success/10 text-success hover:bg-success hover:text-white"} !rounded-full" data-id="${Number(row.id)}" data-state="${active ? 0 : 1}" aria-label="${active ? "Desactivar" : "Activar"} proveedor" ${tooltip(active ? "Desactivar proveedor" : "Activar proveedor")}>
                 <i class="${active ? "ri-user-unfollow-line" : "ri-user-follow-line"}" aria-hidden="true"></i>
               </button>
             </div>`;
@@ -186,6 +187,9 @@
         },
       ],
     });
+    const initTooltips = () => window.XintraTooltip?.init(tableElement);
+    table.on("tableBuilt", initTooltips);
+    table.on("renderComplete", initTooltips);
 
     const abrirFormulario = (row = null) => {
       form.reset();

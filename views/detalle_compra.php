@@ -3,8 +3,8 @@ require_once __DIR__ . '/../config/bootstrap.php';
 require_once ROOT . '/controller/check_session.php';
 require_once ROOT . '/model/compra.php';
 
-$idCompra = filter_var($_GET['id'] ?? null, FILTER_VALIDATE_INT);
-$compra = $idCompra && $idCompra > 0 ? (new Compra())->obtener((int)$idCompra) : null;
+$hashCompra = trim((string)($_GET['hash'] ?? ''));
+$compra = preg_match('/^[a-f0-9]{32}$/i', $hashCompra) ? (new Compra())->obtenerPorHash($hashCompra) : null;
 $esc = static fn($value): string => htmlspecialchars((string)$value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 $dinero = static fn($value): string => 'S/ ' . number_format((float)$value, 2, '.', ',');
 if (!$compra) {
@@ -21,7 +21,7 @@ if (!$compra) {
   <title><?= $compra ? 'Compra ' . $esc($compra['serie'] . '-' . $compra['numero']) : 'Compra no encontrada' ?> | Xintra Elephpant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
-  <link href="./assets/css/compras.css?v=9" rel="stylesheet">
+  <link href="./assets/css/compras.css?v=10" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
@@ -42,7 +42,7 @@ if (!$compra) {
           </div>
           <div class="flex gap-2">
             <a href="compras.php" class="ti-btn ti-btn-light"><i class="ri-arrow-left-line me-1" aria-hidden="true"></i>Historial</a>
-            <?php if ($compra && $compra['estado'] === 'PENDIENTE'): ?><button id="btnConfirmarRecepcion" data-id="<?= (int)$compra['id'] ?>" type="button" class="ti-btn ti-btn-success"><i class="ri-inbox-archive-line me-1" aria-hidden="true"></i>Confirmar recepción</button><?php endif; ?>
+            <?php if ($compra && $compra['estado'] === 'PENDIENTE'): ?><button id="btnConfirmarRecepcion" data-hash="<?= $esc($hashCompra) ?>" type="button" class="ti-btn ti-btn-success"><i class="ri-inbox-archive-line me-1" aria-hidden="true"></i>Confirmar recepción</button><?php endif; ?>
             <?php if ($compra): ?><button id="btnImprimirCompra" type="button" class="ti-btn ti-btn-primary !border-0"><i class="ri-printer-line me-1" aria-hidden="true"></i>Imprimir</button><?php endif; ?>
           </div>
         </div>

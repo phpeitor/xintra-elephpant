@@ -2,7 +2,7 @@ document.getElementById("btnImprimirCompra")?.addEventListener("click", () => wi
 
 document.getElementById("btnConfirmarRecepcion")?.addEventListener("click", (event) => {
   const button = event.currentTarget;
-  const id = button.dataset.id;
+  const hash = button.dataset.hash;
   let resolved = false;
   alertify.confirm(
     "Confirmar recepción de compra",
@@ -15,7 +15,7 @@ document.getElementById("btnConfirmarRecepcion")?.addEventListener("click", (eve
         const response = await fetch("controller/recibir_compra.php", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" },
-          body: new URLSearchParams({ id }),
+          body: new URLSearchParams({ hash }),
         });
         const result = await response.json();
         if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo confirmar la recepción.");

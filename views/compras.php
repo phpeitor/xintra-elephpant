@@ -12,12 +12,10 @@ require_once ROOT . '/controller/check_session.php';
   <title>Compras | Xintra Elephpant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
-  <link href="./assets/css/compras.css?v=9" rel="stylesheet">
+  <link href="./assets/css/compras.css?v=10" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
 </head>
@@ -85,6 +83,6 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
   <script src="./assets/js/xintra-tooltip.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/compras.js?v=4"></script>
+  <script src="./assets/js/compras.js?v=5"></script>
 </body>
 </html>
