@@ -14,6 +14,11 @@
     const modalTrigger = document.getElementById("abrir-modal-sucursal");
     const modalClose = document.querySelector('#modal-sucursal [data-hs-overlay="#modal-sucursal"]');
     const formError = document.getElementById("sucursal-form-error");
+    const departamentoSelect = document.getElementById("sucursal-departamento");
+    const provinciaSelect = document.getElementById("sucursal-provincia");
+    const distritoSelect = document.getElementById("sucursal-distrito");
+    const estadoToggle = document.getElementById("sucursal-estado-toggle");
+    const estadoInput = document.getElementById("sucursal-estado");
     const saveButton = document.getElementById("btnGuardarSucursal");
     const reloadButton = document.getElementById("btnRecargarSucursales");
     const reloadIcon = document.getElementById("iconRecargarSucursales");
@@ -31,6 +36,74 @@
     const nubefactSaveButton = document.getElementById("btnGuardarNubefact");
     const tableElement = document.getElementById("tabla-sucursales");
     if (!form || !tableElement) return;
+
+    const ubigeoReady = Promise.all([
+      fetch("data/1_ubigeo_departamentos.json").then((response) => response.json()),
+      fetch("data/2_ubigeo_provincias.json").then((response) => response.json()),
+      fetch("data/3_ubigeo_distritos.json").then((response) => response.json()),
+    ]).then(([departamentosJson, provinciasJson, distritosJson]) => {
+      const departamentos = departamentosJson.ubigeo_departamentos || [];
+      const provincias = provinciasJson.ubigeo_provincias || [];
+      const distritos = distritosJson.ubigeo_distritos || [];
+      const setOptions = (select, placeholder, records, label, selected = "") => {
+        select.replaceChildren(new Option(placeholder, ""));
+        records.forEach((record) => select.add(new Option(record[label], record[label])));
+        select.value = selected;
+      };
+      setOptions(departamentoSelect, "Seleccione departamento", departamentos, "departamento");
+      const cargarProvincias = (departamento, seleccionada = "") => {
+        const registro = departamentos.find((entry) => entry.departamento === departamento);
+        const disponibles = registro ? provincias.filter((entry) => Number(entry.departamento_id) === Number(registro.id)) : [];
+        setOptions(provinciaSelect, "Seleccione provincia", disponibles, "provincia", seleccionada);
+        provinciaSelect.disabled = disponibles.length === 0;
+        return disponibles;
+      };
+      const cargarDistritos = (departamento, provincia, seleccionado = "") => {
+        const departamentoRegistro = departamentos.find((entry) => entry.departamento === departamento);
+        const provinciaRegistro = provincias.find((entry) => entry.provincia === provincia
+          && departamentoRegistro && Number(entry.departamento_id) === Number(departamentoRegistro.id));
+        const disponibles = provinciaRegistro
+          ? distritos.filter((entry) => Number(entry.provincia_id) === Number(provinciaRegistro.id))
+          : [];
+        setOptions(distritoSelect, "Seleccione distrito", disponibles, "distrito", seleccionado);
+        distritoSelect.disabled = disponibles.length === 0;
+        return disponibles;
+      };
+      departamentoSelect.addEventListener("change", () => {
+        cargarProvincias(departamentoSelect.value);
+        cargarDistritos("", "");
+      });
+      provinciaSelect.addEventListener("change", () => cargarDistritos(departamentoSelect.value, provinciaSelect.value));
+      return {
+        cargar(departamento = "", provincia = "", distrito = "") {
+          departamentoSelect.value = departamento;
+          const opcionesProvincia = cargarProvincias(departamento);
+          if (!provincia && distrito) {
+            const provinciaLegacy = distritos.find((entry) => entry.distrito === distrito
+              && departamentos.find((dep) => dep.departamento === departamento
+                && Number(dep.id) === Number(entry.departamento_id)));
+            provincia = provincias.find((entry) => provinciaLegacy && Number(entry.id) === Number(provinciaLegacy.provincia_id))?.provincia || "";
+          }
+          if (!opcionesProvincia.some((entry) => entry.provincia === provincia)) provincia = "";
+          provinciaSelect.value = provincia;
+          const opcionesDistrito = cargarDistritos(departamento, provincia);
+          distritoSelect.value = opcionesDistrito.some((entry) => entry.distrito === distrito) ? distrito : "";
+        },
+      };
+    });
+
+    const setEstado = (active) => {
+      estadoInput.value = active ? "1" : "0";
+      estadoToggle.classList.toggle("on", active);
+      estadoToggle.setAttribute("aria-checked", String(active));
+    };
+    estadoToggle.addEventListener("click", () => setEstado(estadoInput.value !== "1"));
+    estadoToggle.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        setEstado(estadoInput.value !== "1");
+      }
+    });
 
     const escapeAttribute = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
       "&": "&amp;",
@@ -116,13 +189,16 @@
               form.reset();
               formError.textContent = "";
               formError.classList.add("hidden");
+              setEstado(Number(row.estado) === 1);
               document.getElementById("sucursal-id").value = row.id;
               document.getElementById("sucursal-nombre").value = row.nombre || "";
-              document.getElementById("sucursal-distrito").value = row.distrito || "";
-              document.getElementById("sucursal-departamento").value = row.departamento || "";
+              ubigeoReady.then((ubigeo) => ubigeo.cargar(row.departamento || "", row.provincia || "", row.distrito || ""))
+                .catch(() => {
+                  formError.textContent = "No se pudieron cargar los datos de ubigeo.";
+                  formError.classList.remove("hidden");
+                });
               document.getElementById("sucursal-direccion").value = row.direccion || "";
               document.getElementById("sucursal-telefono").value = row.telefono || "";
-              document.getElementById("sucursal-estado").value = String(row.estado);
               document.getElementById("modal-sucursal-titulo").textContent = "Editar sucursal";
               modalTrigger.click();
               return;
@@ -376,7 +452,11 @@
       formError.textContent = "";
       formError.classList.add("hidden");
       document.getElementById("sucursal-id").value = "";
-      document.getElementById("sucursal-estado").value = "1";
+      setEstado(true);
+      ubigeoReady.then((ubigeo) => ubigeo.cargar()).catch(() => {
+        formError.textContent = "No se pudieron cargar los datos de ubigeo.";
+        formError.classList.remove("hidden");
+      });
       document.getElementById("modal-sucursal-titulo").textContent = "Nueva sucursal";
       modalTrigger.click();
       document.getElementById("sucursal-nombre").focus();

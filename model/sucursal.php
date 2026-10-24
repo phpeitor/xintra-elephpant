@@ -16,7 +16,7 @@ class Sucursal
     public function listar(): array
     {
         $stmt = $this->conn->query(
-            "SELECT s.IDSUCURSAL AS id, s.SUCURSAL AS nombre, s.DISTRITO AS distrito, s.DPTO AS departamento,
+            "SELECT s.IDSUCURSAL AS id, s.SUCURSAL AS nombre, s.DISTRITO AS distrito, s.PROVINCIA AS provincia, s.DPTO AS departamento,
                     s.DIRECCION AS direccion, s.TLF AS telefono, s.IDESTADO AS estado,
                     COALESCE(q.cuota, 0) AS cuota,
                     (SELECT COUNT(1)
@@ -40,7 +40,7 @@ class Sucursal
     public function obtener(int $id): ?array
     {
         $stmt = $this->conn->prepare(
-            'SELECT IDSUCURSAL AS id, SUCURSAL AS nombre, DISTRITO AS distrito, DPTO AS departamento,
+            'SELECT IDSUCURSAL AS id, SUCURSAL AS nombre, DISTRITO AS distrito, PROVINCIA AS provincia, DPTO AS departamento,
                     DIRECCION AS direccion, TLF AS telefono, IDESTADO AS estado
              FROM sucursal
              WHERE IDSUCURSAL = :id
@@ -56,8 +56,8 @@ class Sucursal
     {
         $data = $this->normalizar($data);
         $stmt = $this->conn->prepare(
-            'INSERT INTO sucursal (SUCURSAL, DISTRITO, DPTO, DIRECCION, TLF, IDESTADO)
-             VALUES (:nombre, :distrito, :departamento, :direccion, :telefono, :estado)'
+            'INSERT INTO sucursal (SUCURSAL, DISTRITO, PROVINCIA, DPTO, DIRECCION, TLF, IDESTADO)
+             VALUES (:nombre, :distrito, :provincia, :departamento, :direccion, :telefono, :estado)'
         );
         $this->bindData($stmt, $data);
         $stmt->execute();
@@ -71,6 +71,7 @@ class Sucursal
             'UPDATE sucursal
              SET SUCURSAL = :nombre,
                  DISTRITO = :distrito,
+                 PROVINCIA = :provincia,
                  DPTO = :departamento,
                  DIRECCION = :direccion,
                  TLF = :telefono,
@@ -304,6 +305,7 @@ class Sucursal
         $result = [
             'nombre' => trim((string)($data['nombre'] ?? '')),
             'distrito' => trim((string)($data['distrito'] ?? '')),
+            'provincia' => trim((string)($data['provincia'] ?? '')),
             'departamento' => trim((string)($data['departamento'] ?? '')),
             'direccion' => trim((string)($data['direccion'] ?? '')),
             'telefono' => trim((string)($data['telefono'] ?? '')),
@@ -314,6 +316,7 @@ class Sucursal
             throw new InvalidArgumentException('El nombre de la sucursal es obligatorio.');
         }
         if (mb_strlen($result['nombre']) > 100 || mb_strlen($result['distrito']) > 200
+            || mb_strlen($result['provincia']) > 200
             || mb_strlen($result['departamento']) > 200 || mb_strlen($result['direccion']) > 200
             || mb_strlen($result['telefono']) > 20) {
             throw new InvalidArgumentException('Uno de los campos supera la longitud máxima permitida.');
@@ -327,7 +330,7 @@ class Sucursal
     private function bindData(PDOStatement $stmt, array $data): void
     {
         $stmt->bindValue(':nombre', $data['nombre']);
-        foreach (['distrito', 'departamento', 'direccion', 'telefono'] as $field) {
+        foreach (['distrito', 'provincia', 'departamento', 'direccion', 'telefono'] as $field) {
             $value = $data[$field] !== '' ? $data[$field] : null;
             $stmt->bindValue(':' . $field, $value, $value === null ? PDO::PARAM_NULL : PDO::PARAM_STR);
         }

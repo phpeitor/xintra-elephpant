@@ -1,0 +1,1179 @@
+{
+"ubigeo_provincias": [
+	{
+		"id" : 1,
+		"provincia" : "CHACHAPOYAS",
+		"ubigeo" : "0101",
+		"departamento_id" : 1
+	},
+	{
+		"id" : 2,
+		"provincia" : "BAGUA",
+		"ubigeo" : "0102",
+		"departamento_id" : 1
+	},
+	{
+		"id" : 3,
+		"provincia" : "BONGARA",
+		"ubigeo" : "0103",
+		"departamento_id" : 1
+	},
+	{
+		"id" : 4,
+		"provincia" : "CONDORCANQUI",
+		"ubigeo" : "0104",
+		"departamento_id" : 1
+	},
+	{
+		"id" : 5,
+		"provincia" : "LUYA",
+		"ubigeo" : "0105",
+		"departamento_id" : 1
+	},
+	{
+		"id" : 6,
+		"provincia" : "RODRIGUEZ DE MENDOZA",
+		"ubigeo" : "0106",
+		"departamento_id" : 1
+	},
+	{
+		"id" : 7,
+		"provincia" : "UTCUBAMBA",
+		"ubigeo" : "0107",
+		"departamento_id" : 1
+	},
+	{
+		"id" : 8,
+		"provincia" : "HUARAZ",
+		"ubigeo" : "0201",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 9,
+		"provincia" : "AIJA",
+		"ubigeo" : "0202",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 10,
+		"provincia" : "ANTONIO RAYMONDI",
+		"ubigeo" : "0203",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 11,
+		"provincia" : "ASUNCION",
+		"ubigeo" : "0204",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 12,
+		"provincia" : "BOLOGNESI",
+		"ubigeo" : "0205",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 13,
+		"provincia" : "CARHUAZ",
+		"ubigeo" : "0206",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 14,
+		"provincia" : "CARLOS FERMIN FITZCARRALD",
+		"ubigeo" : "0207",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 15,
+		"provincia" : "CASMA",
+		"ubigeo" : "0208",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 16,
+		"provincia" : "CORONGO",
+		"ubigeo" : "0209",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 17,
+		"provincia" : "HUARI",
+		"ubigeo" : "0210",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 18,
+		"provincia" : "HUARMEY",
+		"ubigeo" : "0211",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 19,
+		"provincia" : "HUAYLAS",
+		"ubigeo" : "0212",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 20,
+		"provincia" : "MARISCAL LUZURIAGA",
+		"ubigeo" : "0213",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 21,
+		"provincia" : "OCROS",
+		"ubigeo" : "0214",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 22,
+		"provincia" : "PALLASCA",
+		"ubigeo" : "0215",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 23,
+		"provincia" : "POMABAMBA",
+		"ubigeo" : "0216",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 24,
+		"provincia" : "RECUAY",
+		"ubigeo" : "0217",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 25,
+		"provincia" : "SANTA",
+		"ubigeo" : "0218",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 26,
+		"provincia" : "SIHUAS",
+		"ubigeo" : "0219",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 27,
+		"provincia" : "YUNGAY",
+		"ubigeo" : "0220",
+		"departamento_id" : 2
+	},
+	{
+		"id" : 28,
+		"provincia" : "ABANCAY",
+		"ubigeo" : "0301",
+		"departamento_id" : 3
+	},
+	{
+		"id" : 29,
+		"provincia" : "ANDAHUAYLAS",
+		"ubigeo" : "0302",
+		"departamento_id" : 3
+	},
+	{
+		"id" : 30,
+		"provincia" : "ANTABAMBA",
+		"ubigeo" : "0303",
+		"departamento_id" : 3
+	},
+	{
+		"id" : 31,
+		"provincia" : "AYMARAES",
+		"ubigeo" : "0304",
+		"departamento_id" : 3
+	},
+	{
+		"id" : 32,
+		"provincia" : "COTABAMBAS",
+		"ubigeo" : "0305",
+		"departamento_id" : 3
+	},
+	{
+		"id" : 33,
+		"provincia" : "CHINCHEROS",
+		"ubigeo" : "0306",
+		"departamento_id" : 3
+	},
+	{
+		"id" : 34,
+		"provincia" : "GRAU",
+		"ubigeo" : "0307",
+		"departamento_id" : 3
+	},
+	{
+		"id" : 35,
+		"provincia" : "AREQUIPA",
+		"ubigeo" : "0401",
+		"departamento_id" : 4
+	},
+	{
+		"id" : 36,
+		"provincia" : "CAMANA",
+		"ubigeo" : "0402",
+		"departamento_id" : 4
+	},
+	{
+		"id" : 37,
+		"provincia" : "CARAVELI",
+		"ubigeo" : "0403",
+		"departamento_id" : 4
+	},
+	{
+		"id" : 38,
+		"provincia" : "CASTILLA",
+		"ubigeo" : "0404",
+		"departamento_id" : 4
+	},
+	{
+		"id" : 39,
+		"provincia" : "CAYLLOMA",
+		"ubigeo" : "0405",
+		"departamento_id" : 4
+	},
+	{
+		"id" : 40,
+		"provincia" : "CONDESUYOS",
+		"ubigeo" : "0406",
+		"departamento_id" : 4
+	},
+	{
+		"id" : 41,
+		"provincia" : "ISLAY",
+		"ubigeo" : "0407",
+		"departamento_id" : 4
+	},
+	{
+		"id" : 42,
+		"provincia" : "LA UNION",
+		"ubigeo" : "0408",
+		"departamento_id" : 4
+	},
+	{
+		"id" : 43,
+		"provincia" : "HUAMANGA",
+		"ubigeo" : "0501",
+		"departamento_id" : 5
+	},
+	{
+		"id" : 44,
+		"provincia" : "CANGALLO",
+		"ubigeo" : "0502",
+		"departamento_id" : 5
+	},
+	{
+		"id" : 45,
+		"provincia" : "HUANCA SANCOS",
+		"ubigeo" : "0503",
+		"departamento_id" : 5
+	},
+	{
+		"id" : 46,
+		"provincia" : "HUANTA",
+		"ubigeo" : "0504",
+		"departamento_id" : 5
+	},
+	{
+		"id" : 47,
+		"provincia" : "LA MAR",
+		"ubigeo" : "0505",
+		"departamento_id" : 5
+	},
+	{
+		"id" : 48,
+		"provincia" : "LUCANAS",
+		"ubigeo" : "0506",
+		"departamento_id" : 5
+	},
+	{
+		"id" : 49,
+		"provincia" : "PARINACOCHAS",
+		"ubigeo" : "0507",
+		"departamento_id" : 5
+	},
+	{
+		"id" : 50,
+		"provincia" : "PAUCAR DEL SARA SARA",
+		"ubigeo" : "0508",
+		"departamento_id" : 5
+	},
+	{
+		"id" : 51,
+		"provincia" : "SUCRE",
+		"ubigeo" : "0509",
+		"departamento_id" : 5
+	},
+	{
+		"id" : 52,
+		"provincia" : "VICTOR FAJARDO",
+		"ubigeo" : "0510",
+		"departamento_id" : 5
+	},
+	{
+		"id" : 53,
+		"provincia" : "VILCAS HUAMAN",
+		"ubigeo" : "0511",
+		"departamento_id" : 5
+	},
+	{
+		"id" : 54,
+		"provincia" : "CAJAMARCA",
+		"ubigeo" : "0601",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 55,
+		"provincia" : "CAJABAMBA",
+		"ubigeo" : "0602",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 56,
+		"provincia" : "CELENDIN",
+		"ubigeo" : "0603",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 57,
+		"provincia" : "CHOTA",
+		"ubigeo" : "0604",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 58,
+		"provincia" : "CONTUMAZA",
+		"ubigeo" : "0605",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 59,
+		"provincia" : "CUTERVO",
+		"ubigeo" : "0606",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 60,
+		"provincia" : "HUALGAYOC",
+		"ubigeo" : "0607",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 61,
+		"provincia" : "JAEN",
+		"ubigeo" : "0608",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 62,
+		"provincia" : "SAN IGNACIO",
+		"ubigeo" : "0609",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 63,
+		"provincia" : "SAN MARCOS",
+		"ubigeo" : "0610",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 64,
+		"provincia" : "SAN MIGUEL",
+		"ubigeo" : "0611",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 65,
+		"provincia" : "SAN PABLO",
+		"ubigeo" : "0612",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 66,
+		"provincia" : "SANTA CRUZ",
+		"ubigeo" : "0613",
+		"departamento_id" : 6
+	},
+	{
+		"id" : 67,
+		"provincia" : "CALLAO",
+		"ubigeo" : "0701",
+		"departamento_id" : 7
+	},
+	{
+		"id" : 68,
+		"provincia" : "CUSCO",
+		"ubigeo" : "0801",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 69,
+		"provincia" : "ACOMAYO",
+		"ubigeo" : "0802",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 70,
+		"provincia" : "ANTA",
+		"ubigeo" : "0803",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 71,
+		"provincia" : "CALCA",
+		"ubigeo" : "0804",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 72,
+		"provincia" : "CANAS",
+		"ubigeo" : "0805",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 73,
+		"provincia" : "CANCHIS",
+		"ubigeo" : "0806",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 74,
+		"provincia" : "CHUMBIVILCAS",
+		"ubigeo" : "0807",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 75,
+		"provincia" : "ESPINAR",
+		"ubigeo" : "0808",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 76,
+		"provincia" : "LA CONVENCION",
+		"ubigeo" : "0809",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 77,
+		"provincia" : "PARURO",
+		"ubigeo" : "0810",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 78,
+		"provincia" : "PAUCARTAMBO",
+		"ubigeo" : "0811",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 79,
+		"provincia" : "QUISPICANCHI",
+		"ubigeo" : "0812",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 80,
+		"provincia" : "URUBAMBA",
+		"ubigeo" : "0813",
+		"departamento_id" : 8
+	},
+	{
+		"id" : 81,
+		"provincia" : "HUANCAVELICA",
+		"ubigeo" : "0901",
+		"departamento_id" : 9
+	},
+	{
+		"id" : 82,
+		"provincia" : "ACOBAMBA",
+		"ubigeo" : "0902",
+		"departamento_id" : 9
+	},
+	{
+		"id" : 83,
+		"provincia" : "ANGARAES",
+		"ubigeo" : "0903",
+		"departamento_id" : 9
+	},
+	{
+		"id" : 84,
+		"provincia" : "CASTROVIRREYNA",
+		"ubigeo" : "0904",
+		"departamento_id" : 9
+	},
+	{
+		"id" : 85,
+		"provincia" : "CHURCAMPA",
+		"ubigeo" : "0905",
+		"departamento_id" : 9
+	},
+	{
+		"id" : 86,
+		"provincia" : "HUAYTARA",
+		"ubigeo" : "0906",
+		"departamento_id" : 9
+	},
+	{
+		"id" : 87,
+		"provincia" : "TAYACAJA",
+		"ubigeo" : "0907",
+		"departamento_id" : 9
+	},
+	{
+		"id" : 88,
+		"provincia" : "HUANUCO",
+		"ubigeo" : "1001",
+		"departamento_id" : 10
+	},
+	{
+		"id" : 89,
+		"provincia" : "AMBO",
+		"ubigeo" : "1002",
+		"departamento_id" : 10
+	},
+	{
+		"id" : 90,
+		"provincia" : "DOS DE MAYO",
+		"ubigeo" : "1003",
+		"departamento_id" : 10
+	},
+	{
+		"id" : 91,
+		"provincia" : "HUACAYBAMBA",
+		"ubigeo" : "1004",
+		"departamento_id" : 10
+	},
+	{
+		"id" : 92,
+		"provincia" : "HUAMALIES",
+		"ubigeo" : "1005",
+		"departamento_id" : 10
+	},
+	{
+		"id" : 93,
+		"provincia" : "LEONCIO PRADO",
+		"ubigeo" : "1006",
+		"departamento_id" : 10
+	},
+	{
+		"id" : 94,
+		"provincia" : "MARAÑON",
+		"ubigeo" : "1007",
+		"departamento_id" : 10
+	},
+	{
+		"id" : 95,
+		"provincia" : "PACHITEA",
+		"ubigeo" : "1008",
+		"departamento_id" : 10
+	},
+	{
+		"id" : 96,
+		"provincia" : "PUERTO INCA",
+		"ubigeo" : "1009",
+		"departamento_id" : 10
+	},
+	{
+		"id" : 97,
+		"provincia" : "LAURICOCHA",
+		"ubigeo" : "1010",
+		"departamento_id" : 10
+	},
+	{
+		"id" : 98,
+		"provincia" : "YAROWILCA",
+		"ubigeo" : "1011",
+		"departamento_id" : 10
+	},
+	{
+		"id" : 99,
+		"provincia" : "ICA",
+		"ubigeo" : "1101",
+		"departamento_id" : 11
+	},
+	{
+		"id" : 100,
+		"provincia" : "CHINCHA",
+		"ubigeo" : "1102",
+		"departamento_id" : 11
+	},
+	{
+		"id" : 101,
+		"provincia" : "NAZCA",
+		"ubigeo" : "1103",
+		"departamento_id" : 11
+	},
+	{
+		"id" : 102,
+		"provincia" : "PALPA",
+		"ubigeo" : "1104",
+		"departamento_id" : 11
+	},
+	{
+		"id" : 103,
+		"provincia" : "PISCO",
+		"ubigeo" : "1105",
+		"departamento_id" : 11
+	},
+	{
+		"id" : 104,
+		"provincia" : "HUANCAYO",
+		"ubigeo" : "1201",
+		"departamento_id" : 12
+	},
+	{
+		"id" : 105,
+		"provincia" : "CONCEPCION",
+		"ubigeo" : "1202",
+		"departamento_id" : 12
+	},
+	{
+		"id" : 106,
+		"provincia" : "CHANCHAMAYO",
+		"ubigeo" : "1203",
+		"departamento_id" : 12
+	},
+	{
+		"id" : 107,
+		"provincia" : "JAUJA",
+		"ubigeo" : "1204",
+		"departamento_id" : 12
+	},
+	{
+		"id" : 108,
+		"provincia" : "JUNIN",
+		"ubigeo" : "1205",
+		"departamento_id" : 12
+	},
+	{
+		"id" : 109,
+		"provincia" : "SATIPO",
+		"ubigeo" : "1206",
+		"departamento_id" : 12
+	},
+	{
+		"id" : 110,
+		"provincia" : "TARMA",
+		"ubigeo" : "1207",
+		"departamento_id" : 12
+	},
+	{
+		"id" : 111,
+		"provincia" : "YAULI",
+		"ubigeo" : "1208",
+		"departamento_id" : 12
+	},
+	{
+		"id" : 112,
+		"provincia" : "CHUPACA",
+		"ubigeo" : "1209",
+		"departamento_id" : 12
+	},
+	{
+		"id" : 113,
+		"provincia" : "TRUJILLO",
+		"ubigeo" : "1301",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 114,
+		"provincia" : "ASCOPE",
+		"ubigeo" : "1302",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 115,
+		"provincia" : "BOLIVAR",
+		"ubigeo" : "1303",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 116,
+		"provincia" : "CHEPEN",
+		"ubigeo" : "1304",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 117,
+		"provincia" : "JULCAN",
+		"ubigeo" : "1305",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 118,
+		"provincia" : "OTUZCO",
+		"ubigeo" : "1306",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 119,
+		"provincia" : "PACASMAYO",
+		"ubigeo" : "1307",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 120,
+		"provincia" : "PATAZ",
+		"ubigeo" : "1308",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 121,
+		"provincia" : "SANCHEZ CARRION",
+		"ubigeo" : "1309",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 122,
+		"provincia" : "SANTIAGO DE CHUCO",
+		"ubigeo" : "1310",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 123,
+		"provincia" : "GRAN CHIMU",
+		"ubigeo" : "1311",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 124,
+		"provincia" : "VIRU",
+		"ubigeo" : "1312",
+		"departamento_id" : 13
+	},
+	{
+		"id" : 125,
+		"provincia" : "CHICLAYO",
+		"ubigeo" : "1401",
+		"departamento_id" : 14
+	},
+	{
+		"id" : 126,
+		"provincia" : "FERREÑAFE",
+		"ubigeo" : "1402",
+		"departamento_id" : 14
+	},
+	{
+		"id" : 127,
+		"provincia" : "LAMBAYEQUE",
+		"ubigeo" : "1403",
+		"departamento_id" : 14
+	},
+	{
+		"id" : 128,
+		"provincia" : "LIMA",
+		"ubigeo" : "1501",
+		"departamento_id" : 15
+	},
+	{
+		"id" : 129,
+		"provincia" : "BARRANCA",
+		"ubigeo" : "1502",
+		"departamento_id" : 15
+	},
+	{
+		"id" : 130,
+		"provincia" : "CAJATAMBO",
+		"ubigeo" : "1503",
+		"departamento_id" : 15
+	},
+	{
+		"id" : 131,
+		"provincia" : "CANTA",
+		"ubigeo" : "1504",
+		"departamento_id" : 15
+	},
+	{
+		"id" : 132,
+		"provincia" : "CAÑETE",
+		"ubigeo" : "1505",
+		"departamento_id" : 15
+	},
+	{
+		"id" : 133,
+		"provincia" : "HUARAL",
+		"ubigeo" : "1506",
+		"departamento_id" : 15
+	},
+	{
+		"id" : 134,
+		"provincia" : "HUAROCHIRI",
+		"ubigeo" : "1507",
+		"departamento_id" : 15
+	},
+	{
+		"id" : 135,
+		"provincia" : "HUAURA",
+		"ubigeo" : "1508",
+		"departamento_id" : 15
+	},
+	{
+		"id" : 136,
+		"provincia" : "OYON",
+		"ubigeo" : "1509",
+		"departamento_id" : 15
+	},
+	{
+		"id" : 137,
+		"provincia" : "YAUYOS",
+		"ubigeo" : "1510",
+		"departamento_id" : 15
+	},
+	{
+		"id" : 138,
+		"provincia" : "MAYNAS",
+		"ubigeo" : "1601",
+		"departamento_id" : 16
+	},
+	{
+		"id" : 139,
+		"provincia" : "ALTO AMAZONAS",
+		"ubigeo" : "1602",
+		"departamento_id" : 16
+	},
+	{
+		"id" : 140,
+		"provincia" : "LORETO",
+		"ubigeo" : "1603",
+		"departamento_id" : 16
+	},
+	{
+		"id" : 141,
+		"provincia" : "MARISCAL RAMON CASTILLA",
+		"ubigeo" : "1604",
+		"departamento_id" : 16
+	},
+	{
+		"id" : 142,
+		"provincia" : "REQUENA",
+		"ubigeo" : "1605",
+		"departamento_id" : 16
+	},
+	{
+		"id" : 143,
+		"provincia" : "UCAYALI",
+		"ubigeo" : "1606",
+		"departamento_id" : 16
+	},
+	{
+		"id" : 144,
+		"provincia" : "DATEM DEL MARAÑON",
+		"ubigeo" : "1607",
+		"departamento_id" : 16
+	},
+	{
+		"id" : 145,
+		"provincia" : "PUTUMAYO",
+		"ubigeo" : "1608",
+		"departamento_id" : 16
+	},
+	{
+		"id" : 146,
+		"provincia" : "TAMBOPATA",
+		"ubigeo" : "1701",
+		"departamento_id" : 17
+	},
+	{
+		"id" : 147,
+		"provincia" : "MANU",
+		"ubigeo" : "1702",
+		"departamento_id" : 17
+	},
+	{
+		"id" : 148,
+		"provincia" : "TAHUAMANU",
+		"ubigeo" : "1703",
+		"departamento_id" : 17
+	},
+	{
+		"id" : 149,
+		"provincia" : "MARISCAL NIETO",
+		"ubigeo" : "1801",
+		"departamento_id" : 18
+	},
+	{
+		"id" : 150,
+		"provincia" : "GENERAL SANCHEZ CERRO",
+		"ubigeo" : "1802",
+		"departamento_id" : 18
+	},
+	{
+		"id" : 151,
+		"provincia" : "ILO",
+		"ubigeo" : "1803",
+		"departamento_id" : 18
+	},
+	{
+		"id" : 152,
+		"provincia" : "PASCO",
+		"ubigeo" : "1901",
+		"departamento_id" : 19
+	},
+	{
+		"id" : 153,
+		"provincia" : "DANIEL ALCIDES CARRION",
+		"ubigeo" : "1902",
+		"departamento_id" : 19
+	},
+	{
+		"id" : 154,
+		"provincia" : "OXAPAMPA",
+		"ubigeo" : "1903",
+		"departamento_id" : 19
+	},
+	{
+		"id" : 155,
+		"provincia" : "PIURA",
+		"ubigeo" : "2001",
+		"departamento_id" : 20
+	},
+	{
+		"id" : 156,
+		"provincia" : "AYABACA",
+		"ubigeo" : "2002",
+		"departamento_id" : 20
+	},
+	{
+		"id" : 157,
+		"provincia" : "HUANCABAMBA",
+		"ubigeo" : "2003",
+		"departamento_id" : 20
+	},
+	{
+		"id" : 158,
+		"provincia" : "MORROPON",
+		"ubigeo" : "2004",
+		"departamento_id" : 20
+	},
+	{
+		"id" : 159,
+		"provincia" : "PAITA",
+		"ubigeo" : "2005",
+		"departamento_id" : 20
+	},
+	{
+		"id" : 160,
+		"provincia" : "SULLANA",
+		"ubigeo" : "2006",
+		"departamento_id" : 20
+	},
+	{
+		"id" : 161,
+		"provincia" : "TALARA",
+		"ubigeo" : "2007",
+		"departamento_id" : 20
+	},
+	{
+		"id" : 162,
+		"provincia" : "SECHURA",
+		"ubigeo" : "2008",
+		"departamento_id" : 20
+	},
+	{
+		"id" : 163,
+		"provincia" : "PUNO",
+		"ubigeo" : "2101",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 164,
+		"provincia" : "AZANGARO",
+		"ubigeo" : "2102",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 165,
+		"provincia" : "CARABAYA",
+		"ubigeo" : "2103",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 166,
+		"provincia" : "CHUCUITO",
+		"ubigeo" : "2104",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 167,
+		"provincia" : "EL COLLAO",
+		"ubigeo" : "2105",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 168,
+		"provincia" : "HUANCANE",
+		"ubigeo" : "2106",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 169,
+		"provincia" : "LAMPA",
+		"ubigeo" : "2107",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 170,
+		"provincia" : "MELGAR",
+		"ubigeo" : "2108",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 171,
+		"provincia" : "MOHO",
+		"ubigeo" : "2109",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 172,
+		"provincia" : "SAN ANTONIO DE PUTINA",
+		"ubigeo" : "2110",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 173,
+		"provincia" : "SAN ROMAN",
+		"ubigeo" : "2111",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 174,
+		"provincia" : "SANDIA",
+		"ubigeo" : "2112",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 175,
+		"provincia" : "YUNGUYO",
+		"ubigeo" : "2113",
+		"departamento_id" : 21
+	},
+	{
+		"id" : 176,
+		"provincia" : "MOYOBAMBA",
+		"ubigeo" : "2201",
+		"departamento_id" : 22
+	},
+	{
+		"id" : 177,
+		"provincia" : "BELLAVISTA",
+		"ubigeo" : "2202",
+		"departamento_id" : 22
+	},
+	{
+		"id" : 178,
+		"provincia" : "EL DORADO",
+		"ubigeo" : "2203",
+		"departamento_id" : 22
+	},
+	{
+		"id" : 179,
+		"provincia" : "HUALLAGA",
+		"ubigeo" : "2204",
+		"departamento_id" : 22
+	},
+	{
+		"id" : 180,
+		"provincia" : "LAMAS",
+		"ubigeo" : "2205",
+		"departamento_id" : 22
+	},
+	{
+		"id" : 181,
+		"provincia" : "MARISCAL CACERES",
+		"ubigeo" : "2206",
+		"departamento_id" : 22
+	},
+	{
+		"id" : 182,
+		"provincia" : "PICOTA",
+		"ubigeo" : "2207",
+		"departamento_id" : 22
+	},
+	{
+		"id" : 183,
+		"provincia" : "RIOJA",
+		"ubigeo" : "2208",
+		"departamento_id" : 22
+	},
+	{
+		"id" : 184,
+		"provincia" : "SAN MARTIN",
+		"ubigeo" : "2209",
+		"departamento_id" : 22
+	},
+	{
+		"id" : 185,
+		"provincia" : "TOCACHE",
+		"ubigeo" : "2210",
+		"departamento_id" : 22
+	},
+	{
+		"id" : 186,
+		"provincia" : "TACNA",
+		"ubigeo" : "2301",
+		"departamento_id" : 23
+	},
+	{
+		"id" : 187,
+		"provincia" : "CANDARAVE",
+		"ubigeo" : "2302",
+		"departamento_id" : 23
+	},
+	{
+		"id" : 188,
+		"provincia" : "JORGE BASADRE",
+		"ubigeo" : "2303",
+		"departamento_id" : 23
+	},
+	{
+		"id" : 189,
+		"provincia" : "TARATA",
+		"ubigeo" : "2304",
+		"departamento_id" : 23
+	},
+	{
+		"id" : 190,
+		"provincia" : "TUMBES",
+		"ubigeo" : "2401",
+		"departamento_id" : 24
+	},
+	{
+		"id" : 191,
+		"provincia" : "CONTRALMIRANTE VILLAR",
+		"ubigeo" : "2402",
+		"departamento_id" : 24
+	},
+	{
+		"id" : 192,
+		"provincia" : "ZARUMILLA",
+		"ubigeo" : "2403",
+		"departamento_id" : 24
+	},
+	{
+		"id" : 193,
+		"provincia" : "CORONEL PORTILLO",
+		"ubigeo" : "2501",
+		"departamento_id" : 25
+	},
+	{
+		"id" : 194,
+		"provincia" : "ATALAYA",
+		"ubigeo" : "2502",
+		"departamento_id" : 25
+	},
+	{
+		"id" : 195,
+		"provincia" : "PADRE ABAD",
+		"ubigeo" : "2503",
+		"departamento_id" : 25
+	},
+	{
+		"id" : 196,
+		"provincia" : "PURUS",
+		"ubigeo" : "2504",
+		"departamento_id" : 25
+	}
+]}

@@ -1,0 +1,128 @@
+{
+"ubigeo_departamentos": [
+	{
+		"id" : 1,
+		"departamento" : "AMAZONAS",
+		"ubigeo" : "01"
+	},
+	{
+		"id" : 2,
+		"departamento" : "ANCASH",
+		"ubigeo" : "02"
+	},
+	{
+		"id" : 3,
+		"departamento" : "APURIMAC",
+		"ubigeo" : "03"
+	},
+	{
+		"id" : 4,
+		"departamento" : "AREQUIPA",
+		"ubigeo" : "04"
+	},
+	{
+		"id" : 5,
+		"departamento" : "AYACUCHO",
+		"ubigeo" : "05"
+	},
+	{
+		"id" : 6,
+		"departamento" : "CAJAMARCA",
+		"ubigeo" : "06"
+	},
+	{
+		"id" : 7,
+		"departamento" : "CALLAO",
+		"ubigeo" : "07"
+	},
+	{
+		"id" : 8,
+		"departamento" : "CUSCO",
+		"ubigeo" : "08"
+	},
+	{
+		"id" : 9,
+		"departamento" : "HUANCAVELICA",
+		"ubigeo" : "09"
+	},
+	{
+		"id" : 10,
+		"departamento" : "HUANUCO",
+		"ubigeo" : "10"
+	},
+	{
+		"id" : 11,
+		"departamento" : "ICA",
+		"ubigeo" : "11"
+	},
+	{
+		"id" : 12,
+		"departamento" : "JUNIN",
+		"ubigeo" : "12"
+	},
+	{
+		"id" : 13,
+		"departamento" : "LA LIBERTAD",
+		"ubigeo" : "13"
+	},
+	{
+		"id" : 14,
+		"departamento" : "LAMBAYEQUE",
+		"ubigeo" : "14"
+	},
+	{
+		"id" : 15,
+		"departamento" : "LIMA",
+		"ubigeo" : "15"
+	},
+	{
+		"id" : 16,
+		"departamento" : "LORETO",
+		"ubigeo" : "16"
+	},
+	{
+		"id" : 17,
+		"departamento" : "MADRE DE DIOS",
+		"ubigeo" : "17"
+	},
+	{
+		"id" : 18,
+		"departamento" : "MOQUEGUA",
+		"ubigeo" : "18"
+	},
+	{
+		"id" : 19,
+		"departamento" : "PASCO",
+		"ubigeo" : "19"
+	},
+	{
+		"id" : 20,
+		"departamento" : "PIURA",
+		"ubigeo" : "20"
+	},
+	{
+		"id" : 21,
+		"departamento" : "PUNO",
+		"ubigeo" : "21"
+	},
+	{
+		"id" : 22,
+		"departamento" : "SAN MARTIN",
+		"ubigeo" : "22"
+	},
+	{
+		"id" : 23,
+		"departamento" : "TACNA",
+		"ubigeo" : "23"
+	},
+	{
+		"id" : 24,
+		"departamento" : "TUMBES",
+		"ubigeo" : "24"
+	},
+	{
+		"id" : 25,
+		"departamento" : "UCAYALI",
+		"ubigeo" : "25"
+	}
+]}

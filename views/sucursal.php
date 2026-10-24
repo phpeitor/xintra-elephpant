@@ -71,13 +71,23 @@ require_once ROOT . '/controller/check_session.php';
                 <label for="sucursal-nombre" class="ti-form-label">Nombre <span aria-hidden="true">*</span></label>
                 <input id="sucursal-nombre" name="nombre" class="ti-form-input rounded-sm" type="text" maxlength="100" required autocomplete="organization">
               </div>
-              <div class="space-y-2">
-                <label for="sucursal-distrito" class="ti-form-label">Distrito</label>
-                <input id="sucursal-distrito" name="distrito" class="ti-form-input rounded-sm" type="text" maxlength="200">
-              </div>
-              <div class="space-y-2">
-                <label for="sucursal-departamento" class="ti-form-label">Departamento</label>
-                <input id="sucursal-departamento" name="departamento" class="ti-form-input rounded-sm" type="text" maxlength="200">
+               <div class="space-y-2">
+                 <label for="sucursal-departamento" class="ti-form-label">Departamento</label>
+                 <select id="sucursal-departamento" name="departamento" class="ti-form-select rounded-sm">
+                   <option value="">Seleccione departamento</option>
+                 </select>
+               </div>
+               <div class="space-y-2">
+                 <label for="sucursal-provincia" class="ti-form-label">Provincia</label>
+                 <select id="sucursal-provincia" name="provincia" class="ti-form-select rounded-sm" disabled>
+                   <option value="">Seleccione provincia</option>
+                 </select>
+               </div>
+               <div class="space-y-2">
+                 <label for="sucursal-distrito" class="ti-form-label">Distrito</label>
+                 <select id="sucursal-distrito" name="distrito" class="ti-form-select rounded-sm" disabled>
+                   <option value="">Seleccione distrito</option>
+                 </select>
               </div>
               <div class="space-y-2 sm:col-span-2">
                 <label for="sucursal-direccion" class="ti-form-label">Dirección</label>
@@ -87,12 +97,10 @@ require_once ROOT . '/controller/check_session.php';
                 <label for="sucursal-telefono" class="ti-form-label">Teléfono</label>
                 <input id="sucursal-telefono" name="telefono" class="ti-form-input rounded-sm" type="tel" maxlength="20" autocomplete="tel">
               </div>
-              <div class="space-y-2">
-                <label for="sucursal-estado" class="ti-form-label">Estado</label>
-                <select id="sucursal-estado" name="estado" class="ti-form-select rounded-sm">
-                  <option value="1">Activa</option>
-                  <option value="0">Inactiva</option>
-                </select>
+               <div class="space-y-2">
+                 <label for="sucursal-estado-toggle" class="ti-form-label">Estado</label>
+                 <div id="sucursal-estado-toggle" class="toggle toggle-sm on mb-0" role="switch" aria-checked="true" tabindex="0"><span></span></div>
+                 <input type="hidden" id="sucursal-estado" name="estado" value="1">
               </div>
             </div>
             <p id="sucursal-form-error" class="hidden text-danger text-sm" role="alert"></p>
@@ -272,6 +280,6 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
   <script src="./assets/js/xintra-tooltip.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/sucursal.js?v=2"></script>
+  <script src="./assets/js/sucursal.js?v=3"></script>
 </body>
 </html>
