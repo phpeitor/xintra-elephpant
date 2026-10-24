@@ -135,6 +135,6 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
   <script src="./assets/js/xintra-tooltip.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/crear_compra.js?v=3"></script>
+  <script src="./assets/js/crear_compra.js?v=4"></script>
 </body>
 </html>

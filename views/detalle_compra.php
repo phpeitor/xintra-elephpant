@@ -130,6 +130,6 @@ if (!$compra) {
   <script src="./assets/libs/simplebar/simplebar.min.js"></script>
   <script src="./assets/js/simplebar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/detalle_compra.js?v=3"></script>
+  <script src="./assets/js/detalle_compra.js?v=4"></script>
 </body>
 </html>

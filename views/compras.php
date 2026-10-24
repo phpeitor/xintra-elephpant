@@ -83,6 +83,6 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
   <script src="./assets/js/xintra-tooltip.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/compras.js?v=5"></script>
+  <script src="./assets/js/compras.js?v=6"></script>
 </body>
 </html>
