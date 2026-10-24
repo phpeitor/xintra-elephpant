@@ -14,7 +14,7 @@ require_once ROOT . '/controller/check_session.php';
       <meta name="keywords" content="tailwind template,tailwind dashboard,tailwind,tailwind admin template,dashboard,tailwind css templates,html dashboard template,tailwind dashboard template,dashboard tailwind,admin,html css templates,html dashboard,html css javascript templates,dashboard tailwind template,tailwind css dashboard">
       <script src="./assets/js/main.js"></script> 
       <link href="./assets/css/styles.css" rel="stylesheet">
-      <link href="./assets/css/stk_item.css" rel="stylesheet">
+       <link href="./assets/css/stk_item.css?v=3" rel="stylesheet">
       <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
       <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
       <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
@@ -121,18 +121,33 @@ require_once ROOT . '/controller/check_session.php';
                   </div>
                </div>
                <div class="grid grid-cols-12 gap-x-6">
-                  <div class="xxl:col-span-4 col-span-12">
-                     <div class="box">
-                        <div class="box-header">
-                           <div class="box-title"> Sales </div>
-                        </div>
-                        <div class="box-body">
-                           <div id="salerevenue1" class="stock-revenue-chart">
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+                   <div class="xxl:col-span-5 col-span-12">
+                      <div class="box">
+                         <div class="box-header">
+                            <div class="box-title">Movimientos de stock</div>
+                         </div>
+                         <div class="box-body">
+                            <div id="salerevenue1" class="stock-revenue-chart">
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                   <div class="xxl:col-span-7 col-span-12">
+                      <section class="box stock-timeline-card" aria-labelledby="stock-timeline-title">
+                         <div class="box-header flex items-start justify-between gap-3">
+                            <div>
+                               <h2 id="stock-timeline-title" class="box-title">Historial de stock</h2>
+                               <p class="text-xs text-textmuted mt-1">Actividad de las últimas 6 fechas con movimientos</p>
+                            </div>
+                            <span class="badge bg-primary/10 text-primary">Timeline 03</span>
+                         </div>
+                         <div class="box-body">
+                            <div id="stock-timeline-empty" class="hidden stock-timeline-empty" role="status"></div>
+                            <ol id="stock-timeline-list" class="stock-timeline-list" aria-label="Últimos movimientos de stock"></ol>
+                         </div>
+                      </section>
+                   </div>
+                </div>
 
                <div id="create-stock" class="hs-overlay hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none hidden" role="dialog" tabindex="-1" aria-labelledby="create-stock-title">
                   <div class="sm:max-w-lg sm:w-full m-3 sm:mx-auto">
@@ -182,7 +197,7 @@ require_once ROOT . '/controller/check_session.php';
       <script src="./assets/js/form-validation.js?v=1"></script>
       <script src="./assets/js/custom.js"></script>
       <script src="./assets/libs/apexcharts/apexcharts.min.js"></script>
-      <script src="./assets/js/widgets.js?v=3.1"></script>
+       <script src="./assets/js/widgets.js?v=3.4"></script>
       <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
    </body>
 </html>

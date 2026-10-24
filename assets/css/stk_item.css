@@ -9,3 +9,131 @@
 .stock-revenue-chart {
   min-height: 315px;
 }
+
+.stock-timeline-card {
+  height: calc(100% - 1.5rem);
+}
+
+.stock-timeline-list {
+  position: relative;
+  display: grid;
+  gap: 1.15rem;
+  margin: 0;
+  padding: 0.25rem 0 0.25rem 0.15rem;
+  list-style: none;
+}
+
+.stock-timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  gap: 0.85rem;
+}
+
+.stock-timeline-item:not(:last-child)::before {
+  position: absolute;
+  top: 2rem;
+  bottom: -1.2rem;
+  left: 1rem;
+  width: 1px;
+  background: linear-gradient(to bottom, rgb(99 102 241 / 0.32), rgb(148 163 184 / 0.12));
+  content: "";
+}
+
+.stock-timeline-marker {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 2.1rem;
+  height: 2.1rem;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #fff;
+  border-radius: 999px;
+  background: #eef2ff;
+  color: #6366f1;
+  box-shadow: 0 0 0 1px rgb(99 102 241 / 0.2), 0 3px 8px rgb(15 23 42 / 0.08);
+}
+
+.stock-timeline-entry {
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgb(226 232 240 / 0.85);
+  border-radius: 0.85rem;
+  background: linear-gradient(145deg, #fff, #fbfcff);
+  box-shadow: 0 4px 14px rgb(15 23 42 / 0.035);
+}
+
+.stock-timeline-entry-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.75rem;
+}
+
+.stock-timeline-date {
+  margin: 0;
+  color: #1e293b;
+  font-size: 0.92rem;
+  font-weight: 650;
+  text-transform: capitalize;
+}
+
+.stock-timeline-time,
+.stock-timeline-count {
+  color: #8792a2;
+  font-size: 0.72rem;
+}
+
+.stock-timeline-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.7rem;
+}
+
+.stock-timeline-metric {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.stock-timeline-metric.is-entry {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.stock-timeline-metric.is-exit {
+  background: #fff1f2;
+  color: #be123c;
+}
+
+.stock-timeline-count {
+  margin: 0.55rem 0 0;
+}
+
+.stock-timeline-empty,
+.stock-chart-empty {
+  display: grid;
+  min-height: 15rem;
+  place-items: center;
+  padding: 2rem;
+  color: #8792a2;
+  text-align: center;
+  font-size: 0.875rem;
+}
+
+.stock-timeline-empty.hidden {
+  display: none !important;
+}
+
+@media (max-width: 767px) {
+  .stock-timeline-card {
+    height: auto;
+  }
+}

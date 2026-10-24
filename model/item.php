@@ -181,6 +181,35 @@ class Item {
         return $data ?: null;
     }
 
+    public function TimelineStockPorHash(string $hash): array {
+        if (!preg_match('/^[a-f0-9]{32}$/i', $hash)) {
+            throw new InvalidArgumentException('Hash de producto inválido.');
+        }
+        $productStmt = $this->conn->prepare(
+            'SELECT id FROM product_service WHERE MD5(id) = :hash AND id_sucursal = @id_sucursal LIMIT 1'
+        );
+        $productStmt->execute([':hash' => $hash]);
+        $productId = $productStmt->fetchColumn();
+        if ($productId === false) {
+            return [];
+        }
+
+        $sql = "SELECT DATE(s.fecha) AS fecha,
+                       MAX(s.fecha) AS ultimo_movimiento,
+                       SUM(CASE WHEN UPPER(s.tipo) = 'E' THEN s.stock ELSE 0 END) AS entradas,
+                       SUM(CASE WHEN UPPER(s.tipo) = 'S' THEN s.stock ELSE 0 END) AS salidas,
+                       COUNT(*) AS movimientos
+                FROM stock_black s
+                WHERE s.id_product = :producto
+                GROUP BY DATE(s.fecha)
+                ORDER BY DATE(s.fecha) DESC
+                LIMIT 6";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':producto', (int)$productId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function obtenerCategoria(string $grupo): ?array {
         $sql = "SELECT *
                 FROM categoria
