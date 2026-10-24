@@ -102,7 +102,7 @@ class Permisos
             'get_item_categoria.php' => 'items',
             'api.php' => 'clientes', 'api_ruc.php' => 'clientes',
             'table_sucursal.php' => 'sucursales', 'add_sucursal.php' => 'sucursales', 'upd_sucursal.php' => 'sucursales', 'estado_sucursal.php' => 'sucursales', 'aumentar_cuota_sucursal.php' => 'sucursales', 'historial_cuota_sucursal.php' => 'sucursales', 'configurar_nubefact_sucursal.php' => 'sucursales',
-            'table_proveedor.php' => 'compras', 'get_proveedor.php' => 'compras', 'add_proveedor.php' => 'compras', 'upd_proveedor.php' => 'compras', 'estado_proveedor.php' => 'compras',
+            'table_proveedor.php' => 'compras', 'get_proveedor.php' => 'compras', 'add_proveedor.php' => 'compras', 'upd_proveedor.php' => 'compras', 'estado_proveedor.php' => 'compras', 'lookup_proveedor_ruc.php' => 'compras',
             'apx_contadores.php' => 'inicio', 'apx_diario.php' => 'reporte', 'apx_mensual.php' => 'reporte', 'apx_cliente.php' => 'reporte', 'apx_item.php' => 'reporte', 'apx_usuario.php' => 'reporte', 'apx_valida.php' => 'tickets', 'excel.php' => 'reporte',
         ];
         return $rutas[$ruta] ?? null;

@@ -10,6 +10,8 @@
     const saveButton = document.getElementById("btnGuardarProveedor");
     const typeSelect = document.getElementById("proveedor-tipo-documento");
     const documentInput = document.getElementById("proveedor-documento");
+    const documentStatus = document.getElementById("proveedor-documento-status");
+    const nameInput = document.getElementById("proveedor-razon-social");
     const stateToggle = document.getElementById("proveedor-estado-toggle");
     const stateInput = document.getElementById("proveedor-estado");
     const reloadButton = document.getElementById("btnRecargarProveedores");
@@ -34,6 +36,16 @@
       }
     });
 
+    let lookupSequence = 0;
+    let lastLookupDocument = "";
+    let autoFilledDocument = "";
+
+    const setDocumentStatus = (message = "", state = "") => {
+      documentStatus.textContent = message;
+      documentStatus.classList.remove("text-textmuted", "text-primary", "text-success", "text-danger");
+      documentStatus.classList.add(state === "loading" ? "text-primary" : state === "success" ? "text-success" : state === "error" ? "text-danger" : "text-textmuted");
+    };
+
     const syncDocumentRules = () => {
       const isRuc = typeSelect.value === "RUC";
       const length = isRuc ? 11 : 8;
@@ -42,9 +54,63 @@
       documentInput.placeholder = `${length} dígitos`;
       documentInput.value = documentInput.value.replace(/\D/g, "").slice(0, length);
     };
-    typeSelect.addEventListener("change", syncDocumentRules);
+
+    const consultarDocumento = async () => {
+      const tipo = typeSelect.value;
+      const documento = documentInput.value;
+      const longitud = tipo === "RUC" ? 11 : 8;
+      if (documento.length !== longitud) {
+        lastLookupDocument = "";
+        setDocumentStatus("");
+        return;
+      }
+      const queryKey = `${tipo}:${documento}`;
+      if (queryKey === lastLookupDocument) return;
+      lastLookupDocument = queryKey;
+      const currentSequence = ++lookupSequence;
+      setDocumentStatus(`Consultando ${tipo}…`, "loading");
+
+      try {
+        const endpoint = tipo === "RUC"
+          ? `controller/lookup_proveedor_ruc.php?ruc=${encodeURIComponent(documento)}`
+          : `config/api.php?dni=${encodeURIComponent(documento)}`;
+        const response = await fetch(endpoint);
+        const data = await response.json();
+        if (currentSequence !== lookupSequence || documentInput.value !== documento || typeSelect.value !== tipo) return;
+        if (!response.ok || data?.ok === false || data?.error) {
+          throw new Error(data?.message || data?.error || `No se encontró información para ese ${tipo}.`);
+        }
+
+        const nombre = tipo === "RUC"
+          ? String(data.nombre || data.name || "").trim()
+          : [data.NOMBRES, data.PATERNO, data.MATERNO].filter(Boolean).join(" ").trim();
+        if (!nombre) throw new Error(`La consulta no devolvió el nombre asociado al ${tipo}.`);
+        nameInput.value = nombre.slice(0, 150);
+        autoFilledDocument = documento;
+        setDocumentStatus(`${tipo} encontrado: nombre completado automáticamente.`, "success");
+      } catch (error) {
+        if (currentSequence !== lookupSequence) return;
+        setDocumentStatus(error.message || `No se pudo consultar el ${tipo}.`, "error");
+      }
+    };
+
+    typeSelect.addEventListener("change", () => {
+      lookupSequence++;
+      lastLookupDocument = "";
+      if (autoFilledDocument) {
+        nameInput.value = "";
+        autoFilledDocument = "";
+      }
+      syncDocumentRules();
+      consultarDocumento();
+    });
     documentInput.addEventListener("input", () => {
       documentInput.value = documentInput.value.replace(/\D/g, "").slice(0, Number(documentInput.maxLength));
+      if (autoFilledDocument && documentInput.value !== autoFilledDocument) {
+        nameInput.value = "";
+        autoFilledDocument = "";
+      }
+      consultarDocumento();
     });
 
     const table = new Tabulator(tableElement, {
@@ -132,6 +198,12 @@
       document.getElementById("proveedor-email").value = row?.email || "";
       document.getElementById("proveedor-telefono").value = row?.telefono || "";
       document.getElementById("proveedor-direccion").value = row?.direccion || "";
+      documentStatus.textContent = "";
+      documentStatus.classList.remove("text-primary", "text-success", "text-danger");
+      documentStatus.classList.add("text-textmuted");
+      lastLookupDocument = "";
+      autoFilledDocument = "";
+      lookupSequence++;
       setState(row ? Number(row.estado) === 1 : true);
       syncDocumentRules();
       document.getElementById("modal-proveedor-titulo").textContent = row ? "Editar proveedor" : "Nuevo proveedor";

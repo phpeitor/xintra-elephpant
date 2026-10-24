@@ -8,6 +8,7 @@ require_once ROOT . '/controller/check_session.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🐘</text></svg>" />
   <title>Proveedores | Xintra Elephpant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
@@ -72,6 +73,7 @@ require_once ROOT . '/controller/check_session.php';
               <div class="space-y-2">
                 <label for="proveedor-documento" class="ti-form-label">Número de documento</label>
                 <input id="proveedor-documento" name="documento" type="text" inputmode="numeric" maxlength="11" pattern="[0-9]{11}" required class="ti-form-input rounded-sm" placeholder="11 dígitos">
+                <span id="proveedor-documento-status" class="text-xs text-textmuted" role="status" aria-live="polite"></span>
               </div>
               <div class="space-y-2 sm:col-span-2">
                 <label for="proveedor-razon-social" class="ti-form-label">Nombre / Razón Social</label>
@@ -119,6 +121,6 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/js/simplebar.js"></script>
   <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/proveedores.js?v=1"></script>
+  <script src="./assets/js/proveedores.js?v=2"></script>
 </body>
 </html>
