@@ -31,7 +31,7 @@ try {
     echo json_encode(['ok' => false, 'message' => $e->getMessage()], JSON_UNESCAPED_UNICODE);
 } catch (PDOException $e) {
     http_response_code(500);
-    echo json_encode(['ok' => false, 'message' => 'No se pudo guardar la configuración. Aplica primero la migración NubeFact por sucursal.'], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['ok' => false, 'message' => 'No se pudo guardar la configuración. Aplica primero las migraciones NubeFact y RUC emisor por sucursal.'], JSON_UNESCAPED_UNICODE);
 } catch (Throwable $e) {
     http_response_code(500);
     echo json_encode(['ok' => false, 'message' => 'No se pudo procesar la configuración NubeFact.'], JSON_UNESCAPED_UNICODE);

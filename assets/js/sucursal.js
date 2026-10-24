@@ -400,6 +400,7 @@
         nubefactError.classList.add("hidden");
         document.getElementById("nubefact-id-sucursal").value = row.id;
         document.getElementById("nubefact-sucursal-nombre").textContent = row.nombre || "";
+        document.getElementById("nubefact-ruc-emisor").value = "";
         document.getElementById("nubefact-entorno-activo").value = "demo";
         document.getElementById("nubefact-demo-num-boleta").value = "1";
         document.getElementById("nubefact-demo-num-factura").value = "1";
@@ -411,6 +412,7 @@
           const response = await fetch(`controller/configurar_nubefact_sucursal.php?id=${encodeURIComponent(row.id)}`);
           const result = await response.json();
           if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo cargar la configuración.");
+          document.getElementById("nubefact-ruc-emisor").value = result.data.ruc_emisor || "";
           document.getElementById("nubefact-entorno-activo").value = result.data.entorno_activo || "demo";
           rellenarEntornoNubefact("demo", result.data.demo || {});
           rellenarEntornoNubefact("production", result.data.production || {});

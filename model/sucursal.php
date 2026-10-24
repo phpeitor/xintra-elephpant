@@ -196,7 +196,10 @@ class Sucursal
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
 
-        $result = ['entorno_activo' => $row['entorno_activo'] ?? 'demo'];
+        $result = [
+            'entorno_activo' => $row['entorno_activo'] ?? 'demo',
+            'ruc_emisor' => (string)($row['ruc_emisor'] ?? ''),
+        ];
         foreach (['demo', 'production'] as $environment) {
             $result[$environment] = [
                 'url' => (string)($row[$environment . '_url'] ?? ''),
@@ -226,7 +229,14 @@ class Sucursal
         $currentStmt = $this->conn->prepare('SELECT * FROM sucursal_nubefact WHERE id_sucursal = :id LIMIT 1');
         $currentStmt->execute([':id' => $idSucursal]);
         $current = $currentStmt->fetch(PDO::FETCH_ASSOC) ?: [];
-        $values = ['entorno_activo' => $activeEnvironment];
+        $rucEmisor = preg_replace('/\D+/', '', (string)($data['ruc_emisor'] ?? ''));
+        if ($rucEmisor !== '' && !preg_match('/^\d{11}$/', $rucEmisor)) {
+            throw new InvalidArgumentException('El RUC del emisor debe tener exactamente 11 dígitos.');
+        }
+        $values = [
+            'entorno_activo' => $activeEnvironment,
+            'ruc_emisor' => $rucEmisor !== '' ? $rucEmisor : null,
+        ];
 
         foreach (['demo', 'production'] as $environment) {
             $prefix = $environment . '_';

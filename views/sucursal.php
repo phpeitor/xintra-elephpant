@@ -89,15 +89,15 @@ require_once ROOT . '/controller/check_session.php';
                    <option value="">Seleccione distrito</option>
                  </select>
               </div>
+              <div class="space-y-2">
+                <label for="sucursal-telefono" class="ti-form-label">Teléfono</label>
+                <input id="sucursal-telefono" name="telefono" class="ti-form-input rounded-sm" type="tel" maxlength="20" autocomplete="tel">
+              </div>
               <div class="space-y-2 sm:col-span-2">
                 <label for="sucursal-direccion" class="ti-form-label">Dirección</label>
                 <input id="sucursal-direccion" name="direccion" class="ti-form-input rounded-sm" type="text" maxlength="200" autocomplete="street-address">
               </div>
               <div class="space-y-2">
-                <label for="sucursal-telefono" class="ti-form-label">Teléfono</label>
-                <input id="sucursal-telefono" name="telefono" class="ti-form-input rounded-sm" type="tel" maxlength="20" autocomplete="tel">
-              </div>
-               <div class="space-y-2">
                  <label for="sucursal-estado-toggle" class="ti-form-label">Estado</label>
                  <div id="sucursal-estado-toggle" class="toggle toggle-sm on mb-0" role="switch" aria-checked="true" tabindex="0"><span></span></div>
                  <input type="hidden" id="sucursal-estado" name="estado" value="1">
@@ -183,6 +183,11 @@ require_once ROOT . '/controller/check_session.php';
           </div>
           <form id="form-nubefact-sucursal" class="p-4 space-y-4">
             <input type="hidden" id="nubefact-id-sucursal" name="id_sucursal">
+            <div class="space-y-2">
+              <label for="nubefact-ruc-emisor" class="ti-form-label">RUC del emisor</label>
+              <input id="nubefact-ruc-emisor" name="ruc_emisor" type="text" inputmode="numeric" autocomplete="off" maxlength="11" pattern="[0-9]{11}" class="ti-form-input rounded-sm" placeholder="11 dígitos">
+              <p class="text-xs text-textmuted">RUC asociado a esta sucursal para la configuración de facturación electrónica.</p>
+            </div>
             <div class="space-y-2">
               <label for="nubefact-entorno-activo" class="ti-form-label">Entorno que se usará al emitir</label>
               <select id="nubefact-entorno-activo" name="entorno_activo" class="ti-form-select rounded-sm">
@@ -280,6 +285,6 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
   <script src="./assets/js/xintra-tooltip.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/sucursal.js?v=3"></script>
+  <script src="./assets/js/sucursal.js?v=4"></script>
 </body>
 </html>
