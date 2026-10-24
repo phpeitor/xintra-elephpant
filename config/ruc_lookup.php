@@ -107,6 +107,12 @@ function porcentajeSimilitudNombres(string $primero, string $segundo): float
             'Ñ' => 'N',
         ]);
         $value = preg_replace('/[^A-Z0-9]+/', ' ', $value) ?? '';
+        $value = trim(preg_replace('/\s+/', ' ', $value) ?? '');
+        $value = preg_replace(
+            '/(?:\s+(?:SAC|SA|SAA|SRL|EIRL|SACS|SCA)|\s+S\s+A\s+C|\s+S\s+A\s+A|\s+S\s+R\s+L|\s+E\s+I\s+R\s+L|\s+SOCIEDAD\s+ANONIMA(?:\s+CERRADA|\s+ABIERTA)?|\s+SOCIEDAD\s+COMERCIAL\s+DE\s+RESPONSABILIDAD\s+LIMITADA)$/',
+            '',
+            $value
+        ) ?? $value;
         return trim(preg_replace('/\s+/', ' ', $value) ?? '');
     };
     $a = $normalizar($primero);
@@ -114,8 +120,40 @@ function porcentajeSimilitudNombres(string $primero, string $segundo): float
     if ($a === '' || $b === '') {
         return 0.0;
     }
-    similar_text($a, $b, $percentage);
-    return round($percentage, 2);
+
+    // Compara tokens, no posiciones: «JUAN PEREZ» y «PEREZ JUAN» deben coincidir.
+    $tokensA = array_values(array_filter(explode(' ', $a)));
+    $tokensB = array_values(array_filter(explode(' ', $b)));
+    $totalTokens = count($tokensA) + count($tokensB);
+    if ($totalTokens === 0) {
+        return 0.0;
+    }
+
+    $pares = [];
+    foreach ($tokensA as $indexA => $tokenA) {
+        foreach ($tokensB as $indexB => $tokenB) {
+            similar_text($tokenA, $tokenB, $tokenPercentage);
+            $score = (float)$tokenPercentage / 100;
+            if ($score >= 0.7) {
+                $pares[] = ['a' => $indexA, 'b' => $indexB, 'score' => $score];
+            }
+        }
+    }
+    usort($pares, static fn(array $left, array $right): int => $right['score'] <=> $left['score']);
+
+    $usadosA = [];
+    $usadosB = [];
+    $coincidencia = 0.0;
+    foreach ($pares as $par) {
+        if (isset($usadosA[$par['a']]) || isset($usadosB[$par['b']])) {
+            continue;
+        }
+        $usadosA[$par['a']] = true;
+        $usadosB[$par['b']] = true;
+        $coincidencia += $par['score'];
+    }
+
+    return round((2 * $coincidencia / $totalTokens) * 100, 2);
 }
 
 function validarRucEmisorContraSucursal(string $ruc, string $nombreSucursal): array

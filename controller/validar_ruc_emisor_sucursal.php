@@ -35,9 +35,5 @@ try {
 } catch (Throwable $e) {
     http_response_code(502);
     error_log('Error validando RUC emisor por sucursal: ' . $e->getMessage());
-    $isLocal = in_array(strtolower((string)($_SERVER['HTTP_HOST'] ?? '')), ['localhost', '127.0.0.1'], true);
-    $message = $isLocal
-        ? 'Error de validación: ' . $e->getMessage()
-        : 'No se pudo consultar el RUC. Revisa las APIs configuradas.';
-    echo json_encode(['ok' => false, 'message' => $message], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['ok' => false, 'message' => 'No se pudo consultar el RUC. Revisa las APIs configuradas.'], JSON_UNESCAPED_UNICODE);
 }
