@@ -12,7 +12,7 @@ require_once ROOT . '/controller/check_session.php';
   <title>Sucursales | Xintra Elephpant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
-  <link href="./assets/css/sucursal.css?v=4" rel="stylesheet">
+  <link href="./assets/css/sucursal.css?v=5" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
@@ -185,8 +185,9 @@ require_once ROOT . '/controller/check_session.php';
             <input type="hidden" id="nubefact-id-sucursal" name="id_sucursal">
             <div class="space-y-2">
               <label for="nubefact-ruc-emisor" class="ti-form-label">RUC del emisor</label>
-              <input id="nubefact-ruc-emisor" name="ruc_emisor" type="text" inputmode="numeric" autocomplete="off" maxlength="11" pattern="[0-9]{11}" class="ti-form-input rounded-sm" placeholder="11 dígitos">
+              <input id="nubefact-ruc-emisor" name="ruc_emisor" type="text" inputmode="numeric" autocomplete="off" maxlength="11" pattern="[0-9]{11}" class="ti-form-input rounded-sm" placeholder="11 dígitos" required>
               <p class="text-xs text-textmuted">RUC asociado a esta sucursal para la configuración de facturación electrónica.</p>
+              <span id="nubefact-ruc-emisor-status" class="ruc-validation-status hidden" role="status" aria-live="polite"></span>
             </div>
             <div class="space-y-2">
               <label for="nubefact-entorno-activo" class="ti-form-label">Entorno que se usará al emitir</label>
@@ -285,6 +286,6 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
   <script src="./assets/js/xintra-tooltip.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/sucursal.js?v=4"></script>
+  <script src="./assets/js/sucursal.js?v=5"></script>
 </body>
 </html>

@@ -27,6 +27,59 @@
   overflow-y: auto;
 }
 
+.ruc-validation-status {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  max-width: 100%;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid transparent;
+  border-radius: 0.65rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.ruc-validation-status[hidden],
+.ruc-validation-status.hidden {
+  display: none;
+}
+
+.ruc-validation-status::before {
+  flex: 0 0 auto;
+  font-weight: 700;
+}
+
+.ruc-validation-status.is-loading {
+  color: #1d4ed8;
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.ruc-validation-status.is-loading::before {
+  content: "…";
+}
+
+.ruc-validation-status.is-valid {
+  color: #15803d;
+  background: #f0fdf4;
+  border-color: #bbf7d0;
+}
+
+.ruc-validation-status.is-valid::before {
+  content: "✓";
+}
+
+.ruc-validation-status.is-invalid {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.ruc-validation-status.is-invalid::before {
+  content: "!";
+}
+
 #modal-sucursal:not(.hidden) .sucursal-modal-fall,
 #modal-cuota-sucursal:not(.hidden) .sucursal-modal-fall {
   animation: sucursal-modal-fall 650ms cubic-bezier(0.34, 1.56, 0.64, 1) both;

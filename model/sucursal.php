@@ -230,8 +230,16 @@ class Sucursal
         $currentStmt->execute([':id' => $idSucursal]);
         $current = $currentStmt->fetch(PDO::FETCH_ASSOC) ?: [];
         $rucEmisor = preg_replace('/\D+/', '', (string)($data['ruc_emisor'] ?? ''));
-        if ($rucEmisor !== '' && !preg_match('/^\d{11}$/', $rucEmisor)) {
-            throw new InvalidArgumentException('El RUC del emisor debe tener exactamente 11 dígitos.');
+        if (!preg_match('/^\d{11}$/', $rucEmisor)) {
+            throw new InvalidArgumentException('Ingresa el RUC del emisor con exactamente 11 dígitos.');
+        }
+        $validacionRuc = $this->validarRucEmisorSucursal($idSucursal, $rucEmisor);
+        if (!$validacionRuc['coincide']) {
+            throw new InvalidArgumentException(sprintf(
+                'El nombre del RUC (%s) coincide %.2f%% con la sucursal; se requiere al menos 90%%.',
+                $validacionRuc['nombre_ruc'],
+                $validacionRuc['similitud']
+            ));
         }
         $values = [
             'entorno_activo' => $activeEnvironment,
@@ -308,6 +316,19 @@ class Sucursal
             $stmt->bindValue(':' . $column, $value, $type);
         }
         $stmt->execute();
+    }
+
+    public function validarRucEmisorSucursal(int $idSucursal, string $ruc): array
+    {
+        $branchStmt = $this->conn->prepare('SELECT SUCURSAL FROM sucursal WHERE IDSUCURSAL = :id LIMIT 1');
+        $branchStmt->bindValue(':id', $idSucursal, PDO::PARAM_INT);
+        $branchStmt->execute();
+        $branchName = $branchStmt->fetchColumn();
+        if (!is_string($branchName) || $branchName === '') {
+            throw new RuntimeException('Sucursal no encontrada.');
+        }
+        require_once __DIR__ . '/../config/ruc_lookup.php';
+        return validarRucEmisorContraSucursal($ruc, $branchName);
     }
 
     private function normalizar(array $data): array

@@ -34,6 +34,17 @@
     const nubefactModalClose = document.querySelector('#modal-nubefact-sucursal [data-hs-overlay="#modal-nubefact-sucursal"]');
     const nubefactError = document.getElementById("nubefact-form-error");
     const nubefactSaveButton = document.getElementById("btnGuardarNubefact");
+    const rucEmisorInput = document.getElementById("nubefact-ruc-emisor");
+    const rucEmisorStatus = document.getElementById("nubefact-ruc-emisor-status");
+    const setRucEmisorStatus = (state, message = "") => {
+      rucEmisorStatus.textContent = message;
+      rucEmisorStatus.classList.remove("hidden", "is-loading", "is-valid", "is-invalid");
+      if (!message) {
+        rucEmisorStatus.classList.add("hidden");
+        return;
+      }
+      rucEmisorStatus.classList.add(`is-${state}`);
+    };
     const tableElement = document.getElementById("tabla-sucursales");
     if (!form || !tableElement) return;
 
@@ -393,6 +404,38 @@
         : `Token ${capitalized} aún no configurado.`;
     };
 
+    rucEmisorInput.addEventListener("input", () => {
+      rucEmisorInput.setCustomValidity("");
+      setRucEmisorStatus("");
+    });
+    rucEmisorInput.addEventListener("blur", async () => {
+      const ruc = rucEmisorInput.value.replace(/\D/g, "");
+      if (!ruc) return;
+      rucEmisorInput.value = ruc;
+      setRucEmisorStatus("loading", "Consultando RUC y comparando razón social…");
+      try {
+        const query = new URLSearchParams({
+          id_sucursal: document.getElementById("nubefact-id-sucursal").value,
+          ruc,
+        });
+        const response = await fetch(`controller/validar_ruc_emisor_sucursal.php?${query}`);
+        const result = await response.json();
+        if (!response.ok || !result.ok) throw new Error(result.message || "No se pudo validar el RUC.");
+        const detail = result.data;
+        if (!detail.coincide) {
+          const message = `La razón social «${detail.nombre_ruc}» coincide ${Number(detail.similitud).toFixed(2)}%; se requiere al menos 90%.`;
+          rucEmisorInput.setCustomValidity(message);
+          setRucEmisorStatus("invalid", message);
+          return;
+        }
+        rucEmisorInput.setCustomValidity("");
+        setRucEmisorStatus("valid", `Verificado: ${detail.nombre_ruc} · similitud ${Number(detail.similitud).toFixed(2)}%.`);
+      } catch (error) {
+        rucEmisorInput.setCustomValidity(error.message || "No se pudo validar el RUC.");
+        setRucEmisorStatus("invalid", error.message || "No se pudo validar el RUC.");
+      }
+    });
+
     window.sucursalNubefact = {
       async abrir(row) {
         nubefactForm.reset();
@@ -401,6 +444,8 @@
         document.getElementById("nubefact-id-sucursal").value = row.id;
         document.getElementById("nubefact-sucursal-nombre").textContent = row.nombre || "";
         document.getElementById("nubefact-ruc-emisor").value = "";
+        rucEmisorInput.setCustomValidity("");
+        setRucEmisorStatus("");
         document.getElementById("nubefact-entorno-activo").value = "demo";
         document.getElementById("nubefact-demo-num-boleta").value = "1";
         document.getElementById("nubefact-demo-num-factura").value = "1";
