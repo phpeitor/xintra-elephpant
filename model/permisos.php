@@ -91,7 +91,7 @@ class Permisos
             'items.php' => 'items', 'add_item.php' => 'items', 'upd_item.php' => 'items', 'stk_item.php' => 'items',
             'tickets.php' => 'tickets', 'add_ticket.php' => 'tickets', 'upd_ticket.php' => 'tickets',
             'reporte.php' => 'reporte', 'sucursal.php' => 'sucursales',
-            'proveedores.php' => 'compras', 'compras.php' => 'compras',
+            'proveedores.php' => 'compras', 'compras.php' => 'compras', 'crear_compra.php' => 'compras', 'detalle_compra.php' => 'compras',
             'table_usuario.php' => 'usuarios', 'catalogos_usuario.php' => 'usuarios', 'asignar_sucursal_cargo.php' => 'usuarios',
             'permisos_usuario.php' => 'usuarios', 'get_usuario.php' => 'usuarios', 'delete_usuario.php' => 'usuarios',
             'asistencia.php' => 'asistencia',

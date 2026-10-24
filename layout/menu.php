@@ -118,7 +118,7 @@ $puedeVerMenu = static fn(string $permiso): bool => $menuPermisos->tiene($menuUs
             <ul class="slide-menu child1" data-popper-placement="top" data-popper-reference-hidden=""
                 data-popper-escaped=""
                 style="position: relative; left: 0px; top: 0px; margin: 0px; transform: translate(120px, 3222px);">
-                <li class="slide"> <a href="compras.php" class="side-menu__item">Registro</a> </li>
+                <li class="slide"> <a href="compras.php" class="side-menu__item">Historial</a> </li>
                 <li class="slide"> <a href="proveedores.php" class="side-menu__item">Proveedores</a> </li>
             </ul>
         </li>

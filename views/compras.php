@@ -12,14 +12,10 @@ require_once ROOT . '/controller/check_session.php';
   <title>Compras | Xintra Elephpant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
-  <link href="./assets/css/compras.css?v=4" rel="stylesheet">
+  <link href="./assets/css/compras.css?v=7" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
-  <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
   <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
 </head>
 <body>
   <?php include ROOT . '/layout/init.php'; ?>
@@ -28,125 +24,48 @@ require_once ROOT . '/controller/check_session.php';
     <?php include ROOT . '/layout/sidebar.php'; ?>
     <main class="main-content app-content">
       <div class="container-fluid">
-        <div class="flex items-center justify-between page-header-breadcrumb flex-wrap gap-2">
+        <div class="flex items-center justify-between page-header-breadcrumb flex-wrap gap-3 mb-5">
           <div>
-            <ol class="breadcrumb mb-1"><li class="breadcrumb-item">Compras</li><li class="breadcrumb-item active" aria-current="page">Registro de compras</li></ol>
-            <h1 class="page-title font-medium text-lg mb-0">Registro de compras</h1>
-            <p class="text-sm text-textmuted mt-1">Registra comprobantes recibidos y sus productos.</p>
+            <ol class="breadcrumb mb-1"><li class="breadcrumb-item">Compras</li><li class="breadcrumb-item active" aria-current="page">Facturas de proveedores</li></ol>
+            <h1 class="page-title font-medium text-lg mb-0">Compras</h1>
+            <p class="text-sm text-textmuted mt-1">Controla comprobantes recibidos, proveedores y productos comprados.</p>
           </div>
-          <button id="btnNuevaCompra" type="button" class="ti-btn ti-btn-primary !border-0"><i class="ri-add-line me-1" aria-hidden="true"></i>Registrar compra</button>
+          <a href="crear_compra.php" class="ti-btn ti-btn-primary !border-0"><i class="ri-add-line me-1" aria-hidden="true"></i>Registrar Compra</a>
+        </div>
+
+        <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+          <article class="box compra-kpi-card"><div class="box-body flex items-center gap-3"><span class="compra-kpi-icon bg-primary/10 text-primary"><i class="ri-file-list-3-line" aria-hidden="true"></i></span><div><p class="text-xs text-textmuted">Documentos registrados</p><strong id="compra-kpi-total" class="text-xl">0</strong></div></div></article>
+          <article class="box compra-kpi-card"><div class="box-body flex items-center gap-3"><span class="compra-kpi-icon bg-warning/10 text-warning"><i class="ri-time-line" aria-hidden="true"></i></span><div><p class="text-xs text-textmuted">Pendientes de recepción</p><strong id="compra-kpi-pendientes" class="text-xl">0</strong></div></div></article>
+          <article class="box compra-kpi-card"><div class="box-body flex items-center gap-3"><span class="compra-kpi-icon bg-success/10 text-success"><i class="ri-money-dollar-circle-line" aria-hidden="true"></i></span><div><p class="text-xs text-textmuted">Total registrado</p><strong id="compra-kpi-monto" class="text-xl">S/ 0.00</strong></div></div></article>
+          <article class="box compra-kpi-card"><div class="box-body flex items-center gap-3"><span class="compra-kpi-icon bg-info/10 text-info"><i class="ri-store-2-line" aria-hidden="true"></i></span><div><p class="text-xs text-textmuted">Proveedores activos</p><a href="proveedores.php" class="text-sm font-semibold text-info">Administrar proveedores <i class="ri-arrow-right-up-line" aria-hidden="true"></i></a></div></div></article>
         </div>
 
         <section class="box" aria-labelledby="compras-heading">
-          <div class="box-header flex items-center justify-between">
-            <h2 id="compras-heading" class="box-title">Historial de compras</h2>
+          <div class="box-header flex items-center justify-between flex-wrap gap-3">
+            <div><h2 id="compras-heading" class="box-title">Historial de compras</h2><p class="text-xs text-textmuted mt-1">Consulta el documento recibido y su detalle.</p></div>
             <button id="btnRecargarCompras" type="button" class="ti-btn ti-btn-light ti-btn-sm"><i id="iconRecargarCompras" class="ri-refresh-line me-1" aria-hidden="true"></i><span id="textoRecargarCompras">Actualizar</span></button>
           </div>
           <div class="box-body">
-            <p class="rounded-lg border border-primary/15 bg-primary/5 px-3 py-2 text-sm text-textmuted mb-3">Las compras registradas quedan pendientes y no modifican el inventario todavía.</p>
-            <div id="compras-error" class="hidden text-danger mb-3" role="alert"></div>
-            <div class="overflow-x-auto table-bordered">
+            <div class="flex flex-col sm:flex-row gap-3 mb-4">
+              <div class="relative flex-1">
+                <i class="ri-search-line absolute start-3 top-1/2 -translate-y-1/2 text-textmuted" aria-hidden="true"></i>
+                <input id="compras-search" type="search" class="ti-form-input rounded-sm ps-9" placeholder="Buscar por proveedor, comprobante o número..." aria-label="Buscar compras">
+              </div>
+              <select id="compras-estado-filter" class="ti-form-select rounded-sm sm:max-w-56" aria-label="Filtrar por estado">
+                <option value="">Todos los estados</option>
+                <option value="PENDIENTE">Pendiente de recepción</option>
+                <option value="ANULADA">Anulada</option>
+              </select>
+            </div>
+            <p id="compras-error" class="hidden rounded-lg border border-danger/20 bg-danger/5 p-3 text-sm text-danger mb-3" role="alert"></p>
+            <div class="overflow-x-auto table-bordered rounded-lg">
               <div id="tabla-compras" class="ti-custom-table ti-striped-table ti-custom-table-hover tabulator" role="grid"></div>
             </div>
+            <div class="mt-3 flex items-center gap-2 text-xs text-textmuted"><i class="ri-information-line text-info" aria-hidden="true"></i>Las compras registradas quedan pendientes y no modifican el inventario todavía.</div>
           </div>
         </section>
       </div>
     </main>
-
-    <div id="modal-compra" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="modal-compra-titulo">
-      <div class="compra-modal-dialog hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all m-3 sm:mx-auto">
-        <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
-          <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-white/10">
-            <div>
-              <h2 id="modal-compra-titulo" class="font-semibold text-defaulttextcolor dark:text-white">Registrar compra</h2>
-              <p class="text-xs text-textmuted mt-1">Registra el comprobante que recibiste del proveedor. Esta compra aún no modifica inventario.</p>
-            </div>
-            <button type="button" class="ti-btn ti-btn-light !mb-0" data-hs-overlay="#modal-compra" aria-label="Cerrar"><i class="ri-close-line" aria-hidden="true"></i></button>
-          </div>
-          <form id="form-compra" class="p-4 space-y-4">
-            <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
-              <div class="space-y-2 md:col-span-2">
-                <label for="compra-proveedor" class="ti-form-label">Proveedor <span aria-hidden="true">*</span></label>
-                <select id="compra-proveedor" name="proveedor_id" class="ti-form-select rounded-sm" required>
-                  <option value="">Selecciona proveedor</option>
-                </select>
-              </div>
-              <div class="space-y-2">
-                <label for="compra-tipo" class="ti-form-label">Comprobante</label>
-                <select id="compra-tipo" name="tipo_comprobante" class="ti-form-select rounded-sm" required>
-                  <option value="FACTURA">Factura</option>
-                  <option value="BOLETA">Boleta</option>
-                  <option value="TICKET">Ticket</option>
-                  <option value="OTRO">Otro</option>
-                </select>
-              </div>
-              <div class="space-y-2">
-                <label for="date" class="ti-form-label">Fecha</label>
-                <input id="date" name="fecha" type="text" class="ti-form-input rounded-sm" readonly required autocomplete="off" placeholder="Selecciona la fecha">
-              </div>
-              <div class="space-y-2">
-                <label for="compra-serie" class="ti-form-label">Serie del proveedor</label>
-                <input id="compra-serie" name="serie" type="text" maxlength="20" class="ti-form-input rounded-sm" required placeholder="F001">
-              </div>
-              <div class="space-y-2">
-                <label for="compra-numero" class="ti-form-label">Número del comprobante</label>
-                <input id="compra-numero" name="numero" type="text" maxlength="20" class="ti-form-input rounded-sm" required placeholder="00001234">
-              </div>
-            </div>
-
-            <section class="rounded-xl border border-defaultborder dark:border-white/10 overflow-hidden" aria-labelledby="compra-detalle-heading">
-              <div class="flex flex-wrap items-center justify-between gap-2 p-3 border-b border-defaultborder dark:border-white/10">
-                <div>
-                  <h3 id="compra-detalle-heading" class="font-semibold">Detalle de productos</h3>
-                  <p class="text-xs text-textmuted">Ingresa el costo unitario antes del IGV.</p>
-                </div>
-                <button id="btnAgregarLineaCompra" type="button" class="ti-btn ti-btn-light ti-btn-sm"><i class="ri-add-line me-1" aria-hidden="true"></i>Agregar producto</button>
-              </div>
-              <div class="overflow-x-auto">
-                <table class="compra-lines-table w-full min-w-[900px] text-sm">
-                  <thead><tr><th>Producto</th><th>Cantidad (entera)</th><th>Costo unitario</th><th>IGV</th><th>Subtotal</th><th>Total</th><th><span class="sr-only">Quitar</span></th></tr></thead>
-                  <tbody id="compra-lineas"></tbody>
-                </table>
-              </div>
-              <div class="grid sm:grid-cols-3 gap-3 p-3 border-t border-defaultborder dark:border-white/10 bg-light/30">
-                <div><span class="text-xs text-textmuted">Subtotal</span><strong id="compra-subtotal" class="block">S/ 0.00</strong></div>
-                <div><span class="text-xs text-textmuted">IGV</span><strong id="compra-igv" class="block">S/ 0.00</strong></div>
-                <div><span class="text-xs text-textmuted">Total</span><strong id="compra-total" class="block text-lg text-primary">S/ 0.00</strong></div>
-              </div>
-            </section>
-            <div class="space-y-2">
-              <label for="compra-observaciones" class="ti-form-label">Observaciones</label>
-              <textarea id="compra-observaciones" name="observaciones" maxlength="500" rows="2" class="ti-form-input rounded-sm" placeholder="Notas internas opcionales"></textarea>
-            </div>
-            <p id="compra-form-error" class="hidden text-danger text-sm" role="alert"></p>
-            <div class="flex justify-end gap-2 border-t border-defaultborder dark:border-white/10 pt-4">
-              <button type="button" class="ti-btn ti-btn-light" data-hs-overlay="#modal-compra">Cancelar</button>
-              <button id="btnGuardarCompra" type="submit" class="ti-btn ti-btn-primary">Guardar compra pendiente</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-    <button id="abrir-modal-compra" class="hidden" type="button" data-hs-overlay="#modal-compra" aria-hidden="true" tabindex="-1"></button>
-
-    <div id="modal-detalle-compra" class="hs-overlay hidden fixed inset-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none" role="dialog" tabindex="-1" aria-labelledby="detalle-compra-titulo">
-      <div class="compra-modal-dialog compra-detail-dialog hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all m-3 sm:mx-auto">
-        <div class="pointer-events-auto flex flex-col bg-white border border-defaultborder shadow-xl rounded-xl dark:bg-bodybg dark:border-white/10">
-          <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-white/10">
-            <div><h2 id="detalle-compra-titulo" class="font-semibold">Detalle de compra</h2><p id="detalle-compra-resumen" class="text-xs text-textmuted mt-1"></p></div>
-            <button type="button" class="ti-btn ti-btn-light !mb-0" data-hs-overlay="#modal-detalle-compra" aria-label="Cerrar"><i class="ri-close-line" aria-hidden="true"></i></button>
-          </div>
-          <div class="p-4 space-y-4">
-            <div id="detalle-compra-proveedor" class="rounded-lg bg-light p-3 text-sm"></div>
-            <div class="overflow-x-auto table-bordered"><table class="compra-lines-table w-full min-w-[700px] text-sm"><thead><tr><th>Producto</th><th>Cantidad</th><th>Costo unitario</th><th>Subtotal</th><th>IGV</th><th>Total</th></tr></thead><tbody id="detalle-compra-lineas"></tbody></table></div>
-            <p id="detalle-compra-observaciones" class="text-sm text-textmuted"></p>
-            <div class="grid grid-cols-3 gap-3 text-right"><div><span class="text-xs text-textmuted">Subtotal</span><strong id="detalle-compra-subtotal" class="block"></strong></div><div><span class="text-xs text-textmuted">IGV</span><strong id="detalle-compra-igv" class="block"></strong></div><div><span class="text-xs text-textmuted">Total</span><strong id="detalle-compra-total" class="block text-primary"></strong></div></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <button id="abrir-modal-detalle-compra" class="hidden" type="button" data-hs-overlay="#modal-detalle-compra" aria-hidden="true" tabindex="-1"></button>
-
     <?php include ROOT . '/layout/footer.php'; ?>
   </div>
   <?php include ROOT . '/layout/scroll.php'; ?>
@@ -158,10 +77,7 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/js/sticky.js"></script>
   <script src="./assets/libs/simplebar/simplebar.min.js"></script>
   <script src="./assets/js/simplebar.js"></script>
-  <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
-  <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
   <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/compras.js?v=3"></script>
+  <script src="./assets/js/compras.js?v=2"></script>
 </body>
 </html>

@@ -83,8 +83,118 @@
   z-index: 130;
 }
 
+.compra-product-picker-row .choices {
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.compra-product-picker-row .choices__list--dropdown {
+  z-index: 1200;
+}
+
+.flatpickr-calendar.compras-datepicker {
+  z-index: 1200 !important;
+}
+
 .compra-line-number {
   min-width: 6.5rem;
+}
+
+.compra-kpi-card {
+  margin-bottom: 0;
+}
+
+.compra-kpi-card .box-body {
+  min-height: 6.2rem;
+}
+
+.compra-kpi-icon {
+  display: inline-flex;
+  width: 2.8rem;
+  height: 2.8rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.85rem;
+  font-size: 1.35rem;
+}
+
+.compra-document-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.compra-document-icon {
+  display: inline-flex;
+  width: 2.25rem;
+  height: 2.25rem;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.65rem;
+  background: rgb(99 102 241 / 0.1);
+  color: #6366f1;
+  font-size: 1.1rem;
+}
+
+#tabla-compras .tabulator-cell small {
+  display: block;
+  margin-top: 0.15rem;
+  color: #8792a2;
+  font-size: 0.72rem;
+}
+
+.compra-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.compra-status-pill.is-pending {
+  color: #a16207;
+  background: #fef9c3;
+}
+
+.compra-status-pill.is-cancelled {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.compra-summary-card {
+  box-shadow: 0 10px 28px rgb(15 23 42 / 0.05);
+}
+
+.compra-details-card .box-body {
+  padding-top: 1.25rem;
+}
+
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  .compra-details-card,
+  .compra-details-card * {
+    visibility: visible !important;
+  }
+  .compra-details-card {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    border: 0;
+    box-shadow: none;
+  }
+  #btnImprimirCompra,
+  .sidebar,
+  .app-header,
+  .footer {
+    display: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
