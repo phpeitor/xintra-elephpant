@@ -209,6 +209,7 @@ class Compra
             throw new InvalidArgumentException('Agrega de 1 a 100 productos a la compra.');
         }
         $items = [];
+        $productosAgregados = [];
         foreach ($raw as $item) {
             if (!is_array($item)) {
                 throw new InvalidArgumentException('Una línea de compra no es válida.');
@@ -223,11 +224,15 @@ class Compra
             $quantity = (float)$quantityRaw;
             $cost = (float)$costRaw;
             $rate = filter_var($rateRaw, FILTER_VALIDATE_FLOAT);
-            if (!is_finite($quantity) || $quantity <= 0 || $quantity > 999999
+            if (isset($productosAgregados[(int)$productId])) {
+                throw new InvalidArgumentException('No puedes agregar el mismo producto más de una vez.');
+            }
+            if (!is_finite($quantity) || $quantity <= 0 || $quantity > 999999 || floor($quantity) !== $quantity
                 || !is_finite($cost) || $cost < 0 || $cost > 99999999
                 || !in_array($rate, [0.0, 18.0], true)) {
-                throw new InvalidArgumentException('Revisa la cantidad, el costo unitario o el IGV de las líneas.');
+                throw new InvalidArgumentException('La cantidad debe ser un entero positivo; revisa también el costo y el IGV.');
             }
+            $productosAgregados[(int)$productId] = true;
             $items[] = [
                 'producto_id' => (int)$productId,
                 'cantidad' => round($quantity, 3),

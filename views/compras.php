@@ -8,12 +8,15 @@ require_once ROOT . '/controller/check_session.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='75'>🐘</text></svg>" />
   <title>Compras | Xintra Elephpant</title>
   <script src="./assets/js/main.js"></script>
   <link href="./assets/css/styles.css" rel="stylesheet">
-  <link href="./assets/css/compras.css?v=1" rel="stylesheet">
+  <link href="./assets/css/compras.css?v=4" rel="stylesheet">
   <link href="./assets/libs/node-waves/waves.min.css" rel="stylesheet">
   <link href="./assets/libs/simplebar/simplebar.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/libs/flatpickr/flatpickr.min.css">
+  <link rel="stylesheet" href="./assets/libs/choices.js/public/assets/styles/choices.min.css">
   <link rel="stylesheet" href="./assets/libs/tabulator-tables/css/tabulator.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/alertify.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/css/themes/default.min.css">
@@ -56,7 +59,7 @@ require_once ROOT . '/controller/check_session.php';
           <div class="flex justify-between items-center py-3 px-4 border-b border-defaultborder dark:border-white/10">
             <div>
               <h2 id="modal-compra-titulo" class="font-semibold text-defaulttextcolor dark:text-white">Registrar compra</h2>
-              <p class="text-xs text-textmuted mt-1">El documento queda pendiente de recepción en inventario.</p>
+              <p class="text-xs text-textmuted mt-1">Registra el comprobante que recibiste del proveedor. Esta compra aún no modifica inventario.</p>
             </div>
             <button type="button" class="ti-btn ti-btn-light !mb-0" data-hs-overlay="#modal-compra" aria-label="Cerrar"><i class="ri-close-line" aria-hidden="true"></i></button>
           </div>
@@ -78,15 +81,15 @@ require_once ROOT . '/controller/check_session.php';
                 </select>
               </div>
               <div class="space-y-2">
-                <label for="compra-fecha" class="ti-form-label">Fecha</label>
-                <input id="compra-fecha" name="fecha" type="date" class="ti-form-input rounded-sm" required>
+                <label for="date" class="ti-form-label">Fecha</label>
+                <input id="date" name="fecha" type="text" class="ti-form-input rounded-sm" readonly required autocomplete="off" placeholder="Selecciona la fecha">
               </div>
               <div class="space-y-2">
-                <label for="compra-serie" class="ti-form-label">Serie</label>
+                <label for="compra-serie" class="ti-form-label">Serie del proveedor</label>
                 <input id="compra-serie" name="serie" type="text" maxlength="20" class="ti-form-input rounded-sm" required placeholder="F001">
               </div>
               <div class="space-y-2">
-                <label for="compra-numero" class="ti-form-label">Número</label>
+                <label for="compra-numero" class="ti-form-label">Número del comprobante</label>
                 <input id="compra-numero" name="numero" type="text" maxlength="20" class="ti-form-input rounded-sm" required placeholder="00001234">
               </div>
             </div>
@@ -101,7 +104,7 @@ require_once ROOT . '/controller/check_session.php';
               </div>
               <div class="overflow-x-auto">
                 <table class="compra-lines-table w-full min-w-[900px] text-sm">
-                  <thead><tr><th>Producto</th><th>Cantidad</th><th>Costo unitario</th><th>IGV</th><th>Subtotal</th><th>Total</th><th><span class="sr-only">Quitar</span></th></tr></thead>
+                  <thead><tr><th>Producto</th><th>Cantidad (entera)</th><th>Costo unitario</th><th>IGV</th><th>Subtotal</th><th>Total</th><th><span class="sr-only">Quitar</span></th></tr></thead>
                   <tbody id="compra-lineas"></tbody>
                 </table>
               </div>
@@ -155,8 +158,10 @@ require_once ROOT . '/controller/check_session.php';
   <script src="./assets/js/sticky.js"></script>
   <script src="./assets/libs/simplebar/simplebar.min.js"></script>
   <script src="./assets/js/simplebar.js"></script>
+  <script src="./assets/libs/flatpickr/flatpickr.min.js"></script>
+  <script src="./assets/libs/choices.js/public/assets/scripts/choices.min.js"></script>
   <script src="./assets/libs/tabulator-tables/js/tabulator.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alertifyjs@1.14.0/build/alertify.min.js"></script>
-  <script src="./assets/js/compras.js?v=1"></script>
+  <script src="./assets/js/compras.js?v=3"></script>
 </body>
 </html>

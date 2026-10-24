@@ -12,7 +12,15 @@
     const closeFormButton = document.querySelector('#modal-compra [data-hs-overlay="#modal-compra"]');
     const openDetailButton = document.getElementById("abrir-modal-detalle-compra");
     const reloadButton = document.getElementById("btnRecargarCompras");
+    const dateInput = document.getElementById("date");
     if (!form || !tableElement) return;
+
+    const datePicker = flatpickr(dateInput, {
+      dateFormat: "Y-m-d",
+      defaultDate: new Date(),
+      maxDate: "today",
+      disableMobile: true,
+    });
 
     const money = new Intl.NumberFormat("es-PE", { style: "currency", currency: "PEN" });
     const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
@@ -29,6 +37,7 @@
     let suppliers = [];
     let products = [];
     let catalogPromise;
+    const lineChoices = new WeakMap();
 
     const getLineTotals = (line) => {
       const quantity = Number(line.querySelector(".compra-cantidad").value);
@@ -61,19 +70,44 @@
       const productCell = document.createElement("td");
       const productSelect = document.createElement("select");
       productSelect.className = "compra-producto compra-line-product ti-form-select rounded-sm";
-      productSelect.required = true;
+      productSelect.required = false;
       productSelect.add(new Option("Selecciona producto", ""));
       products.forEach((product) => productSelect.add(new Option(product.nombre, String(product.id))));
       productSelect.value = initial.producto_id ? String(initial.producto_id) : "";
       productCell.appendChild(productSelect);
       row.appendChild(productCell);
+      const productChoices = new Choices(productSelect, {
+        searchPlaceholderValue: "Buscar producto...",
+        shouldSort: false,
+        allowHTML: false,
+        itemSelectText: "",
+        searchResultLimit: 100,
+        noResultsText: "No se encontraron productos",
+        noChoicesText: "No hay productos disponibles",
+      });
+      lineChoices.set(productSelect, productChoices);
+
+      const clearProduct = () => {
+        productChoices.removeActiveItems();
+        productChoices.setChoiceByValue("");
+      };
+      productSelect.addEventListener("change", () => {
+        const selectedProduct = productSelect.value;
+        const alreadyAdded = selectedProduct && Array.from(linesBody.querySelectorAll(".compra-producto"))
+          .some((otherSelect) => otherSelect !== productSelect && otherSelect.value === selectedProduct);
+        if (alreadyAdded) {
+          clearProduct();
+          alertify.error("Ese producto ya está agregado a la compra.");
+        }
+        updateTotals();
+      });
 
       const quantityCell = document.createElement("td");
       const quantityInput = document.createElement("input");
       quantityInput.type = "number";
-      quantityInput.min = "0.001";
+      quantityInput.min = "1";
       quantityInput.max = "999999";
-      quantityInput.step = "0.001";
+      quantityInput.step = "1";
       quantityInput.value = initial.cantidad ?? "1";
       quantityInput.required = true;
       quantityInput.className = "compra-cantidad compra-line-number ti-form-input rounded-sm";
@@ -122,13 +156,15 @@
       removeButton.innerHTML = '<i class="ri-delete-bin-line" aria-hidden="true"></i>';
       removeButton.addEventListener("click", () => {
         if (linesBody.querySelectorAll("tr").length === 1) {
-          productSelect.value = "";
+          clearProduct();
           quantityInput.value = "1";
           costInput.value = "";
           taxSelect.value = "18";
           updateTotals();
           return;
         }
+        productChoices.destroy();
+        lineChoices.delete(productSelect);
         row.remove();
         updateTotals();
       });
@@ -200,6 +236,10 @@
       form.reset();
       formError.textContent = "";
       formError.classList.add("hidden");
+      linesBody.querySelectorAll(".compra-producto").forEach((select) => {
+        lineChoices.get(select)?.destroy();
+        lineChoices.delete(select);
+      });
       linesBody.replaceChildren();
       if (!suppliers.length || !products.length) {
         formError.textContent = !suppliers.length
@@ -207,7 +247,7 @@
           : "Registra y activa al menos un producto de inventario antes de crear una compra.";
         formError.classList.remove("hidden");
       }
-      document.getElementById("compra-fecha").value = new Date().toLocaleDateString("en-CA");
+      datePicker.setDate(new Date(), true);
       addLine();
       document.getElementById("modal-compra-titulo").textContent = "Registrar compra";
       openFormButton.click();

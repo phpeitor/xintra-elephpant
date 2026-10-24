@@ -8,16 +8,31 @@
 }
 
 .compra-modal-dialog {
-  width: min(70rem, calc(100vw - 2rem));
+  width: min(64rem, calc(100vw - 2rem)) !important;
+  max-width: 64rem !important;
   max-height: calc(100vh - 2rem);
   max-height: calc(100dvh - 2rem);
-  margin: 1rem auto;
+  margin: 1rem auto !important;
   overflow-y: auto;
   overscroll-behavior: contain;
 }
 
 .compra-detail-dialog {
-  width: min(58rem, calc(100vw - 2rem));
+  width: min(54rem, calc(100vw - 2rem)) !important;
+  max-width: 54rem !important;
+}
+
+#modal-compra h2,
+#modal-detalle-compra h2 {
+  margin: 0;
+  font-size: 1.2rem !important;
+  line-height: 1.5rem !important;
+}
+
+#modal-compra h3 {
+  margin: 0;
+  font-size: 1rem !important;
+  line-height: 1.4rem !important;
 }
 
 .compra-lines-table th,
@@ -36,8 +51,36 @@
   letter-spacing: 0.035em;
 }
 
+@media (max-width: 640px) {
+  .compra-modal-dialog,
+  .compra-detail-dialog {
+    width: calc(100vw - 1rem) !important;
+    max-width: none !important;
+    max-height: calc(100dvh - 1rem);
+    margin: 0.5rem auto !important;
+  }
+}
+
 .compra-line-product {
   min-width: 15rem;
+}
+
+.compra-lines-table .choices {
+  min-width: 15rem;
+  margin-bottom: 0;
+}
+
+.compra-lines-table .choices__inner {
+  min-height: 2.65rem;
+  padding-top: 0.55rem;
+  padding-bottom: 0.4rem;
+  background-color: #fff;
+  border-color: rgb(226 232 240 / 1);
+  border-radius: 0.375rem;
+}
+
+.compra-lines-table .choices__list--dropdown {
+  z-index: 130;
 }
 
 .compra-line-number {
