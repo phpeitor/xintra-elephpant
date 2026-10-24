@@ -50,6 +50,8 @@ PROMOCODE=
 
 La integración NubeFact se configura por sucursal desde **Sucursales → Configurar facturación**. Demo y Producción guardan rutas, tokens, series y correlativos separados; el token no se devuelve a la interfaz. Para habilitar esta función, aplica `database/migration/20261003_nubefact_comprobantes.sql` y `database/migration/20261007_nubefact_por_sucursal.sql`. Confirma con NubeFact las series y próximos números de cada sucursal antes de producción; no guardes tokens en `.env`, JavaScript, SQL versionado ni el repositorio. El selector de ubigeo de sucursales requiere aplicar `database/migration/20261009_sucursal_provincia.sql` para persistir también la provincia. El campo RUC emisor en la configuración por sucursal requiere `database/migration/20261010_ruc_emisor_nubefact.sql`.
 
+El directorio de proveedores por sucursal requiere aplicar `database/migration/20261011_proveedores.sql` antes de ingresar al menú **Compras → Proveedores**.
+
 Abre la aplicación desde el host configurado, por ejemplo:
 
 ```text

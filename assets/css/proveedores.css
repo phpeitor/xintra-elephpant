@@ -1,0 +1,37 @@
+#modal-proveedor {
+  z-index: 110 !important;
+}
+
+.hs-overlay-backdrop {
+  z-index: 109 !important;
+}
+
+#modal-proveedor .proveedor-modal-dialog {
+  width: min(42rem, calc(100vw - 2rem));
+  max-height: calc(100vh - 2rem);
+  max-height: calc(100dvh - 2rem);
+  margin: 1rem auto;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+#modal-proveedor:not(.hidden) .proveedor-modal-dialog {
+  animation: proveedor-modal-enter 240ms ease-out both;
+}
+
+@keyframes proveedor-modal-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -0.75rem, 0) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #modal-proveedor:not(.hidden) .proveedor-modal-dialog {
+    animation: none;
+  }
+}
